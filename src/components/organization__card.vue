@@ -41,9 +41,6 @@
         <v-col cols="10" class="card-item">{{ itemOrganization.egrul_status }}</v-col>
       </v-row>
     </v-container>
-    <!-- <v-card width="100%"> -->
-      <!-- <v-card-title class="organization-card__title"><h6>{{ itemOrganization.title }}</h6></v-card-title> -->
-    <!-- </v-card> -->
   </div>
 </template>
 
@@ -59,14 +56,10 @@ export default {
 <style lang="scss" scoped>
 .organization-card {
   font-size: .8em;
-  .green {
-    // background-color: green;
-  }
   .card-item {
     padding: 3px;
     &__title {
       font-weight: bold;
-      // border-right: 1px solid blue;
     }
   }
 }

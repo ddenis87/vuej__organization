@@ -1,12 +1,7 @@
 <template>
   <div class="home">
     <v-btn @click="getHeaders">Hello</v-btn>
-    <!-- <v-sparkline></v-sparkline> -->
-    <!-- <v-data-table :headers="[{text: 'Name', value: 'title'}, {text: 'INN', value: 'inn' }, {text: 'OGRN'}]" -->
-    <!-- <v-data-table class="tab-org"
-                  :headers="listFields"
-                  dark
-                  :items="listOrganizations"></v-data-table> -->
+    <organization-filter @accept-filter="acceptFilter"></organization-filter>
     <v-simple-table>
       <tbody>
         <tr v-for="(item, index) in listOrganizations" :key="index">
@@ -16,18 +11,17 @@
         </tr>
       </tbody>
     </v-simple-table>
-    <!-- <template v-for="(item, index) in listOrganizations"> -->
-      
-    <!-- </template> -->
   </div>
 </template>
 
 <script>
+import OrganizationFilter from '@/components/organization__filter';
 import OrganizationCard from '@/components/organization__card';
 
 export default {
   name: 'Home',
   components: {
+    OrganizationFilter,
     OrganizationCard,
   },
   computed: {
@@ -37,32 +31,35 @@ export default {
   data() {
     return {
       windowsHeight: 0,
-      currentPage: 1,
+      optionRequest: {
+        currentPage: 2,
+        stringFilter: ''
+      },
     }
   },
   created() {
-    this.$store.dispatch('GET_LIST_ORGANIZATIONS');
+    this.$store.dispatch('GET_LIST_BK');
     window.addEventListener('scroll',this.loadData);
-    
   },
-  mounted() {
-    // this.windowsHeight = document.documentElement.getBoundingClientRect().bottom;
-  },
+  updated() { window.addEventListener('scroll', this.loadData); },
   methods: {
+    acceptFilter(stringFilter) {
+      let stringWhere = stringFilter;
+      this.optionRequest.currentPage = 1;
+      this.optionRequest.stringFilter = stringFilter
+      this.$store.dispatch('GET_LIST_ORGANIZATIONS', this.optionRequest);
+    },
     loadData() {
-      // while(true) {
         let windowBottom = document.documentElement.getBoundingClientRect().bottom;
-        
         if (windowBottom < document.documentElement.clientHeight + 50) {
           window.removeEventListener('scroll', this.loadData);
           console.log('load');
-          this.$store.dispatch('GET_LIST_ORGANIZATIONS_NEXT', `?page=${++this.currentPage}`);
-          // this.$store.state.listOrganizations.push(this.$store.state.listOrganizations[0]);
+          this.optionRequest.currentPage++;
+          this.$store.dispatch('GET_LIST_ORGANIZATIONS', this.optionRequest);
         }
-      // }
     },
     getHeaders() {
-      this.$store.dispatch('SET_LIST_FIELD');
+      console.log(this.$store.getters.GET_LIST_BK);
     }
   }
 }
