@@ -1,7 +1,7 @@
 <template>
-  <v-toolbar color="blue">
+  <v-toolbar color="teal">
     <v-toolbar-items>
-      <v-list dense color="blue">
+      <v-list dense color="teal">
         <v-list-item class="list" to="/" tag="router-link" dense color="white">Организации</v-list-item>
         <v-list-item class="list" to="/about" tag="router-link" dense color="white">Обо мне</v-list-item>
       </v-list>

@@ -3,12 +3,12 @@
     <div class="app-header">
       <app-header></app-header>
     </div>
-    <div class="app-body">
+    <div class="app-body maxWidth">
       
       <router-view></router-view>
     </div>
     <div class="app-footer">
-
+      <app-footer></app-footer>
     </div>
     <div class="block" :class="{'block_show': loading}" tabindex="-1">
       <div class="block__progress">
@@ -23,11 +23,13 @@
 
 <script>
 import AppHeader from '@/components/app/app__header';
+import AppFooter from '@/components/app/app__footer';
 
 export default {
   name: 'App',
   components: {
     AppHeader,
+    AppFooter,
   },
   computed: {
     loading() { return this.$store.getters.GET_STATUS_LOAD; }
@@ -38,15 +40,21 @@ export default {
 <style lang="scss">
 .app {
   position: relative;
-  margin-left: auto;
-  margin-right: auto;
   display: grid;
   grid-template-areas: "app-header" "app-body" "app-footer";
   grid-template-columns: 100%;
   grid-template-rows: 80px auto 80px;
-  max-width: 1240px;
   width: 100%;
 
+  &-header { grid-area: app-header; }
+  &-body { grid-area: app-body; }
+  &-footer { grid-area: app-footer; background-color: teal; height: 100%; max-height: 80px;}
+
+  .maxWidth {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1240px;
+  }
   .block {
     position: absolute;
     top: 0px;
@@ -55,19 +63,16 @@ export default {
     width: 100%;
     height: 100%;
     background-color: white;
-    opacity: .7;
+    opacity: .8;
     z-index: 888;
     &_show {
       display: flex;
     }
     &__progress {
       position: fixed;
-      top: 15px;
+      top: 10px;
       right: 20px;
     }
   }
-}
-.bor {
-  border: 2px solid green;
 }
 </style>

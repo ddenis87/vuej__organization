@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <v-btn @click="getHeaders">Hello</v-btn>
+    <h2>Организации</h2>
     <organization-filter @accept-filter="acceptFilter"></organization-filter>
     <v-simple-table>
       <tbody>
@@ -39,9 +39,10 @@ export default {
   },
   created() {
     this.$store.dispatch('GET_LIST_BK');
-    window.addEventListener('scroll',this.loadData);
   },
-  updated() { window.addEventListener('scroll', this.loadData); },
+  updated() {
+    window.addEventListener('scroll', this.loadData);
+  },
   methods: {
     acceptFilter(stringFilter) {
       let stringWhere = stringFilter;
@@ -51,16 +52,13 @@ export default {
     },
     loadData() {
         let windowBottom = document.documentElement.getBoundingClientRect().bottom;
-        if (windowBottom < document.documentElement.clientHeight + 50) {
+        if (windowBottom < document.documentElement.clientHeight + 130) {
           window.removeEventListener('scroll', this.loadData);
           console.log('load');
           this.optionRequest.currentPage++;
           this.$store.dispatch('GET_LIST_ORGANIZATIONS', this.optionRequest);
         }
     },
-    getHeaders() {
-      console.log(this.$store.getters.GET_LIST_BK);
-    }
   }
 }
 </script>

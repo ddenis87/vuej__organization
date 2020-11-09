@@ -9,7 +9,7 @@ export default new Vuex.Store({
     statusLoad: false,
     listFields: [],
     listOrganizations: [],
-    listOrganizationsProps: {
+    listOrganizationsProps: { // ДОЛЖНО ПОЛУЧАТЬ С API
       bk: {
         title: 'Bk',
         values: []
@@ -80,10 +80,11 @@ export default new Vuex.Store({
           {value: "10", title: "Прочие"}
         ],
       },
-
     },
   },
   getters: {
+    GET_STATUS_LOAD(state) { return state.statusLoad; },
+    GET_LIST_FIELDS(state) { return state.listFields; }, 
     GET_LIST_FILTER(state) {
       let listFilter = []
       for (let item of Object.keys(state.listOrganizationsProps)) {
@@ -91,12 +92,8 @@ export default new Vuex.Store({
           listFilter.push({key: item, title: state.listOrganizationsProps[item].title, values: state.listOrganizationsProps[item].values});
         }
       }
-      // console.log(listFilter);
       return listFilter;
     },
-
-    GET_STATUS_LOAD(state) { return state.statusLoad; },
-    // GET_LIST_ORGANIZATIONS_PROPS(state) { return state.listOrganizationsProps; },
     GET_LIST_ORGANIZATIONS(state) {
       for (let item of state.listOrganizations) {
         for (let key of Object.keys(item)) {
@@ -109,21 +106,9 @@ export default new Vuex.Store({
       }
       return state.listOrganizations;
     },
-
-    GET_LIST_FIELDS(state) { return state.listFields; },
   },
   mutations: {
-    CLEAR_LIST_ORGANIZATIONS(state) { state.listOrganizations.length = 0; },
     SET_STATUS_LOAD(state, status = false) { state.statusLoad = status; },
-
-    SET_LIST_ORGANIZATIONS(state, option) { state.listOrganizations.push(...option); },
-
-    SET_LIST_BK(state, option) {
-      for (let item of option) {
-        state.listOrganizationsProps.bk.values.push({value: item.id, title: `${item.head_code} : ${item.head_name}`});
-      }
-    },
-
     SET_LIST_FIELDS(state, option) {
       let listFields = [];
       for (let key of Object.keys(option)) {
@@ -132,15 +117,19 @@ export default new Vuex.Store({
         }
       }
       state.listFields = listFields;
-    }
+    },
+    SET_LIST_BK(state, option) {
+      for (let item of option) {
+        state.listOrganizationsProps.bk.values.push({value: item.id, title: `${item.head_code} : ${item.head_name}`});
+      }
+    },
+    CLEAR_LIST_ORGANIZATIONS(state) { state.listOrganizations.length = 0; },
+    SET_LIST_ORGANIZATIONS(state, option) { state.listOrganizations.push(...option); },
   },
   actions: {
     GET_LIST_ORGANIZATIONS(state, option) {
-      // console.log(stringFilter);
       state.commit('SET_STATUS_LOAD', true);
       if (option.stringFilter != '') state.commit('CLEAR_LIST_ORGANIZATIONS');
-      console.log(`https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/organisations/?page=${option.currentPage}${option.stringFilter}`);
-
       axios
         .get(`https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/organisations/?page=${option.currentPage}${option.stringFilter}`)
         .then(response => {
@@ -153,6 +142,7 @@ export default new Vuex.Store({
 
     GET_LIST_BK(state) {
       state.commit('SET_STATUS_LOAD', true);
+      state.commit('CLEAR_LIST_ORGANIZATIONS');
       axios
         .get(`https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/budget-classifications/`)
         .then(response => {
@@ -161,7 +151,7 @@ export default new Vuex.Store({
         })
         .catch(err => {console.log(err)})
         .finally(() => state.commit('SET_STATUS_LOAD'));
-    }
+    },
   },
   modules: {
   }

@@ -17,11 +17,11 @@
             </v-row>
           </v-container>
           <v-container>
-            <v-row justify="space-between">
-              <v-col cols="2">
+            <v-row justify="space-between" class="cont">
+              <v-col cols="auto">
                 <v-btn @click="resetForm">Сбросить фильтр</v-btn>
               </v-col>
-              <v-col cols="2">
+              <v-col cols="auto">
                 <v-btn @click="acceptFilter">Применить</v-btn>
               </v-col>
             </v-row>
@@ -36,30 +36,24 @@
 export default {
   name: 'OrganizationFilter',
   computed: {
-    listFilter() {
-      console.log(this.$store.getters.GET_LIST_FILTER);
-      return this.$store.getters.GET_LIST_FILTER;
-    },
+    listFilter() { return this.$store.getters.GET_LIST_FILTER; },
   },
   data() {
     return {
-      valueFilter: {
-        bk: null,
-        budget_level: null,
-        institution_type: null,
-        organisation_type: null,
-        egrul_status: null,
-        rubpnubp_status: null,
-        industry_typing: null
-      },
+      valueFilter: {},
       closeFilter: null,
     }
   },
   created() {
+    for (let item of this.listFilter) {
+      this.valueFilter[item.key] = null;
+    }
   },
   methods: {
     resetForm() {
       this.$refs.form.reset();
+      this.closeFilter = null;
+      this.$store.dispatch('GET_LIST_BK');
     },
     acceptFilter() {
       let stringFilter = '';
