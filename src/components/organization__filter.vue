@@ -16,39 +16,6 @@
               </v-col>
             </v-row>
           </v-container>
-          <!-- <v-container>
-            <v-row>
-              <v-col cols="12" class="select-item">
-                <v-select :label="listOrganizationsProps.bk.title" 
-                          :items="listOrganizationsProps.bk.values" 
-                          item-text="title" 
-                          item-value="value" 
-                          v-model="valueFilter.bk"></v-select>
-              </v-col>
-              <v-col cols="12" class="select-item">
-                <v-select :label="listOrganizationsProps.budget_level.title" 
-                          :items="listOrganizationsProps.budget_level.values" 
-                          item-text="title" 
-                          item-value="value" 
-                          v-model="valueFilter.budget_level"></v-select>
-              </v-col>
-              <v-col cols="12" class="select-item">
-                <v-select :label="listOrganizationsProps.institution_type.title" :items="listOrganizationsProps.institution_type.values" item-text="title" item-value="value" v-model="valueFilter.institution_type"></v-select>
-              </v-col>
-              <v-col cols="12" class="select-item">
-                <v-select :label="listOrganizationsProps.organisation_type.title" :items="listOrganizationsProps.organisation_type.values" item-text="title" item-value="value" v-model="valueFilter.organisation_type"></v-select>
-              </v-col>
-              <v-col cols="12" class="select-item">
-                <v-select :label="listOrganizationsProps.egrul_status.title" :items="listOrganizationsProps.egrul_status.values" item-text="title" item-value="value" v-model="valueFilter.egrul_status"></v-select>
-              </v-col>
-              <v-col cols="12" class="select-item">
-                <v-select :label="listOrganizationsProps.rubpnubp_status.title" :items="listOrganizationsProps.rubpnubp_status.values" item-text="title" item-value="value" v-model="valueFilter.rubpnubp_status"></v-select>
-              </v-col>
-              <v-col cols="12" class="select-item">
-                <v-select :label="listOrganizationsProps.industry_typing.title" :items="listOrganizationsProps.industry_typing.values" item-text="title" item-value="value" v-model="valueFilter.industry_typing"></v-select>
-              </v-col>
-            </v-row>
-          </v-container> -->
           <v-container>
             <v-row justify="space-between">
               <v-col cols="2">
@@ -73,7 +40,6 @@ export default {
       console.log(this.$store.getters.GET_LIST_FILTER);
       return this.$store.getters.GET_LIST_FILTER;
     },
-    // listOrganizationsProps() { return this.$store.getters.GET_LIST_ORGANIZATIONS_PROPS; },
   },
   data() {
     return {
@@ -104,7 +70,6 @@ export default {
       }
       this.closeFilter = null;
       this.$emit('accept-filter', stringFilter);
-      // console.log(stringFilter);
     },
   }
 }
