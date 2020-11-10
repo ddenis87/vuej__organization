@@ -16,8 +16,13 @@
         </tr>
       </tbody>
     </v-simple-table>
-    <div class="home__up" v-show="btnUp">
-      <v-btn class="mx-2" fab dark small color="primary" @click="windowUp">
+    <div class="fixed-block" v-show="showBtnUp">
+      <v-btn class="mx-2"
+             fab
+             dark
+             small
+             color="indigo"
+             @click="goUp">
         <v-icon dark>
           mdi-navigation
         </v-icon>
@@ -38,11 +43,11 @@ export default {
   },
   computed: {
     listOrganizations() { return this.$store.getters.GET_LIST_ORGANIZATIONS; },
-    listFields() { return this.$store.getters.GET_LIST_FIELDS; },
   },
   data() {
     return {
       homeBlock: Object,
+      showBtnUp: false,
       optionRequest: {
         currentPage: 2,
         stringFilter: ''
@@ -67,36 +72,30 @@ export default {
       let stringWhere = stringFilter;
       this.optionRequest.currentPage = 1;
       this.optionRequest.stringFilter = stringFilter
+      this.$store.commit('CLEAR_LIST_ORGANIZATIONS');
       this.$store.dispatch('GET_LIST_ORGANIZATIONS', this.optionRequest);
     },
     loadData() {
-      let windowBottom = this.homeBlock.getBoundingClientRect().bottom;
-      (this.homeBlock.getBoundingClientRect().top < -100) ? this.btnUp = true : this.btnUp = false;
-      if (windowBottom < document.documentElement.clientHeight + 130) {
+      (document.documentElement.getBoundingClientRect().top < -100) ? this.showBtnUp = true : this.showBtnUp = false;
+      if (this.homeBlock.getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
         window.removeEventListener('scroll', this.loadData);
+        console.log('load');
         this.optionRequest.currentPage++;
         this.$store.dispatch('GET_LIST_ORGANIZATIONS', this.optionRequest);
       }
     },
-    windowUp() {
-      this.btnUp = false;
+    goUp() {
       window.scrollBy(0,-500);
-      if (window.pageYOffset > 0) requestAnimationFrame(this.windowUp); 
-    },
+      if (window.pageYOffset > 0) {requestAnimationFrame(this.goUp);}
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.home {
-  position: relative;
-  &__up {
-    position: fixed;
-    bottom: 50px;
-    right: 50px
-  }
-}
-.tab-org {
-  font-size: 8px;
+.fixed-block {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
 }
 </style>
