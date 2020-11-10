@@ -8,7 +8,6 @@
         <v-col cols="6" class="card-item">{{ itemOrganization.bk.head_name }}</v-col>
       </v-row>
       <v-row>
-        
       </v-row>
       <v-row>
         <v-col cols="2" class="card-item card-item__title">Наименование: </v-col>
