@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     acceptFilter(stringFilter) {
-      let stringWhere = stringFilter;
       this.optionRequest.currentPage = 1;
       this.optionRequest.stringFilter = stringFilter
       this.$store.commit('CLEAR_LIST_ORGANIZATIONS');
