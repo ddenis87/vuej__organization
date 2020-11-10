@@ -129,12 +129,14 @@ export default new Vuex.Store({
   actions: {
     GET_LIST_ORGANIZATIONS(state, option) {
       state.commit('SET_STATUS_LOAD', true);
-      if (option.stringFilter != '') state.commit('CLEAR_LIST_ORGANIZATIONS');
+      // if (option.stringFilter != '') state.commit('CLEAR_LIST_ORGANIZATIONS');
       axios
         .get(`https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/organisations/?page=${option.currentPage}${option.stringFilter}`)
         .then(response => {
-          state.commit('SET_LIST_ORGANIZATIONS', response.data.results);
-          if (option.currentPage == 1) state.commit('SET_LIST_FIELDS', response.data.results[0]);
+          if (response.data.results != 0) {
+            state.commit('SET_LIST_ORGANIZATIONS', response.data.results);
+            if (option.currentPage == 1) state.commit('SET_LIST_FIELDS', response.data.results[0]);
+          }
         })
         .catch(err => {console.log(err)})
         .finally(() => state.commit('SET_STATUS_LOAD'));
@@ -150,7 +152,7 @@ export default new Vuex.Store({
           state.dispatch('GET_LIST_ORGANIZATIONS', {currentPage: 1, stringFilter: ''});
         })
         .catch(err => {console.log(err)})
-        .finally(() => state.commit('SET_STATUS_LOAD'));
+        // .finally(() => state.commit('SET_STATUS_LOAD'));
     },
   },
   modules: {
