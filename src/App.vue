@@ -53,6 +53,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     max-width: 1240px;
+    width: 100%;
   }
   .block {
     position: absolute;

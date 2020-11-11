@@ -2,7 +2,14 @@
   <div class="home" id="home">
     <h2>Организации</h2>
     <organization-filter @accept-filter="acceptFilter"></organization-filter>
-    <v-simple-table>
+    <v-toolbar>
+      <v-btn fab class="mx-2" small><v-icon>mdi-format-list-bulleted-square</v-icon></v-btn>
+      <v-btn fab class="mx-2" small><v-icon>mdi-view-list</v-icon></v-btn>
+    </v-toolbar>
+    <v-data-table :headers="listFields" >
+
+    </v-data-table>
+    <v-simple-table v-if="false">
       <tbody v-if="!listOrganizations.length">
         <tr>
           <td><h3>Информация отсутствует</h3></td>
@@ -43,6 +50,7 @@ export default {
   },
   computed: {
     listOrganizations() { return this.$store.getters.GET_LIST_ORGANIZATIONS; },
+    listFields() { return this.$store.getters.GET_LIST_FIELDS; }
   },
   data() {
     return {
@@ -92,6 +100,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.home {
+  width: 100%;
+  border: 1px solid green;
+}
 .fixed-block {
   position: fixed;
   bottom: 40px;
