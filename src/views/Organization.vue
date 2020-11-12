@@ -1,39 +1,39 @@
 <template>
-  <div class="home" id="home">
-    <h2>Организации</h2>
-    <div class="control">
-      <div class="control__filter">
-        <organization-filter @accept-filter="acceptFilter"
-                             @reset-filter="resetFilter"></organization-filter>
+  <div class="home" >
+    <div id="home">
+      <h2>Организации</h2>
+      <div class="control">
+        <div class="control__filter">
+          <organization-filter @accept-filter="acceptFilter"
+                              @reset-filter="resetFilter"></organization-filter>
+        </div>
+        <v-btn class="control__btn" fab dark small 
+              @click="() => {listMultiRow = !listMultiRow}" title="Переключить вид">
+          <v-icon> {{ (listMultiRow) ? 'mdi-view-stream' : 'mdi-format-list-bulleted'}}</v-icon>
+        </v-btn>
       </div>
-      <v-btn class="control__btn" fab dark small 
-             @click="() => {listMultiRow = !listMultiRow}" title="Переключить вид">
-        <v-icon> {{ (listMultiRow) ? 'mdi-view-stream' : 'mdi-format-list-bulleted'}}</v-icon>
-      </v-btn>
-    </div>
 
-    <div class="body" v-if="!listMultiRow">
-      <organization-list :listFields="listFields"
-                         :listItems="listOrganizations"></organization-list>
+      <div class="body">
+        <organization-list :listFields="listFields" v-if="!listMultiRow"
+                          :listItems="listOrganizations"></organization-list>
+        <organization-list-multi-row :listFields="listFields" v-if="listMultiRow"
+                                    :listItems="listOrganizations"></organization-list-multi-row>
+      </div>
+
+      <div class="fixed-block" v-show="showBtnUp">
+        <v-btn class="mx-2"
+              fab
+              dark
+              small
+              color="indigo"
+              @click="goUp">
+          <v-icon dark>
+            mdi-navigation
+          </v-icon>
+        </v-btn>
+      </div>
     </div>
     
-    <div class="body" v-if="listMultiRow">
-      <organization-list-multi-row :listFields="listFields"
-                                   :listItems="listOrganizations"></organization-list-multi-row>
-    </div>
-
-    <div class="fixed-block" v-show="showBtnUp">
-      <v-btn class="mx-2"
-             fab
-             dark
-             small
-             color="indigo"
-             @click="goUp">
-        <v-icon dark>
-          mdi-navigation
-        </v-icon>
-      </v-btn>
-    </div>
   </div>
 </template>
 
@@ -52,6 +52,7 @@ export default {
   computed: {
     listOrganizations() { return this.$store.getters.GET_LIST_ORGANIZATIONS; },
     listFields() { return this.$store.getters.GET_LIST_FIELDS; }
+
   },
   data() {
     return {
@@ -89,8 +90,13 @@ export default {
       this.optionRequest.stringFilter ='';
     },
     loadData() {
+      console.log(this.homeBlock.getBoundingClientRect().bottom);
+      // console.log(this.homeBlock.clientHeight);
+      console.log(document.documentElement.clientHeight + 130);
+
       (document.documentElement.getBoundingClientRect().top < -100) ? this.showBtnUp = true : this.showBtnUp = false;
-      if (this.homeBlock.getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
+  
+      if (document.getElementById('home').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
         window.removeEventListener('scroll', this.loadData);
         this.optionRequest.currentPage++;
         this.$store.dispatch('GET_LIST_ORGANIZATIONS', this.optionRequest);
@@ -107,7 +113,7 @@ export default {
 <style lang="scss" scoped>
 .home {
   width: 100%;
-  height: 100%;
+  // height: 100%;
   .control {
     display: flex;
     align-items: center;

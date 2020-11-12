@@ -6,9 +6,9 @@
     <div class="app-body maxWidth">
       <router-view></router-view>
     </div>
-    <!-- <div class="app-footer">
+    <div class="app-footer">
       <app-footer></app-footer>
-    </div> -->
+    </div>
     <div class="block" :class="{'block_show': loading}" tabindex="-1">
       <div class="block__progress">
         <v-progress-circular :size="40"
@@ -42,7 +42,7 @@ export default {
   display: grid;
   grid-template-areas: "app-header" "app-body" "app-footer";
   grid-template-columns: 100%;
-  grid-template-rows: 80px auto;
+  grid-template-rows: 80px auto 80px;
   width: 100%;
 
   &-header { grid-area: app-header; }
