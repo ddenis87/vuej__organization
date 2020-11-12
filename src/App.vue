@@ -6,9 +6,9 @@
     <div class="app-body maxWidth">
       <router-view></router-view>
     </div>
-    <div class="app-footer">
+    <!-- <div class="app-footer">
       <app-footer></app-footer>
-    </div>
+    </div> -->
     <div class="block" :class="{'block_show': loading}" tabindex="-1">
       <div class="block__progress">
         <v-progress-circular :size="40"
@@ -53,7 +53,7 @@ export default {
     height: 100%;
     box-sizing: border-box;
   }
-  &-footer { grid-area: app-footer; background-color: teal; height: 100%; max-height: 80px;}
+  // &-footer { grid-area: app-footer; background-color: teal; height: 100%; max-height: 80px;}
 
   .maxWidth {
     margin-left: auto;
