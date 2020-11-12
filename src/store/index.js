@@ -87,6 +87,7 @@ export default new Vuex.Store({
     GET_LIST_FIELDS(state) { return state.listFields; }, 
     GET_LIST_FILTER(state) {
       let listFilter = []
+      
       for (let item of Object.keys(state.listOrganizationsProps)) {
         if (state.listOrganizationsProps[item].values) {
           listFilter.push({key: item, title: state.listOrganizationsProps[item].title, values: state.listOrganizationsProps[item].values});
@@ -95,15 +96,16 @@ export default new Vuex.Store({
       return listFilter;
     },
     GET_LIST_ORGANIZATIONS(state) {
-      for (let item of state.listOrganizations) {
+      state.listOrganizations.forEach(item => {
         for (let key of Object.keys(item)) {
           if (state.listOrganizationsProps[key] && state.listOrganizationsProps[key].values) {
             if (state.listOrganizationsProps[key].values.find(mitem => mitem.value == item[key]) != undefined) {
               item[key] = state.listOrganizationsProps[key].values.find(mitem => mitem.value == item[key]).title;
             }
+            if (typeof(item[key]) == "object") item[key] = item[key].head_name; ///???????????
           }
         }
-      }
+      })
       return state.listOrganizations;
     },
   },
@@ -123,19 +125,20 @@ export default new Vuex.Store({
         state.listOrganizationsProps.bk.values.push({value: item.id, title: `${item.head_code} : ${item.head_name}`});
       }
     },
-    CLEAR_LIST_ORGANIZATIONS(state) { state.listOrganizations.length = 0; },
+    CLEAR_LIST_ORGANIZATIONS(state) { state.listOrganizations = []; },
     SET_LIST_ORGANIZATIONS(state, option) { state.listOrganizations.push(...option); },
   },
   actions: {
     GET_LIST_ORGANIZATIONS(state, option) {
       state.commit('SET_STATUS_LOAD', true);
-      // if (option.stringFilter != '') state.commit('CLEAR_LIST_ORGANIZATIONS');
       axios
         .get(`https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/organisations/?page=${option.currentPage}${option.stringFilter}`)
         .then(response => {
-          if (response.data.results != 0) {
+          if (response.data.count !== 0) {
             state.commit('SET_LIST_ORGANIZATIONS', response.data.results);
             if (option.currentPage == 1) state.commit('SET_LIST_FIELDS', response.data.results[0]);
+          } else {
+            state.commit('CLEAR_LIST_ORGANIZATIONS');
           }
         })
         .catch(err => {console.log(err)})
@@ -152,7 +155,6 @@ export default new Vuex.Store({
           state.dispatch('GET_LIST_ORGANIZATIONS', {currentPage: 1, stringFilter: ''});
         })
         .catch(err => {console.log(err)})
-        // .finally(() => state.commit('SET_STATUS_LOAD'));
     },
   },
   modules: {

@@ -54,6 +54,7 @@ export default {
       this.$refs.form.reset();
       this.closeFilter = null;
       this.$store.dispatch('GET_LIST_BK');
+      this.$emit('reset-filter');
     },
     acceptFilter() {
       let stringFilter = '';
