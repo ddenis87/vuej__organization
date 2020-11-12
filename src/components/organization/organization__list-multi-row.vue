@@ -39,7 +39,7 @@ export default {
       flex-wrap: wrap;
       padding-top: 10px;
       background-color: white;
-      box-shadow: 0px 3px 1px grey;
+      box-shadow: 0px 3px 0px grey;
       &__item {
         padding: 5px 15px;
         min-width: calc(100% / 5);

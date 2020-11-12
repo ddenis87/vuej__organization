@@ -30,21 +30,22 @@ export default {
 
 <style lang="scss" scoped>
 .table-list {
-  position: relative;
   width: 100%;
   margin-top: 10px;
   border-collapse: collapse;
+ 
   .header {
-    position: sticky;
-    top: 0px;
-    height: 80px;
-    background-color: white;
     padding-top: 10px;
     color: rgba(0, 0, 0, 0.6);
     font-size: 0.8rem;
-    box-shadow: 0px 3px 1px grey;
+    
     &__col {
+      position: sticky;
+      top: 0px;
+      height: 80px;
       padding: 5px 15px;
+      background-color: white;
+      box-shadow: 0px 3px 0px grey;
       white-space: nowrap;
     }
   }
