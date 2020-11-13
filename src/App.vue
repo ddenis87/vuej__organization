@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import AppHeader from '@/components/app/app__header';
-import AppFooter from '@/components/app/app__footer';
+import AppHeader from '@/components/app/AppHeader';
+import AppFooter from '@/components/app/AppFooter';
 
 export default {
   name: 'App',
@@ -49,11 +49,11 @@ export default {
   &-body {
     padding-left: 10px;
     grid-area: app-body;
-    min-height: calc(100vh - 80px);
+    min-height: calc(100vh - 160px);
     height: 100%;
     box-sizing: border-box;
   }
-  &-footer { grid-area: app-footer; background-color: teal; height: 100%; max-height: 80px;}
+  &-footer { grid-area: app-footer; }
 
   .maxWidth {
     margin-left: auto;

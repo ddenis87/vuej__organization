@@ -21,10 +21,27 @@
 <script>
 export default {
   name: 'OrganizationList',
-  props: {
-    listFields: Array,
-    listItems: Array,
-  }
+  computed: {
+    listFields() { return this.$store.getters.GET_LIST_FIELDS; },
+    listItems() { return this.$store.getters.GET_LIST_ORGANIZATIONS; },
+  },
+  created() {
+    this.$store.commit('SET_OPTIONS_REQUEST'); // НЕ ТРЕБУЕТСЯ ЕСЛИ НЕТ ПЕРЕКЛЮЧЕНИЯ МЕЖДУ КОМПОНЕНТАМИ
+    this.$store.dispatch('GET_LIST_BK');
+    window.addEventListener('scroll', this.loadData);
+  },
+  updated() {
+    window.addEventListener('scroll', this.loadData);
+  },
+  destroyed() { window.removeEventListener('scroll', this.loadData); },
+  methods: {
+    loadData() {
+      if (document.getElementById('home').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
+        window.removeEventListener('scroll', this.loadData);
+        this.$store.dispatch('GET_LIST_ORGANIZATIONS');
+      }
+    },
+  },
 }
 </script>
 
@@ -33,12 +50,10 @@ export default {
   width: 100%;
   margin-top: 10px;
   border-collapse: collapse;
- 
   .header {
     padding-top: 10px;
     color: rgba(0, 0, 0, 0.6);
     font-size: 0.8rem;
-    
     &__col {
       position: sticky;
       top: 0px;

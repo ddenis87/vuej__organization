@@ -53,18 +53,23 @@ export default {
     resetForm() {
       this.$refs.form.reset();
       this.closeFilter = null;
+      this.$store.commit('SET_OPTIONS_REQUEST');
       this.$store.dispatch('GET_LIST_BK');
       this.$emit('reset-filter');
     },
     acceptFilter() {
       let stringFilter = '';
+      let optionRequest = {};
       for (let [key, value] of Object.entries(this.valueFilter)) {
         if (value) {
           stringFilter += `&${key}=${value}`;
         }
       }
+      optionRequest.stringFilter = stringFilter;
       this.closeFilter = null;
-      this.$emit('accept-filter', stringFilter);
+      this.$store.commit('SET_OPTIONS_REQUEST', optionRequest);
+      this.$store.commit('CLEAR_LIST_ORGANIZATIONS');
+      this.$store.dispatch('GET_LIST_ORGANIZATIONS');
     },
   }
 }

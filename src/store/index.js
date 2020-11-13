@@ -7,6 +7,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     statusLoad: false,
+    optionRequest: {
+      currentPage: 1,
+      stringFilter: '',
+    },
     listFields: [],
     listOrganizations: [],
     listOrganizationsProps: { // ДОЛЖНО ПОЛУЧАТЬ С API
@@ -84,10 +88,10 @@ export default new Vuex.Store({
   },
   getters: {
     GET_STATUS_LOAD(state) { return state.statusLoad; },
+    GET_OPTIONS_REQUEST(state) { return state.optionRequest; },
     GET_LIST_FIELDS(state) { return state.listFields; }, 
     GET_LIST_FILTER(state) {
       let listFilter = []
-      
       for (let item of Object.keys(state.listOrganizationsProps)) {
         if (state.listOrganizationsProps[item].values) {
           listFilter.push({key: item, title: state.listOrganizationsProps[item].title, values: state.listOrganizationsProps[item].values});
@@ -111,6 +115,10 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_STATUS_LOAD(state, status = false) { state.statusLoad = status; },
+    SET_OPTIONS_REQUEST(state, option = {}) {
+      ('currentPage' in option) ? state.optionRequest.currentPage = option.currentPage : state.optionRequest.currentPage = 1;
+      ('stringFilter' in option) ? state.optionRequest.stringFilter = option.stringFilter : state.optionRequest.stringFilter = '';
+    },
     SET_LIST_FIELDS(state, option) {
       let listFields = [];
       for (let key of Object.keys(option)) {
@@ -129,8 +137,9 @@ export default new Vuex.Store({
     SET_LIST_ORGANIZATIONS(state, option) { state.listOrganizations.push(...option); },
   },
   actions: {
-    GET_LIST_ORGANIZATIONS(state, option) {
+    GET_LIST_ORGANIZATIONS(state) {
       state.commit('SET_STATUS_LOAD', true);
+      let option = state.getters.GET_OPTIONS_REQUEST;
       axios
         .get(`https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/organisations/?page=${option.currentPage}${option.stringFilter}`)
         .then(response => {
@@ -140,11 +149,11 @@ export default new Vuex.Store({
           } else {
             state.commit('CLEAR_LIST_ORGANIZATIONS');
           }
+          state.commit('SET_OPTIONS_REQUEST', { currentPage: ++option.currentPage, stringFilter: option.stringFilter });
         })
         .catch(err => {console.log(err)})
         .finally(() => state.commit('SET_STATUS_LOAD'));
     },
-
     GET_LIST_BK(state) {
       state.commit('SET_STATUS_LOAD', true);
       state.commit('CLEAR_LIST_ORGANIZATIONS');
@@ -152,7 +161,7 @@ export default new Vuex.Store({
         .get(`https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/budget-classifications/`)
         .then(response => {
           state.commit('SET_LIST_BK', response.data);
-          state.dispatch('GET_LIST_ORGANIZATIONS', {currentPage: 1, stringFilter: ''});
+          state.dispatch('GET_LIST_ORGANIZATIONS');
         })
         .catch(err => {console.log(err)})
     },

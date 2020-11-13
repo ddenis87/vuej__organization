@@ -17,6 +17,8 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
+  background-color: teal;
+  box-sizing: border-box;
   &__text {
     font-size: 8px;
   }
