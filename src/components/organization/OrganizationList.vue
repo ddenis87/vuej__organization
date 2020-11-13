@@ -23,7 +23,7 @@ export default {
   name: 'OrganizationList',
   computed: {
     listFields() { return this.$store.getters.GET_LIST_FIELDS; },
-    listItems() { return this.$store.getters.GET_LIST_ORGANIZATIONS; },
+    listItems() { return this.$store.getters.GET_LIST_DATA; },
   },
   created() {
     this.$store.commit('SET_OPTIONS_REQUEST'); // НЕ ТРЕБУЕТСЯ ЕСЛИ НЕТ ПЕРЕКЛЮЧЕНИЯ МЕЖДУ КОМПОНЕНТАМИ
@@ -38,7 +38,7 @@ export default {
     loadData() {
       if (document.getElementById('home').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
         window.removeEventListener('scroll', this.loadData);
-        this.$store.dispatch('GET_LIST_ORGANIZATIONS');
+        this.$store.dispatch('GET_LIST_DATA');
       }
     },
   },
@@ -49,6 +49,7 @@ export default {
 .table-list {
   width: 100%;
   margin-top: 10px;
+  margin-bottom: 10px;
   border-collapse: collapse;
   .header {
     padding-top: 10px;

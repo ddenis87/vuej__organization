@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
+import Vue from 'vue';
+import Vuex, { Store } from 'vuex';
 import axios from 'axios';
 
 Vue.use(Vuex)
@@ -12,8 +12,8 @@ export default new Vuex.Store({
       stringFilter: '',
     },
     listFields: [],
-    listOrganizations: [],
-    listOrganizationsProps: { // ДОЛЖНО ПОЛУЧАТЬ С API
+    listData: [],
+    listDataProps: { // ДОЛЖНО ПОЛУЧАТЬ С API
       bk: {
         title: 'Bk',
         values: []
@@ -92,25 +92,25 @@ export default new Vuex.Store({
     GET_LIST_FIELDS(state) { return state.listFields; }, 
     GET_LIST_FILTER(state) {
       let listFilter = []
-      for (let item of Object.keys(state.listOrganizationsProps)) {
-        if (state.listOrganizationsProps[item].values) {
-          listFilter.push({key: item, title: state.listOrganizationsProps[item].title, values: state.listOrganizationsProps[item].values});
+      for (let item of Object.keys(state.listDataProps)) {
+        if (state.listDataProps[item].values) {
+          listFilter.push({key: item, title: state.listDataProps[item].title, values: state.listDataProps[item].values});
         }
       }
       return listFilter;
     },
-    GET_LIST_ORGANIZATIONS(state) {
-      state.listOrganizations.forEach(item => {
+    GET_LIST_DATA(state) {
+      state.listData.forEach(item => {
         for (let key of Object.keys(item)) {
-          if (state.listOrganizationsProps[key] && state.listOrganizationsProps[key].values) {
-            if (state.listOrganizationsProps[key].values.find(mitem => mitem.value == item[key]) != undefined) {
-              item[key] = state.listOrganizationsProps[key].values.find(mitem => mitem.value == item[key]).title;
+          if (state.listDataProps[key] && state.listDataProps[key].values) {
+            if (state.listDataProps[key].values.find(mitem => mitem.value == item[key]) != undefined) {
+              item[key] = state.listDataProps[key].values.find(mitem => mitem.value == item[key]).title;
             }
             if (typeof(item[key]) == "object") item[key] = item[key].head_name; ///???????????
           }
         }
       })
-      return state.listOrganizations;
+      return state.listData;
     },
   },
   mutations: {
@@ -122,32 +122,32 @@ export default new Vuex.Store({
     SET_LIST_FIELDS(state, option) {
       let listFields = [];
       for (let key of Object.keys(option)) {
-        if (state.listOrganizationsProps[key]) {
-          listFields.push({text: state.listOrganizationsProps[key].title, value: key});
+        if (state.listDataProps[key]) {
+          listFields.push({text: state.listDataProps[key].title, value: key});
         }
       }
       state.listFields = listFields;
     },
     SET_LIST_BK(state, option) {
       for (let item of option) {
-        state.listOrganizationsProps.bk.values.push({value: item.id, title: `${item.head_code} : ${item.head_name}`});
+        state.listDataProps.bk.values.push({value: item.id, title: `${item.head_code} : ${item.head_name}`});
       }
     },
-    CLEAR_LIST_ORGANIZATIONS(state) { state.listOrganizations = []; },
-    SET_LIST_ORGANIZATIONS(state, option) { state.listOrganizations.push(...option); },
+    CLEAR_LIST_DATA(state) { state.listData = []; },
+    SET_LIST_DATA(state, option) { state.listData.push(...option); },
   },
   actions: {
-    GET_LIST_ORGANIZATIONS(state) {
+    GET_LIST_DATA(state) {
       state.commit('SET_STATUS_LOAD', true);
       let option = state.getters.GET_OPTIONS_REQUEST;
       axios
         .get(`https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/organisations/?page=${option.currentPage}${option.stringFilter}`)
         .then(response => {
           if (response.data.count !== 0) {
-            state.commit('SET_LIST_ORGANIZATIONS', response.data.results);
+            state.commit('SET_LIST_DATA', response.data.results);
             if (option.currentPage == 1) state.commit('SET_LIST_FIELDS', response.data.results[0]);
           } else {
-            state.commit('CLEAR_LIST_ORGANIZATIONS');
+            state.commit('CLEAR_LIST_DATA');
           }
           state.commit('SET_OPTIONS_REQUEST', { currentPage: ++option.currentPage, stringFilter: option.stringFilter });
         })
@@ -156,16 +156,17 @@ export default new Vuex.Store({
     },
     GET_LIST_BK(state) {
       state.commit('SET_STATUS_LOAD', true);
-      state.commit('CLEAR_LIST_ORGANIZATIONS');
+      state.commit('CLEAR_LIST_DATA');
       axios
         .get(`https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/budget-classifications/`)
         .then(response => {
           state.commit('SET_LIST_BK', response.data);
-          state.dispatch('GET_LIST_ORGANIZATIONS');
+          state.dispatch('GET_LIST_DATA');
         })
         .catch(err => {console.log(err)})
     },
   },
   modules: {
+
   }
 })

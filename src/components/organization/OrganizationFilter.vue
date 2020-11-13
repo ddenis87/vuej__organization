@@ -68,8 +68,8 @@ export default {
       optionRequest.stringFilter = stringFilter;
       this.closeFilter = null;
       this.$store.commit('SET_OPTIONS_REQUEST', optionRequest);
-      this.$store.commit('CLEAR_LIST_ORGANIZATIONS');
-      this.$store.dispatch('GET_LIST_ORGANIZATIONS');
+      this.$store.commit('CLEAR_LIST_DATA');
+      this.$store.dispatch('GET_LIST_DATA');
     },
   }
 }
