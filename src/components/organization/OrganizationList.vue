@@ -2,12 +2,12 @@
   <table class="table-list" v-if="true">
     <thead class="header">
       <tr class="header__row">
-        <th class="header__col" v-for="(item, index) in listFields" :key="index">{{ item.text }}</th>
+        <th class="header__col" v-for="(item, index) in listFields" :key="index">{{ item.label }}</th>
       </tr>
     </thead>
     <tbody class="body">
       <tr class="body__row" v-for="(itemI, indexI) in listItems" :key="indexI">
-        <td class="body__col" v-for="(itemF, indexF) in listFields" :key="indexF">{{ itemI[itemF.value] }}</td>
+        <td class="body__col" v-for="(itemF, indexF) in listFields" :key="indexF">{{ itemI[itemF.key] }}</td>
       </tr>
     </tbody>
     <tbody class="body" v-if="listItems.length == 0">
@@ -27,7 +27,8 @@ export default {
   },
   created() {
     this.$store.commit('SET_OPTIONS_REQUEST'); // НЕ ТРЕБУЕТСЯ ЕСЛИ НЕТ ПЕРЕКЛЮЧЕНИЯ МЕЖДУ КОМПОНЕНТАМИ
-    this.$store.dispatch('GET_LIST_BK');
+    // this.$store.dispatch('GET_LIST_BK');
+    this.$store.dispatch('GET_LIST_OPTIONS');
     window.addEventListener('scroll', this.loadData);
   },
   updated() {

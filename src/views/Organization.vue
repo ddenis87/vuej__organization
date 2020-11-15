@@ -56,6 +56,7 @@ export default {
   },
   created() {
     window.addEventListener('scroll', this.showBtnUp);
+    // this.$store.dispatch('GET_LIST_OPTIONS');
   },
   methods: {
     showBtnUp() {

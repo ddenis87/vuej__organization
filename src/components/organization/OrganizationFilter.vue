@@ -8,9 +8,9 @@
           <v-container>
             <v-row>
               <v-col v-for="(item, index) in listFilter" :key="index" cols="12" class="select-item">
-                <v-select :label="item.title" 
-                          :items="item.values" 
-                          item-text="title" 
+                <v-select :label="item.label" 
+                          :items="item.choices" 
+                          item-text="display_name" 
                           item-value="value" 
                           v-model="valueFilter[item.key]"></v-select>
               </v-col>
