@@ -35,26 +35,14 @@ export default new Vuex.Store({
       }
       return listFilter;
     },
-    GET_LIST_DATA(state) {
-      state.listData.forEach(item => {
-        for (let key of Object.keys(item)) {
-          if (state.listDataOptions[key] && state.listDataOptions[key].choices) {
-            if (state.listDataOptions[key].choices.find(mitem => mitem.value == item[key]) != undefined) {
-              item[key] = state.listDataOptions[key].choices.find(mitem => mitem.value == item[key]).display_name;
-            }
-          }
-          if (typeof(item[key]) == "object") item[key] = `${item[key].head_code} - ${item[key].head_name}`; ///???????????
-        }
-      })
-      return state.listData;
-    },
+    GET_LIST_DATA(state) { return state.listData; },
   },
   mutations: {
-    SET_LIST_FIELDS(state, option) { state.listFields = []; state.listFields = option },
+    SET_LIST_FIELDS(state, option) { state.listFields = option; },
     SET_STATUS_LOAD(state, status = false) { state.statusLoad = status; },
     SET_OPTIONS_REQUEST(state, option = {}) {
-      ('currentPage' in option) ? state.optionRequest.currentPage = option.currentPage : state.optionRequest.currentPage = 1;
-      ('stringFilter' in option) ? state.optionRequest.stringFilter = option.stringFilter : state.optionRequest.stringFilter = '';
+      state.optionRequest.currentPage = ('currentPage' in option) ? option.currentPage : 1;
+      state.optionRequest.stringFilter = ('stringFilter' in option) ? option.stringFilter : '';
     },
     SET_LIST_BK(state, option) {
       option.forEach(item => {
@@ -69,7 +57,18 @@ export default new Vuex.Store({
       Object.assign(state.listDataOptions.bk, {choices: []});
     },
     CLEAR_LIST_DATA(state) { state.listData = []; },
-    SET_LIST_DATA(state, option) { state.listData.push(...option); },
+    SET_LIST_DATA(state, option) {
+      let optionJoin = option;
+      optionJoin.forEach(item => {
+        for (let key of Object.keys(item)) {
+          if (state.listDataOptions[key].choices && typeof(item[key]) != 'object') {
+            item[key] = state.listDataOptions[key].choices.find(mitem => mitem.value == item[key]).display_name;
+          }
+          if (typeof(item[key]) == 'object') item[key] = `${item[key].head_code} - ${item[key].head_name}`; ///???????????
+        }
+        state.listData.push(item);
+      })
+    },
   },
   actions: {
     GET_LIST_OPTIONS(state) {
