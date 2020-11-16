@@ -1,15 +1,36 @@
 <template>
   <div class="multi-table">
+    <div class="multi-table__control">
+      <v-select label="Количество столбцов (по умолчанию 4)"
+                :items="columnCountList"
+                filled
+                danse
+                v-model="columnCountSelected"></v-select>
+    </div>
+    <v-divider></v-divider>
     <div class="table">
       <div class="header">
-        <div class="header__item" v-for="(item, index) in listFields" :key="index">{{ item.text }}</div>
-      </div>
-      <div class="body">          
-        <div class="body__item" v-for="(itemI, indexI) in listItems" :key="indexI">
-          <div class="body__item-col" v-for="(itemF, indexF) in listFields" :key="indexF">{{ itemI[itemF.value] }}</div>
+        <div class="header__item"
+             v-for="(item, index) in listFields" 
+             :key="index"
+             :style="columnHeaderWidth">
+          {{ item.label }}
         </div>
       </div>
-      <tbody class="body" v-if="listItems.length == 0">
+      <div class="body">          
+        <div class="body__item"
+             v-for="(itemI, indexI) in listItems" 
+             :key="indexI">
+          <div class="body__item-col" 
+               v-for="(itemF, indexF) in listFields" 
+               :key="indexF"
+               :style="columnBodyWidth">
+            {{ itemI[itemF.key] }}
+          </div>
+        </div>
+      </div>
+      <tbody class="body" 
+             v-if="listItems.length == 0">
         <div class="body__item">Отсутствуют данные для отображения</div>
     </tbody>
     </div>
@@ -22,10 +43,16 @@ export default {
   computed: {
     listFields() { return this.$store.getters.GET_LIST_FIELDS; },
     listItems() { return this.$store.getters.GET_LIST_DATA; },
+    columnHeaderWidth() { return `min-width: calc(100% / ${this.columnCountSelected})`; },
+    columnBodyWidth() { return `width: calc(100% / ${this.columnCountSelected})`; }
+  },
+  data() {
+    return {
+      columnCountList: [2,3,4,5,6],
+      columnCountSelected: 4,
+    }
   },
   created() {
-    this.$store.commit('SET_OPTIONS_REQUEST'); // НЕ ТРЕБУЕТСЯ ЕСЛИ НЕТ ПЕРЕКЛЮЧЕНИЯ МЕЖДУ КОМПОНЕНТАМИ
-    this.$store.dispatch('GET_LIST_BK');
     window.addEventListener('scroll', this.loadData);
   },
   updated() {
@@ -44,9 +71,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
 .multi-table {
   margin-top: 10px;
   margin-bottom: 10px;
+  &__control {
+    width: 300px;
+    margin-left: 10px;
+  }
   .table {
     .header {
       position: sticky;
@@ -59,7 +92,7 @@ export default {
       box-shadow: 0px 3px 0px grey;
       &__item {
         padding: 5px 15px;
-        min-width: calc(100% / 5);
+        // min-width: calc(100% / 5);
         white-space: nowrap;
         color: rgba(0, 0, 0, 0.6);
         font-size: 0.8rem;
@@ -75,7 +108,7 @@ export default {
         &:nth-child(2n) { background-color:  whitesmoke; }
         &-col {
           padding: 5px 15px;
-          width: calc(100% / 5);
+          // width: calc(100% / 5);
           font-size: 0.875rem;
           color: rgba(0, 0, 0, 0.87);
         }

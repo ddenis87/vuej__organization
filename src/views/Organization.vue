@@ -15,7 +15,7 @@
         <v-icon> {{ (listMultiRow) ? 'mdi-view-stream' : 'mdi-format-list-bulleted'}}</v-icon>
       </v-btn>
     </div>
-
+    <hr/>
     <div class="body">
       <organization-list v-if="!listMultiRow"></organization-list>
       <organization-list-multi-row v-if="listMultiRow"></organization-list-multi-row>
@@ -55,8 +55,8 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch('GET_LIST_OPTIONS');
     window.addEventListener('scroll', this.showBtnUp);
-    // this.$store.dispatch('GET_LIST_OPTIONS');
   },
   methods: {
     showBtnUp() {
@@ -75,16 +75,16 @@ export default {
   width: 100%;
   .control {
     display: flex;
-    align-items: center;
-    height: 80px;
+    align-items: flex-start;
+    height: 100px;
+    margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
     &__filter {
       align-items: center;
       width: 100%;
-      height: 55px;
     }
-    &__btn { margin: 0 10px; }
+    &__btn { margin: 5px 10px; }
   }
 }
 .fixed-block {

@@ -26,9 +26,6 @@ export default {
     listItems() { return this.$store.getters.GET_LIST_DATA; },
   },
   created() {
-    this.$store.commit('SET_OPTIONS_REQUEST'); // НЕ ТРЕБУЕТСЯ ЕСЛИ НЕТ ПЕРЕКЛЮЧЕНИЯ МЕЖДУ КОМПОНЕНТАМИ
-    // this.$store.dispatch('GET_LIST_BK');
-    this.$store.dispatch('GET_LIST_OPTIONS');
     window.addEventListener('scroll', this.loadData);
   },
   updated() {
