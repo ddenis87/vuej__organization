@@ -3,9 +3,7 @@
     <h2>Организации</h2>
 
     <div class="control">
-      <div class="control__filter">
-        <organization-filter></organization-filter>
-      </div>
+      <control-user></control-user>
       <v-btn class="control__btn"
               title="Переключить вид"
               fab
@@ -17,56 +15,32 @@
     </div>
     <hr/>
     <div class="body">
-      <organization-list v-if="!listMultiRow"></organization-list>
-      <organization-list-multi-row v-if="listMultiRow"></organization-list-multi-row>
-    </div>
-
-    <div class="fixed-block" v-show="btnUp">
-      <v-btn class="mx-2"
-              fab
-              dark
-              small
-              color="indigo"
-              @click="goUp">
-        <v-icon dark>
-          mdi-navigation
-        </v-icon>
-      </v-btn>
+      <table-section :columnWidth="tableColumnWidth" 
+                     :columnSorted="tableColumnSorted"></table-section>
     </div>
   </div>
 </template>
 
 <script>
-import OrganizationFilter from '@/components/organization/OrganizationFilter';
-import OrganizationList from '@/components/organization/OrganizationList';
-import OrganizationListMultiRow from '@/components/organization/OrganizationListMultiRow';
+import ControlUser from '@/components/control/ControlUser';
+import TableSection from '@/components/table/TableSection';
 
 export default {
   name: 'Organization',
   components: {
-    OrganizationFilter,
-    OrganizationList,
-    OrganizationListMultiRow,
+    ControlUser,
+    TableSection
   },
   data() {
     return {
       listMultiRow: false,
-      btnUp: false,
+      tableColumnWidth: [20, 300, , 100, 500, 100, 100],
+      tableColumnSorted: ['id', 'bk', 'budget_level', 'institution_code', 'title', 'inn', 'kpp', 'institution_type', 'organisation_type', 'egrul_status', 'rubpnubp_status', 'industry_typing'],
     }
   },
   created() {
     this.$store.dispatch('GET_LIST_OPTIONS');
-    window.addEventListener('scroll', this.showBtnUp);
   },
-  methods: {
-    showBtnUp() {
-      (document.documentElement.getBoundingClientRect().top < -100) ? this.btnUp = true : this.btnUp = false;
-    },
-    goUp() {
-      window.scrollBy(0,-500);
-      if (window.pageYOffset > 0) { requestAnimationFrame(this.goUp); }
-    }
-  }
 }
 </script>
 
@@ -76,20 +50,10 @@ export default {
   .control {
     display: flex;
     align-items: flex-start;
-    height: 100px;
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
-    &__filter {
-      align-items: center;
-      width: 100%;
-    }
     &__btn { margin: 5px 10px; }
   }
-}
-.fixed-block {
-  position: fixed;
-  bottom: 40px;
-  right: 40px;
 }
 </style>

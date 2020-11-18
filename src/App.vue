@@ -6,32 +6,22 @@
     <div class="app-body maxWidth">
       <router-view></router-view>
     </div>
-    <!-- <div class="app-footer">
-      <app-footer></app-footer>
-    </div> -->
-    <div class="block" :class="{'block_show': loading}" tabindex="-1">
-      <div class="block__progress">
-        <v-progress-circular :size="40"
-                             :width="5"
-                             color="primary"
-                             indeterminate></v-progress-circular>
-      </div>
-    </div>
+    <app-lock></app-lock>
+    <app-button-up></app-button-up>
   </v-app>
 </template>
 
 <script>
 import AppHeader from '@/components/app/AppHeader';
-import AppFooter from '@/components/app/AppFooter';
+import AppLock from '@/components/app/AppLock';
+import AppButtonUp from '@/components/app/AppButtonUp';
 
 export default {
   name: 'App',
   components: {
     AppHeader,
-    AppFooter,
-  },
-  computed: {
-    loading() { return this.$store.getters.GET_STATUS_LOAD; }
+    AppLock,
+    AppButtonUp
   },
 };
 </script>
@@ -60,25 +50,6 @@ export default {
     margin-right: auto;
     max-width: 2560px;
     width: 100%;
-  }
-  .block {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    display: none;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    opacity: .8;
-    z-index: 888;
-    &_show {
-      display: flex;
-    }
-    &__progress {
-      position: fixed;
-      top: 10px;
-      right: 20px;
-    }
   }
 }
 </style>
