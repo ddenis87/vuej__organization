@@ -35,7 +35,7 @@ export default {
     return {
       listMultiRow: false,
       tableColumnWidth: [20, 300, , 100, 500, 100, 100],
-      tableColumnSorted: ['id', 'bk', 'budget_level', 'institution_code', 'title', 'inn', 'kpp', 'institution_type', 'organisation_type', 'egrul_status', 'rubpnubp_status', 'industry_typing'],
+      tableColumnSorted: ['bk', 'budget_level', 'institution_code', 'title', 'inn', 'kpp', 'institution_type', 'organisation_type', 'egrul_status', 'rubpnubp_status', 'industry_typing'],
     }
   },
   created() {

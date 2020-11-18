@@ -3,9 +3,13 @@
     <v-container>
       <v-row>
         <v-col v-for="(item, index) in listFilter" 
-               :key="index" cols="12" 
-               class="select-item">
-          <filter-item-select :item="item" v-model="valueSelect" @input="createStringFilter"></filter-item-select>
+               :key="index" 
+               cols="12"
+               class="form-filter__item">
+          <filter-item :item="item" 
+                              v-model="valueSelect" 
+                              @input="createStringFilter" 
+                              @clear="clearStringFilter"></filter-item>
         </v-col>
       </v-row>
       <v-row>
@@ -19,13 +23,13 @@
 </template>
 
 <script>
-import FilterItemSelect from '@/components/filter/FilterItemSelect.vue'
+import FilterItem from '@/components/filter/FilterItem.vue'
 import FilterControl from '@/components/filter/FilterControl.vue';
 
 export default {
   name: 'FilterSection',
   components: {
-    FilterItemSelect,
+    FilterItem,
     FilterControl,
   },
   computed: {
@@ -38,6 +42,9 @@ export default {
     }
   },
   methods: {
+    clearStringFilter(key) {
+      delete this.filterProps[key];
+    },
     createStringFilter() {
       Object.assign(this.filterProps, this.valueSelect);
     },
@@ -63,3 +70,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.form-filter {
+  &__item {
+    padding: 0px;
+  }
+}
+</style>
