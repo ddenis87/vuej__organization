@@ -78,7 +78,7 @@ export default {
   },
   data() {
     return {
-      listMultiRow: false,
+      listMultiRow: true,
       viewTable: 'body',
       viewMultiTable: "1",
       propsHeader: {
@@ -89,13 +89,17 @@ export default {
           {name: 'institution_code', width: 100, align: 'left', cols: [6,8], rows: [3,4]},
           {name: 'title', width: 300, align: 'center', cols: [4,13], rows: [1,2]},
           {name: 'inn', width: 130, align: 'right', colorBackground: 'yellow', colorText: 'blue', cols: [4,6], rows: [2,3]},
-          {name: 'kpp', width: 130, align: 'right', colorBackground: 'grey', colorText: 'white', cols: [4,6], rows: [3,4]},
+          {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightblue', colorText: 'darkgreen', cols: [4,6], rows: [3,4]},
           {name: 'institution_type', width: 100, align: 'right', cols: [8,11], rows: [2,3]},
           {name: 'egrul_status', width: 100, align: 'right', cols: [8,11], rows: [3,4]},
           {name: 'rubpnubp_status', width: 100, align: 'right', cols: [11,13], rows: [2,3]},
           {name: 'industry_typing', width: 100, align: 'right', cols: [11,13], rows: [3,4]},
         ],
       },
+      headerArea: [
+        ['institution_code', 'title', 'inn', 'budget_level',     'egrul_status',     'industry_typing', 'bk'],
+        ['institution_code', 'title', 'kpp', 'institution_type', 'rubpnubp_status',  'industry_typing', 'bk']
+      ],
       propsBody: {
         getter: 'GET_LIST_DATA',
         sourceProps: 'body',
@@ -137,7 +141,7 @@ export default {
             {name: 'institution_code', width: 100, align: 'left', cols: [6,8], rows: [3,4]},
             {name: 'title', width: 300, align: 'center', cols: [4,13], rows: [1,2]},
             {name: 'inn', width: 130, align: 'right', colorBackground: 'yellow', colorText: 'blue', cols: [4,6], rows: [2,3]},
-            {name: 'kpp', width: 130, align: 'right', colorBackground: 'grey', colorText: 'white', cols: [4,6], rows: [3,4]},
+            {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightblue', colorText: 'darkgreen', cols: [4,6], rows: [3,4]},
             {name: 'institution_type', width: 100, align: 'right', cols: [8,11], rows: [2,3]},
             {name: 'egrul_status', width: 100, align: 'right', cols: [8,11], rows: [3,4]},
             {name: 'rubpnubp_status', width: 100, align: 'right', cols: [11,13], rows: [2,3]},

@@ -1,5 +1,5 @@
 <template>
-  <div class="header-grid">
+  <div class="header-grid" :style="stylePosition">
     <div class="header-grid__item" 
         v-for="(item, index) in listItem" 
         :key="index"
@@ -17,6 +17,9 @@ export default {
     listItemProps: {type: Array, default: []},
   },
   computed: {
+    stylePosition() {
+      let stylePosition = '';
+    },
     styleProps() {
       let styles = [];
       for (let i = 0; i < this.listItemProps.length; i++) {
