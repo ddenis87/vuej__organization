@@ -29,5 +29,18 @@ export default {
       }
       state.listData.push(item);
     })
+    if (state.listSortedProps.key != '') this.SET_LIST_DATA_SORTED;
   },
+  SET_LIST_DATA_SORTED(state) {
+    let listSortedProps = state.listSortedProps;
+
+    state.listData.sort(function(a, b) {
+      if (listSortedProps.type == false) return a[listSortedProps.key] > b[listSortedProps.key];
+      else return b[listSortedProps.key] > a[listSortedProps.key];
+    });
+  },
+  SET_LIST_SORTED_PROPS(state, option) {
+    state.listSortedProps.key = ('key' in option) ? option.key : '';
+    state.listSortedProps.type = ('type' in option) ? option.type : '';
+  }
 }

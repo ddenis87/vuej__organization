@@ -7,4 +7,8 @@ export default {
   listFields: [],
   listData: [],
   listDataOptions: {},
+  listSortedProps: {
+    key: '',
+    type: true
+  }
 }

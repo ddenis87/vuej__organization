@@ -2,7 +2,7 @@
   <div class="section">
     <div class="multi-table">
       <div class="table">
-        <multi-table-head :listItem="listHeader" :listItemProps="propsHeader.items"></multi-table-head>
+        <multi-table-head :listItem="listHeader" :listItemProps="propsHeader"></multi-table-head>
         <multi-table-body :listItem="listItem" :listItemProps="listItemProps" :listItemHeader="listHeader"></multi-table-body>
       </div>
     </div>
@@ -24,11 +24,11 @@ export default {
     propsBody: Object,
   },
   computed: {
-    listItem() { return this.$store.getters[this.propsBody.getter]; },
+    listItem() { return this.$store.getters[this.propsBody.state.getterData]; },
     listHeader() {
       let listFieldsSort = [];
       this.propsHeader.items.forEach(item => {
-        listFieldsSort.push(this.$store.getters[this.propsHeader.getter].find(mitem => mitem.key == item.name));
+        listFieldsSort.push(this.$store.getters[this.propsHeader.state.getterData].find(mitem => mitem.key == item.name));
       });
       return listFieldsSort;
     },
