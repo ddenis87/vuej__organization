@@ -1,7 +1,7 @@
 <template>
   <tbody class="body">
-    <tr class="body__row" v-for="(itemI, indexI) in listItemRow" :key="indexI">
-      <td class="body__col" v-for="(itemF, indexF) in listItemColumn" :key="indexF">{{ itemI[itemF.key] }}</td>
+    <tr class="body__row" v-for="(itemI, indexI) in listItem" :key="indexI">
+      <td class="body__col" v-for="(itemF, indexF) in listItemHeader" :key="indexF" :style="styleProps[indexF]">{{ itemI[itemF.key] }}</td>
     </tr>
   </tbody>
 </template>
@@ -10,9 +10,23 @@
 export default {
   name: 'TableBody',
   props: {
-    listItemColumn: Array,
-    listItemRow: Array,
-  }
+    listItem: Array,
+    listItemProps: {type: Array, default: function () { return [] }},
+    listItemHeader: Array,
+  },
+  computed: {
+    styleProps() {
+      let styles = [];
+      for (let i = 0; i < this.listItemProps.length; i++) {
+        let styleProps = '';
+        if ('align' in this.listItemProps[i]) styleProps += ` text-align: ${this.listItemProps[i].align}; `;
+        if ('colorBackground' in this.listItemProps[i]) styleProps += ` background-color: ${this.listItemProps[i].colorBackground}; `;
+        if ('colorText' in this.listItemProps[i]) styleProps += ` color: ${this.listItemProps[i].colorText}; `;
+        styles.push(styleProps)
+      }
+      return styles;
+    },
+  },
 }
 </script>
 

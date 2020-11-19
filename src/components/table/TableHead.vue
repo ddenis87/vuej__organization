@@ -1,7 +1,7 @@
 <template>
   <thead class="header">
     <tr class="header__row">
-      <th class="header__col" v-for="(item, index) in listItem" :key="index" :style="columnWidth[index]">{{ (item) ? item.label : '' }}</th>
+      <th class="header__col" v-for="(item, index) in listItem" :key="index" :style="styleProps[index]">{{ (item) ? item.label : '' }}</th>
     </tr>
   </thead>
 </template>
@@ -11,15 +11,20 @@ export default {
   name: 'TableHaed',
   props: {
     listItem: {type: Array, default: []},
-    columnWidthHeader: {type: Array},
+    listItemProps: {type: Array, default: []},
   },
   computed: {
-    columnWidth() {
-      let columnWidth = [];
-      for (let i = 0; i < this.listItem.length; i++) {
-        columnWidth.push( (this.columnWidthHeader[i]) ? `width: ${this.columnWidthHeader[i]}px` : 'width: auto' )
+    styleProps() {
+      let styles = [];
+      for (let i = 0; i < this.listItemProps.length; i++) {
+        let styleProps = '';
+        if ('width' in this.listItemProps[i]) styleProps += ` width: ${this.listItemProps[i].width}px; `;
+        if ('align' in this.listItemProps[i]) styleProps += ` text-align: ${this.listItemProps[i].align}; `;
+        if ('colorBackground' in this.listItemProps[i]) styleProps += ` background-color: ${this.listItemProps[i].colorBackground}; `;
+        if ('colorText' in this.listItemProps[i]) styleProps += ` color: ${this.listItemProps[i].colorText}; `;
+        styles.push(styleProps)
       }
-      return columnWidth;
+      return styles;
     },
   },
   data() {
@@ -49,9 +54,11 @@ export default {
     position: sticky;
     top: 0px;
     height: 80px;
+    width: auto;
     padding: 5px 15px;
     background-color: white;
     box-shadow: 0px 3px 0px grey;
+    
     // white-space: nowrap;
     &:hover { background-color: rgba(0, 0, 0, 0.1); cursor: pointer; }
   }

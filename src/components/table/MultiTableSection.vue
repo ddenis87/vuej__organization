@@ -1,24 +1,23 @@
 <template>
-<div class="section">
-  <hr/>
-  <table class="table-section">
-    <table-head :listItem="listHeader" :listItemProps="propsHeader.items"></table-head>
-    <table-body :listItem="listItem" :listItemProps="listItemProps" :listItemHeader="listHeader"></table-body>
-    <tfoot></tfoot>
-  </table>
-</div>
-  
+  <div class="section">
+    <div class="multi-table">
+      <div class="table">
+        <multi-table-head :listItem="listHeader" :listItemProps="propsHeader.items"></multi-table-head>
+        <multi-table-body :listItem="listItem" :listItemProps="listItemProps" :listItemHeader="listHeader"></multi-table-body>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import TableHead from './TableHead.vue';
-import TableBody from './TableBody.vue';
+import MultiTableHead from './MultiTableHead.vue';
+import MultiTableBody from './MultiTableBody.vue';
+
 export default {
-  
-  name: 'TableSection',
+  name: 'MultiTableSection',
   components: {
-    TableHead,
-    TableBody,
+    MultiTableHead,
+    MultiTableBody,
   },
   props: {
     propsHeader: Object,
@@ -35,7 +34,6 @@ export default {
     },
     listItemProps() {
       let listItemProps = [];
-      if (!'sourceProps' in this.propsBody) return [];
       switch (this.propsBody.sourceProps) {
         case 'header': return this.propsHeader.items; break;
         case 'body':
@@ -49,8 +47,16 @@ export default {
           });
           break;
         }
-        default: return [];
+        default: {
+          this.propsHeader.items.forEach(item => {
+            listItemProps.push({name: item.name});
+          })
+        }
       }
+      listItemProps.forEach(item => {
+        if ('cols' in this.propsHeader.items.find(mitem => mitem.name == item.name)) item.cols = this.propsHeader.items.find(mitem => mitem.name == item.name).cols;
+        if ('rows' in this.propsHeader.items.find(mitem => mitem.name == item.name)) item.rows = this.propsHeader.items.find(mitem => mitem.name == item.name).rows;
+      });
       return listItemProps;
     },
   },
@@ -73,14 +79,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .section {
-  // .control {
-  //   display: flex;
-  //   justify-content: flex-end;
-  //   width: 98%;
-  //   margin: 0px auto;
-  // }
-// }
 .table-section {
   width: 100%;
   margin-top: 10px;

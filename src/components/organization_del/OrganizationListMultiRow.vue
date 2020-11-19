@@ -105,7 +105,7 @@ export default {
         justify-content: start;
         flex-wrap: wrap;
         background-color:  rgba(0, 0, 0, 0.1);
-        &:nth-child(2n) { background-color:  whitesmoke; }
+        &:nth-child(2n) { background-color:  white; }
         &-col {
           padding: 5px 15px;
           // width: calc(100% / 5);
