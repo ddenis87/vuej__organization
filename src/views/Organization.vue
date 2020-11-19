@@ -58,8 +58,8 @@
       </div>
     </div>
     <div class="body">
-      <table-section :propsHeader="propsHeader" :propsBody="propsBody" v-if="!listMultiRow"></table-section>
-      <multi-table-section :propsHeader="propsHeader" :propsBody="propsBody" v-if="listMultiRow"></multi-table-section>
+      <table-section :propsHeader="propsTable.propsHeader" :propsBody="propsTable.propsBody" v-if="!listMultiRow"></table-section>
+      <multi-table-section :propsHeader="propsTable.propsHeader" :propsBody="propsTable.propsBody" v-if="listMultiRow"></multi-table-section>
     </div>
   </div>
 </template>
@@ -81,28 +81,38 @@ export default {
       listMultiRow: false,
       viewTable: 'body',
       viewMultiTable: "1",
-      propsHeader: {
-        getter: 'GET_LIST_FIELDS',
-        items: [
-          {name: 'bk', width: 300, cols: [1,4], rows: [1,4]},
-          {name: 'budget_level', width: 300, align: 'left', cols: [6,8], rows: [2,3]},
-          {name: 'institution_code', width: 100, align: 'left', cols: [6,8], rows: [3,4]},
-          {name: 'title', width: 300, align: 'center', cols: [4,13], rows: [1,2]},
-          {name: 'inn', width: 130, align: 'right', colorBackground: 'yellow', colorText: 'blue', cols: [4,6], rows: [2,3]},
-          {name: 'kpp', width: 130, align: 'right', colorBackground: 'grey', colorText: 'white', cols: [4,6], rows: [3,4]},
-          {name: 'institution_type', width: 100, align: 'right', cols: [8,11], rows: [2,3]},
-          {name: 'egrul_status', width: 100, align: 'right', cols: [8,11], rows: [3,4]},
-          {name: 'rubpnubp_status', width: 100, align: 'right', cols: [11,13], rows: [2,3]},
-          {name: 'industry_typing', width: 100, align: 'right', cols: [11,13], rows: [3,4]},
-        ],
-      },
-      propsBody: {
-        getter: 'GET_LIST_DATA',
-        sourceProps: 'body',
-        items: [
-          {name: 'title', colorBackground: 'teal', colorText: 'white'},
-        ],
-      },
+      propsTable: {
+        propsHeader: {
+          state: {
+            getterData: 'GET_LIST_FIELDS',
+            commitSorted: 'SET_LIST_DATA_SORTED',
+            commitSortedProps: 'SET_LIST_SORTED_PROPS',
+            getterSortedProps: 'GET_LIST_SORTED_PROPS',
+          },
+          items: [
+            {name: 'bk', width: 300, cols: [1,4], rows: [1,4]},
+            {name: 'budget_level', width: 300, align: 'left', cols: [6,8], rows: [2,3]},
+            {name: 'institution_code', width: 100, align: 'left', cols: [6,8], rows: [3,4]},
+            {name: 'title', width: 300, align: 'center', cols: [4,13], rows: [1,2]},
+            {name: 'inn', width: 130, align: 'right', colorBackground: 'yellow', colorText: 'blue', cols: [4,6], rows: [2,3]},
+            {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightgreen', colorText: 'red', cols: [4,6], rows: [3,4]},
+            {name: 'institution_type', width: 100, align: 'right', cols: [8,11], rows: [2,3]},
+            {name: 'egrul_status', width: 100, align: 'right', cols: [8,11], rows: [3,4]},
+            {name: 'rubpnubp_status', width: 100, align: 'right', cols: [11,13], rows: [2,3]},
+            {name: 'industry_typing', width: 100, align: 'right', cols: [11,13], rows: [3,4]},
+          ],
+        },
+        propsBody: {
+          state: {
+            getterData: 'GET_LIST_DATA',
+          },
+          sourceProps: 'body',
+          items: [
+            {name: 'title', colorBackground: 'teal', colorText: 'white'},
+            {name: 'institution_code', align: 'right', colorBackground: 'red'},
+          ],
+        },
+      }
     }
   },
   created() {
@@ -110,7 +120,7 @@ export default {
   },
   methods: {
     changeView() {
-      this.propsBody.sourceProps = this.viewTable;
+      this.propsTable.propsBody.sourceProps = this.viewTable;
     },
     changeViewMulti() {
       switch(this.viewMultiTable) {
@@ -121,13 +131,13 @@ export default {
             {name: 'institution_code', width: 100, align: 'left', cols: [6,8], rows: [4,5]},
             {name: 'title', width: 300, align: 'center', cols: [1,13], rows: [2,3]},
             {name: 'inn', width: 130, align: 'right', colorBackground: 'yellow', colorText: 'blue', cols: [1,3], rows: [3,4]},
-            {name: 'kpp', width: 130, align: 'right', colorBackground: 'grey', colorText: 'white', cols: [1,3], rows: [4,5]},
+            {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightblue', colorText: 'black', cols: [1,3], rows: [4,5]},
             {name: 'institution_type', width: 100, align: 'right', cols: [8,11], rows: [3,4]},
             {name: 'egrul_status', width: 100, align: 'right', cols: [8,11], rows: [4,5]},
             {name: 'rubpnubp_status', width: 100, align: 'right', cols: [3,6], rows: [3,5]},
             {name: 'industry_typing', width: 100, align: 'right', cols: [11,13], rows: [3,5]},
           ];
-          this.propsHeader.items = items;
+          this.propsTable.propsHeader.items = items;
           break;
         }
         case "1": {
@@ -137,13 +147,13 @@ export default {
             {name: 'institution_code', width: 100, align: 'left', cols: [6,8], rows: [3,4]},
             {name: 'title', width: 300, align: 'center', cols: [4,13], rows: [1,2]},
             {name: 'inn', width: 130, align: 'right', colorBackground: 'yellow', colorText: 'blue', cols: [4,6], rows: [2,3]},
-            {name: 'kpp', width: 130, align: 'right', colorBackground: 'grey', colorText: 'white', cols: [4,6], rows: [3,4]},
+            {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightgreen', colorText: 'red', cols: [4,6], rows: [3,4]},
             {name: 'institution_type', width: 100, align: 'right', cols: [8,11], rows: [2,3]},
             {name: 'egrul_status', width: 100, align: 'right', cols: [8,11], rows: [3,4]},
             {name: 'rubpnubp_status', width: 100, align: 'right', cols: [11,13], rows: [2,3]},
             {name: 'industry_typing', width: 100, align: 'right', cols: [11,13], rows: [3,4]},
           ];
-          this.propsHeader.items = items;
+          this.propsTable.propsHeader.items = items;
           break;
         }
       }

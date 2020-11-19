@@ -1,7 +1,11 @@
 <template>
   <thead class="header">
     <tr class="header__row">
-      <th class="header__col" v-for="(item, index) in listItem" :key="index" :style="styleProps[index]">{{ (item) ? item.label : '' }}</th>
+      <th class="header__col" 
+          v-for="(item, index) in listItem" 
+          :key="index" 
+          :style="styleProps[index]"
+          @click="sortedField(item.key)">{{ (item) ? item.label : '' }}</th>
     </tr>
   </thead>
 </template>
@@ -11,35 +15,27 @@ export default {
   name: 'TableHaed',
   props: {
     listItem: {type: Array, default: []},
-    listItemProps: {type: Array, default: []},
+    listItemProps: {type: Object, default: {}},
   },
   computed: {
     styleProps() {
       let styles = [];
-      for (let i = 0; i < this.listItemProps.length; i++) {
+      for (let i = 0; i < this.listItemProps.items.length; i++) {
         let styleProps = '';
-        if ('width' in this.listItemProps[i]) styleProps += ` width: ${this.listItemProps[i].width}px; `;
-        if ('align' in this.listItemProps[i]) styleProps += ` text-align: ${this.listItemProps[i].align}; `;
-        if ('colorBackground' in this.listItemProps[i]) styleProps += ` background-color: ${this.listItemProps[i].colorBackground}; `;
-        if ('colorText' in this.listItemProps[i]) styleProps += ` color: ${this.listItemProps[i].colorText}; `;
+        if ('width' in this.listItemProps.items[i]) styleProps += ` width: ${this.listItemProps.items[i].width}px; `;
+        if ('align' in this.listItemProps.items[i]) styleProps += ` text-align: ${this.listItemProps.items[i].align}; `;
+        if ('colorBackground' in this.listItemProps.items[i]) styleProps += ` background-color: ${this.listItemProps.items[i].colorBackground}; `;
+        if ('colorText' in this.listItemProps.items[i]) styleProps += ` color: ${this.listItemProps.items[i].colorText}; `;
         styles.push(styleProps)
       }
       return styles;
     },
   },
-  data() {
-    return {
-      timeoutMenuContext: Object,
-    }
-  },
   methods: {
-    showMenuContext(item) {
-      this.timeoutMenuContext = setTimeout(() => {
-        console.log(item);
-      }, 800);
-    },
-    closeMenuContext() {
-      clearTimeout(this.timeoutMenuContext);
+    sortedField(key) {
+      console.log(key);
+      this.$store.commit(this.listItemProps.state.commitSortedProps, {key: key, type: !this.$store.getters[this.listItemProps.state.getterSortedProps].type})
+      this.$store.commit(this.listItemProps.state.commitSorted);
     },
   },
 }
@@ -58,9 +54,7 @@ export default {
     padding: 5px 15px;
     background-color: white;
     box-shadow: 0px 3px 0px grey;
-    
-    // white-space: nowrap;
-    &:hover { background-color: rgba(0, 0, 0, 0.1); cursor: pointer; }
+    &:hover { cursor: pointer; }
   }
 }
 </style>

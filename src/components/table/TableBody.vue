@@ -36,8 +36,9 @@ export default {
   padding: 0 16px;
   color: rgba(0, 0, 0, 0.87);
   &__row {
-    background-color:  rgba(0, 0, 0, 0.1);
-    &:nth-child(2n) { background-color:  whitesmoke; }
+    border-bottom: 1px solid grey;
+    // background-color:  rgba(0, 0, 0, 0.1);
+    // &:nth-child(2n) { background-color:  whitesmoke; }
   }
   &__col {
     padding: 3px 16px;

@@ -19,4 +19,5 @@ export default {
     return listFilter;
   },
   GET_LIST_DATA(state) { return state.listData; },
+  GET_LIST_SORTED_PROPS(state) { return state.listSortedProps; }
 }

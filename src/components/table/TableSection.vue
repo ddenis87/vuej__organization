@@ -2,7 +2,7 @@
 <div class="section">
   <hr/>
   <table class="table-section">
-    <table-head :listItem="listHeader" :listItemProps="propsHeader.items"></table-head>
+    <table-head :listItem="listHeader" :listItemProps="propsHeader"></table-head>
     <table-body :listItem="listItem" :listItemProps="listItemProps" :listItemHeader="listHeader"></table-body>
     <tfoot></tfoot>
   </table>
@@ -25,11 +25,11 @@ export default {
     propsBody: Object,
   },
   computed: {
-    listItem() { return this.$store.getters[this.propsBody.getter]; },
+    listItem() { return this.$store.getters[this.propsBody.state.getterData]; },
     listHeader() {
       let listFieldsSort = [];
       this.propsHeader.items.forEach(item => {
-        listFieldsSort.push(this.$store.getters[this.propsHeader.getter].find(mitem => mitem.key == item.name));
+        listFieldsSort.push(this.$store.getters[this.propsHeader.state.getterData].find(mitem => mitem.key == item.name));
       });
       return listFieldsSort;
     },
