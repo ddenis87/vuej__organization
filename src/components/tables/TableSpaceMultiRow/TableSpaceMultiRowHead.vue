@@ -24,9 +24,9 @@ export default {
   },
   methods: {
     sortedField(key) {
-      console.log(key);
       this.$store.commit(this.listDataProps.state.commitSortedProps, {key: key, type: !this.$store.getters[this.listDataProps.state.getterSortedProps].type})
       this.$store.commit(this.listDataProps.state.commitSorted);
+      console.log(key);
     },
   },
 }
@@ -36,7 +36,8 @@ export default {
 .header-grid {
   position: sticky;
   top: 0px;
-  background-color: white;
+  padding: 10px 0px;
+  background-color: #FAFAFA;
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: auto;

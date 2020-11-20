@@ -6,31 +6,25 @@
       <td class="body__col" 
           v-for="(itemF, indexF) in listDataHeader" 
           :key="indexF" 
-          :style="styleProps[indexF]">{{ itemI[itemF.key] }}</td>
+          :style="styleItems[indexF]">{{ itemI[itemF.key] }}</td>
     </tr>
   </tbody>
 </template>
 
 <script>
+import { TABLE_SPACE } from './TableSpace.js';
+
 export default {
   name: 'TableBody',
+  mixins: [
+    TABLE_SPACE,
+  ],
   props: {
     listDataProps: Object,
     listDataHeader: Array,
   },
   computed: {
     listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
-    styleProps() {
-      let styles = [];
-      for (let i = 0; i < this.listDataProps.length; i++) {
-        let styleProps = '';
-        if ('align' in this.listDataProps[i]) styleProps += ` text-align: ${this.listDataProps[i].align}; `;
-        if ('colorBackground' in this.listDataProps[i]) styleProps += ` background-color: ${this.listDataProps[i].colorBackground}; `;
-        if ('colorText' in this.listDataProps[i]) styleProps += ` color: ${this.listDataProps[i].colorText}; `;
-        styles.push(styleProps)
-      }
-      return styles;
-    },
   },
 }
 </script>

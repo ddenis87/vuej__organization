@@ -31,39 +31,46 @@ export default {
   },
   computed: {
     listHeader() {
+      if (this.header.items.length == 0) return this.$store.getters[this.header.state.getterData];
+      let listHeader = this.$store.getters[this.header.state.getterData];
       let listHeaderFilter = [];
       this.header.items.forEach(item => {
-        listHeaderFilter.push(this.$store.getters[this.header.state.getterData].find(mitem => mitem.key == item.name));
+        listHeaderFilter.push(listHeader.find(mitem => mitem.key == item.spaceName));
       });
+      console.log(listHeaderFilter);
       return listHeaderFilter;
     },
 
     modifyBody() {
       let modifyBody = this.body;
+      let headerItems = this.header.items;
       let bodyItems = [];
+      if (headerItems.length == 0) 
+        this.$store.getters[this.header.state.getterData].forEach(item => headerItems.push({spaceName: item.key}));
+      
       if ('sourceStyle' in this.body) {
         switch (this.body.sourceStyle) {
-          case 'header': bodyItems = this.header.items; break;
+          case 'header': bodyItems = headerItems; break;
           case 'body':
           case 'join': {
-            this.header.items.forEach(item => {
+            headerItems.forEach(item => {
               bodyItems.push(
-                (this.body.items.find(mitem => mitem.name == item.name) != undefined ) ? this.body.items.find(mitem => mitem.name == item.name) : 
-                  (this.body.sourceProps == 'body') ? {name: item.name} :
-                    item
+                (this.body.items.find(mitem => mitem.spaceName == item.spaceName) != undefined ) ? 
+                  this.body.items.find(mitem => mitem.spaceName == item.spaceName) : (this.body.sourceProps == 'body') ? 
+                  {spaceName: item.spaceName} : item
               );
             });
             break;
           }
           default: {
             this.header.items.forEach(item => {
-             bodyItems.push({name: item.name});
+             bodyItems.push({spaceName: item.spaceName});
             })
           }
         }
       } else {
         this.header.items.forEach(item => {
-          bodyItems.push({name: item.name});
+          bodyItems.push({spaceName: item.spaceName});
         })
       }
       modifyBody.items = bodyItems;

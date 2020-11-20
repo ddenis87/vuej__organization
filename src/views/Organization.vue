@@ -15,9 +15,10 @@
       </div>
     </div>
     <div class="body">
-      <table-space v-bind="propsTable" v-if="!listMultiRow"></table-space>
+      <table-space v-bind="propsTable" 
+                   v-if="!listMultiRow"></table-space>
       <table-space-multi-row v-bind="propsTable"
-                       v-if="listMultiRow"></table-space-multi-row>
+                             v-if="listMultiRow"></table-space-multi-row>
     </div>
   </div>
 </template>
@@ -41,11 +42,11 @@ export default {
       propsTable: {
         locationFields: [  // only multirow table
           [ 120,                'auto',  120,   200,                160,                 200,                200  ],
-
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',     'bk'  ]
         ],
         header: {
+          // align: 'center',  // align for all fields or default = left
           state: {
             getterData: 'GET_LIST_FIELDS',
             getterSortedProps: 'GET_LIST_SORTED_PROPS',
@@ -53,27 +54,31 @@ export default {
             commitSortedProps: 'SET_LIST_SORTED_PROPS',
           },
           items: [
-            {name: 'institution_code', width: 120},
-            {name: 'title'},
-            {name: 'inn', width: 120},
-            {name: 'kpp', width: 120},
-            {name: 'egrul_status', width: 200},
-            {name: 'rubpnubp_status', width: 200},
-            {name: 'industry_typing', width: 160},
-            {name: 'budget_level', width: 160},
-            {name: 'institution_type', width: 120},
-            {name: 'bk' },
+            {spaceName: 'institution_code', width: 130},
+            {spaceName: 'title'},
+            {spaceName: 'inn', width: 120},
+            {spaceName: 'kpp', width: 120},
+            {spaceName: 'egrul_status', width: 200},
+            {spaceName: 'rubpnubp_status', width: 200},
+            {spaceName: 'industry_typing', width: 160},
+            {spaceName: 'budget_level', width: 160},
+            {spaceName: 'institution_type', width: 120},
+            {spaceName: 'bk' },
           ]
         },
         body: {
+          // align: 'end',  // align for all fields or default = left
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',
           },
           items: [
-            {name: 'title', colorBackground: 'teal', colorText: 'white'},
+            {spaceName: 'title', colorBackground: 'teal', colorText: 'white'},
           ],
-          sourceStyle: 'joinq',
+          // sourceStyle: 'body', // header - inherit header style, 
+                                  // body - body style, 
+                                  // join - join body and header style body - important, 
+                                  // none props - style component
         }
       },
     }
