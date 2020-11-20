@@ -37,7 +37,7 @@ export default {
 
   &-header { grid-area: app-header; }
   &-body {
-    padding-left: 10px;
+    padding: 0px 10px;
     grid-area: app-body;
     min-height: calc(100vh - 160px);
     height: 100%;
