@@ -59,7 +59,10 @@
     </div>
     <div class="body">
       <table-section :propsHeader="propsTable.propsHeader" :propsBody="propsTable.propsBody" v-if="!listMultiRow"></table-section>
-      <multi-table-section :propsHeader="propsTable.propsHeader" :propsBody="propsTable.propsBody" v-if="listMultiRow"></multi-table-section>
+      <multi-table-section :propsHeader="propsTable.propsHeader" 
+                           :propsBody="propsTable.propsBody" 
+                           :propsPosition="propsTable.headerArea" 
+                           v-if="listMultiRow"></multi-table-section>
     </div>
   </div>
 </template>
@@ -81,34 +84,6 @@ export default {
       listMultiRow: true,
       viewTable: 'body',
       viewMultiTable: "1",
-<<<<<<< HEAD
-      propsHeader: {
-        getter: 'GET_LIST_FIELDS',
-        items: [
-          {name: 'bk', width: 300, cols: [1,4], rows: [1,4]},
-          {name: 'budget_level', width: 300, align: 'left', cols: [6,8], rows: [2,3]},
-          {name: 'institution_code', width: 100, align: 'left', cols: [6,8], rows: [3,4]},
-          {name: 'title', width: 300, align: 'center', cols: [4,13], rows: [1,2]},
-          {name: 'inn', width: 130, align: 'right', colorBackground: 'yellow', colorText: 'blue', cols: [4,6], rows: [2,3]},
-          {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightblue', colorText: 'darkgreen', cols: [4,6], rows: [3,4]},
-          {name: 'institution_type', width: 100, align: 'right', cols: [8,11], rows: [2,3]},
-          {name: 'egrul_status', width: 100, align: 'right', cols: [8,11], rows: [3,4]},
-          {name: 'rubpnubp_status', width: 100, align: 'right', cols: [11,13], rows: [2,3]},
-          {name: 'industry_typing', width: 100, align: 'right', cols: [11,13], rows: [3,4]},
-        ],
-      },
-      headerArea: [
-        ['institution_code', 'title', 'inn', 'budget_level',     'egrul_status',     'industry_typing', 'bk'],
-        ['institution_code', 'title', 'kpp', 'institution_type', 'rubpnubp_status',  'industry_typing', 'bk']
-      ],
-      propsBody: {
-        getter: 'GET_LIST_DATA',
-        sourceProps: 'body',
-        items: [
-          {name: 'title', colorBackground: 'teal', colorText: 'white'},
-        ],
-      },
-=======
       propsTable: {
         propsHeader: {
           state: {
@@ -123,13 +98,18 @@ export default {
             {name: 'institution_code', width: 100, align: 'left', cols: [6,8], rows: [3,4]},
             {name: 'title', width: 300, align: 'center', cols: [4,13], rows: [1,2]},
             {name: 'inn', width: 130, align: 'right', colorBackground: 'yellow', colorText: 'blue', cols: [4,6], rows: [2,3]},
-            {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightgreen', colorText: 'red', cols: [4,6], rows: [3,4]},
+            {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightblue', colorText: 'darkgreen', cols: [4,6], rows: [3,4]},
             {name: 'institution_type', width: 100, align: 'right', cols: [8,11], rows: [2,3]},
             {name: 'egrul_status', width: 100, align: 'right', cols: [8,11], rows: [3,4]},
             {name: 'rubpnubp_status', width: 100, align: 'right', cols: [11,13], rows: [2,3]},
             {name: 'industry_typing', width: 100, align: 'right', cols: [11,13], rows: [3,4]},
           ],
         },
+        headerArea: [
+          [120,                 ,       120,   200,                 200,                120,              200],
+          ['institution_code', 'title', 'inn', 'budget_level',     'egrul_status',     'industry_typing', 'bk'],
+          ['institution_code', 'title', 'kpp', 'institution_type', 'rubpnubp_status',  'industry_typing', 'bk']
+        ],
         propsBody: {
           state: {
             getterData: 'GET_LIST_DATA',
@@ -137,11 +117,9 @@ export default {
           sourceProps: 'body',
           items: [
             {name: 'title', colorBackground: 'teal', colorText: 'white'},
-            {name: 'institution_code', align: 'right', colorBackground: 'red'},
           ],
         },
-      }
->>>>>>> 4ea5f8c9af64d7623db53645e302782d75372ac4
+      },
     }
   },
   created() {
@@ -176,11 +154,7 @@ export default {
             {name: 'institution_code', width: 100, align: 'left', cols: [6,8], rows: [3,4]},
             {name: 'title', width: 300, align: 'center', cols: [4,13], rows: [1,2]},
             {name: 'inn', width: 130, align: 'right', colorBackground: 'yellow', colorText: 'blue', cols: [4,6], rows: [2,3]},
-<<<<<<< HEAD
-            {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightblue', colorText: 'darkgreen', cols: [4,6], rows: [3,4]},
-=======
             {name: 'kpp', width: 130, align: 'right', colorBackground: 'lightgreen', colorText: 'red', cols: [4,6], rows: [3,4]},
->>>>>>> 4ea5f8c9af64d7623db53645e302782d75372ac4
             {name: 'institution_type', width: 100, align: 'right', cols: [8,11], rows: [2,3]},
             {name: 'egrul_status', width: 100, align: 'right', cols: [8,11], rows: [3,4]},
             {name: 'rubpnubp_status', width: 100, align: 'right', cols: [11,13], rows: [2,3]},

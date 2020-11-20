@@ -2,8 +2,8 @@
   <div class="section">
     <div class="multi-table">
       <div class="table">
-        <multi-table-head :listItem="listHeader" :listItemProps="propsHeader"></multi-table-head>
-        <multi-table-body :listItem="listItem" :listItemProps="listItemProps" :listItemHeader="listHeader"></multi-table-body>
+        <multi-table-head :listItem="listHeader" :listItemProps="propsHeader" :propsArea="propsPosition"></multi-table-head>
+        <multi-table-body :listItem="listItem" :listItemProps="listItemProps" :listItemHeader="listHeader" :propsArea="propsPosition"></multi-table-body>
       </div>
     </div>
   </div>
@@ -22,6 +22,7 @@ export default {
   props: {
     propsHeader: Object,
     propsBody: Object,
+    propsPosition: Array,
   },
   computed: {
     listItem() { return this.$store.getters[this.propsBody.state.getterData]; },

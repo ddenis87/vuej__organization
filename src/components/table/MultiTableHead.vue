@@ -1,11 +1,6 @@
 <template>
-<<<<<<< HEAD
   <div class="header-grid" :style="stylePosition">
     <div class="header-grid__item" 
-=======
-  <div class="header-grid">
-    <div class="header-grid__item"
->>>>>>> 4ea5f8c9af64d7623db53645e302782d75372ac4
         v-for="(item, index) in listItem" 
         :key="index"
         :style="styleProps[index]"
@@ -21,21 +16,25 @@ export default {
   props: {
     listItem: {type: Array, default: []},
     listItemProps: {type: Object, default: {}},
+    propsArea: Array,
   },
   computed: {
     stylePosition() {
-      let stylePosition = '';
+      let stylePosition = 'grid-template-columns:';
+      for (let i = 0; i < this.propsArea[1].length; i++) stylePosition += ` ${(this.propsArea[0][i]) ? `${this.propsArea[0][i]}px` : 'auto'}`;
+      stylePosition += `; `;
+      stylePosition += 'grid-template-areas:';
+      for (let i = 1; i < this.propsArea.length; i++) stylePosition += ` "${this.propsArea[i].join(' ')}"`;
+      stylePosition += `; `;
+      console.log(stylePosition);
+      return stylePosition;
     },
     styleProps() {
       let styles = [];
       for (let i = 0; i < this.listItemProps.items.length; i++) {
         let styleProps = '';
-        if ('cols' in this.listItemProps.items[i]) {
-          styleProps += ` grid-column-start: ${this.listItemProps.items[i].cols[0]}; grid-column-end: ${this.listItemProps.items[i].cols[1]}; `
-        }
-        if ('rows' in this.listItemProps.items[i]) {
-          styleProps += ` grid-row-start: ${this.listItemProps.items[i].rows[0]}; grid-row-end: ${this.listItemProps.items[i].rows[1]}; `
-        }
+        styleProps += `grid-area: ${this.listItemProps.items[i].name}; `;
+        
         if ('align' in this.listItemProps.items[i]) styleProps += ` text-align: ${this.listItemProps.items[i].align}; `;
         if ('colorBackground' in this.listItemProps.items[i]) styleProps += ` background-color: ${this.listItemProps.items[i].colorBackground}; `;
         if ('colorText' in this.listItemProps.items[i]) styleProps += ` color: ${this.listItemProps.items[i].colorText}; `;
@@ -70,14 +69,17 @@ export default {
   top: 0px;
   background-color: white;
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: repeat(12, 1fr);
-  grid-gap: 3px;
+  
+  // grid-template-rows: repeat(2, 1fr);
+  // grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  grid-template-columns: auto;
+  // grid-gap: 3px;
   box-shadow: 0px 3px 0px grey;
   
   &__item {
     padding: 5px 10px;
-    border: 1px solid black;
+    // border: 1px solid black;
     &:hover { cursor: pointer; }
   }
 }

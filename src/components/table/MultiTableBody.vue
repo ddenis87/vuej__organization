@@ -1,6 +1,6 @@
 <template>
   <div class="body">          
-    <div class="body-grid__item"
+    <div class="body-grid__item" :style="stylePosition"
           v-for="(itemI, indexI) in listItem" 
           :key="indexI">
       <div class="body-grid__item-col" 
@@ -20,18 +20,24 @@ export default {
     listItem: Array,
     listItemProps: {type: Array, default: function () { return [] }},
     listItemHeader: Array,
+    propsArea: Array,
   },
   computed: {
+    stylePosition() {
+        let stylePosition = 'grid-template-columns:';
+        for (let i = 0; i < this.propsArea[1].length; i++) stylePosition += ` ${(this.propsArea[0][i]) ? `${this.propsArea[0][i]}px` : 'auto'}`;
+        stylePosition += `; `;
+        stylePosition += 'grid-template-areas:';
+        for (let i = 1; i < this.propsArea.length; i++) stylePosition += ` "${this.propsArea[i].join(' ')}"`;
+        stylePosition += `; `;
+        return stylePosition;
+    },
     styleProps() {
       let styles = [];
       for (let i = 0; i < this.listItemProps.length; i++) {
         let styleProps = '';
-        if ('cols' in this.listItemProps[i]) {
-          styleProps += ` grid-column-start: ${this.listItemProps[i].cols[0]}; grid-column-end: ${this.listItemProps[i].cols[1]}; `
-        }
-        if ('rows' in this.listItemProps[i]) {
-          styleProps += ` grid-row-start: ${this.listItemProps[i].rows[0]}; grid-row-end: ${this.listItemProps[i].rows[1]}; `
-        }
+        styleProps += `grid-area: ${this.listItemProps[i].name}; `;
+
         if ('align' in this.listItemProps[i]) styleProps += ` text-align: ${this.listItemProps[i].align}; `;
         if ('colorBackground' in this.listItemProps[i]) styleProps += ` background-color: ${this.listItemProps[i].colorBackground}; `;
         if ('colorText' in this.listItemProps[i]) styleProps += ` color: ${this.listItemProps[i].colorText}; `;
@@ -47,12 +53,17 @@ export default {
 .body {
   .body-grid__item {
     display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: repeat(12, 1fr);
-    grid-gap: 0px;
+    // grid-template-rows: repeat(2, 1fr);
+    // grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    grid-template-columns: auto;
+    // grid-gap: 3px;
     background-color:  rgba(0, 0, 0, 0.1);
     &:nth-child(2n) { background-color:  white; }
-    &-col { border: 1px solid grey; padding: 5px 10px; }
+    &-col {
+      padding: 5px 10px;
+      // border: 1px solid grey;
+    }
   }
 }
 </style>
