@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import { TABLE_SPACE_MULTI_ROW } from './TableSpaceMultiRow.js';
+import { TABLE_MULTILINE } from './TableMultiline.js';
 export default {
-  name: 'TableSpaceMultiRowHead',
+  name: 'TableMultilineHead',
   mixins: [
-    TABLE_SPACE_MULTI_ROW,
+    TABLE_MULTILINE,
   ],
   props: {
     listData: Array,

@@ -17,11 +17,19 @@
     <div class="body">
       <table-space v-bind="propsTable" 
                    v-if="!listMultiRow"></table-space>
-      <table-space-multi-row v-bind="propsTable"
-                             v-if="listMultiRow">
-        <template v-slot:body.bk="itemValue"><div style="color: green; font-weight: bold; text-align: right;">{{ itemValue.itemValue }}</div></template>
-        <template v-slot:body.title="itemValue"><div style="color: red; font-weight: bold;">{{ itemValue.itemValue }}</div></template>
-      </table-space-multi-row>
+      <table-multiline v-bind="propsTable"
+                       v-if="listMultiRow">
+
+        <template #[`body.institution_code`]="itemValue">
+          <div style="width: 100%; color: blue; text-align: right;">{{ itemValue.itemValue }}</div>
+        </template>
+        <template #[`body.bk`]="itemValue">
+          <div style="color: green; font-weight: bold; text-align: right;">{{ itemValue.itemValue }}</div>
+        </template>
+        <template #[`body.title`]="itemValue">
+          <div style="color: red; font-weight: bold; text-align: right;">{{ itemValue.itemValue }}</div>
+        </template>
+      </table-multiline>
     </div>
   </div>
 </template>
@@ -29,22 +37,23 @@
 <script>
 import ControlUser from '@/components/control/ControlUser.vue';
 import TableSpace from '@/components/tables/TableSpace/TableSpace.vue';
-import TableSpaceMultiRow from '@/components/tables/TableSpaceMultiRow/TableSpaceMultiRow.vue';
+import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
 
 export default {
   name: 'Organization',
   components: {
     ControlUser,
     TableSpace,
-    TableSpaceMultiRow,
+    TableMultiline,
   },
   data() {
     return {
       listMultiRow: true,
       viewTable: 'body',
       propsTable: {
+        // height: 500,
         locationFields: [  // only multirow table
-          [ 120,                'auto',  120,   200,                160,                 200,                200  ],
+          [ 'auto',                'auto',  'auto',   'auto',                'auto',                 'auto',                'auto'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',     'bk'  ]
         ],
