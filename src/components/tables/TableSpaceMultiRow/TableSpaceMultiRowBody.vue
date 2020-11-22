@@ -1,13 +1,16 @@
 <template>
-  <div class="body">          
+  <div class="body">
     <div class="body-grid__item"
          v-for="(itemI, indexI) in listItem" 
          :key="indexI"
          :style="listStyleLocation">
+      
       <div class="body-grid__item-col" 
             v-for="(itemF, indexF) in listDataHeader" 
             :key="indexF"
-            :style="styleItems[indexF]">{{ itemI[itemF.key] }}</div>
+            :style="styleItems[indexF]">
+        <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
+      </div>
     </div>
   </div>
 </template>
@@ -35,9 +38,9 @@ export default {
   .body-grid__item {
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: auto;
+    // grid-template-columns: auto;
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
-    &:hover { background-color: rgba(0, 0, 0, 0.08); }
+    &:hover { background-color: rgba(0, 0, 0, 0.08); z-index: 999; }
     &-col {
       display: flex;
       justify-content: flex-start;
@@ -48,7 +51,6 @@ export default {
       font-size: 0.875rem;
       line-height: 1.5;
       color: rgba(0, 0, 0, 0.87);
-      
     }
   }
 }

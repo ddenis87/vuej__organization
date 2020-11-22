@@ -10,7 +10,7 @@
                dark
                small
                @click="() => {listMultiRow = !listMultiRow}">
-          <v-icon> {{ (listMultiRow) ? 'mdi-view-stream' : 'mdi-format-list-bulleted'}}</v-icon>
+          <v-icon> {{ (listMultiRow) ? 'mdi-format-list-bulleted' : 'mdi-view-stream'}}</v-icon>
         </v-btn>
       </div>
     </div>
@@ -18,7 +18,10 @@
       <table-space v-bind="propsTable" 
                    v-if="!listMultiRow"></table-space>
       <table-space-multi-row v-bind="propsTable"
-                             v-if="listMultiRow"></table-space-multi-row>
+                             v-if="listMultiRow">
+        <template v-slot:body.bk="itemValue"><div style="color: green; font-weight: bold; text-align: right;">{{ itemValue.itemValue }}</div></template>
+        <template v-slot:body.title="itemValue"><div style="color: red; font-weight: bold;">{{ itemValue.itemValue }}</div></template>
+      </table-space-multi-row>
     </div>
   </div>
 </template>
@@ -37,7 +40,7 @@ export default {
   },
   data() {
     return {
-      listMultiRow: false,
+      listMultiRow: true,
       viewTable: 'body',
       propsTable: {
         locationFields: [  // only multirow table
@@ -54,7 +57,7 @@ export default {
             commitSortedProps: 'SET_LIST_SORTED_PROPS',
           },
           items: [
-            {spaceName: 'institution_code', width: 130},
+            {spaceName: 'institution_code', width: 130, align: 'right'},
             {spaceName: 'title'},
             {spaceName: 'inn', width: 120},
             {spaceName: 'kpp', width: 120},
@@ -73,9 +76,10 @@ export default {
             dispatchData: 'GET_LIST_DATA',
           },
           items: [
-            {spaceName: 'title', colorBackground: 'teal', colorText: 'white'},
+            {spaceName: 'institution_code', align: 'end'},
+            // {spaceName: 'title', colorBackground: 'teal', colorText: 'white'},
           ],
-          // sourceStyle: 'body', // header - inherit header style, 
+          sourceStyle: 'body', // header - inherit header style, 
                                   // body - body style, 
                                   // join - join body and header style body - important, 
                                   // none props - style component
@@ -99,6 +103,7 @@ export default {
   width: 100%;
   .control {
     display: flex;
+    
     justify-content: space-between;
     align-items: center;
     height: 60px;

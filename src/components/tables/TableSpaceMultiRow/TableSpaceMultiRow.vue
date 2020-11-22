@@ -8,7 +8,11 @@
 
         <table-space-multi-row-body :list-data-props="modifyBody" 
                                     :list-data-header="listHeader" 
-                                    :list-style-location="styleLocation"></table-space-multi-row-body>
+                                    :list-style-location="styleLocation">
+          <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
+            <slot :name="`body.${item.key}`" v-bind:itemValue="itemValue.itemValue"></slot>
+          </template>
+        </table-space-multi-row-body>
       </div>
     </div>
   </div>
