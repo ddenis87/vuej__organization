@@ -75,17 +75,15 @@ export default {
 
 <style lang="scss" scoped>
 .body {
-  // position: relative;
-  // box-sizing: border-box;
   .body-grid__item {
     display: grid;
     grid-template-rows: auto;
-    // grid-template-columns: auto;
+    grid-template-columns: auto;
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
     &:hover { background-color: rgba(0, 0, 0, 0.08); z-index: 999; }
     &-col {
       display: flex;
-      justify-content: flex-end;
+      justify-content: flex-start;
       align-items: center;
       padding: 5px 10px;
       font-family: "Roboto", sans-serif;

@@ -84,7 +84,7 @@ export default {
 
     styleLocation() {
       let styleLocation = 'grid-template-columns:';
-      this.locationFields[0].forEach(element => styleLocation += ` ${(+element) ? `${element}px` : 'auto'}`);
+      this.locationFields[0].forEach(element => styleLocation += ` ${(+element) ? `${element}px` : '1fr'}`);
       styleLocation += '; grid-template-areas:';
       for (let i = 1; i < this.locationFields.length; i++) styleLocation += ` "${this.locationFields[i].join(' ')}"`;
       styleLocation += '; ';
