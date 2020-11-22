@@ -1,5 +1,5 @@
 <template>
-  <div class="header-grid" :style="listStyleLocation">
+  <div class="header-grid" :style="listStyleLocation" >
     <div class="header-grid__item" 
         v-for="(item, index) in listData" 
         :key="index"
@@ -42,6 +42,7 @@ export default {
   grid-template-rows: auto;
   grid-template-columns: auto;
   border-bottom: thin solid rgba(0, 0, 0, 0.12);
+  z-index: 999;
   &__item {
     display: flex;
     justify-content: flex-start;

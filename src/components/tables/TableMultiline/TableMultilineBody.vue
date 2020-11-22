@@ -75,6 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 .body {
+  position: relative;
   .body-grid__item {
     display: grid;
     grid-template-rows: auto;

@@ -27,7 +27,7 @@
           <div style="color: green; font-weight: bold;">{{ itemValue.itemValue }}</div>
         </template>
         <template #[`body.title`]="itemValue">
-          <div style="color: red; font-weight: bold;">{{ itemValue.itemValue }}</div>
+          <div style="color: grey;">{{ itemValue.itemValue }}</div>
         </template>
       </table-multiline>
     </div>
@@ -51,7 +51,7 @@ export default {
       listMultiRow: true,
       viewTable: 'body',
       propsTable: {
-        // height: 500,
+        height: 500,
         locationFields: [  // only multirow table
           [ '120',                'auto',  '120',   'auto',                '160',                 '160',                '200'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],

@@ -1,6 +1,9 @@
 <template>
   <div class="btn-up" v-show="btnUp">
-    <v-icon large color="white" @click="goUp">mdi-arrow-up-drop-circle-outline</v-icon>
+    <v-btn class="btn-up__item" icon>
+      <v-icon large color="white" @click="goUp">mdi-arrow-up-drop-circle-outline</v-icon>
+    </v-btn>
+    
   </div>
 </template>
 
@@ -27,22 +30,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .btn-up {
-  position: fixed;
-  top: calc(50% + 20px);
-  right: 40px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  width: 40px;
-  background-color: rgb(0, 116, 116);
-  border: 1px solid green;
-  border-radius: 20px;
-  cursor: pointer;
-  &:hover {
-    background-color: rgb(0, 175, 175);
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 10px;
+  &__item {
+    position: fixed;
+    transform: translateX(-100%);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    background-color: rgb(0, 116, 116);
+    border: 1px solid green;
+    border-radius: 20px;
+    &:hover {
+      background-color: rgb(0, 175, 175);
+    }
   }
-  
 }
 </style>
