@@ -25,15 +25,12 @@ export default {
 
 <style lang="scss" scoped>
 .header-grid {
-  position: sticky;
-  top: 0px;
   padding: 10px 0px;
   background-color: #FAFAFA;
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: auto;
   border-bottom: thin solid rgba(0, 0, 0, 0.12);
-  z-index: 200;
   &__item {
     display: flex;
     justify-content: flex-start;

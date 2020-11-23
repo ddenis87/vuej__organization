@@ -1,20 +1,25 @@
 <template>
   <div class="table-multiline" id="table-multiline" :style="listStyle">
     <div class="table">
-      <table-multiline-head :list-data="listHeader" 
-                            :list-style-position="stylePosition">
-        <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
-          <slot :name="`header.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-        </template>
-      </table-multiline-head>
-
-      <table-multiline-body :list-data-props="preparationBody" 
-                            :list-data-header="listHeader" 
-                            :list-style-location="stylePosition">
-        <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
-          <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-        </template>
-      </table-multiline-body>
+      <div class="table-header">
+        <table-multiline-head :list-data="listHeader" 
+                              :list-style-position="stylePosition">
+          <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
+            <slot :name="`header.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+          </template>
+        </table-multiline-head>
+      </div>
+      
+      <div class="table-body">
+        <table-multiline-body :list-data-props="preparationBody" 
+                              :list-data-header="listHeader" 
+                              :list-style-location="stylePosition">
+          <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
+            <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+          </template>
+        </table-multiline-body>
+      </div>
+      
 
       <div class="table-footer">
         <slot name="footer"></slot>
@@ -80,11 +85,14 @@ export default {
 
 <style lang="scss" scoped>
 .table-multiline {
-  // position: relative;
   width: 100%;
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
   border: thin solid rgba(0, 0, 0, 0.12);
+  .table-header {
+    position: sticky;
+    top: 0px;
+  }
   .table-footer {
     position: sticky;
     bottom: 0px;

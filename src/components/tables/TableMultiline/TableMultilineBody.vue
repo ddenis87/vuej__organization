@@ -75,7 +75,6 @@ export default {
 
 <style lang="scss" scoped>
 .body {
-  // position: relative;
   .body-grid__item {
     display: grid;
     grid-template-rows: auto;
@@ -83,7 +82,6 @@ export default {
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
     &:hover { background-color: rgba(0, 0, 0, 0.08); z-index: 100; }
     &-col {
-      // position: relative;
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -92,9 +90,7 @@ export default {
       font-size: 0.875rem;
       line-height: 1.5;
       color: rgba(0, 0, 0, 0.87);
-
       box-sizing: border-box;
-      
     }
   }
 }

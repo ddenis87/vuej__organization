@@ -21,11 +21,9 @@
           <div style="width: 100%; text-align: center; border-radius: 12px 0px 12px 0px; background-color: green; color: white;">{{ itemValue.itemValue }}</div>
         </template>
         <template #[`body.kpp`]="itemValue">
-          <div style="width: 100%; text-align: center;">
-            <v-chip color="blue">
-              {{ itemValue.itemValue }}
-            </v-chip>
-          </div>
+          <v-chip color="blue" style="position: static;">
+            {{ itemValue.itemValue }}
+          </v-chip>
         </template>
         <template #footer>
           <div style="width: 100%; text-align: center;">I'm Footer</div>
