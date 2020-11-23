@@ -17,17 +17,11 @@
     <div class="body">
       <table-space v-bind="propsTable" 
                    v-if="!listMultiRow"></table-space>
+
       <table-multiline v-bind="propsTable"
                        v-if="listMultiRow">
-
         <template #[`body.institution_code`]="itemValue">
-          <div style="width: 100%; color: blue; text-align: right;">{{ itemValue.itemValue }}</div>
-        </template>
-        <template #[`body.bk`]="itemValue">
-          <div style="color: green; font-weight: bold;">{{ itemValue.itemValue }}</div>
-        </template>
-        <template #[`body.title`]="itemValue">
-          <div style="color: grey;">{{ itemValue.itemValue }}</div>
+          <div style="text-align: right;">{{ itemValue.itemValue }}</div>
         </template>
       </table-multiline>
     </div>
@@ -48,50 +42,27 @@ export default {
   },
   data() {
     return {
-      listMultiRow: true,
+      listMultiRow: false,
       viewTable: 'body',
       propsTable: {
-        height: 500,
-        locationFields: [  // only multirow table
+        fieldsTemplate: [
           [ '120',                'auto',  '120',   'auto',                '160',                 '160',                '200'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',     'bk'  ]
         ],
         header: {
-          // align: 'center',  // align for all fields or default = left
           state: {
             getterData: 'GET_LIST_FIELDS',
             getterSortedProps: 'GET_LIST_SORTED_PROPS',
             commitSorted: 'SET_LIST_DATA_SORTED',
             commitSortedProps: 'SET_LIST_SORTED_PROPS',
           },
-          items: [
-            {spaceName: 'institution_code', width: 130, align: 'right'},
-            {spaceName: 'title'},
-            {spaceName: 'inn', width: 120},
-            {spaceName: 'kpp', width: 120},
-            {spaceName: 'egrul_status', width: 200},
-            {spaceName: 'rubpnubp_status', width: 200},
-            {spaceName: 'industry_typing', width: 160},
-            {spaceName: 'budget_level', width: 160},
-            {spaceName: 'institution_type', width: 120},
-            {spaceName: 'bk' },
-          ]
         },
         body: {
-          // align: 'end',  // align for all fields or default = left
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',
           },
-          items: [
-            {spaceName: 'institution_code', align: 'end'},
-            // {spaceName: 'title', colorBackground: 'teal', colorText: 'white'},
-          ],
-          sourceStyle: 'body', // header - inherit header style, 
-                                  // body - body style, 
-                                  // join - join body and header style body - important, 
-                                  // none props - style component
         }
       },
     }
@@ -117,6 +88,8 @@ export default {
     align-items: center;
     height: 60px;
     margin-bottom: 10px;
+
+    z-index: 999;
     &__btn {
       display: flex;
       justify-content: flex-end;
@@ -127,6 +100,9 @@ export default {
       border: 1px solid green;
       &__text { padding: 0; margin: 0; }
     }
+  }
+  .body {
+    z-index: 100;
   }
 }
 </style>

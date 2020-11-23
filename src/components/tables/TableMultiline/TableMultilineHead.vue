@@ -3,8 +3,7 @@
     <div class="header-grid__item" 
         v-for="(item, index) in listData" 
         :key="index"
-        :style="styleItems[index]"
-        @click="sortedField(item.key)">
+        :style="styleItems[index]">
       {{ (item) ? item.label : '' }}
     </div>
   </div>
@@ -19,15 +18,7 @@ export default {
   ],
   props: {
     listData: Array,
-    listDataProps: Object,
     listStyleLocation: String,
-  },
-  methods: {
-    sortedField(key) {
-      this.$store.commit(this.listDataProps.state.commitSortedProps, {key: key, type: !this.$store.getters[this.listDataProps.state.getterSortedProps].type})
-      this.$store.commit(this.listDataProps.state.commitSorted);
-      console.log(key);
-    },
   },
 }
 </script>
@@ -42,7 +33,7 @@ export default {
   grid-template-rows: auto;
   grid-template-columns: auto;
   border-bottom: thin solid rgba(0, 0, 0, 0.12);
-  z-index: 999;
+  z-index: 200;
   &__item {
     display: flex;
     justify-content: flex-start;

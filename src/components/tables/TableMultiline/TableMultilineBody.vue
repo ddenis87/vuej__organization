@@ -35,6 +35,7 @@ export default {
   },
   computed: {
     listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
+    listData() { return this.listDataHeader; }
   },
   created() {
     if(+this.listDataProps.height) {
@@ -81,7 +82,7 @@ export default {
     grid-template-rows: auto;
     grid-template-columns: auto;
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
-    &:hover { background-color: rgba(0, 0, 0, 0.08); z-index: 999; }
+    &:hover { background-color: rgba(0, 0, 0, 0.08); z-index: 100; }
     &-col {
       display: flex;
       justify-content: flex-start;
