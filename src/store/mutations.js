@@ -17,7 +17,19 @@ export default {
     state.listDataOptions = option;
     Object.assign(state.listDataOptions.bk, {choices: []});
   },
-  CLEAR_LIST_DATA(state) { state.listData = []; },
+  CLEAR_LIST_DATA(state) {
+    state.listFields = [];
+    state.listData = [];
+    state.listDataOptions = {};
+    state.listSortedProps = {
+      key: '',
+      type: true
+    };
+    state.optionRequest = {
+      currentPage: 1,
+      stringFilter: '',
+    };
+  },
   SET_LIST_DATA(state, option) {
     let optionJoin = option;
     optionJoin.forEach(item => {
