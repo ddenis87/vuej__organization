@@ -29,7 +29,9 @@ export default new Vuex.Store({
         })
       }
       return state.listFields;
-    }, 
+    },
+    GET_LIST_DATA(state) { return state.listData; },
+    
     GET_LIST_FILTER(state) {
       let listFilter = [];
       for (let item of Object.keys(state.listDataOptions)) {
@@ -39,16 +41,18 @@ export default new Vuex.Store({
       }
       return listFilter;
     },
-    GET_LIST_DATA(state) { return state.listData; },
     GET_LIST_SORTED_PROPS(state) { return state.listSortedProps; }
   },
   mutations: {
-    SET_LIST_FIELDS(state, option) { state.listFields = option; },
     SET_STATUS_LOAD(state, status = false) { state.statusLoad = status; },
     SET_OPTIONS_REQUEST(state, option = {}) {
       state.optionRequest.currentPage = ('currentPage' in option) ? option.currentPage : 1;
       state.optionRequest.stringFilter = ('stringFilter' in option) ? option.stringFilter : '';
     },
+
+    SET_LIST_FIELDS(state, option) { state.listFields = option; },
+    
+    
     SET_LIST_BK(state, option) {
       option.forEach(item => {
         state.listDataOptions.bk.choices.push({

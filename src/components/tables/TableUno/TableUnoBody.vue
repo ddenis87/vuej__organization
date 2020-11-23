@@ -2,12 +2,11 @@
   <tbody class="body" id="body">
     <tr class="body__row" 
         v-for="(itemI, indexI) in listItem" 
-        :key="indexI">
+        :key="`uno-body-row-${indexI}`">
       <td class="body__col" 
           v-for="(itemF, indexF) in listDataHeader" 
-          :key="indexF">
+          :key="`uno-body-col-${indexF}`">
         <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
-        <!-- {{ itemI[itemF.key] }} -->
       </td>
     </tr>
     <tr class="body__row" id="anchor"><td :colspan="listDataHeader.length"></td></tr>

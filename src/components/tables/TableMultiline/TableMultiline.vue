@@ -4,9 +4,12 @@
       <div class="table-header">
         <table-multiline-head :list-data="listHeader" 
                               :list-style-position="stylePosition">
-          <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
-            <slot :name="`header.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+          <template v-for="(item) in listHeader" #[item.key]="itemValue">
+            <slot :name="`header.${(item) ? item.key : ''}`" 
+                  v-bind:itemValue="itemValue.itemValue" ></slot>
           </template>
+          
+
         </table-multiline-head>
       </div>
       
@@ -14,12 +17,11 @@
         <table-multiline-body :list-data-props="preparationBody" 
                               :list-data-header="listHeader" 
                               :list-style-location="stylePosition">
-          <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
+          <template v-for="item in listHeader" #[item.key]="itemValue">
             <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
           </template>
-        </table-multiline-body>
+        </table-multiline-body> 
       </div>
-      
 
       <div class="table-footer">
         <slot name="footer"></slot>

@@ -3,12 +3,12 @@
     <table-multiline-body-btn-up v-if="false"></table-multiline-body-btn-up>
     <div class="body-grid__item"
          v-for="(itemI, indexI) in listItem" 
-         :key="indexI"
+         :key="`body-row-${indexI}`"
          :style="listStyleLocation">
       
       <div class="body-grid__item-col" 
             v-for="(itemF, indexF) in listDataHeader" 
-            :key="indexF"
+            :key="`body-col-${indexF}`"
             :style="styleItems[indexF]">
         <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
       </div>
