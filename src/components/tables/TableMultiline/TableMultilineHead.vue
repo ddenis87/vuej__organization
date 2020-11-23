@@ -25,6 +25,8 @@ export default {
 
 <style lang="scss" scoped>
 .header-grid {
+  position: sticky;
+  top: 0px;
   padding: 10px 0px;
   background-color: #FAFAFA;
   display: grid;

@@ -1,36 +1,24 @@
 <template>
   <div class="table-multiline" id="table-multiline" :style="listStyle">
     <div class="table">
-      <table>
-        <thead class="table-head">
-          <tr>
-            <th>
-              <table-multiline-head :list-data="listHeader" 
-                                    :list-style-position="stylePosition">
-                <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
-                  <slot :name="`header.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-                </template>
-              </table-multiline-head>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="table-body">
-          <tr>
-            <td>
-              <table-multiline-body :list-data-props="preparationBody" 
-                                    :list-data-header="listHeader" 
-                                    :list-style-location="stylePosition">
-                <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
-                  <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-                </template>
-              </table-multiline-body>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot class="table-footer">
-          <slot name="footer"></slot>
-        </tfoot>
-      </table>
+      <table-multiline-head :list-data="listHeader" 
+                            :list-style-position="stylePosition">
+        <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
+          <slot :name="`header.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+        </template>
+      </table-multiline-head>
+
+      <table-multiline-body :list-data-props="preparationBody" 
+                            :list-data-header="listHeader" 
+                            :list-style-location="stylePosition">
+        <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
+          <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+        </template>
+      </table-multiline-body>
+
+      <div class="table-footer">
+        <slot name="footer"></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -97,18 +85,11 @@ export default {
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
   border: thin solid rgba(0, 0, 0, 0.12);
-  .table-head {
-    position: sticky;
-    top: 0px;
-  }
-  // .table-body {
-  // }
   .table-footer {
     position: sticky;
     bottom: 0px;
+    border-top: thin solid rgba(0, 0, 0, 0.12);
     background-color: #FAFAFA;
-    box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.12);
   }
-
 }
 </style>
