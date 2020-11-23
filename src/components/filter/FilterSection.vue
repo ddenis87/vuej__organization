@@ -7,9 +7,9 @@
                cols="12"
                class="form-filter__item">
           <filter-item :item="item" 
-                              v-model="valueSelect" 
-                              @input="createStringFilter" 
-                              @clear="clearStringFilter"></filter-item>
+                        v-model="valueSelect" 
+                        @input="createStringFilter" 
+                        @clear="clearStringFilter"></filter-item>
         </v-col>
       </v-row>
       <v-row>
@@ -55,7 +55,9 @@ export default {
       this.actionFilter();
     },
     acceptFilter() {
+      this.$store.commit('CLEAR_LIST_DATA');
       let optionRequest = {stringFilter: ''};
+      
       for (let [key, value] of Object.entries(this.filterProps)) {
         optionRequest.stringFilter += `&${key}=${value}`;
       }
@@ -63,7 +65,6 @@ export default {
       this.actionFilter();
     },
     actionFilter() {
-      this.$store.commit('CLEAR_LIST_DATA');
       this.$store.dispatch('GET_LIST_DATA');
       this.$emit('action-filter');
     },

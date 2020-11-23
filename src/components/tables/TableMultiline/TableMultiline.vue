@@ -1,17 +1,36 @@
 <template>
   <div class="table-multiline" id="table-multiline" :style="listStyle">
     <div class="table">
-      <table-multiline-head :list-data="listHeader" 
-                            :list-style-location="stylePosition"></table-multiline-head>
-
-      <table-multiline-body :list-data-props="preparationBody" 
-                            
-                            :list-data-header="listHeader" 
-                            :list-style-location="stylePosition">
-        <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
-          <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-        </template>
-      </table-multiline-body>
+      <table>
+        <thead class="table-head">
+          <tr>
+            <th>
+              <table-multiline-head :list-data="listHeader" 
+                                    :list-style-position="stylePosition">
+                <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
+                  <slot :name="`header.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+                </template>
+              </table-multiline-head>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="table-body">
+          <tr>
+            <td>
+              <table-multiline-body :list-data-props="preparationBody" 
+                                    :list-data-header="listHeader" 
+                                    :list-style-location="stylePosition">
+                <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
+                  <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+                </template>
+              </table-multiline-body>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot class="table-footer">
+          <slot name="footer"></slot>
+        </tfoot>
+      </table>
     </div>
   </div>
 </template>
@@ -47,7 +66,6 @@ export default {
       headerItems.forEach(item => headerFilter.push(headerList.find(mitem => mitem.key == item)));
       return headerFilter;
     },
-
     preparationBody() {
       let headerItems = new Set();
       for (let i = 1; i < this.fieldsTemplate.length; i++) {
@@ -66,15 +84,31 @@ export default {
       return styleLocation;
     },
   },
+  created() {
+    this.$store.dispatch(this.header.state.dispatchInit);
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .table-multiline {
-  position: relative;
+  // position: relative;
   width: 100%;
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
   border: thin solid rgba(0, 0, 0, 0.12);
+  .table-head {
+    position: sticky;
+    top: 0px;
+  }
+  // .table-body {
+  // }
+  .table-footer {
+    position: sticky;
+    bottom: 0px;
+    background-color: #FAFAFA;
+    box-shadow: 0px -1px 1px rgba(0, 0, 0, 0.12);
+  }
+
 }
 </style>

@@ -15,38 +15,71 @@
       </div>
     </div>
     <div class="body">
-      <table-space v-bind="propsTable" 
-                   v-if="!listMultiRow"></table-space>
+
+      <table-uno v-bind="propsTableUno" 
+                   v-if="!listMultiRow">
+        <template #[`body.institution_code`]="itemValue">
+          <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
+        </template>
+      </table-uno>
 
       <table-multiline v-bind="propsTable"
                        v-if="listMultiRow">
+        <template #[`header.inn`]="itemValue">
+          <div style="width: 100%; text-align: center;">{{ itemValue.itemValue }}</div>
+        </template>
+        <template #[`header.kpp`]="itemValue">
+          <div style="width: 100%; text-align: center;">{{ itemValue.itemValue }}</div>
+        </template>
         <template #[`body.institution_code`]="itemValue">
-          <div style="text-align: right;">{{ itemValue.itemValue }}</div>
+          <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
         </template>
       </table-multiline>
+
     </div>
   </div>
 </template>
 
 <script>
 import ControlUser from '@/components/control/ControlUser.vue';
-import TableSpace from '@/components/tables/TableSpace/TableSpace.vue';
+import TableUno from '@/components/tables/TableUno/TableUno.vue';
 import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
 
 export default {
   name: 'Organization',
   components: {
     ControlUser,
-    TableSpace,
+    TableUno,
     TableMultiline,
   },
   data() {
     return {
       listMultiRow: false,
       viewTable: 'body',
+      propsTableUno: {
+        fieldsTemplate: [
+          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              'dsf',             'asd',          '200'  ],
+          ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'industry_typing', 'budget_level', 'bk'  ],
+        ],
+        header: {
+          state: {
+            getterData: 'GET_LIST_FIELDS',
+            getterSortedProps: 'GET_LIST_SORTED_PROPS',
+            commitSorted: 'SET_LIST_DATA_SORTED',
+            commitSortedProps: 'SET_LIST_SORTED_PROPS',
+            dispatchInit: 'GET_LIST_OPTIONS',
+          },
+        },
+        body: {
+          state: {
+            getterData: 'GET_LIST_DATA',
+            dispatchData: 'GET_LIST_DATA',
+          },
+        }
+      },
       propsTable: {
         fieldsTemplate: [
-          [ '120',                'auto',  '120',   'auto',                '160',                 '160',                '200'  ],
+          [ '130',                'auto',  '120',   '200',                '160',                 '160',                'auto'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',     'bk'  ]
         ],
@@ -56,6 +89,7 @@ export default {
             getterSortedProps: 'GET_LIST_SORTED_PROPS',
             commitSorted: 'SET_LIST_DATA_SORTED',
             commitSortedProps: 'SET_LIST_SORTED_PROPS',
+            dispatchInit: 'GET_LIST_OPTIONS',
           },
         },
         body: {
@@ -67,8 +101,11 @@ export default {
       },
     }
   },
+  mounted() {
+    // this.$store.dispatch('GET_LIST_OPTIONS');
+  },
   created() {
-    this.$store.dispatch('GET_LIST_OPTIONS');
+    
   },
   methods: {
     changeView() {

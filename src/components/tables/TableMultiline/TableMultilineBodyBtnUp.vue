@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     showBtnUp() {
-      (document.getElementById('body').getBoundingClientRect().top < 10) ? this.btnUp = true : this.btnUp = false;
+      // (document.getElementById('body').getBoundingClientRect().top < 10) ? this.btnUp = true : this.btnUp = false;
     },
     goUp() {
       document.getElementById('table-multiline').scrollTo(0,0);

@@ -3,30 +3,29 @@
     <tr class="header__row">
       <th class="header__col" 
           v-for="(item, index) in listData" 
-          :key="index" 
-          :style="styleItems[index]"
-          @click="sortedField(item.key)">{{ (item) ? item.label : '' }}</th>
+          :key="index"
+          :style="listStylePosition[index]">
+        <slot :name="`${item.key}`" v-bind:itemValue="item.label">{{ item.label }}</slot>
+      </th>
     </tr>
   </thead>
 </template>
 
 <script>
-import { TABLE_SPACE } from './TableSpace.js';
+import TableUnoBodyBtnUp from './TableUnoBodyBtnUp';
+import { TABLE_UNO } from './TableUno.js';
 
 export default {
   name: 'TableHaed',
   mixins: [
-    TABLE_SPACE,
+    TABLE_UNO,
   ],
+  components: {
+    TableUnoBodyBtnUp,
+  },
   props: {
     listData: Array,
-    listDataProps: Object,
-  },
-  methods: {
-    sortedField(key) {
-      this.$store.commit(this.listDataProps.state.commitSortedProps, {key: key, type: !this.$store.getters[this.listDataProps.state.getterSortedProps].type})
-      this.$store.commit(this.listDataProps.state.commitSorted);
-    },
+    listStylePosition: Array,
   },
 }
 </script>

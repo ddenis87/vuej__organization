@@ -1,6 +1,6 @@
 <template>
   <div class="body" id="body">
-    <table-multiline-body-btn-up></table-multiline-body-btn-up>
+    <table-multiline-body-btn-up v-if="false"></table-multiline-body-btn-up>
     <div class="body-grid__item"
          v-for="(itemI, indexI) in listItem" 
          :key="indexI"
@@ -46,7 +46,6 @@ export default {
     }
   },
   updated() {
-    console.log('tm');
     if(+this.listDataProps.height) {
       if (document.getElementById('table-multiline'))
         document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
@@ -76,7 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 .body {
-  position: relative;
+  // position: relative;
   .body-grid__item {
     display: grid;
     grid-template-rows: auto;
@@ -84,6 +83,7 @@ export default {
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
     &:hover { background-color: rgba(0, 0, 0, 0.08); z-index: 100; }
     &-col {
+      // position: relative;
       display: flex;
       justify-content: flex-start;
       align-items: center;

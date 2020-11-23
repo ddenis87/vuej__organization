@@ -1,10 +1,10 @@
 <template>
-  <div class="header-grid" :style="listStyleLocation" >
+  <div class="header-grid" :style="listStylePosition" >
     <div class="header-grid__item" 
         v-for="(item, index) in listData" 
         :key="index"
         :style="styleItems[index]">
-      {{ (item) ? item.label : '' }}
+      <slot :name="`${item.key}`" v-bind:itemValue="item.label">{{ item.label }}</slot>
     </div>
   </div>
 </template>
@@ -18,15 +18,13 @@ export default {
   ],
   props: {
     listData: Array,
-    listStyleLocation: String,
+    listStylePosition: String,
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .header-grid {
-  position: sticky;
-  top: 0px;
   padding: 10px 0px;
   background-color: #FAFAFA;
   display: grid;
