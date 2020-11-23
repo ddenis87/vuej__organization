@@ -67,19 +67,6 @@ export default {
   },
   created() {
     this.$store.dispatch(this.header.state.dispatchInit);
-    window.addEventListener('scroll', this.loadData);
-  },
-  updated() {
-    window.addEventListener('scroll', this.loadData);
-  },
-  destroyed() { window.removeEventListener('scroll', this.loadData); },
-  methods: {
-    loadData() {
-      if (document.getElementById('home').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
-        window.removeEventListener('scroll', this.loadData);
-        this.$store.dispatch(this.body.state.dispatchData);
-      }
-    },
   },
 }
 </script>
