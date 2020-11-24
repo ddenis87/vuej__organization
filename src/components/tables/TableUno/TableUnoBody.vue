@@ -34,31 +34,36 @@ export default {
   updated() {
     this.createEvents();
   },
-  destroyed() { window.removeEventListener('scroll', this.loadData); },
+  destroyed() {
+    this.deleteEvents();
+  },
   methods: {
     loadData() {
-      if (+this.listDataProps.container.height) {
-        if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-uno').getBoundingClientRect().bottom + 10) {
-          console.log('load');
-          document.getElementById('table-uno').removeEventListener('scroll', this.loadData);
-          this.$store.dispatch(this.listDataProps.state.dispatchData);
-        }
-        (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
-      } else {
-        if (document.getElementById('table-uno').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
-          window.removeEventListener('scroll', this.loadData);
-          this.$store.dispatch(this.listDataProps.state.dispatchData);
-        }
+      (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
+    },
+    loadDataForComponent() {
+      if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-uno').getBoundingClientRect().bottom + 10) {
+        this.deleteEvents();
+        this.$store.dispatch(this.listDataProps.state.dispatchData);
       }
-      
+      (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
+    },
+    loadDataForPage() {
+      if (document.getElementById('table-uno').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
+        this.deleteEvents();
+        this.$store.dispatch(this.listDataProps.state.dispatchData);
+      }
     },
     createEvents() {
-      if(+this.listDataProps.container.height) {
+      if (+this.listDataProps.container.height) {
         if (document.getElementById('table-uno'))
           document.getElementById('table-uno').addEventListener('scroll', this.loadData);
       } else {
         window.addEventListener('scroll', this.loadData);
       }
+    },
+    deleteEvents() {
+      (+this.listDataProps.container.height) ? document.getElementById('table-uno').removeEventListener('scroll', this.loadData) : window.removeEventListener('scroll', this.loadData);
     }
   },
 }
