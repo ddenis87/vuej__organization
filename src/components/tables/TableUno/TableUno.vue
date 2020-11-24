@@ -2,13 +2,20 @@
 <div class="table-uno" id="table-uno" :style="listStyle">
   <table class="table">
     <table-uno-head :list-data="listHeader" 
-                    :list-style-position="stylePosition" :isScroll="isShowButtonUp" @go-up="goUp">
-      <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
-        <slot :name="`header.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+                    :list-style-position="stylePosition"
+                    :isScroll="isShowButtonUp"
+                    @go-up="goUp">
+      <template v-for="item in listHeader" 
+                v-slot:[item.key]="itemValue">
+        <slot :name="`header.${(item) ? item.key : ''}`" 
+              v-bind:itemValue="itemValue.itemValue"></slot>
       </template>
     </table-uno-head>
     <table-uno-body :list-data-props="preparationBody"
-                    :list-data-header="listHeader" @scroll="scrollBody">
+                    :list-data-header="listHeader"
+                    @scroll="scrollBody"
+                    @enter-row="enterRow"
+                    @leave-row="leaveRow">
       <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
           <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
       </template>
@@ -85,6 +92,12 @@ export default {
     this.$store.dispatch(this.header.state.dispatchInit);
   },
   methods: {
+    enterRow(target) {
+      console.log(target);
+    },
+    leaveRow(target) {
+      console.log(target);
+    },
     scrollBody(value) {
       this.isShowButtonUp = value;
     },

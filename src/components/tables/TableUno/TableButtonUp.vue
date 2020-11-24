@@ -23,10 +23,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0px 5px;
-  // bottom: 100px;
-  // right: 100px;
   height: 0px;
-  // width: 35px;
   transition: height .5s;
   &_show {
     height: 35px;

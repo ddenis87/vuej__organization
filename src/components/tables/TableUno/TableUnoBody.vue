@@ -2,7 +2,7 @@
   <tbody class="body" id="body">
     <tr class="body__row" 
         v-for="(itemI, indexI) in listItem" 
-        :key="`uno-body-row-${indexI}`">
+        :key="`uno-body-row-${indexI}`" @mouseenter="enterRow" @mouseleave="leaveRow">
       <td class="body__col" 
           v-for="(itemF, indexF) in listDataHeader" 
           :key="`uno-body-col-${indexF}`">
@@ -53,6 +53,12 @@ export default {
     },
     deleteEvents() {
       (+this.listDataProps.container.height) ? document.getElementById('table-uno').removeEventListener('scroll', this.loadData) : window.removeEventListener('scroll', this.loadData);
+    },
+    enterRow(event) {
+      this.$emit('enter-row', event.target);
+    },
+    leaveRow(event) {
+      this.$emit('leave-row', event.target);
     }
   },
 }
@@ -76,6 +82,8 @@ export default {
     font-size: 0.875rem;
     line-height: 1.5;
     color: rgba(0, 0, 0, 0.87);
+
+    
   }
 }
 </style>
