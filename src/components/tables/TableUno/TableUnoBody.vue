@@ -29,20 +29,10 @@ export default {
     listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
   },
   created() {
-    if(+this.listDataProps.container.height) {
-    if (document.getElementById('table-uno'))
-      document.getElementById('table-uno').addEventListener('scroll', this.loadData);
-    } else {
-      window.addEventListener('scroll', this.loadData);
-    }
+    this.createEvents();
   },
   updated() {
-    if(+this.listDataProps.container.height) {
-      if (document.getElementById('table-uno'))
-        document.getElementById('table-uno').addEventListener('scroll', this.loadData);
-    } else {
-       window.addEventListener('scroll', this.loadData);
-    }
+    this.createEvents();
   },
   destroyed() { window.removeEventListener('scroll', this.loadData); },
   methods: {
@@ -53,13 +43,23 @@ export default {
           document.getElementById('table-uno').removeEventListener('scroll', this.loadData);
           this.$store.dispatch(this.listDataProps.state.dispatchData);
         }
+        (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
       } else {
         if (document.getElementById('table-uno').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
           window.removeEventListener('scroll', this.loadData);
           this.$store.dispatch(this.listDataProps.state.dispatchData);
         }
       }
+      
     },
+    createEvents() {
+      if(+this.listDataProps.container.height) {
+        if (document.getElementById('table-uno'))
+          document.getElementById('table-uno').addEventListener('scroll', this.loadData);
+      } else {
+        window.addEventListener('scroll', this.loadData);
+      }
+    }
   },
 }
 </script>

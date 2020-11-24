@@ -2,13 +2,13 @@
 <div class="table-uno" id="table-uno" :style="listStyle">
   <table class="table">
     <table-uno-head :list-data="listHeader" 
-                    :list-style-position="stylePosition">
+                    :list-style-position="stylePosition" :isScroll="isShowButtonUp" @go-up="goUp">
       <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
         <slot :name="`header.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
       </template>
     </table-uno-head>
     <table-uno-body :list-data-props="preparationBody"
-                    :list-data-header="listHeader">
+                    :list-data-header="listHeader" @scroll="scrollBody">
       <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
           <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
       </template>
@@ -76,15 +76,28 @@ export default {
     },
     
   },
+  data() {
+    return {
+      isShowButtonUp: false,
+    }
+  },
   created() {
     this.$store.dispatch(this.header.state.dispatchInit);
+  },
+  methods: {
+    scrollBody(value) {
+      this.isShowButtonUp = value;
+    },
+    goUp() {
+      document.getElementById('table-uno').scrollTo(0,0);
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .table-uno {
-  // position: relative;
+  position: relative;
   width: 100%;
   font-family: "Roboto", sans-serif;
   border-radius: 4px;

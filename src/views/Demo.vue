@@ -1,8 +1,8 @@
 <template>
   <div class="about">
-  <div class="body-item">
-    <table-multiline v-bind="propsTable"
-                     v-if="listMultiRow">
+    <div class="body-item">
+      <table-uno v-bind="propsTable"
+                      v-if="listMultiRow">
         <template #[`header.bk`]="itemValue">
           <div style="width: 100%; text-align: center;">
             <v-chip color="yellow">{{ itemValue.itemValue }}</v-chip>
@@ -21,23 +21,46 @@
           <div style="width: 100%; text-align: center; border-radius: 15px 2px 15px 2px; background-color: green; color: white;">{{ itemValue.itemValue }}</div>
         </template>
         <template #[`body.kpp`]="itemValue">
-          <div style="width: 100%; text-align: center; border-radius: 2px 15px 2px 15px; background-color: blue; color: white;">{{ itemValue.itemValue }}</div>
+          <v-chip style="position: static;" color="blue">{{ itemValue.itemValue }}</v-chip>
+          <!-- <div style="width: 100%; text-align: center; border-radius: 2px 15px 2px 15px; background-color: blue; color: white;">{{ itemValue.itemValue }}</div> -->
         </template>
         <template #footer>
           <div style="width: 100%; text-align: center;">I'm Footer</div>
         </template>
-      </table-multiline>
+      </table-uno>
     </div>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
   </div>
 </template>
 
 <script>
 import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
+import TableUno from '@/components/tables/TableUno/TableUno.vue';
 
 export default {
   name: 'Demo',
   components: {
     TableMultiline,
+    TableUno,
   },
   data() {
     return {

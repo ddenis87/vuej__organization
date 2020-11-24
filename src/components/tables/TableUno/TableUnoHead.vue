@@ -8,12 +8,18 @@
         <slot :name="`${item.key}`" v-bind:itemValue="item.label">{{ item.label }}</slot>
       </th>
     </tr>
+      <tr>
+        <th class="header__button-up" :class="{'header__button-up_show': isScroll}" :colspan="listData.length">
+          <table-button-up :isShow="isShowButtonUp" @go-up="$emit('go-up')"></table-button-up>
+        </th>
+      </tr>
+    
   </thead>
 </template>
 
 <script>
-import TableUnoBodyBtnUp from './TableUnoBodyBtnUp';
 import { TABLE_UNO } from './TableUno.js';
+import TableButtonUp from './TableButtonUp';
 
 export default {
   name: 'TableHaed',
@@ -21,11 +27,15 @@ export default {
     TABLE_UNO,
   ],
   components: {
-    TableUnoBodyBtnUp,
+    TableButtonUp,
   },
   props: {
+    isScroll: {type: Boolean, default: false},
     listData: Array,
     listStylePosition: Array,
+  },
+  computed: {
+    isShowButtonUp() { return this.isScroll},
   },
 }
 </script>
@@ -48,6 +58,14 @@ export default {
     line-height: 1.5;
     color: rgba(0, 0, 0, 0.6);
     &:hover { cursor: pointer; }
+  }
+
+  &__button-up {
+    overflow: hidden; 
+    background-color: #FAFAFA;
+    &_show {
+      box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.12);
+    }
   }
 }
 </style>

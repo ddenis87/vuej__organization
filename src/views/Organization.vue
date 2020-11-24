@@ -57,10 +57,10 @@ export default {
     return {
       listMultiRow: false,
       propsTableUno: {
-        container: {
-          height: 500,
-          width: 1200,
-        },
+        // container: {
+        //   height: 500,
+        //   width: 1200,
+        // },
         fieldsTemplate: [
           ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              'dsf',             'asd',          '200'  ],
           ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'industry_typing', 'budget_level', 'bk'  ],
