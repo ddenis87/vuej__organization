@@ -1,24 +1,47 @@
 <template>
-  <div class="header-grid" :style="listStylePosition" >
+  <div class="header-grid" :style="listStylePositionModify" >
     <div class="header-grid__item" 
         v-for="(item, index) in listData" 
         :key="index"
         :style="styleItems[index]">
       <slot :name="`${item.key}`" v-bind:itemValue="item.label">{{ item.label }}</slot>
     </div>
+    <div class="header-grid__button-up">
+      <table-button-up :isShow="isShowButtonUp" @go-up="$emit('go-up')"></table-button-up>
+    </div>
   </div>
 </template>
 
 <script>
 import { TABLE_MULTILINE } from './TableMultiline.js';
+import TableButtonUp from './TableButtonUp';
+
 export default {
   name: 'TableMultilineHead',
   mixins: [
     TABLE_MULTILINE,
   ],
+  components: {
+    TableButtonUp,
+  },
   props: {
+    isScroll: {type: Boolean, default: false},
     listData: Array,
     listStylePosition: String,
+  },
+  computed: {
+    isShowButtonUp() { return this.isScroll},
+    listStylePositionModify() {
+      let listStylePositionModify = '';
+      listStylePositionModify = this.listStylePosition.slice(0, -2);
+      listStylePositionModify += ' "';
+      let countColumn = (this.listStylePosition.split(';')[0]).split(':')[1].trim().split(' ').length;
+      listStylePositionModify += 'button_up '.repeat(countColumn);
+      listStylePositionModify = listStylePositionModify.slice(0, -1) + '"';
+      console.log(listStylePositionModify);
+      
+      return this.listStylePosition;
+    }
   },
 }
 </script>
@@ -42,6 +65,13 @@ export default {
     line-height: 1.5;
     color: rgba(0, 0, 0, 0.6);
     &:hover { cursor: pointer; }
+  }
+  &__button-up {
+    overflow: hidden; 
+    background-color: #FAFAFA;
+    &_show {
+      // box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.12);
+    }
   }
 }
 </style>

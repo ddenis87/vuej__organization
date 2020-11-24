@@ -27,6 +27,7 @@ export default {
   // right: 100px;
   height: 0px;
   // width: 35px;
+  // width: 100%;
   transition: height .5s;
   &_show {
     height: 35px;

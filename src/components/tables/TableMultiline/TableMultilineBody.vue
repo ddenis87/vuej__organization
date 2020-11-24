@@ -1,6 +1,5 @@
 <template>
   <div class="body" id="body">
-    <table-multiline-body-btn-up v-if="false"></table-multiline-body-btn-up>
     <div class="body-grid__item"
          v-for="(itemI, indexI) in listItem" 
          :key="`body-row-${indexI}`"
@@ -18,16 +17,13 @@
 </template>
 
 <script>
-import TableMultilineBodyBtnUp from './TableMultilineBodyBtnUp';
 import { TABLE_MULTILINE } from './TableMultiline.js';
+
 export default {
   name: 'TableMultilineBody',
   mixins: [
     TABLE_MULTILINE,
   ],
-  components: {
-    TableMultilineBodyBtnUp
-  },
   props: {
     listDataProps: Object,
     listDataHeader: Array,
@@ -62,6 +58,7 @@ export default {
           document.getElementById('table-multiline').removeEventListener('scroll', this.loadData);
           this.$store.dispatch(this.listDataProps.state.dispatchData);
         }
+        (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
       } else {
         if (document.getElementById('table-multiline').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
           window.removeEventListener('scroll', this.loadData);

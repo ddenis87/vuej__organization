@@ -3,7 +3,7 @@
     <div class="table">
       <div class="table-header">
         <table-multiline-head :list-data="listHeader" 
-                              :list-style-position="stylePosition">
+                              :list-style-position="stylePosition" :isScroll="isShowButtonUp" @go-up="goUp">
           <template v-for="(item) in listHeader" #[item.key]="itemValue">
             <slot :name="`header.${(item) ? item.key : ''}`" 
                   v-bind:itemValue="itemValue.itemValue" ></slot>
@@ -16,7 +16,7 @@
       <div class="table-body">
         <table-multiline-body :list-data-props="preparationBody" 
                               :list-data-header="listHeader" 
-                              :list-style-location="stylePosition">
+                              :list-style-location="stylePosition" @scroll="scrollBody">
           <template v-for="item in listHeader" #[item.key]="itemValue">
             <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
           </template>
@@ -91,8 +91,21 @@ export default {
       return styleLocation;
     },
   },
+  data() {
+    return {
+      isShowButtonUp: false,
+    }
+  },
   created() {
     this.$store.dispatch(this.header.state.dispatchInit);
+  },
+  methods: {
+    scrollBody(value) {
+      this.isShowButtonUp = value;
+    },
+    goUp() {
+      document.getElementById('table-multiline').scrollTo(0,0);
+    },
   },
 }
 </script>
@@ -100,6 +113,7 @@ export default {
 <style lang="scss" scoped>
 .table-multiline {
   width: 100%;
+  margin-top: -1px;
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
   border: thin solid rgba(0, 0, 0, 0.12);
