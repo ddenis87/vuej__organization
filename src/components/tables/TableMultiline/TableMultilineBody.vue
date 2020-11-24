@@ -38,7 +38,7 @@ export default {
     listData() { return this.listDataHeader; }
   },
   created() {
-    if(+this.listDataProps.height) {
+    if(+this.listDataProps.container.height) {
     if (document.getElementById('table-multiline'))
       document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
     } else {
@@ -46,7 +46,7 @@ export default {
     }
   },
   updated() {
-    if(+this.listDataProps.height) {
+    if(+this.listDataProps.container.height) {
       if (document.getElementById('table-multiline'))
         document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
     } else {
@@ -56,7 +56,7 @@ export default {
   destroyed() { window.removeEventListener('scroll', this.loadData); },
   methods: {
     loadData() {
-      if (+this.listDataProps.height) {
+      if (+this.listDataProps.container.height) {
         if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-multiline').getBoundingClientRect().bottom + 10) {
           console.log('load');
           document.getElementById('table-multiline').removeEventListener('scroll', this.loadData);
@@ -80,7 +80,8 @@ export default {
     grid-template-rows: auto;
     grid-template-columns: auto;
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
-    &:hover { background-color: rgba(0, 0, 0, 0.08); z-index: 100; }
+    background-color: rgba(255, 255, 255);
+    &:hover { background-color: rgba(0, 0, 0, 0.08); }
     &-col {
       display: flex;
       justify-content: flex-start;

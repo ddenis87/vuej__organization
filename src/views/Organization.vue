@@ -25,12 +25,6 @@
 
       <table-multiline v-bind="propsTable"
                        v-if="listMultiRow">
-        <template #[`header.inn`]="itemValue">
-          <div style="width: 100%; text-align: center;">{{ itemValue.itemValue }}</div>
-        </template>
-        <template #[`header.kpp`]="itemValue">
-          <div style="width: 100%; text-align: center;">{{ itemValue.itemValue }}</div>
-        </template>
         <template #[`body.institution_code`]="itemValue">
           <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
         </template>
@@ -54,8 +48,7 @@ export default {
   },
   data() {
     return {
-      listMultiRow: false,
-      viewTable: 'body',
+      listMultiRow: true,
       propsTableUno: {
         fieldsTemplate: [
           ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              'dsf',             'asd',          '200'  ],
@@ -77,6 +70,7 @@ export default {
           },
         }
       },
+
       propsTable: {
         fieldsTemplate: [
           [ '130',                'auto',  '120',   '200',                '160',                 '160',                'auto'  ],
@@ -101,17 +95,6 @@ export default {
       },
     }
   },
-  mounted() {
-    // this.$store.dispatch('GET_LIST_OPTIONS');
-  },
-  created() {
-    
-  },
-  methods: {
-    changeView() {
-      this.propsTable.propsBody.sourceProps = this.viewTable;
-    },
-  }
 }
 </script>
 

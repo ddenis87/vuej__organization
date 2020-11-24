@@ -41,7 +41,7 @@ export default {
     TableMultilineBody,
   },
   props: {
-    height: Number,
+    container: {type: Object, default: () => ({ width: undefined, height: undefined })},
     fieldsTemplate: Array,
     locationFields: Array,
     header: Object,
@@ -49,7 +49,10 @@ export default {
   },
   computed: {
     listStyle() {
-      return (this.height) ? `max-height: ${this.height}px; overflow-y: scroll;` : '';
+      let {width, height} = this.container;
+      let listStyleContainer = (width) ? `width: ${width}px; ` : 'width: 100%; ';
+      listStyleContainer += (height) ? `max-height: ${height}px; overflow-y: scroll; ` : '';
+      return listStyleContainer;
     },
     listHeader() {
       let headerItems = new Set();
@@ -62,17 +65,27 @@ export default {
       return headerFilter;
     },
     preparationBody() {
-      let headerItems = new Set();
-      for (let i = 1; i < this.fieldsTemplate.length; i++) {
-        this.fieldsTemplate[i].forEach(item => headerItems.add(item));
-      }
       let modifyBody = this.body;
-      modifyBody.height = this.height;
+      modifyBody.container = this.container;
       return modifyBody;
     },
     stylePosition() {
-      let styleLocation = 'grid-template-columns:';
-      this.fieldsTemplate[0].forEach(element => styleLocation += ` ${(+element) ? `${element}px` : '1fr'}`);
+      let styleLocation = '';
+      
+      if (this.container.width) {
+        let maxWidth = 0;
+        this.fieldsTemplate[0].forEach(element => {if (+element) maxWidth += +element });
+        if (maxWidth < this.container.width) {
+          styleLocation += 'grid-template-columns:';
+          this.fieldsTemplate[0].forEach(element => styleLocation += ` ${(+element) ? `${element}px` : '1fr'}`);
+        } else {
+          styleLocation += 'grid-template-columns: repeat(auto-fit, 1fr) ';
+        }
+      } else {
+        styleLocation += 'grid-template-columns:';
+        this.fieldsTemplate[0].forEach(element => styleLocation += ` ${(+element) ? `${element}px` : '1fr'}`);
+      }
+
       styleLocation += '; grid-template-areas:';
       for (let i = 1; i < this.fieldsTemplate.length; i++) styleLocation += ` "${this.fieldsTemplate[i].join(' ')}"`;
       styleLocation += '; ';
@@ -91,15 +104,18 @@ export default {
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
   border: thin solid rgba(0, 0, 0, 0.12);
-  .table-header {
-    position: sticky;
-    top: 0px;
-  }
-  .table-footer {
-    position: sticky;
-    bottom: 0px;
-    border-top: thin solid rgba(0, 0, 0, 0.12);
-    background-color: #FAFAFA;
+  .table {
+    .table-header {
+      position: sticky;
+      top: 0px;
+    }
+    .table-footer {
+      position: sticky;
+      bottom: 0px;
+      border-top: thin solid rgba(0, 0, 0, 0.12);
+      background-color: #FAFAFA;
+    }
   }
 }
+
 </style>
