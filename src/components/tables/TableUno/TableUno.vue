@@ -13,7 +13,13 @@
           <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
       </template>
     </table-uno-body>
-    <tfoot></tfoot>
+    <tfoot class="table-footer">
+      <tr>
+        <td :colspan="listHeader.length">
+          <slot name="footer"></slot>
+        </td>
+      </tr>
+    </tfoot>
   </table>
 </div>
   
@@ -22,6 +28,7 @@
 <script>
 import TableUnoHead from './TableUnoHead.vue';
 import TableUnoBody from './TableUnoBody.vue';
+
 export default {
   
   name: 'TableUno',
@@ -30,14 +37,17 @@ export default {
     TableUnoBody,
   },
   props: {
-    height: Number,
+    container: {type: Object, default: () => ({ width: undefined, height: undefined })},
     fieldsTemplate: Array,
     header: Object,
     body: Object,
   },
   computed: {
     listStyle() {
-      return (this.height) ? `max-height: ${this.height}px; overflow-y: scroll;` : '';
+      let {width, height} = this.container;
+      let listStyleContainer = (width) ? `width: ${width}px; ` : 'width: 100%; ';
+      listStyleContainer += (height) ? `max-height: ${height}px; overflow-y: scroll; ` : '';
+      return listStyleContainer;
     },
     listHeader() {
       let headerItems = new Set();
@@ -49,6 +59,11 @@ export default {
       headerItems.forEach(item => headerFilter.push(headerList.find(mitem => mitem.key == item)));
       return headerFilter;
     },
+    preparationBody() {
+      let modifyBody = this.body;
+      modifyBody.container = this.container;
+      return modifyBody;
+    },
     stylePosition() {
       let stylePosition = [];
       let headerItems = new Set();
@@ -59,11 +74,7 @@ export default {
         stylePosition.push((this.fieldsTemplate[0][i] && +this.fieldsTemplate[0][i]) ? `width: ${this.fieldsTemplate[0][i]}px; ` : 'width: 1fr; ' );
       return stylePosition;
     },
-    preparationBody() {
-      let modifyBody = this.body;
-      modifyBody.height = this.height;
-      return modifyBody;
-    },
+    
   },
   created() {
     this.$store.dispatch(this.header.state.dispatchInit);
@@ -73,7 +84,7 @@ export default {
 
 <style lang="scss" scoped>
 .table-uno {
-  position: relative;
+  // position: relative;
   width: 100%;
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
@@ -81,6 +92,13 @@ export default {
   .table {
     width: 100%;
     border-collapse: collapse;
+
+    .table-footer {
+      position: sticky;
+      bottom: 0px;
+      border-top: thin solid rgba(0, 0, 0, 0.12);
+      background-color: #FAFAFA;
+    }
   }
 }
 

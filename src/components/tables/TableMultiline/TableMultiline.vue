@@ -43,7 +43,6 @@ export default {
   props: {
     container: {type: Object, default: () => ({ width: undefined, height: undefined })},
     fieldsTemplate: Array,
-    locationFields: Array,
     header: Object,
     body: Object,
   },

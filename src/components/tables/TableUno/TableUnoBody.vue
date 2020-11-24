@@ -29,7 +29,7 @@ export default {
     listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
   },
   created() {
-    if(+this.listDataProps.height) {
+    if(+this.listDataProps.container.height) {
     if (document.getElementById('table-uno'))
       document.getElementById('table-uno').addEventListener('scroll', this.loadData);
     } else {
@@ -37,7 +37,7 @@ export default {
     }
   },
   updated() {
-    if(+this.listDataProps.height) {
+    if(+this.listDataProps.container.height) {
       if (document.getElementById('table-uno'))
         document.getElementById('table-uno').addEventListener('scroll', this.loadData);
     } else {
@@ -47,7 +47,7 @@ export default {
   destroyed() { window.removeEventListener('scroll', this.loadData); },
   methods: {
     loadData() {
-      if (+this.listDataProps.height) {
+      if (+this.listDataProps.container.height) {
         if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-uno').getBoundingClientRect().bottom + 10) {
           console.log('load');
           document.getElementById('table-uno').removeEventListener('scroll', this.loadData);
