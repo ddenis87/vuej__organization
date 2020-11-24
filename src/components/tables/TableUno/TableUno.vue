@@ -100,8 +100,9 @@ export default {
   position: relative;
   width: 100%;
   font-family: "Roboto", sans-serif;
-  border-radius: 4px;
+  border-radius: 5px;
   border: thin solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 1px 1px grey;
   .table {
     width: 100%;
     border-collapse: collapse;

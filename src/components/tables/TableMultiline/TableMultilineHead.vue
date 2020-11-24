@@ -49,7 +49,7 @@ export default {
 <style lang="scss" scoped>
 .header-grid {
   padding: 10px 0px;
-  background-color: #FAFAFA;
+  background-color: rgba(252,252,252);
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: auto;
@@ -68,10 +68,10 @@ export default {
   }
   &__button-up {
     overflow: hidden; 
-    background-color: #FAFAFA;
-    &_show {
-      // box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.12);
-    }
+    background-color:rgba(252,252,252);
+    // &_show {
+    //   // box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.12);
+    // }
   }
 }
 </style>

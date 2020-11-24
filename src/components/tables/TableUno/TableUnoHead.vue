@@ -18,14 +18,10 @@
 </template>
 
 <script>
-import { TABLE_UNO } from './TableUno.js';
 import TableButtonUp from './TableButtonUp';
 
 export default {
   name: 'TableHaed',
-  mixins: [
-    TABLE_UNO,
-  ],
   components: {
     TableButtonUp,
   },
@@ -47,7 +43,7 @@ export default {
   &__col {
     position: sticky;
     top: 0px;
-    background-color: #FAFAFA;
+    background-color: rgba(252,252,252);
     box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.12);
     text-align: start;
     align-items: center;
@@ -62,7 +58,7 @@ export default {
 
   &__button-up {
     overflow: hidden; 
-    background-color: #FAFAFA;
+    background-color: rgba(252,252,252);
     &_show {
       box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.12);
     }

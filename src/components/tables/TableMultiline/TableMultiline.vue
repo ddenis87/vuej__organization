@@ -8,8 +8,6 @@
             <slot :name="`header.${(item) ? item.key : ''}`" 
                   v-bind:itemValue="itemValue.itemValue" ></slot>
           </template>
-          
-
         </table-multiline-head>
       </div>
       
@@ -115,7 +113,8 @@ export default {
   width: 100%;
   margin-top: -1px;
   font-family: "Roboto", sans-serif;
-  border-radius: 4px;
+  border-radius: 5px;
+  box-shadow: 0px 1px 1px grey;
   border: thin solid rgba(0, 0, 0, 0.12);
   .table {
     .table-header {

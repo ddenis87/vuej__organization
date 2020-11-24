@@ -14,13 +14,8 @@
 </template>
 
 <script>
-import { TABLE_UNO } from './TableUno.js';
-
 export default {
   name: 'TableBody',
-  mixins: [
-    TABLE_UNO,
-  ],
   props: {
     listDataProps: Object,
     listDataHeader: Array,
@@ -28,15 +23,9 @@ export default {
   computed: {
     listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
   },
-  created() {
-    this.createEvents();
-  },
-  updated() {
-    this.createEvents();
-  },
-  destroyed() {
-    this.deleteEvents();
-  },
+  created() { this.createEvents(); },
+  updated() { this.createEvents(); },
+  destroyed() { this.deleteEvents(); },
   methods: {
     loadData() {
       (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
@@ -76,7 +65,7 @@ export default {
   color: rgba(0, 0, 0, 0.87);
   &__row {
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
-    &:hover { background-color: rgba(0, 0, 0, 0.08); }
+    &:hover { background-color:rgb(250, 250, 250); }
   }
   &__col {
     justify-content: start;
