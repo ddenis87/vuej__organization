@@ -1,6 +1,6 @@
 <template>
   <v-app class="app">
-    <div class="app-header">
+    <div class="app-header maxWidth">
       <app-header></app-header>
     </div>
     <div class="app-body maxWidth">
@@ -35,7 +35,7 @@ export default {
   grid-template-rows: 80px auto 80px;
   width: 100%;
 
-  &-header { grid-area: app-header; }
+  &-header { grid-area: app-header; width: 100%; }
   &-body {
     padding: 0px 10px;
     grid-area: app-body;
@@ -49,6 +49,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     max-width: 2560px;
+    min-width: 1240px;
     width: 100%;
   }
 }
