@@ -7,7 +7,7 @@
       <router-view></router-view>
     </div>
     <app-lock></app-lock>
-    <app-button-up></app-button-up>
+    <app-button-up class="button-up"></app-button-up>
   </v-app>
 </template>
 
@@ -34,7 +34,9 @@ export default {
   grid-template-columns: 100%;
   grid-template-rows: 80px auto 80px;
   width: 100%;
-
+  .button-up {
+    z-index: 999;
+  }
   &-header { grid-area: app-header; width: 100%; }
   &-body {
     padding: 0px 10px;

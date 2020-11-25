@@ -38,8 +38,6 @@ export default {
       let countColumn = (this.listStylePosition.split(';')[0]).split(':')[1].trim().split(' ').length;
       listStylePositionModify += 'button_up '.repeat(countColumn);
       listStylePositionModify = listStylePositionModify.slice(0, -1) + '"';
-      console.log(listStylePositionModify);
-      
       return this.listStylePosition;
     }
   },
@@ -69,9 +67,6 @@ export default {
   &__button-up {
     overflow: hidden; 
     background-color:rgba(252,252,252);
-    // &_show {
-    //   // box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.12);
-    // }
   }
 }
 </style>

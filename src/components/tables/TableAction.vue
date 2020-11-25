@@ -1,13 +1,13 @@
 <template>
   <div class="action-box" id="active-box" :style="positionLeft">
     <div class="action-box__toolbar">
-      <v-btn class="toolbar__item" icon small @click="clickButton">
+      <v-btn class="toolbar__item" icon small @click="clickButtonPrint">
         <v-icon>mdi-printer</v-icon>
       </v-btn>
-      <v-btn class="toolbar__item" icon small @click="clickButton">
+      <v-btn class="toolbar__item" icon small @click="clickButtonCopy">
         <v-icon>mdi-content-copy</v-icon>
       </v-btn>
-      <v-btn class="toolbar__item" icon small @click="clickButton">
+      <v-btn class="toolbar__item" icon small @click="clickButtonDelete">
         <v-icon>mdi-delete</v-icon>
       </v-btn>
     </div>
@@ -32,8 +32,14 @@ export default {
     this.widthActionBox = document.getElementsByClassName('action-box')[0].getBoundingClientRect().right - document.getElementsByClassName('action-box')[0].getBoundingClientRect().left;
   },
   methods: {
-    clickButton() {
-      console.log(this.activeValue);
+    clickButtonPrint() {
+      alert('I`m PRINT ' + this.activeValue.activeValue);
+    },
+    clickButtonCopy() {
+      alert('I`m COPY ' + this.activeValue.activeValue);
+    },
+    clickButtonDelete() {
+      alert('I`m DELETE ' + this.activeValue.activeValue);
     },
   },
 }
