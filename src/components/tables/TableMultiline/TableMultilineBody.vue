@@ -3,13 +3,16 @@
     <div class="body-grid__item"
          v-for="(itemI, indexI) in listItem" 
          :key="`body-row-${indexI}`"
-         :style="listStyleLocation">
+         :style="listStyleLocationModify">
       
       <div class="body-grid__item-col" 
             v-for="(itemF, indexF) in listDataHeader" 
             :key="`body-col-${indexF}`"
             :style="styleItems[indexF]">
         <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
+      </div>
+      <div class="body-grid__item-col-action">
+        <slot name="action" v-bind:activeValue="itemI[listDataProps.activeField]"></slot>
       </div>
     </div>
     <div id="anchor"></div>
@@ -30,6 +33,13 @@ export default {
     listStyleLocation: String,
   },
   computed: {
+    listStyleLocationModify() {
+      let modifyAreas = this.listStyleLocation.split(';')[1].split(':')[1].split('" "');
+      for (let i = 0; i < modifyAreas.length; i++) {
+        modifyAreas[i] = '"' + (modifyAreas[i].replace(/"/g, '').trim()) + ' action_box"';
+      }
+      return `${this.listStyleLocation.split(';')[0]} 0px; grid-template-areas: ${modifyAreas.join().replace(/,/g, ' ')};`;
+    },
     listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
     listData() { return this.listDataHeader; }
   },
@@ -77,7 +87,8 @@ export default {
     grid-template-columns: auto;
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
     background-color: rgba(255, 255, 255);
-    &:hover { background-color: rgb(250, 250, 250); }
+    &:hover { background-color: rgb(240, 240, 240); }
+    &:hover > .body-grid__item-col-action > .action-box { opacity: 1; }
     &-col {
       display: flex;
       justify-content: flex-start;
@@ -88,6 +99,12 @@ export default {
       line-height: 1.5;
       color: rgba(0, 0, 0, 0.87);
       box-sizing: border-box;
+
+      &-action {
+        grid-area: action_box;
+        max-width: 0px;
+        height: 100%;
+      }
     }
   }
 }

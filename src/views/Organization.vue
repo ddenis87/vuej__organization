@@ -36,6 +36,9 @@
 
       <table-multiline v-bind="propsTable"
                        v-if="listMultiRow">
+        <template #action="activeValue">
+          <table-action :activeValue="activeValue"></table-action>
+        </template>
         <template #[`body.institution_code`]="itemValue">
           <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
         </template>
@@ -62,9 +65,9 @@ export default {
   },
   data() {
     return {
-      listMultiRow: false,
+      listMultiRow: true,
       propsTableUno: {
-        activeField: 'id',
+        activeField: 'title',
         // container: {
         //   height: 500,
         //   width: 1200,
@@ -91,6 +94,7 @@ export default {
       },
 
       propsTable: {
+        activeField: 'id',
         fieldsTemplate: [
           [ '130',                'auto',  '120',   '200',                '160',                 '160',                'auto'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],

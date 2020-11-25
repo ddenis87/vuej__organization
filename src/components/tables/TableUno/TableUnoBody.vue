@@ -20,26 +20,16 @@
 export default {
   name: 'TableBody',
   props: {
-    // activeField: {type: String, default: '123'},
     listDataProps: Object,
     listDataHeader: Array,
   },
   computed: {
-    listItem() { console.log(this.$store.getters[this.listDataProps.state.getterData]); return this.$store.getters[this.listDataProps.state.getterData]; },
-    
-    // targetRowProps() { return this.targetRow; }
-  },
-  data() {
-    return {
-      // valueForActive: '',
-      // targetRow: {},
-    }
+    listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
   },
   created() { this.createEvents(); },
   updated() { this.createEvents(); },
   destroyed() { this.deleteEvents(); },
   methods: {
-    // computedValueForA
     loadData() {
       (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
     },
@@ -78,7 +68,7 @@ export default {
   color: rgba(0, 0, 0, 0.87);
   &__row {
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
-    &:hover { background-color: #eeeeee; }
+    &:hover { background-color: rgb(240, 240, 240); }
     &:hover > .body__col-action > .action-box {
       opacity: 1;
     }

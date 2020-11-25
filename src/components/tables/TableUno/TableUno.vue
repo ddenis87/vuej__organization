@@ -86,7 +86,6 @@ export default {
         stylePosition.push((this.fieldsTemplate[0][i] && +this.fieldsTemplate[0][i]) ? `width: ${this.fieldsTemplate[0][i]}px; ` : 'width: 1fr; ' );
       return stylePosition;
     },
-    targetRowProps() { return this.targetRow; }
   },
   data() {
     return {

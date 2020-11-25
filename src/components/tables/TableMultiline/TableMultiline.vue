@@ -18,6 +18,10 @@
           <template v-for="item in listHeader" #[item.key]="itemValue">
             <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
           </template>
+
+          <template v-slot:action="activeValue">
+            <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
+          </template>
         </table-multiline-body> 
       </div>
 
@@ -39,6 +43,7 @@ export default {
     TableMultilineBody,
   },
   props: {
+    activeField: String,
     container: {type: Object, default: () => ({ width: undefined, height: undefined })},
     fieldsTemplate: Array,
     header: Object,
@@ -64,6 +69,7 @@ export default {
     preparationBody() {
       let modifyBody = this.body;
       modifyBody.container = this.container;
+      modifyBody.activeField = this.activeField;
       return modifyBody;
     },
     stylePosition() {
