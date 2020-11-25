@@ -30,9 +30,11 @@ export default {
 
 <style lang="scss" scoped>
 .control__user {
+  position: relative;
   height: 52px;
   align-items: center;
   width: 100%;
+  z-index: 999;
 }
 .block-dark { background-color: lightgrey; }
 </style>

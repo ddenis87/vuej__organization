@@ -123,6 +123,7 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+  position: relative;
   width: 100%;
   .control {
     position: relative;
@@ -132,8 +133,8 @@ export default {
     align-items: center;
     height: 60px;
     margin-bottom: 10px;
-
     z-index: 888;
+    &__item { z-index: 999; }
     &__btn {
       display: flex;
       justify-content: flex-end;

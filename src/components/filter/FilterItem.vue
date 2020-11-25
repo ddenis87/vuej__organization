@@ -44,6 +44,8 @@ export default {
 
 <style lang="scss" scoped>
 .filter-item {
+  position: relative;
+  z-index: 999;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
