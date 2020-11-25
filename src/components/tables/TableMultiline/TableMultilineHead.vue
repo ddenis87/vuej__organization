@@ -1,5 +1,5 @@
 <template>
-  <div class="header-grid" :style="listStylePositionModify" >
+  <div class="header-grid" :style="listStyleLocationModify" >
     <div class="header-grid__item" 
         v-for="(item, index) in listData" 
         :key="index"
@@ -27,18 +27,18 @@ export default {
   props: {
     isScroll: {type: Boolean, default: false},
     listData: Array,
-    listStylePosition: String,
+    listStyleLocation: String,
   },
   computed: {
     isShowButtonUp() { return this.isScroll},
-    listStylePositionModify() {
-      let listStylePositionModify = '';
-      listStylePositionModify = this.listStylePosition.slice(0, -2);
-      listStylePositionModify += ' "';
-      let countColumn = (this.listStylePosition.split(';')[0]).split(':')[1].trim().split(' ').length;
-      listStylePositionModify += 'button_up '.repeat(countColumn);
-      listStylePositionModify = listStylePositionModify.slice(0, -1) + '"';
-      return this.listStylePosition;
+    listStyleLocationModify() {
+      let listStyleLocationModify = '';
+      listStyleLocationModify = this.listStyleLocation.slice(0, -2);
+      listStyleLocationModify += ' "';
+      let countColumn = (this.listStyleLocation.split(';')[0]).split(':')[1].trim().split(' ').length;
+      listStyleLocationModify += 'button_up '.repeat(countColumn);
+      listStyleLocationModify = listStyleLocationModify.slice(0, -1) + '"';
+      return this.listStyleLocation;
     }
   },
 }

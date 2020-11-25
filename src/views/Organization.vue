@@ -86,6 +86,7 @@ export default {
           },
         },
         body: {
+          height: 30,
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',
@@ -110,6 +111,7 @@ export default {
           },
         },
         body: {
+          height: 30,
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',

@@ -3,7 +3,7 @@
     <div class="table">
       <div class="table-header">
         <table-multiline-head :list-data="listHeader" 
-                              :list-style-position="stylePosition" :isScroll="isShowButtonUp" @go-up="goUp">
+                              :list-style-location="styleLocation" :isScroll="isShowButtonUp" @go-up="goUp">
           <template v-for="(item) in listHeader" #[item.key]="itemValue">
             <slot :name="`header.${(item) ? item.key : ''}`" 
                   v-bind:itemValue="itemValue.itemValue" ></slot>
@@ -14,7 +14,7 @@
       <div class="table-body">
         <table-multiline-body :list-data-props="preparationBody" 
                               :list-data-header="listHeader" 
-                              :list-style-location="stylePosition" @scroll="scrollBody">
+                              :list-style-location="styleLocation" @scroll="scrollBody">
           <template v-for="item in listHeader" #[item.key]="itemValue">
             <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
           </template>
@@ -72,7 +72,7 @@ export default {
       modifyBody.activeField = this.activeField;
       return modifyBody;
     },
-    stylePosition() {
+    styleLocation() {
       let styleLocation = '';
       
       if (this.container.width) {

@@ -6,10 +6,14 @@
          :style="listStyleLocationModify">
       
       <div class="body-grid__item-col" 
-            v-for="(itemF, indexF) in listDataHeader" 
-            :key="`body-col-${indexF}`"
-            :style="styleItems[indexF]">
-        <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
+           v-for="(itemF, indexF) in listDataHeader" 
+           :key="`body-col-${indexF}`"
+           :style="styleItems[indexF]">
+        <table-multiline-body-overflow>
+          <template>
+            <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
+          </template>
+        </table-multiline-body-overflow>
       </div>
       <div class="body-grid__item-col-action">
         <slot name="action" v-bind:activeValue="itemI[listDataProps.activeField]"></slot>
@@ -22,11 +26,16 @@
 <script>
 import { TABLE_MULTILINE } from './TableMultiline.js';
 
+import TableMultilineBodyOverflow from './TableMultilineBodyOverflow.vue'
+
 export default {
   name: 'TableMultilineBody',
   mixins: [
     TABLE_MULTILINE,
   ],
+  components: {
+    TableMultilineBodyOverflow,
+  },
   props: {
     listDataProps: Object,
     listDataHeader: Array,
@@ -99,6 +108,8 @@ export default {
       line-height: 1.5;
       color: rgba(0, 0, 0, 0.87);
       box-sizing: border-box;
+
+      // height: 30px;
 
       &-action {
         grid-area: action_box;
