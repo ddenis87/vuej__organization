@@ -2,11 +2,14 @@
   <tbody class="body" id="body">
     <tr class="body__row" 
         v-for="(itemI, indexI) in listItem" 
-        :key="`uno-body-row-${indexI}`" @mouseenter="enterRow" @mouseleave="leaveRow">
+        :key="`uno-body-row-${indexI}`">
       <td class="body__col" 
           v-for="(itemF, indexF) in listDataHeader" 
           :key="`uno-body-col-${indexF}`">
         <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
+      </td>
+      <td class="body__col-action">
+        <table-action></table-action>
       </td>
     </tr>
     <tr class="body__row" id="anchor"><td :colspan="listDataHeader.length"></td></tr>
@@ -14,14 +17,25 @@
 </template>
 
 <script>
+import TableAction from './TableAction.vue';
+
 export default {
   name: 'TableBody',
+  components: {
+    TableAction,
+  },
   props: {
     listDataProps: Object,
     listDataHeader: Array,
   },
   computed: {
     listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
+    targetRowProps() { return this.targetRow; }
+  },
+  data() {
+    return {
+      targetRow: {},
+    }
   },
   created() { this.createEvents(); },
   updated() { this.createEvents(); },
@@ -54,12 +68,6 @@ export default {
     deleteEvents() {
       (+this.listDataProps.container.height) ? document.getElementById('table-uno').removeEventListener('scroll', this.loadData) : window.removeEventListener('scroll', this.loadData);
     },
-    enterRow(event) {
-      this.$emit('enter-row', event.target);
-    },
-    leaveRow(event) {
-      this.$emit('leave-row', event.target);
-    }
   },
 }
 </script>
@@ -71,7 +79,10 @@ export default {
   color: rgba(0, 0, 0, 0.87);
   &__row {
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
-    &:hover { background-color:rgb(250, 250, 250); }
+    &:hover { background-color: #eeeeee; }
+    &:hover > .body__col-action > .action-box {
+      opacity: 1;
+    }
   }
   &__col {
     justify-content: start;
@@ -83,6 +94,10 @@ export default {
     line-height: 1.5;
     color: rgba(0, 0, 0, 0.87);
 
+    &-action {
+      max-width: 0px;
+      height: 100%;
+    }
     
   }
 }

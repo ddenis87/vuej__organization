@@ -7,7 +7,7 @@
     class="elevation-1"></v-data-table>
 
     <br>
-      <table-multiline v-bind="propsTable"
+      <table-uno v-bind="propsTable"
                       v-if="listMultiRow">
         <template #[`header.bk`]="itemValue">
           <div style="width: 100%; text-align: center;">
@@ -33,7 +33,7 @@
         <template #footer>
           <div style="width: 100%; text-align: center;">I'm Footer</div>
         </template>
-      </table-multiline>
+      </table-uno>
     </div>
     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>
     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci quod mollitia totam. Velit harum eveniet impedit. Laborum, explicabo sapiente labore, inventore quibusdam sed obcaecati libero vel nostrum adipisci ad. Dolorum?</p>

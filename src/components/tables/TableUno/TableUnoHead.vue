@@ -40,6 +40,7 @@ export default {
 .header {
   position: sticky;
   top: 0px;
+  z-index: 1;
   &__col {
     position: sticky;
     top: 0px;

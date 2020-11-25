@@ -13,9 +13,7 @@
     </table-uno-head>
     <table-uno-body :list-data-props="preparationBody"
                     :list-data-header="listHeader"
-                    @scroll="scrollBody"
-                    @enter-row="enterRow"
-                    @leave-row="leaveRow">
+                    @scroll="scrollBody">
       <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
           <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
       </template>
@@ -81,7 +79,7 @@ export default {
         stylePosition.push((this.fieldsTemplate[0][i] && +this.fieldsTemplate[0][i]) ? `width: ${this.fieldsTemplate[0][i]}px; ` : 'width: 1fr; ' );
       return stylePosition;
     },
-    
+    targetRowProps() { return this.targetRow; }
   },
   data() {
     return {
@@ -92,12 +90,6 @@ export default {
     this.$store.dispatch(this.header.state.dispatchInit);
   },
   methods: {
-    enterRow(target) {
-      console.log(target);
-    },
-    leaveRow(target) {
-      console.log(target);
-    },
     scrollBody(value) {
       this.isShowButtonUp = value;
     },
@@ -110,12 +102,11 @@ export default {
 
 <style lang="scss" scoped>
 .table-uno {
-  position: relative;
   width: 100%;
   font-family: "Roboto", sans-serif;
   border-radius: 5px;
   border: thin solid rgba(0, 0, 0, 0.12);
-  box-shadow: 0px 1px 1px grey;
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.5);
   .table {
     width: 100%;
     border-collapse: collapse;

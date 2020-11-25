@@ -22,8 +22,7 @@
           <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
         </template>
         <template #[`body.kpp`]="itemValue">
-          <v-chip style="position: static;" color="blue">{{ itemValue.itemValue }}</v-chip>
-          <!-- <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div> -->
+          <div style="width: 100%; text-align: center; border-radius: 10px 2px 10px 2px; background-color: green; color: white;">{{ itemValue.itemValue }}</div>
         </template>
         <template #footer>
           <div style="width: 100%; text-align: center;">I'm Footer</div>
@@ -113,6 +112,7 @@ export default {
 .home {
   width: 100%;
   .control {
+    position: relative;
     display: flex;
     
     justify-content: space-between;
@@ -133,7 +133,9 @@ export default {
     }
   }
   .body {
+    position: relative;
     z-index: 100;
+    margin-bottom: 20px;
   }
 }
 </style>
