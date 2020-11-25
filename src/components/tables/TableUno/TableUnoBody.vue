@@ -9,7 +9,7 @@
         <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
       </td>
       <td class="body__col-action">
-        <table-action></table-action>
+        <slot name="action" v-bind:activeValue="itemI[listDataProps.activeField]"></slot>
       </td>
     </tr>
     <tr class="body__row" id="anchor"><td :colspan="listDataHeader.length"></td></tr>
@@ -17,30 +17,29 @@
 </template>
 
 <script>
-import TableAction from './TableAction.vue';
-
 export default {
   name: 'TableBody',
-  components: {
-    TableAction,
-  },
   props: {
+    // activeField: {type: String, default: '123'},
     listDataProps: Object,
     listDataHeader: Array,
   },
   computed: {
-    listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
-    targetRowProps() { return this.targetRow; }
+    listItem() { console.log(this.$store.getters[this.listDataProps.state.getterData]); return this.$store.getters[this.listDataProps.state.getterData]; },
+    
+    // targetRowProps() { return this.targetRow; }
   },
   data() {
     return {
-      targetRow: {},
+      // valueForActive: '',
+      // targetRow: {},
     }
   },
   created() { this.createEvents(); },
   updated() { this.createEvents(); },
   destroyed() { this.deleteEvents(); },
   methods: {
+    // computedValueForA
     loadData() {
       (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
     },

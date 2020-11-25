@@ -18,6 +18,9 @@
 
       <table-uno v-bind="propsTableUno" 
                    v-if="!listMultiRow">
+        <template #action="activeValue">
+          <table-action :activeValue="activeValue"></table-action>
+        </template>
         <template #[`body.institution_code`]="itemValue">
           <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
         </template>
@@ -28,6 +31,8 @@
           <div style="width: 100%; text-align: center;">I'm Footer</div>
         </template>
       </table-uno>
+
+
 
       <table-multiline v-bind="propsTable"
                        v-if="listMultiRow">
@@ -45,23 +50,27 @@ import ControlUser from '@/components/control/ControlUser.vue';
 import TableUno from '@/components/tables/TableUno/TableUno.vue';
 import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
 
+import TableAction from '@/components/tables/TableAction.vue';
+
 export default {
   name: 'Organization',
   components: {
     ControlUser,
     TableUno,
     TableMultiline,
+    TableAction,
   },
   data() {
     return {
       listMultiRow: false,
       propsTableUno: {
+        activeField: 'id',
         // container: {
         //   height: 500,
         //   width: 1200,
         // },
         fieldsTemplate: [
-          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              'dsf',             'asd',          '200'  ],
+          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              'dsf',             'asd',          '400'  ],
           ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'industry_typing', 'budget_level', 'bk'  ],
         ],
         header: {
@@ -120,11 +129,12 @@ export default {
     height: 60px;
     margin-bottom: 10px;
 
-    z-index: 999;
+    z-index: 888;
     &__btn {
       display: flex;
       justify-content: flex-end;
       width: 60px;
+      z-index: 999;
     }
     &-view {
       padding: 10px;

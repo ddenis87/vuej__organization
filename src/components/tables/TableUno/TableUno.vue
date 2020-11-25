@@ -17,6 +17,10 @@
       <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
           <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
       </template>
+
+      <template v-slot:action="activeValue">
+        <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
+      </template>
     </table-uno-body>
     <tfoot class="table-footer">
       <tr>
@@ -42,6 +46,7 @@ export default {
     TableUnoBody,
   },
   props: {
+    activeField: String,
     container: {type: Object, default: () => ({ width: undefined, height: undefined })},
     fieldsTemplate: Array,
     header: Object,
@@ -50,6 +55,7 @@ export default {
   computed: {
     listStyle() {
       let {width, height} = this.container;
+
       let listStyleContainer = (width) ? `width: ${width}px; ` : 'width: 100%; ';
       listStyleContainer += (height) ? `max-height: ${height}px; overflow-y: scroll; ` : '';
       return listStyleContainer;
@@ -67,6 +73,7 @@ export default {
     preparationBody() {
       let modifyBody = this.body;
       modifyBody.container = this.container;
+      modifyBody.activeField = this.activeField;
       return modifyBody;
     },
     stylePosition() {

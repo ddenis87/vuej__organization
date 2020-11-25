@@ -1,13 +1,13 @@
 <template>
   <div class="action-box" id="active-box" :style="positionLeft">
     <div class="action-box__toolbar">
-      <v-btn class="toolbar__item" icon small>
+      <v-btn class="toolbar__item" icon small @click="clickButton">
         <v-icon>mdi-printer</v-icon>
       </v-btn>
-      <v-btn class="toolbar__item" icon small>
+      <v-btn class="toolbar__item" icon small @click="clickButton">
         <v-icon>mdi-content-copy</v-icon>
       </v-btn>
-      <v-btn class="toolbar__item" icon small>
+      <v-btn class="toolbar__item" icon small @click="clickButton">
         <v-icon>mdi-delete</v-icon>
       </v-btn>
     </div>
@@ -17,6 +17,9 @@
 <script>
 export default {
   name: 'TableAction',
+  props: {
+    activeValue: NaN,
+  },
   computed: {
     positionLeft() { return `left: -${this.widthActionBox}px;`; },
   },
@@ -29,7 +32,9 @@ export default {
     this.widthActionBox = document.getElementsByClassName('action-box')[0].getBoundingClientRect().right - document.getElementsByClassName('action-box')[0].getBoundingClientRect().left;
   },
   methods: {
-
+    clickButton() {
+      console.log(this.activeValue);
+    },
   },
 }
 </script>
