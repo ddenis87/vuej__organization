@@ -16,12 +16,17 @@
 <script>
 export default {
   name: 'TableMultilineBodyOverflow',
-  // props: {
-  //   scrollEvent: {type: Boolean, default: false},
-  // },
+  props: {
+    scrollEvent: {type: Boolean, default: false},
+  },
   // computed: {
   //   computedScrollParent() {}
   // },
+  watch: {
+    scrollEvent(newValue, oldValue) {
+      this.isShowPrompt = false;
+    }
+  },
   data() {
     return {
       isShowPrompt: false,
@@ -48,10 +53,10 @@ export default {
       this.promptLocation = `left: ${parentContainer.getBoundingClientRect().left}px; top: ${parentContainer.getBoundingClientRect().top + (parentContainer.getBoundingClientRect().bottom - parentContainer.getBoundingClientRect().top)}px;`;
       promptContainer.innerText = parentContainer.innerText;
       setTimeout(() => promptContainer.focus(), 100);
-      setTimeout(() => this.isShowPrompt = false, 5000);
+      // setTimeout(() => this.isShowPrompt = false, 5000);
     },
     hideOverflow() {
-      this.isShowPrompt == false;
+      this.isShowPrompt = false;
     },
     scrollPrompt() {
       console.log('scroll');
@@ -73,7 +78,7 @@ export default {
   }
   &__button-full {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-end;
     height: 0px;
     background-clip: border-box;
@@ -100,7 +105,7 @@ export default {
     box-shadow: 1px 1px 3px black; //#FFF59D;
     border-radius: 5px;
     background-color: #FFF9C4;
-
+    outline: none;
   }
   .box-full {
     &_cut {

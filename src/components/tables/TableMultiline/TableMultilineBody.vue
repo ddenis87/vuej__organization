@@ -9,7 +9,7 @@
            v-for="(itemF, indexF) in listDataHeader" 
            :key="`body-col-${indexF}`"
            :style="styleItems[indexF]">
-        <table-multiline-body-overflow>
+        <table-multiline-body-overflow :scrollEvent="isShowPrompt">
           <template>
             <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
           </template>
@@ -52,11 +52,17 @@ export default {
     listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
     listData() { return this.listDataHeader; }
   },
+  data() {
+    return {
+      isShowPrompt: true,
+    }
+  },
   created() { this.createEvents(); },
   updated() { this.createEvents(); },
   destroyed() { this.deleteEvents() },
   methods: {
     loadData() {
+      this.isShowPrompt = !this.isShowPrompt;
       (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
     },
     loadDataForComponent() {
