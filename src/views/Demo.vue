@@ -2,7 +2,8 @@
   <div class="about">
     <div class="body-item">
     <br>
-      <table-uno v-bind="propsTable"
+    <div class="table-scroll">
+      <table-multiline v-bind="propsTable"
                  v-if="listMultiRow">
         <template #action="activeValue">
           <table-action :activeValue="activeValue"></table-action>
@@ -31,7 +32,9 @@
         <template #footer>
           <div style="width: 100%; text-align: center;">I'm Footer</div>
         </template>
-      </table-uno>
+      </table-multiline>
+    </div>
+      
     </div>
    </div>
 </template>
@@ -56,12 +59,11 @@ export default {
         activeField: 'title',
         container: {
           height: 500,
-          width: 1200,
+          width: 1400,
         },
         fieldsTemplate: [
-          [ '90',              'auto',  '120', 'auto',             '160',               '160',              '200' ],
-          ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],
-          ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',     'bk'  ]
+          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              'auto'  ],
+          ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'bk'  ],
         ],
         header: {
           state: {
@@ -91,5 +93,11 @@ export default {
     &__images {
       height: 80px;
     }
+  .table-scroll {
+    width: 1240px;
+    padding: 5px;
+    border: 1px solid grey;
+    overflow-x: scroll;
+  }
 }
 </style>

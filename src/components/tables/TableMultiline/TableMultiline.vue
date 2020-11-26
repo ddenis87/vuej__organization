@@ -122,6 +122,7 @@ export default {
   border-radius: 5px;
   box-shadow: 0px 1px 1px grey;
   border: thin solid rgba(0, 0, 0, 0.12);
+  overflow: hidden;
   .table {
     .table-header {
       position: sticky;

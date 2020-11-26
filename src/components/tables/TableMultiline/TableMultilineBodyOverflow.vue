@@ -35,7 +35,7 @@ export default {
     this.$store.commit('INCREMENT_SEQUENCE_OVERFLOW_BOX');
   },
   mounted() {
-    window.addEventListener('scroll',() => this.isShowPrompt = false);
+    //window.addEventListener('scroll',() => this.isShowPrompt = false);
     this.countRowStyle = '-webkit-line-clamp: ' + (document.getElementById(`box-overflow-${this.sequenceOverflowBox}`).getBoundingClientRect().height / 25) + ';';
     (document.getElementById(`box-full-${this.sequenceOverflowBox}`).getBoundingClientRect().height > document.getElementById(`box-overflow-${this.sequenceOverflowBox}`).getBoundingClientRect().height) ? this.cutContent = true : this.cutContent = false;
   },
@@ -48,6 +48,7 @@ export default {
       this.promptLocation = `left: ${parentContainer.getBoundingClientRect().left}px; top: ${parentContainer.getBoundingClientRect().top + (parentContainer.getBoundingClientRect().bottom - parentContainer.getBoundingClientRect().top)}px;`;
       promptContainer.innerText = parentContainer.innerText;
       setTimeout(() => promptContainer.focus(), 100);
+      setTimeout(() => this.isShowPrompt = false, 5000);
     },
     hideOverflow() {
       this.isShowPrompt == false;
