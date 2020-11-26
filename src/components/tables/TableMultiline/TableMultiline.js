@@ -2,7 +2,7 @@ export const TABLE_MULTILINE = {
   computed: {
     styleItems() {
       let parsAreas = this.listStyleLocation.split(';')[1].split(':')[1].split('" "');
-      console.log(parsAreas);
+      // console.log(parsAreas);
       
       let styleItems = [];
       if (this.listData.length != 0) {
@@ -20,7 +20,7 @@ export const TABLE_MULTILINE = {
             // console.log(countRow);
             styleProps += `height: ${this.listDataProps.height * countRow}px; `
           }
-          console.log(styleProps);
+          // console.log(styleProps);
           styleItems.push(styleProps);
         }
       }

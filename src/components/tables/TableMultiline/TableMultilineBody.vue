@@ -58,7 +58,6 @@ export default {
   methods: {
     loadData() {
       (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
-
     },
     loadDataForComponent() {
       if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-multiline').getBoundingClientRect().bottom + 10) {
@@ -92,6 +91,7 @@ export default {
 .body {
   .body-grid__item {
     display: grid;
+    grid-gap: 0vw;
     grid-template-rows: auto;
     grid-template-columns: auto;
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
@@ -108,9 +108,8 @@ export default {
       line-height: 1.5rem;
       color: rgba(0, 0, 0, 0.87);
       box-sizing: border-box;
-
       min-height: 25px;
-
+      overflow: hidden;
       &-action {
         grid-area: action_box;
         max-width: 0px;
