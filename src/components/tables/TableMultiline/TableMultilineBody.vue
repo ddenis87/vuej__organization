@@ -87,7 +87,9 @@ export default {
       }
     },
     deleteEvents() {
-      (+this.listDataProps.container.height) ? document.getElementById('table-multiline').removeEventListener('scroll', this.loadData) : window.removeEventListener('scroll', this.loadData);
+      (+this.listDataProps.container.height) ? 
+        document.getElementById('table-multiline').removeEventListener('scroll', this.loadData) : 
+          window.removeEventListener('scroll', this.loadData);
     }
   },
 }

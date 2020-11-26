@@ -1,17 +1,16 @@
 <template>
   <div class="box-overflow" :class="{'box-overflow_cut': cutContent}" :id="`box-overflow-${sequenceOverflowBox}`" @scroll="scrollPrompt">
     <div class="box-overflow__button-full" v-if="cutContent" @click="showFullContent">
-      <!-- <div class="box-overflow__button-full-item" @click="showFullContent"> -->
-        <v-icon class="box-overflow__button-full-item" :class="{'box-overflow__button-full-item_active': isShowPrompt}" small color="blue" style="position: static;">mdi-chevron-right</v-icon>
-      <!-- </div> -->
+      <v-icon class="box-overflow__button-full-item" :class="{'box-overflow__button-full-item_active': isShowPrompt}" small color="blue" style="position: static;">mdi-chevron-right</v-icon>
     </div>
     <div class="box-full" :class="{'box-full_cut': cutContent}" :style="countRowStyle" :id="`box-full-${sequenceOverflowBox}`" @scroll="scrollPrompt">
       <slot></slot>
     </div>
     
-    <div class="box-overflow__prompt" :style="promptLocation" :id="`prompt-${sequenceOverflowBox}`" v-show="isShowPrompt" tabindex="1"  @blur="() => isShowPrompt = false" @scroll="scrollPrompt">
-      <!-- <v-btn class="box-overflow__prompt-btn"  :id="`prompt-btn-${sequenceOverflowBox}`" tabindex="1">123</v-btn> -->
-      <!-- <textarea class="box-overflow__prompt-text" :id="`prompt-text-${sequenceOverflowBox}`" tabindex="1" @blur="() => isShowPrompt = false"></textarea> -->
+    <div class="box-overflow__prompt" 
+         :style="promptLocation" 
+         :id="`prompt-${sequenceOverflowBox}`" v-show="isShowPrompt" tabindex="1"  
+         @blur="blurPrompt">
     </div>
   </div>
 </template>
@@ -22,9 +21,6 @@ export default {
   props: {
     scrollEvent: {type: Boolean, default: false},
   },
-  // computed: {
-  //   computedScrollParent() {}
-  // },
   watch: {
     scrollEvent(newValue, oldValue) {
       this.isShowPrompt = false;
@@ -33,6 +29,7 @@ export default {
   data() {
     return {
       eventBlur: false,
+      eventClick: false,
       isShowPrompt: false,
       promptLocation: '',
       countRowStyle: '',
@@ -44,19 +41,12 @@ export default {
     this.$store.commit('INCREMENT_SEQUENCE_OVERFLOW_BOX');
   },
   mounted() {
-    //window.addEventListener('scroll',() => this.isShowPrompt = false);
     this.countRowStyle = '-webkit-line-clamp: ' + (document.getElementById(`box-overflow-${this.sequenceOverflowBox}`).getBoundingClientRect().height / 25) + ';';
-    // console.log(document.getElementById(`box-overflow-${this.sequenceOverflowBox}`).getBoundingClientRect().height);
-    // console.log(document.getElementById(`box-full-${this.sequenceOverflowBox}`).getBoundingClientRect().height);
     (document.getElementById(`box-full-${this.sequenceOverflowBox}`).getBoundingClientRect().height > document.getElementById(`box-overflow-${this.sequenceOverflowBox}`).getBoundingClientRect().height) ? this.cutContent = true : this.cutContent = false;
   },
   methods: {
     showFullContent(event) {
-      // console.log(event);
-      // console.log(document.documentElement.getBoundingClientRect());
-      // if (this.eventBlur == true) { this.eventBlur = false; if (this.isShowPrompt == false) return;}
       this.isShowPrompt = !this.isShowPrompt;
-      this.eventBlur = false;
       let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`);
       let promptContainer = document.getElementById(`prompt-${this.sequenceOverflowBox}`);
       let shiftLeft = 0;
@@ -64,9 +54,11 @@ export default {
       this.promptLocation = `left: ${parentContainer.getBoundingClientRect().left - shiftLeft}px; top: ${parentContainer.getBoundingClientRect().top + (parentContainer.getBoundingClientRect().bottom - parentContainer.getBoundingClientRect().top)}px;`;
       promptContainer.innerText = parentContainer.innerText;
       setTimeout(() => promptContainer.focus(), 100);
-      // setTimeout(() => this.isShowPrompt = false, 5000);
     },
     hideOverflow() {
+      this.isShowPrompt = false;
+    },
+    blurPrompt(event) {
       this.isShowPrompt = false;
     },
     scrollPrompt() {
