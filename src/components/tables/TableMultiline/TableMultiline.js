@@ -18,7 +18,7 @@ export const TABLE_MULTILINE = {
             }
             // console.log(this.listDataProps.height);
             // console.log(countRow);
-            styleProps += `height: ${this.listDataProps.height * countRow}px; border: 1px solid red; `
+            styleProps += `height: ${this.listDataProps.height * countRow}px; `
           }
           console.log(styleProps);
           styleItems.push(styleProps);

@@ -102,14 +102,14 @@ export default {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      padding: 5px 10px;
+      padding: 0px 10px;
       font-family: "Roboto", sans-serif;
-      font-size: 0.875rem;
-      line-height: 1.5;
+      font-size: 14px;
+      line-height: 1.5rem;
       color: rgba(0, 0, 0, 0.87);
       box-sizing: border-box;
 
-      // height: 30px;
+      min-height: 25px;
 
       &-action {
         grid-area: action_box;

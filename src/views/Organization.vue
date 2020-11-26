@@ -73,8 +73,8 @@ export default {
         //   width: 1200,
         // },
         fieldsTemplate: [
-          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              'dsf',             'asd',          '400'  ],
-          ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'industry_typing', 'budget_level', 'bk'  ],
+          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              '550'  ],
+          ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'bk'  ],
         ],
         header: {
           state: {
@@ -86,7 +86,7 @@ export default {
           },
         },
         body: {
-          height: 30,
+          height: 25,
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',
@@ -97,7 +97,7 @@ export default {
       propsTable: {
         activeField: 'id',
         fieldsTemplate: [
-          [ '130',                'auto',  '120',   '200',                '160',                 '160',                'auto'  ],
+          [ '130',                'auto',  '120',   '200',                '160',                 '160',                '300'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',     'bk'  ]
         ],
@@ -111,7 +111,7 @@ export default {
           },
         },
         body: {
-          height: 30,
+          height: 25,
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',

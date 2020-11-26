@@ -63,11 +63,14 @@ export default {
 
 <style lang="scss" scoped>
 .body {
-  font-size: 0.875rem;
-  padding: 0 16px;
+  font-size: 14px;
+  padding: 0px 16px;
   color: rgba(0, 0, 0, 0.87);
   &__row {
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
+
+// height: 30px;
+  
     &:hover { background-color: rgb(240, 240, 240); }
     &:hover > .body__col-action > .action-box {
       opacity: 1;
@@ -76,13 +79,17 @@ export default {
   &__col {
     justify-content: start;
     align-items: center;
-    padding: 5px 10px;
+    padding: 0px 10px;
     text-align: start;
     font-family: "Roboto", sans-serif;
-    font-size: 0.875rem;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.5rem;
     color: rgba(0, 0, 0, 0.87);
+overflow: hidden;
 
+    // max-height: 30px;
+    
+    
     &-action {
       max-width: 0px;
       height: 100%;

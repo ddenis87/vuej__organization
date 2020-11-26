@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    sequenceOverflowBox: 0,
     statusLoad: false,
     optionRequest: {
       currentPage: 1,
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    GET_SEQUENCE_OVERFLOW_BOX(state) { return state.sequenceOverflowBox; },
     GET_STATUS_LOAD(state) { return state.statusLoad; },
     GET_OPTIONS_REQUEST(state) { return state.optionRequest; },
     GET_LIST_FIELDS(state) {     
@@ -44,6 +46,8 @@ export default new Vuex.Store({
     GET_LIST_SORTED_PROPS(state) { return state.listSortedProps; }
   },
   mutations: {
+    INCREMENT_SEQUENCE_OVERFLOW_BOX(state) { state.sequenceOverflowBox++; },
+    RESET_SEQUENCE_OVERFLOW_BOX(state) { state.sequenceOverflowBox = 0; },
     SET_STATUS_LOAD(state, status = false) { state.statusLoad = status; },
     SET_OPTIONS_REQUEST(state, option = {}) {
       state.optionRequest.currentPage = ('currentPage' in option) ? option.currentPage : 1;
@@ -102,6 +106,7 @@ export default new Vuex.Store({
     GET_LIST_OPTIONS(state) {
       state.commit('SET_STATUS_LOAD', true);
       state.commit('CLEAR_LIST_DATA');
+      state.commit('RESET_SEQUENCE_OVERFLOW_BOX');
       axios
         .options(`https://an67.pythonanywhere.com/api/organisations/`)
         .then(response => {
