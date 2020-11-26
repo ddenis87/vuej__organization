@@ -25,10 +25,10 @@
         <template #[`body.inn`]="itemValue">
           <div style="width: 100%; text-align: center; border-radius: 15px 2px 15px 2px; background-color: green; color: white;">{{ itemValue.itemValue }}</div>
         </template>
-        <template #[`body.kpp`]="itemValue">
+        <!-- <template #[`body.kpp`]="itemValue"> -->
           <!-- <v-chip style="position: static;" color="blue">{{ itemValue.itemValue }}</v-chip> -->
-          <div style="width: 100%; text-align: center; border-radius: 2px 10px 2px 10px; background-color: blue; color: white; padding: 5px">{{ itemValue.itemValue }}</div>
-        </template>
+          <!-- <div style="width: 100%; text-align: center; border-radius: 2px 10px 2px 10px; background-color: blue; color: white; padding: 5px">{{ itemValue.itemValue }}</div> -->
+        <!-- </template> -->
         <template #footer>
           <div style="width: 100%; text-align: center;">I'm Footer</div>
         </template>

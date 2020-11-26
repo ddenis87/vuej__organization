@@ -97,7 +97,7 @@ export default {
       propsTable: {
         activeField: 'id',
         fieldsTemplate: [
-          [ '130',                'auto',  '120',   '200',                '160',                 '160',                '300'  ],
+          [ '130',                'auto',  '120',   '200',                '160',                 '160',     '250'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',     'bk'  ]
         ],

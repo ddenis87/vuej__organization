@@ -1,13 +1,13 @@
 <template>
   <div class="action-box" id="active-box" :style="positionLeft">
     <div class="action-box__toolbar">
-      <v-btn class="toolbar__item" icon small @click="clickButtonPrint">
+      <v-btn class="toolbar__item" icon x-small @click="clickButtonPrint">
         <v-icon>mdi-printer</v-icon>
       </v-btn>
-      <v-btn class="toolbar__item" icon small @click="clickButtonCopy">
+      <v-btn class="toolbar__item" icon x-small @click="clickButtonCopy">
         <v-icon>mdi-content-copy</v-icon>
       </v-btn>
-      <v-btn class="toolbar__item" icon small @click="clickButtonDelete">
+      <v-btn class="toolbar__item" icon x-small @click="clickButtonDelete">
         <v-icon>mdi-delete</v-icon>
       </v-btn>
     </div>
