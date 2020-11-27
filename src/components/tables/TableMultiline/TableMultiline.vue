@@ -127,12 +127,17 @@ export default {
     .table-header {
       position: sticky;
       top: 0px;
+      z-index: 3;
+    }
+    .table-body {
+      z-index: 1;
     }
     .table-footer {
       position: sticky;
       bottom: 0px;
       border-top: thin solid rgba(0, 0, 0, 0.12);
       background-color: #FAFAFA;
+      z-index: 2;
     }
   }
 }

@@ -143,6 +143,8 @@ export default {
     grid-template-columns: auto;
     border-bottom: thin solid rgba(0, 0, 0, 0.12);
     background-color: rgba(255, 255, 255);
+
+    overflow: hidden;
     &:hover { background-color: rgb(240, 240, 240); }
     &:hover > .body-grid__item-col-action > .action-box { opacity: 1; }
     &-col {
@@ -157,10 +159,12 @@ export default {
       box-sizing: border-box;
       min-height: 25px;
       overflow: hidden;
+
       &-action {
         grid-area: action_box;
         max-width: 0px;
         height: 100%;
+        // border: thin solid red;
       }
     }
   }

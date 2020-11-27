@@ -59,7 +59,7 @@ export default {
         activeField: 'title',
         container: {
           height: 500,
-          width: 1400,
+          width: 1340,
         },
         fieldsTemplate: [
           ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              'auto'  ],
@@ -72,7 +72,7 @@ export default {
           },
         },
         body: {
-          height: 25,
+          height: 50,
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',
@@ -95,7 +95,7 @@ export default {
       height: 80px;
     }
   .table-scroll {
-    width: 1240px;
+    width: 1200px;
     padding: 5px;
     border: 1px solid grey;
     overflow-x: scroll;

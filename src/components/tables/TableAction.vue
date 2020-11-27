@@ -47,14 +47,18 @@ export default {
 
 <style lang="scss" scoped>
 .action-box {
+  // position: sticky;
+  // left: -200px;
+  
   position: relative;
+
   display: inline-flex;
   align-items: center;
   height: 100%;
   box-sizing: border-box;
   opacity: 0;
-  transition: opacity .3s;
-
+  transition: opacity .2s;
+  // z-index: 1;
   &__toolbar {
     display: flex;
     padding: 10px 10px;
