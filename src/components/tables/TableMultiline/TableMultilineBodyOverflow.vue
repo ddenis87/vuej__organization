@@ -1,6 +1,6 @@
 <template>
   <div class="box-overflow" :class="{'box-overflow_cut': cutContent}" :id="`box-overflow-${sequenceOverflowBox}`">
-    <button class="box-overflow__button-full" v-if="cutContent" @click="showFullContent" :disabled="disabledButtonFull">
+    <button class="box-overflow__button-full" :style="`height: ${heightButtonFull}px;`" v-if="cutContent" @click="showFullContent" :disabled="disabledButtonFull">
       <v-icon class="box-overflow__button-full-item" :class="{'box-overflow__button-full-item_active': isShowPrompt}" small color="blue" style="position: static;">{{ (isShowPrompt) ? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
     </button>
     <div class="box-full" :class="{'box-full_cut': cutContent}" :style="countRowStyle" :id="`box-full-${sequenceOverflowBox}`">
@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       disabledButtonFull: false,
+      heightButtonFull: 25,
       // eventBlur: false,
       // eventClick: false,
       isShowPrompt: false,
@@ -43,6 +44,7 @@ export default {
   },
   mounted() {
     let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`);
+    this.heightButtonFull = parentContainer.getBoundingClientRect().height;
     let fullContainer = document.getElementById(`box-full-${this.sequenceOverflowBox}`);
     this.countRowStyle = '-webkit-line-clamp: ' + (parentContainer.getBoundingClientRect().height / 25) + ';';
     (fullContainer.getBoundingClientRect().height > parentContainer.getBoundingClientRect().height) ? this.cutContent = true : this.cutContent = false;
@@ -88,7 +90,7 @@ export default {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    // height: 0px;
+    height: auto;
     width: 18px;
     background-clip: border-box;
     -webkit-text-fill-color: black;

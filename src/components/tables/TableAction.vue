@@ -29,7 +29,8 @@ export default {
     }
   },
   mounted() {
-    this.widthActionBox = document.getElementsByClassName('action-box')[0].getBoundingClientRect().right - document.getElementsByClassName('action-box')[0].getBoundingClientRect().left;
+    let actionBox = document.getElementsByClassName('action-box')[0].getBoundingClientRect();
+    this.widthActionBox = actionBox.right - actionBox.left;
   },
   methods: {
     clickButtonPrint() {
@@ -47,23 +48,20 @@ export default {
 
 <style lang="scss" scoped>
 .action-box {
-  // position: sticky;
-  // left: -200px;
-  
   position: relative;
-
   display: inline-flex;
+  padding-left: 15px;
+  padding-right: 15px;
   align-items: center;
   height: 100%;
   box-sizing: border-box;
   opacity: 0;
+  background-image: linear-gradient(-90deg, white 95%, rgba(0,0,0,0) 100%);
   transition: opacity .2s;
-  // z-index: 1;
   &__toolbar {
     display: flex;
     padding: 10px 10px;
     background-color: white;
-    border-radius: 5px 0px 0px 5px;
     box-shadow: -1px 0px 5px 0px #C1C1C1;
     box-sizing: border-box;
     .toolbar__item {

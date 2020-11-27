@@ -111,7 +111,7 @@ export default {
           },
         },
         body: {
-          height: 25,
+          height: 35,
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',
