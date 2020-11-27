@@ -12,13 +12,13 @@
       </div>
       
       <div class="table-body">
-        <table-multiline-body :list-data-props="preparationBody" 
+        <table-multiline-body :parent-container="parentContainer"
+                              :list-data-props="preparationBody" 
                               :list-data-header="listHeader" 
                               :list-style-location="styleLocation" @scroll="scrollBody">
           <template v-for="item in listHeader" #[item.key]="itemValue">
             <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
           </template>
-
           <template v-slot:action="activeValue">
             <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
           </template>
@@ -97,11 +97,15 @@ export default {
   },
   data() {
     return {
+      parentContainer: null,
       isShowButtonUp: false,
     }
   },
   created() {
     this.$store.dispatch(this.header.state.dispatchInit);
+  },
+  mounted() {
+    this.parentContainer = (+this.container.height) ? document.getElementById('table-multiline') : window;
   },
   methods: {
     scrollBody(value) {
@@ -122,7 +126,8 @@ export default {
   border-radius: 5px;
   box-shadow: 0px 1px 1px grey;
   border: thin solid rgba(0, 0, 0, 0.12);
-  // overflow-x: hidden;
+
+  // overflow: hidden;
   .table {
     .table-header {
       position: sticky;
@@ -131,6 +136,7 @@ export default {
     }
     .table-body {
       z-index: 1;
+      // overflow: hidden;
     }
     .table-footer {
       position: sticky;

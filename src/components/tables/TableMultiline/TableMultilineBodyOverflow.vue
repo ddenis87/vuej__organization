@@ -12,7 +12,7 @@
               small 
               color="blue">{{ (isShowPrompt) ? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
     </button>
-
+    <div v-else></div>
     <div class="box-overflow__box-full"
          :class="{'box-overflow__box-full_cut': cutContent}"
          :style="countRowStyle" 
@@ -57,7 +57,9 @@ export default {
     let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`);
     this.heightButtonFull = parentContainer.getBoundingClientRect().height;
     let fullContainer = document.getElementById(`box-full-${this.sequenceOverflowBox}`);
-    this.countRowStyle = '-webkit-line-clamp: ' + (parentContainer.getBoundingClientRect().height / 25) + ';';
+    this.countRowStyle = '-webkit-line-clamp: ' + (parentContainer.getBoundingClientRect().height / 25) + '; ';
+    // console.log(fullContainer.getBoundingClientRect().height);
+    // console.log(parentContainer.getBoundingClientRect().height);
     (fullContainer.getBoundingClientRect().height > parentContainer.getBoundingClientRect().height) ? this.cutContent = true : this.cutContent = false;
   },
   methods: {
@@ -85,11 +87,12 @@ export default {
 
 <style lang="scss" scoped>
 .box-overflow {
-  width: inherit;
+  // width: inherit;
+  width: 100%;
   height: inherit;
   text-align: inherit;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto 1fr;
   grid-template-rows: auto;
   overflow: hidden;
   &_cut {
@@ -111,8 +114,13 @@ export default {
     &:hover { background-color: #BBDEFB; cursor: pointer; }
   }
   &__box-full {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    // display: block;
+    // width: 100%;
     &_cut {
-      display: -webkit-box;
+      // display: block;
       -webkit-box-orient: vertical;
       padding-left: 5px;
     }

@@ -14,9 +14,9 @@
         </v-btn>
       </div>
     </div>
-    <div class="body">
+    <div class="home-body">
 
-      <!-- <table-uno v-bind="propsTableUno" 
+      <table-uno v-bind="propsTableUno" 
                    v-if="!listMultiRow">
         <template #action="activeValue">
           <table-action :activeValue="activeValue"></table-action>
@@ -30,9 +30,7 @@
         <template #footer>
           <div style="width: 100%; text-align: center;">I'm Footer</div>
         </template>
-      </table-uno> -->
-
-
+      </table-uno>
 
       <table-multiline v-bind="propsTable"
                        v-if="listMultiRow">
@@ -40,10 +38,11 @@
           <table-action :activeValue="activeValue"></table-action>
         </template>
         <template #[`body.institution_code`]="itemValue">
-          <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
+          <div class="org" style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
         </template>
       </table-multiline>
 
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, totam dolore. Debitis eaque, iure excepturi alias impedit vero ipsa porro consectetur optio hic quae incidunt, culpa ullam quia dolorum aliquam.</p>
     </div>
   </div>
 </template>
@@ -66,33 +65,33 @@ export default {
   data() {
     return {
       listMultiRow: true,
-      // propsTableUno: {
-      //   activeField: 'title',
-      //   // container: {
-      //   //   height: 500,
-      //   //   width: 1200,
-      //   // },
-      //   fieldsTemplate: [
-      //     ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              '550'  ],
-      //     ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'bk'  ],
-      //   ],
-      //   header: {
-      //     state: {
-      //       getterData: 'GET_LIST_FIELDS',
-      //       getterSortedProps: 'GET_LIST_SORTED_PROPS',
-      //       commitSorted: 'SET_LIST_DATA_SORTED',
-      //       commitSortedProps: 'SET_LIST_SORTED_PROPS',
-      //       dispatchInit: 'GET_LIST_OPTIONS',
-      //     },
-      //   },
-      //   body: {
-      //     height: 25,
-      //     state: {
-      //       getterData: 'GET_LIST_DATA',
-      //       dispatchData: 'GET_LIST_DATA',
-      //     },
-      //   }
-      // },
+      propsTableUno: {
+        activeField: 'title',
+        // container: {
+        //   height: 500,
+        //   width: 1200,
+        // },
+        fieldsTemplate: [
+          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              '550'  ],
+          ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'bk'  ],
+        ],
+        header: {
+          state: {
+            getterData: 'GET_LIST_FIELDS',
+            getterSortedProps: 'GET_LIST_SORTED_PROPS',
+            commitSorted: 'SET_LIST_DATA_SORTED',
+            commitSortedProps: 'SET_LIST_SORTED_PROPS',
+            dispatchInit: 'GET_LIST_OPTIONS',
+          },
+        },
+        body: {
+          height: 30,
+          state: {
+            getterData: 'GET_LIST_DATA',
+            dispatchData: 'GET_LIST_DATA',
+          },
+        }
+      },
 
       propsTable: {
         activeField: 'id',
@@ -111,7 +110,7 @@ export default {
           },
         },
         body: {
-          height: 35,
+          height: 25,
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',
@@ -149,10 +148,11 @@ export default {
       &__text { padding: 0; margin: 0; }
     }
   }
-  .body {
+  &-body {
     // position: relative;
     // z-index: 100;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
+    overflow: hidden;
   }
 }
 </style>
