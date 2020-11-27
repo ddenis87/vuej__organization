@@ -1,9 +1,22 @@
 <template>
-  <div class="box-overflow" :class="{'box-overflow_cut': cutContent}" :id="`box-overflow-${sequenceOverflowBox}`">
-    <button class="box-overflow__button-full" :style="`height: ${heightButtonFull}px;`" v-if="cutContent" @click="showFullContent" :disabled="disabledButtonFull">
-      <v-icon class="box-overflow__button-full-item" :class="{'box-overflow__button-full-item_active': isShowPrompt}" small color="blue" style="position: static;">{{ (isShowPrompt) ? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
+  <div class="box-overflow" 
+       :class="{'box-overflow_cut': cutContent}" 
+       :id="`box-overflow-${sequenceOverflowBox}`">
+    <button class="box-overflow__button-full" 
+            :style="`height: ${heightButtonFull}px;`"
+            :disabled="disabledButtonFull"
+            v-if="cutContent"
+            @click="showFullContent">
+      <v-icon class="box-overflow__button-full-item"
+              style="position: static;"
+              small 
+              color="blue">{{ (isShowPrompt) ? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
     </button>
-    <div class="box-full" :class="{'box-full_cut': cutContent}" :style="countRowStyle" :id="`box-full-${sequenceOverflowBox}`">
+
+    <div class="box-overflow__box-full"
+         :class="{'box-overflow__box-full_cut': cutContent}"
+         :style="countRowStyle" 
+         :id="`box-full-${sequenceOverflowBox}`">
       <slot></slot>
     </div>
     
@@ -30,8 +43,6 @@ export default {
     return {
       disabledButtonFull: false,
       heightButtonFull: 25,
-      // eventBlur: false,
-      // eventClick: false,
       isShowPrompt: false,
       promptLocation: '',
       countRowStyle: '',
@@ -98,12 +109,12 @@ export default {
     overflow: hidden;
     outline: none;
     &:hover { background-color: #BBDEFB; cursor: pointer; }
-    &-item {
-      transition: all .3s;
-      // &_active {
-      //   position: sticky;
-      //   transform: rotate(90deg);
-      // }
+  }
+  &__box-full {
+    &_cut {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      padding-left: 5px;
     }
   }
   &__prompt {
@@ -117,12 +128,6 @@ export default {
     background-color: #FFF9C4;
     outline: none;
   }
-  .box-full {
-    &_cut {
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      padding-left: 5px;
-    }
-  }
+  
 }
 </style>
