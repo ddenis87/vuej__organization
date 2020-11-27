@@ -1,7 +1,7 @@
 <template>
   <div class="box-overflow" :class="{'box-overflow_cut': cutContent}" :id="`box-overflow-${sequenceOverflowBox}`">
     <button class="box-overflow__button-full" v-if="cutContent" @click="showFullContent" :disabled="disabledButtonFull">
-      <v-icon class="box-overflow__button-full-item" :class="{'box-overflow__button-full-item_active': isShowPrompt}" small color="blue" style="position: static;">mdi-chevron-right</v-icon>
+      <v-icon class="box-overflow__button-full-item" :class="{'box-overflow__button-full-item_active': isShowPrompt}" small color="blue" style="position: static;">{{ (isShowPrompt) ? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
     </button>
     <div class="box-full" :class="{'box-full_cut': cutContent}" :style="countRowStyle" :id="`box-full-${sequenceOverflowBox}`">
       <slot></slot>
@@ -98,9 +98,10 @@ export default {
     &:hover { background-color: #BBDEFB; cursor: pointer; }
     &-item {
       transition: all .3s;
-      &_active {
-        transform: rotate(90deg);
-      }
+      // &_active {
+      //   position: sticky;
+      //   transform: rotate(90deg);
+      // }
     }
   }
   &__prompt {

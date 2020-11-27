@@ -16,7 +16,7 @@
     </div>
     <div class="body">
 
-      <table-uno v-bind="propsTableUno" 
+      <!-- <table-uno v-bind="propsTableUno" 
                    v-if="!listMultiRow">
         <template #action="activeValue">
           <table-action :activeValue="activeValue"></table-action>
@@ -30,7 +30,7 @@
         <template #footer>
           <div style="width: 100%; text-align: center;">I'm Footer</div>
         </template>
-      </table-uno>
+      </table-uno> -->
 
 
 
@@ -66,33 +66,33 @@ export default {
   data() {
     return {
       listMultiRow: true,
-      propsTableUno: {
-        activeField: 'title',
-        // container: {
-        //   height: 500,
-        //   width: 1200,
-        // },
-        fieldsTemplate: [
-          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              '550'  ],
-          ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'bk'  ],
-        ],
-        header: {
-          state: {
-            getterData: 'GET_LIST_FIELDS',
-            getterSortedProps: 'GET_LIST_SORTED_PROPS',
-            commitSorted: 'SET_LIST_DATA_SORTED',
-            commitSortedProps: 'SET_LIST_SORTED_PROPS',
-            dispatchInit: 'GET_LIST_OPTIONS',
-          },
-        },
-        body: {
-          height: 25,
-          state: {
-            getterData: 'GET_LIST_DATA',
-            dispatchData: 'GET_LIST_DATA',
-          },
-        }
-      },
+      // propsTableUno: {
+      //   activeField: 'title',
+      //   // container: {
+      //   //   height: 500,
+      //   //   width: 1200,
+      //   // },
+      //   fieldsTemplate: [
+      //     ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              '550'  ],
+      //     ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'bk'  ],
+      //   ],
+      //   header: {
+      //     state: {
+      //       getterData: 'GET_LIST_FIELDS',
+      //       getterSortedProps: 'GET_LIST_SORTED_PROPS',
+      //       commitSorted: 'SET_LIST_DATA_SORTED',
+      //       commitSortedProps: 'SET_LIST_SORTED_PROPS',
+      //       dispatchInit: 'GET_LIST_OPTIONS',
+      //     },
+      //   },
+      //   body: {
+      //     height: 25,
+      //     state: {
+      //       getterData: 'GET_LIST_DATA',
+      //       dispatchData: 'GET_LIST_DATA',
+      //     },
+      //   }
+      // },
 
       propsTable: {
         activeField: 'id',
@@ -125,23 +125,23 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  position: relative;
+  // position: relative;
   width: 100%;
   .control {
-    position: relative;
+    // position: relative;
     display: flex;
     
     justify-content: space-between;
     align-items: center;
     height: 60px;
     margin-bottom: 10px;
-    z-index: 888;
-    &__item { z-index: 999; }
+    // z-index: 888;
+    // &__item { z-index: 999; }
     &__btn {
       display: flex;
       justify-content: flex-end;
       width: 60px;
-      z-index: 999;
+      // z-index: 999;
     }
     &-view {
       padding: 10px;
@@ -150,8 +150,8 @@ export default {
     }
   }
   .body {
-    position: relative;
-    z-index: 100;
+    // position: relative;
+    // z-index: 100;
     margin-bottom: 20px;
   }
 }

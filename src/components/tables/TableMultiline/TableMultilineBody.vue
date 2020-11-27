@@ -57,40 +57,79 @@ export default {
       isShowPrompt: true,
     }
   },
-  created() { this.createEvents(); },
-  updated() { this.createEvents(); },
-  destroyed() { this.deleteEvents() },
+  // created() { this.createEvents(); },
+  // updated() { this.createEvents(); },
+  // destroyed() { this.deleteEvents() },
+  created() {
+    if(+this.listDataProps.container.height) {
+    if (document.getElementById('table-multiline'))
+      document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
+    } else {
+      window.addEventListener('scroll', this.loadData);
+    }
+  },
+  updated() {
+    if(+this.listDataProps.container.height) {
+      if (document.getElementById('table-multiline'))
+        document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
+    } else {
+       window.addEventListener('scroll', this.loadData);
+    }
+  },
+  destroyed() { window.removeEventListener('scroll', this.loadData); },
   methods: {
     loadData() {
       this.isShowPrompt = !this.isShowPrompt;
-      (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
-    },
-    loadDataForComponent() {
-      if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-multiline').getBoundingClientRect().bottom + 10) {
-        this.deleteEvents();
-        this.$store.dispatch(this.listDataProps.state.dispatchData);
-      }
-      (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
-    },
-    loadDataForPage() {
-      if (document.getElementById('table-multiline').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
-        this.deleteEvents();
-        this.$store.dispatch(this.listDataProps.state.dispatchData);
-      }
-    },
-    createEvents() {
-      if(+this.listDataProps.container.height) {
-        if (document.getElementById('table-multiline'))
-          document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
+      if (+this.listDataProps.container.height) {
+        if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-multiline').getBoundingClientRect().bottom + 10) {
+          console.log('load');
+          document.getElementById('table-multiline').removeEventListener('scroll', this.loadData);
+          this.$store.dispatch(this.listDataProps.state.dispatchData);
+        }
+        (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
       } else {
-        window.addEventListener('scroll', this.loadData);
+        if (document.getElementById('table-multiline').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
+          window.removeEventListener('scroll', this.loadData);
+          this.$store.dispatch(this.listDataProps.state.dispatchData);
+        }
       }
     },
-    deleteEvents() {
-      (+this.listDataProps.container.height) ? 
-        document.getElementById('table-multiline').removeEventListener('scroll', this.loadData) : 
-          window.removeEventListener('scroll', this.loadData);
-    }
+    // loadData() {
+    //   // this.deleteEvents();
+    //   console.log('loadData');
+    //   this.isShowPrompt = !this.isShowPrompt;
+    //   (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
+    // },
+    // loadDataForComponent() {
+    //   console.log('loadDataForComponent');
+    //   if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-multiline').getBoundingClientRect().bottom + 10) {
+    //     this.deleteEvents();
+    //     this.$store.dispatch(this.listDataProps.state.dispatchData);
+    //   }
+    //   (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
+    //   // this.createEvents();
+    // },
+    // loadDataForPage() {
+    //   console.log('loadDataForPage');
+    //   if (document.getElementById('table-multiline').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
+    //     this.deleteEvents();
+    //     this.$store.dispatch(this.listDataProps.state.dispatchData);
+    //   }
+    //   // this.createEvents();
+    // },
+    // createEvents() {
+    //   if(+this.listDataProps.container.height) {
+    //     if (document.getElementById('table-multiline'))
+    //       document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
+    //   } else {
+    //     window.addEventListener('scroll', this.loadData);
+    //   }
+    // },
+    // deleteEvents() {
+    //   (+this.listDataProps.container.height) ? 
+    //     document.getElementById('table-multiline').removeEventListener('scroll', this.loadData) : 
+    //       window.removeEventListener('scroll', this.loadData);
+    // }
   },
 }
 </script>
