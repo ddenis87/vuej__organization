@@ -2,18 +2,34 @@
   <div class="box-overflow" 
        :class="{'box-overflow_cut': cutContent}" 
        :id="`box-overflow-${sequenceOverflowBox}`">
-    <button class="box-overflow__button-full" 
-            :style="`height: ${heightButtonFull}px;`"
-            :disabled="disabledButtonFull"
-            v-if="cutContent"
-            @click="showFullContent">
-      <v-icon class="box-overflow__button-full-item"
-              style="position: static;"
-              small 
-              color="blue">{{ (isShowPrompt) ? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
-    </button>
-    <div v-else></div>
-    <div class="box-overflow__box-full"
+    
+    <table style="border-collaps: collaps;">
+      <tr>
+        <td>
+          <!-- <button class="box-overflow__button-full" 
+                  :style="`height: ${heightButtonFull}px;`"
+                  :disabled="disabledButtonFull"
+                  v-if="cutContent"
+                  @click="showFullContent">
+            <v-icon class="box-overflow__button-full-item"
+                    style="position: static;"
+                    small 
+                    color="blue">{{ (isShowPrompt) ? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
+          </button> -->
+        </td>
+        <td>
+          <div class="box-overflow__box-full" 
+               :id="`box-full-${sequenceOverflowBox}`">
+            <slot></slot>
+          </div>
+        </td>
+      </tr>
+    </table>
+    
+    
+    
+
+    <!-- <div class="box-overflow__box-full"
          :class="{'box-overflow__box-full_cut': cutContent}"
          :style="countRowStyle" 
          :id="`box-full-${sequenceOverflowBox}`">
@@ -24,7 +40,7 @@
          :style="promptLocation" 
          :id="`prompt-${sequenceOverflowBox}`" v-show="isShowPrompt" tabindex="1"  
          @blur="blurPrompt">
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -55,11 +71,11 @@ export default {
   },
   mounted() {
     let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`);
-    this.heightButtonFull = parentContainer.getBoundingClientRect().height;
+    // this.heightButtonFull = parentContainer.getBoundingClientRect().height;
     let fullContainer = document.getElementById(`box-full-${this.sequenceOverflowBox}`);
-    this.countRowStyle = '-webkit-line-clamp: ' + (parentContainer.getBoundingClientRect().height / 25) + '; ';
-    // console.log(fullContainer.getBoundingClientRect().height);
-    // console.log(parentContainer.getBoundingClientRect().height);
+    console.log(parentContainer.getBoundingClientRect().height);
+    console.log(fullContainer.getBoundingClientRect().height);
+    // this.countRowStyle = '-webkit-line-clamp: ' + (parentContainer.getBoundingClientRect().height / 25) + ';';
     (fullContainer.getBoundingClientRect().height > parentContainer.getBoundingClientRect().height) ? this.cutContent = true : this.cutContent = false;
   },
   methods: {
@@ -73,7 +89,6 @@ export default {
         parentContainer.getBoundingClientRect().left - (400 - (document.documentElement.getBoundingClientRect().width - event.clientX)) : parentContainer.getBoundingClientRect().left; //| Location prompt
       let shiftTop = parentContainer.getBoundingClientRect().top + (parentContainer.getBoundingClientRect().bottom - parentContainer.getBoundingClientRect().top);                      //|
       this.promptLocation = `left: ${shiftLeft}px; top: ${shiftTop}px;`;                                                                                                                //|
-
       promptContainer.innerText = parentContainer.innerText;
       setTimeout(() => promptContainer.focus(), 100);
     },
@@ -87,19 +102,36 @@ export default {
 
 <style lang="scss" scoped>
 .box-overflow {
-  // width: inherit;
-  width: 100%;
+  width: inherit;
   height: inherit;
   text-align: inherit;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto;
+  display: flex;
+  // border: thin solid red;
+  // display: inline;
+  // grid-template-columns: auto auto;
+  // grid-template-rows: auto;
   overflow: hidden;
   &_cut {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.87) 60%, white 100%);
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    // background: linear-gradient(180deg, rgba(0, 0, 0, 0.87) 60%, white 100%);
+    // background-clip: text;
+    // -webkit-text-fill-color: transparent;
   }
+
+   &__box-full {
+    //  display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    // display: block;
+    // height: auto;
+    // border: thin solid blue;
+    // &_cut {
+    //   display: -webkit-box;
+    //   -webkit-box-orient: vertical;
+    //   padding-left: 5px;
+    // }
+  }
+
   &__button-full {
     display: inline-flex;
     justify-content: center;
@@ -113,18 +145,7 @@ export default {
     outline: none;
     &:hover { background-color: #BBDEFB; cursor: pointer; }
   }
-  &__box-full {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    // display: block;
-    // width: 100%;
-    &_cut {
-      // display: block;
-      -webkit-box-orient: vertical;
-      padding-left: 5px;
-    }
-  }
+ 
   &__prompt {
     position: fixed;
     width: 400px;

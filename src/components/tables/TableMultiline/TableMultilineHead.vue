@@ -47,11 +47,12 @@ export default {
 <style lang="scss" scoped>
 .header-grid {
   padding: 10px 0px;
-  background-color: rgba(252,252,252);
+  // background-color: rgba(252,252,252);
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: auto;
   border-bottom: thin solid rgba(0, 0, 0, 0.12);
+  border-top: thin solid rgba(0, 0, 0, 0.12);
   &__item {
     display: flex;
     justify-content: flex-start;

@@ -55,7 +55,7 @@ export default {
   align-items: center;
   height: 100%;
   box-sizing: border-box;
-  opacity: 0;
+  opacity: 1;
   background-image: linear-gradient(-90deg, white 95%, rgba(0,0,0,0) 100%);
   transition: opacity .2s;
   &__toolbar {

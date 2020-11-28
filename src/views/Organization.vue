@@ -2,7 +2,29 @@
   <div class="home" id="home">
     <h2>Организации</h2>
 
-    <div class="control">
+    <div class="home-body">
+      <v-divider></v-divider>
+      <br>
+      <div class="body-item">
+        <div class="body-item__title">
+          <a href="#"><v-btn icon><v-icon>mdi-github</v-icon></v-btn></a>
+        </div>
+        <v-divider></v-divider>
+        <div class="body-item__body">
+          <table-multi :table-properties="propsTable">
+            <template #[`body.institution_code`]="itemValue">
+              <span style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</span>
+            </template>
+            <!-- <template #action="activeValue">
+              <table-action :activeValue="activeValue"></table-action>
+            </template> -->
+          </table-multi>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <div class="control" v-if="false">
       <control-user></control-user>
       <div class="control__btn">
         <v-btn title="Переключить вид"
@@ -14,36 +36,14 @@
         </v-btn>
       </div>
     </div>
-    <div class="home-body">
-
-      <table-uno v-bind="propsTableUno" 
-                   v-if="!listMultiRow">
-        <template #action="activeValue">
-          <table-action :activeValue="activeValue"></table-action>
-        </template>
-        <template #[`body.institution_code`]="itemValue">
-          <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
-        </template>
-        <template #[`body.kpp`]="itemValue">
-          <div style="width: 100%; text-align: center; border-radius: 10px 2px 10px 2px; background-color: green; color: white;">{{ itemValue.itemValue }}</div>
-        </template>
-        <template #footer>
-          <div style="width: 100%; text-align: center;">I'm Footer</div>
-        </template>
-      </table-uno>
-
+    <div class="home-body" v-if="false">
       <table-multiline v-bind="propsTable"
                        v-if="listMultiRow">
         <template #action="activeValue">
           <table-action :activeValue="activeValue"></table-action>
         </template>
-        <template #[`body.institution_code`]="itemValue">
-          <div class="org" style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
-        </template>
       </table-multiline>
-
-      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, totam dolore. Debitis eaque, iure excepturi alias impedit vero ipsa porro consectetur optio hic quae incidunt, culpa ullam quia dolorum aliquam.</p>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -51,6 +51,7 @@
 import ControlUser from '@/components/control/ControlUser.vue';
 import TableUno from '@/components/tables/TableUno/TableUno.vue';
 import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
+import TableMulti from '@/components/tables/TableMulti/TableMulti.vue';
 
 import TableAction from '@/components/tables/TableAction.vue';
 
@@ -60,7 +61,8 @@ export default {
     ControlUser,
     TableUno,
     TableMultiline,
-    TableAction,
+    TableMulti,
+    TableAction
   },
   data() {
     return {
@@ -96,9 +98,9 @@ export default {
       propsTable: {
         activeField: 'id',
         fieldsTemplate: [
-          [ '130',                'auto',  '120',   '200',                '160',                 '160',     '250'  ],
-          ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',     'bk'  ],
-          ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',     'bk'  ]
+          [ '100',             'auto',  '120', '150',              '180',               '150',           'df'  ],
+          ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',  'bk'    ],
+          ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]
         ],
         header: {
           state: {
@@ -126,33 +128,71 @@ export default {
 .home {
   // position: relative;
   width: 100%;
-  .control {
-    // position: relative;
-    display: flex;
+  // height: calc(100vh - 90px);
+  // padding: 10px 10px;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  // border: thin solid red;
+  // overflow: hidden;
+  // .control {
+  //   // position: relative;
+  //   display: flex;
     
-    justify-content: space-between;
-    align-items: center;
-    height: 60px;
-    margin-bottom: 10px;
-    // z-index: 888;
-    // &__item { z-index: 999; }
-    &__btn {
-      display: flex;
-      justify-content: flex-end;
-      width: 60px;
-      // z-index: 999;
-    }
-    &-view {
-      padding: 10px;
-      border: 1px solid green;
-      &__text { padding: 0; margin: 0; }
-    }
-  }
+  //   justify-content: space-between;
+  //   align-items: center;
+  //   height: 60px;
+  //   margin-bottom: 10px;
+  //   // z-index: 888;
+  //   // &__item { z-index: 999; }
+  //   &__btn {
+  //     display: flex;
+  //     justify-content: flex-end;
+  //     width: 60px;
+  //     // z-index: 999;
+  //   }
+  //   &-view {
+  //     padding: 10px;
+  //     border: 1px solid green;
+  //     &__text { padding: 0; margin: 0; }
+  //   }
+  // }
   &-body {
-    // position: relative;
-    // z-index: 100;
-    // margin-bottom: 20px;
-    overflow: hidden;
+    .body-item {
+      a { text-decoration: none; }
+      display: flex;
+      flex-direction: column;
+      // margin-bottom: 20px;
+      // height: 500px;
+      margin: 0;
+      color: rgba(0,0,0,.87);
+      background-color: #fff;
+      border-radius: 4px;
+      border: thin solid rgba(0,0,0,.12);
+      box-sizing: border-box;
+      &__title {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 8px;
+      }
+      &__body {
+// margin: 5px;
+        padding: 16px;
+        color: rgba(0,0,0,.87);
+
+        height: 450px;
+        // border: thin solid grey;
+        box-sizing: border-box;
+      }
+    }
+
+    // .body__over {
+    //   border: 1px solid red;
+    //   width: 400px;
+    //   height: 100px;
+    //   padding: 10px;
+    // }
   }
 }
 </style>
