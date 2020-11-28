@@ -15,9 +15,9 @@
             <template #[`body.institution_code`]="itemValue">
               <span style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</span>
             </template>
-            <!-- <template #action="activeValue">
+            <template #action="activeValue">
               <table-action :activeValue="activeValue"></table-action>
-            </template> -->
+            </template>
           </table-multi>
         </div>
       </div>

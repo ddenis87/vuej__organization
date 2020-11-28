@@ -5,9 +5,9 @@
         <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot>
         
       </div>
-      <!-- <div class="table-body__col-action">
+      <div class="table-body__col-action">
         <slot name="action" v-bind:activeValue="itemRow['title']"></slot>
-      </div> -->
+      </div>
     </div>
     
   </div>
@@ -30,7 +30,7 @@ export default {
 
 <style lang="scss" scoped>
 .table-body {
-  // border: thin solid red;
+  // border: thin solid blue;
   &__row {
     display: grid;
     grid-auto-rows: 30px;
@@ -39,23 +39,47 @@ export default {
     // border: thin solid red;
     width: 100%;
     font-size: .875rem;
+    &:hover { background-color: rgb(240, 240, 240); }
+    &:hover > .table-body__col-action > .action-box { opacity: 1; }
+
+    .table-body__col {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 0 16px;
+      color: rgba(0,0,0,.87);
+      line-height: 1.5;
+      font-size: .875rem;
+      text-rendering: optimizeLegibility;
+      transition: height 0.2s cubic-bezier(0.4, 0, 0.6, 1);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      &-action {
+        // border: thin solid red;
+        grid-area: action_box;
+      }
+      // border: thin solid black;
+    }
+    
+
   }
-  &__col {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0 16px;
-    // display: -webkit-box;
-    // -webkit-line-clamp: 3;
-    // -webkit-box-orient: vertical;
-    color: rgba(0,0,0,.87);
-    line-height: 1.5;
-    font-size: .875rem;
-    // height: 48px;
-    text-rendering: optimizeLegibility;
-    transition: height 0.2s cubic-bezier(0.4, 0, 0.6, 1);
-    -webkit-font-smoothing: antialiased;
-    overflow: hidden;
-  }
+  // &__col {
+  //   display: flex;
+  //   justify-content: flex-start;
+  //   align-items: center;
+  //   padding: 0 16px;
+  //   color: rgba(0,0,0,.87);
+  //   line-height: 1.5;
+  //   font-size: .875rem;
+  //   text-rendering: optimizeLegibility;
+  //   transition: height 0.2s cubic-bezier(0.4, 0, 0.6, 1);
+  //   -webkit-font-smoothing: antialiased;
+  //   overflow: hidden;
+  //   &-action {
+  //     // border: thin solid red;
+  //     grid-area: action_box;
+  //   }
+  //   // border: thin solid black;
+  // }
 }
 </style>

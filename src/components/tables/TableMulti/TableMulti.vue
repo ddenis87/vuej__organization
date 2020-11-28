@@ -45,19 +45,23 @@ export default {
         this.tableProperties.fieldsTemplate[i].forEach(item => headerItems.add(item));
       }
       if (headerList.length != 0 && headerItems.size != 0) {
+        headerItems.delete('action_box');
         headerItems.forEach(item => headerFilter.push(headerList.find(mitem => mitem.key == item)));
-        if (headerFilter.length != 0) 
+        if (headerFilter.length != 0) {
           headerFilter.forEach(item => item.style = `grid-area: ${item.key}`);
+        }
       }
       return headerFilter;
     },
     listBody() { return this.$store.getters[this.tableProperties.body.state.getterData]; },
 
     fieldsTemplate() {
+      let fieldsTemplateBase = [].concat(this.tableProperties.fieldsTemplate);
       let fieldsTemplate = { 'grid-template-areas': '', 'grid-template-columns': '' };
-      this.tableProperties.fieldsTemplate[0].forEach(item => fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'minmax(100px, 100vw) ');
-      for (let i = 1; i < this.tableProperties.fieldsTemplate.length; i++) fieldsTemplate['grid-template-areas'] += ` "${this.tableProperties.fieldsTemplate[i].join(' ')}"`;
-      // console.log(fieldsTemplate);
+      for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplateBase[i].push('action_box');
+      fieldsTemplateBase[0].forEach(item => fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'minmax(100px, 100vw) ');
+      fieldsTemplate['grid-template-columns'] += 'repeat(auto-fit, 0px) '
+      for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplate['grid-template-areas'] += ` "${fieldsTemplateBase[i].join(' ')}"`;
       return fieldsTemplate;
     }
   },
@@ -85,10 +89,12 @@ export default {
     top: 0px;
     display: inline-flex;
     background-color: #fff;
+    z-index: 3;
     // border: thin solid blue;
   }
   &-body {
     display: inline-flex;
+    z-index: 2;
     // border: thin solid orange;
   }
   &-footer {
