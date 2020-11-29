@@ -98,11 +98,11 @@ export default {
       propsTable: {
         activeField: 'id',
         fieldsTemplate: [
-          [ '100',             'auto',  '120', '150',              '180',               '150',           'df'  ],
+          [ '105',             '200',  '120', '150',              '180',               '150',           'df'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',  'bk'    ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]
         ],
-        fieldsFixed: ['institution_code'],
+        fieldsFixed: ['institution_code', 'title'],
         header: {
           state: {
             getterData: 'GET_LIST_FIELDS',

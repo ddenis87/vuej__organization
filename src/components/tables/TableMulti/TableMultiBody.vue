@@ -39,7 +39,8 @@ export default {
     // border: thin solid red;
     width: 100%;
     font-size: .875rem;
-    &:hover { background-color: rgb(240, 240, 240); }
+    // &:hover { background-color: rgb(240, 240, 240); }
+    // &:hover > .table-body__col { background-color: rgb(240, 240, 240); }
     &:hover > .table-body__col-action > .action-box { opacity: 1; }
 
     .table-body__col {
@@ -53,7 +54,7 @@ export default {
       text-rendering: optimizeLegibility;
       transition: height 0.2s cubic-bezier(0.4, 0, 0.6, 1);
       -webkit-font-smoothing: antialiased;
-      background-color: #FFFFFF;
+      // background-color: #FFFFFF;
       overflow: hidden;
       &-action {
         position: sticky;

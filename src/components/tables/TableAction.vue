@@ -74,7 +74,8 @@ export default {
     height: 100%;
     // padding: 10px 10px;
     // background-color: white;
-    background-color: rgb(240, 240, 240);
+    background-image: linear-gradient(-90deg, white 92%, rgba(0,0,0,0) 100%);
+    // background-color: rgb(240, 240, 240);
     // border-radius: 5px 0px 0px 5px;
     // box-shadow: -1px 0px 5px 0px #C1C1C1;
     box-sizing: border-box;

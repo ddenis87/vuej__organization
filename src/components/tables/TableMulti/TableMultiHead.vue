@@ -37,7 +37,7 @@ export default {
     font-size: .75rem;
     font-weight: bold;
     box-sizing: border-box;
-    background-color: #FFFFFF;
+    // background-color: #FFFFFF;
   }
 }
 </style>
