@@ -36,7 +36,8 @@ export default {
     color: rgba(0,0,0,.6);
     font-size: .75rem;
     font-weight: bold;
-    box-sizing: border-box;;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
   }
 }
 </style>

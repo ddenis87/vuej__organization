@@ -102,6 +102,7 @@ export default {
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',  'bk'    ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]
         ],
+        fieldsFixed: ['institution_code'],
         header: {
           state: {
             getterData: 'GET_LIST_FIELDS',

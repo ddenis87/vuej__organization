@@ -1,13 +1,13 @@
 <template>
   <div class="action-box" id="active-box" :style="positionLeft">
     <div class="action-box__toolbar">
-      <v-btn class="toolbar__item" icon fab small @click="clickButtonPrint">
+      <v-btn class="toolbar__item" icon @click="clickButtonPrint">
         <v-icon>mdi-printer</v-icon>
       </v-btn>
-      <v-btn class="toolbar__item" icon fab small @click="clickButtonCopy">
+      <v-btn class="toolbar__item" icon @click="clickButtonCopy">
         <v-icon>mdi-content-copy</v-icon>
       </v-btn>
-      <v-btn class="toolbar__item" icon fab small @click="clickButtonDelete">
+      <v-btn class="toolbar__item" icon @click="clickButtonDelete">
         <v-icon>mdi-delete</v-icon>
       </v-btn>
     </div>
@@ -80,7 +80,10 @@ export default {
     box-sizing: border-box;
     // border: thin solid black;
     .toolbar__item {
-      margin: 0px 5px;
+      &:first-child {
+        margin-left: 10px;
+      }
+      // margin: 0px 5px;
     }
   }
 }

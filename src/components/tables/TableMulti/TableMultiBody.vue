@@ -53,8 +53,11 @@ export default {
       text-rendering: optimizeLegibility;
       transition: height 0.2s cubic-bezier(0.4, 0, 0.6, 1);
       -webkit-font-smoothing: antialiased;
+      background-color: #FFFFFF;
       overflow: hidden;
       &-action {
+        position: sticky;
+        right: 0px;
         // border: thin solid red;
         grid-area: action_box;
       }

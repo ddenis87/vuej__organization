@@ -48,9 +48,13 @@ export default {
         headerItems.delete('action_box');
         headerItems.forEach(item => headerFilter.push(headerList.find(mitem => mitem.key == item)));
         if (headerFilter.length != 0) {
-          headerFilter.forEach(item => item.style = `grid-area: ${item.key}`);
+          headerFilter.forEach(item => {
+            item.style = `grid-area: ${item.key}; `;
+            if (this.tableProperties.fieldsFixed.includes(item.key)) { item.style += 'position: sticky; left: 0px; ' }
+          });
         }
       }
+      console.log(headerFilter);
       return headerFilter;
     },
     listBody() { return this.$store.getters[this.tableProperties.body.state.getterData]; },
