@@ -1,12 +1,12 @@
 <template>
   <div class="box-overflow" 
        :class="{'box-overflow_cut': cutContent}" 
-       :id="`box-overflow-${sequenceOverflowBox}`" :style="countRowStyle">
+       :id="`box-overflow-${sequenceOverflowBox}`">
     
-    <!-- <table style="border-collaps: collaps;">
+    <table style="border-collaps: collaps;">
       <tr>
         <td>
-          <button class="box-overflow__button-full" 
+          <!-- <button class="box-overflow__button-full" 
                   :style="`height: ${heightButtonFull}px;`"
                   :disabled="disabledButtonFull"
                   v-if="cutContent"
@@ -15,16 +15,16 @@
                     style="position: static;"
                     small 
                     color="blue">{{ (isShowPrompt) ? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
-          </button>
+          </button> -->
         </td>
-        <td> -->
+        <td>
           <div class="box-overflow__box-full" 
                :id="`box-full-${sequenceOverflowBox}`">
             <slot></slot>
           </div>
-        <!-- </td>
+        </td>
       </tr>
-    </table> -->
+    </table>
     
     
     
@@ -34,8 +34,8 @@
          :style="countRowStyle" 
          :id="`box-full-${sequenceOverflowBox}`">
       <slot></slot>
-    </div> -->
-<!--     
+    </div>
+    
     <div class="box-overflow__prompt" 
          :style="promptLocation" 
          :id="`prompt-${sequenceOverflowBox}`" v-show="isShowPrompt" tabindex="1"  
@@ -75,7 +75,7 @@ export default {
     let fullContainer = document.getElementById(`box-full-${this.sequenceOverflowBox}`);
     console.log(parentContainer.getBoundingClientRect().height);
     console.log(fullContainer.getBoundingClientRect().height);
-    this.countRowStyle = '-webkit-line-clamp: ' + (parentContainer.getBoundingClientRect().height / 25) + ';';
+    // this.countRowStyle = '-webkit-line-clamp: ' + (parentContainer.getBoundingClientRect().height / 25) + ';';
     (fullContainer.getBoundingClientRect().height > parentContainer.getBoundingClientRect().height) ? this.cutContent = true : this.cutContent = false;
   },
   methods: {
@@ -123,5 +123,32 @@ export default {
     //   padding-left: 5px;
     // }
   }
+
+  &__button-full {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 18px;
+    background-clip: border-box;
+    -webkit-text-fill-color: black;
+    border-left: thin solid rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    outline: none;
+    &:hover { background-color: #BBDEFB; cursor: pointer; }
+  }
+ 
+  &__prompt {
+    position: fixed;
+    width: 400px;
+    padding: 5px 10px;
+    -webkit-text-fill-color: black;
+    border: thin solid rgba(0, 0, 0, 0.12);
+    box-shadow: 1px 1px 3px black; //#FFF59D;
+    border-radius: 5px;
+    background-color: #FFF9C4;
+    outline: none;
+  }
+  
 }
 </style>
