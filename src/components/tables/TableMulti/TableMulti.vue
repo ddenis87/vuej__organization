@@ -54,15 +54,11 @@ export default {
               // console.log(this.tableProperties.fieldsTemplate[0]);
               let shiftLeft = (+this.tableProperties.fieldsTemplate[0][i - 1]) ? +this.tableProperties.fieldsTemplate[0][i - 1] : 0;
               headerFilter[i].style += `position: sticky; left: ${shiftLeft}px; `;
-              headerFilter[i].style += (i == this.tableProperties.fieldsFixed.length - 1) ? 'background-image: linear-gradient(90deg, white 95%, rgba(0,0,0,0) 100%); ' : 'background-color: white; ';
-              // if (i == this.tableProperties.fieldsFixed.length - 1) headerFilter[i].style += 'background-image: linear-gradient(90deg, white 95%, rgba(0,0,0,0) 100%); ';
-
+              headerFilter[i].style += (i == this.tableProperties.fieldsFixed.length - 1) ? 
+                'background-image: linear-gradient(90deg, white 95%, rgba(0,0,0,0) 100%); ' : 
+                  'background-color: white; ';
             }
           }
-          // headerFilter.forEach(item => {
-          //   item.style = `grid-area: ${item.key}; `;
-          //   if (this.tableProperties.fieldsFixed.includes(item.key)) { item.style += 'position: sticky; left: 0px; ' }
-          // });
         }
       }
       console.log(headerFilter);
@@ -75,7 +71,7 @@ export default {
       let fieldsTemplate = { 'grid-template-areas': '', 'grid-template-columns': '' };
       for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplateBase[i].push('action_box');
       fieldsTemplateBase[0].forEach(item => fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'minmax(100px, 100vw) ');
-      fieldsTemplate['grid-template-columns'] += 'repeat(auto-fit, 0px) '
+      fieldsTemplate['grid-template-columns'] += 'repeat(auto-fit, 0px) '; // For action button
       for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplate['grid-template-areas'] += ` "${fieldsTemplateBase[i].join(' ')}"`;
       return fieldsTemplate;
     }

@@ -3,6 +3,7 @@
     <h2>Организации</h2>
 
     <div class="home-body">
+      <br>
       <v-divider></v-divider>
       <br>
       <div class="body-item">
@@ -13,7 +14,7 @@
         <div class="body-item__body">
           <table-multi :table-properties="propsTable">
             <template #[`body.institution_code`]="itemValue">
-              <span style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</span>
+              <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
             </template>
             <template #action="activeValue">
               <table-action :activeValue="activeValue"></table-action>
@@ -21,6 +22,12 @@
           </table-multi>
         </div>
       </div>
+      <br>
+      <!-- <div class="body-item_small">
+        <table-overflow :count-row="3">
+          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias dolor itaque voluptate ea sunt ab, alias placeat voluptates impedit dolore sapiente esse necessitatibus doloribus provident unde numquam, quibusdam nesciunt nulla.</p>
+        </table-overflow>
+      </div> -->
     </div>
 
 
@@ -54,6 +61,7 @@ import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vu
 import TableMulti from '@/components/tables/TableMulti/TableMulti.vue';
 
 import TableAction from '@/components/tables/TableAction.vue';
+import TableOverflow from '../components/tables/TableOverflow.vue';
 
 export default {
   name: 'Organization',
@@ -62,10 +70,13 @@ export default {
     TableUno,
     TableMultiline,
     TableMulti,
-    TableAction
+    TableAction,
+    
+    TableOverflow,
   },
   data() {
     return {
+      longString: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias dolor itaque voluptate ea sunt ab, alias placeat voluptates impedit dolore sapiente esse necessitatibus doloribus provident unde numquam, quibusdam nesciunt nulla.',
       listMultiRow: true,
       propsTableUno: {
         activeField: 'title',
@@ -98,7 +109,7 @@ export default {
       propsTable: {
         activeField: 'id',
         fieldsTemplate: [
-          [ '105',             '200',  '120', '150',              '180',               '150',           'df'  ],
+          [ '105',             'qwe',  '120', '150',              '180',               '150',           'df'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',  'bk'    ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]
         ],
@@ -127,15 +138,11 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  // position: relative;
   width: 100%;
-  // height: calc(100vh - 90px);
-  // padding: 10px 10px;
   font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.5;
-  // border: thin solid red;
-  // overflow: hidden;
+
   // .control {
   //   // position: relative;
   //   display: flex;
@@ -159,6 +166,12 @@ export default {
   //   }
   // }
   &-body {
+    .body-item_small {
+      padding: 5px;
+      width: 200px;
+      height: 100px;
+      border: thin solid black;
+    }
     .body-item {
       a { text-decoration: none; }
       display: flex;
