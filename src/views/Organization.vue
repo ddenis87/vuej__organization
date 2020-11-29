@@ -1,11 +1,8 @@
 <template>
   <div class="home" id="home">
     <h2>Организации</h2>
-
     <div class="home-body">
-      <br>
       <v-divider></v-divider>
-      <br>
       <div class="body-item">
         <div class="body-item__title">
           <a href="#"><v-btn icon><v-icon>mdi-github</v-icon></v-btn></a>
@@ -170,7 +167,7 @@ export default {
       padding: 5px;
       width: 200px;
       height: 100px;
-      border: thin solid black;
+      // border: thin solid black;
     }
     .body-item {
       a { text-decoration: none; }
@@ -178,7 +175,7 @@ export default {
       flex-direction: column;
       // margin-bottom: 20px;
       // height: 500px;
-      margin: 0;
+      margin-top: 10px;
       color: rgba(0,0,0,.87);
       background-color: #fff;
       border-radius: 4px;

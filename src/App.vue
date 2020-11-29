@@ -46,7 +46,7 @@ export default {
     min-height: calc(100vh - 70px);
     
     box-sizing: border-box;
-    border: 1px solid grey;
+    // border: 1px solid grey;
   }
   &-footer { grid-area: app-footer; }
 
