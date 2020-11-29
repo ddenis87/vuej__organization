@@ -85,7 +85,7 @@ export default {
         //   width: 1200,
         // },
         fieldsTemplate: [
-          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              '550'  ],
+          ['130',              '400',  '120', 'auto','160',          '160',             'qwe',              '550'  ],
           ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'bk'  ],
         ],
         header: {
@@ -109,7 +109,7 @@ export default {
       propsTable: {
         activeField: 'id',
         fieldsTemplate: [
-          [ '105',             'qwe',  '120', '150',              '180',               '150',           'df'  ],
+          [ '105',             'qwe',  '120', '120',              '180',               '150',           '180'  ],
           ['institution_code', 'title', 'inn', 'egrul_status',     'industry_typing',   'budget_level',  'bk'    ],
           ['institution_code', 'title', 'kpp', 'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]
         ],

@@ -7,7 +7,8 @@
     <div class="table-multi-body">
       <table-multi-body :list-data="listBody"
                         :list-data-header="listHeader"
-                        :list-style="fieldsTemplate">
+                        :list-style="fieldsTemplate"
+                        :row-count="tableProperties.fieldsTemplate.length - 1">
         <template v-for="item in listHeader" #[item.key]="itemValue">
           <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
         </template>

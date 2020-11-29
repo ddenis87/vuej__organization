@@ -1,10 +1,10 @@
 <template>
   <div class="box-overflow" :id="`box-overflow-${this.sequenceOverflowBox}`">
-    <div class="box-full" :style="countRowStyle" :id="`box-full-${this.sequenceOverflowBox}`">
+    <div class="box-full" :style="rowCountStyle" :id="`box-full-${this.sequenceOverflowBox}`">
       <slot></slot>
     </div>
-    <div class="tips" 
-         :id="`tips-${sequenceOverflowBox}`" v-show="isShowTips">
+    <div class="tooltip" :style="tooltipsPosition"
+         :id="`tooltip-${sequenceOverflowBox}`" v-show="tooltipsShow">{{ textContent }}
     </div>
   </div>
 </template>
@@ -13,41 +13,57 @@
 export default {
   name: 'TableOverflow',
   props: {
-    countRow: Number,
+    textContent: '',
+    rowCount: Number,
+    windowWidth: 0,
   },
-  computed: {
-    // overflowContent() {
-      
-    // },
+  watch: {
+    windowWidth() {
+      this.computedOverflow();
+    },
   },
   data() {
     return {
       sequenceOverflowBox: this.$store.getters.GET_SEQUENCE_OVERFLOW_BOX,
-      countRowStyle: {'-webkit-line-clamp': ''},
-      isShowTips: false,
-      timerTips: {},
+      rowCountStyle: {'-webkit-line-clamp': ''},
+      tooltipsShow: false,
+      tooltipsTimer: {},
+      tooltipsPosition: {left: '0px', top: '0px'},
+      // isShowTips: false,
+      // timerTips: {},
     }
   },
   created() {
     this.$store.commit('INCREMENT_SEQUENCE_OVERFLOW_BOX');
   },
   mounted() {
-    let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`);
-    let fullContainer = document.getElementById(`box-full-${this.sequenceOverflowBox}`);
-    if (fullContainer.getBoundingClientRect().height > parentContainer.getBoundingClientRect().height) {
-      this.countRowStyle['-webkit-line-clamp'] = this.countRow;
-      parentContainer.addEventListener('mouseover', this.showTips);
-      parentContainer.addEventListener('mouseout', this.hideTips);
-    }
+    this.computedOverflow();
   },
   methods: {
+    computedOverflow() {
+      let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`);
+      let fullContainer = document.getElementById(`box-full-${this.sequenceOverflowBox}`);
+      if (fullContainer.getBoundingClientRect().height > parentContainer.getBoundingClientRect().height) {
+        this.rowCountStyle['-webkit-line-clamp'] = this.rowCount;
+        parentContainer.addEventListener('mouseover', this.showTips);
+        parentContainer.addEventListener('mouseout', this.hideTips);
+      }
+    },
     showTips(event) {
-      this.timerTips = setTimeout(() => this.isShowTips = true, 1000);
-      console.log('show');
+      let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`).getBoundingClientRect();
+      // let tooltipsContainer = document.getElementById(`tooltip-${this.sequenceOverflowBox}`);
+      let shiftLeft = (document.documentElement.getBoundingClientRect().width - event.clientX < 400) ?
+        parentContainer.left - (400 - (document.documentElement.getBoundingClientRect().width - event.clientX)) :
+          parentContainer.left + parentContainer.width + 20;
+      let shiftTop = parentContainer.top;
+      this.tooltipsPosition = {left: `${shiftLeft}px`, top: `${shiftTop}px`};
+      // console.log(shiftLeft);
+      this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 1000);
+      
     },
     hideTips() {
-      clearTimeout(this.timerTips);
-      this.isShowTips = false;
+      clearTimeout(this.tooltipsTimer);
+      this.tooltipsShow = false;
     }
   }
 }
@@ -56,7 +72,6 @@ export default {
 <style lang="scss" scoped>
 .box-overflow {
   display: inline-flex;
-  // padding: 5px;
   align-items: center;
   height: 100%;
   width: 100%;
@@ -68,11 +83,19 @@ export default {
     -webkit-box-orient: vertical;
     width: 100%;
     line-height: 1.5;
-    // align-items: center;
-    // align-self: center;
     // border: thin solid blue;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+  .tooltip {
+    position: fixed;
+    padding: 5px 10px;
+    max-width: 400px;
+    border-radius: 10px;
+    font-size: .8em;
+    color: rgba(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.816);
+    z-index: 999;
   }
 }
 </style>

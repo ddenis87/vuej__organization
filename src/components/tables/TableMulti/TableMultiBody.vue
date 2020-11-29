@@ -2,7 +2,7 @@
   <div class="table-body">
     <div class="table-body__row" :style="listStyle" v-for="(itemRow, indexRow) in listData" :key="`bodyRow-${indexRow}`">
       <div class="table-body__col" v-for="(itemCol, indexCol) in listDataHeader" :key="`bodyCol-${indexCol}`" :style="itemCol.style">
-        <table-overflow :count-row="2">
+        <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]">
           <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot>
         </table-overflow>
         
@@ -24,10 +24,25 @@ export default {
     listData: Array,
     listDataHeader: Array,
     listStyle: Object,
+    rowCount: Number,
   },
   computed: {
   },
+  data() {
+    return {
+      windowsWidth: Number,
+    }
+  },
+  created() {
+    window.addEventListener('resize', this.getWindowWidth);
+  },
+  mounted() {
+    // console.log(this.listStyle);
+  },
   methods: {
+    getWindowWidth() {
+      this.windowsWidth = document.documentElement.getBoundingClientRect().width;
+    }
   },
 }
 </script>
@@ -56,6 +71,7 @@ export default {
       line-height: 1.5;
       font-size: .875rem;
       text-rendering: optimizeLegibility;
+      text-overflow: ellipsis;
       transition: height 0.2s cubic-bezier(0.4, 0, 0.6, 1);
       -webkit-font-smoothing: antialiased;
       // background-color: #FFFFFF;
