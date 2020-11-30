@@ -2,9 +2,10 @@
   <div class="table-multi" id="table-multi">
     
     <div class="table-multi-head">
-      <v-progress-linear class="table-multi-progress" color="blue" indeterminate absolute v-show="isShowProgressBar"></v-progress-linear>
+      
       <table-multi-head :list-data="listHeader" 
                         :style="fieldsTemplate"></table-multi-head>
+      <v-progress-linear class="table-multi-progress" color="blue" indeterminate absolute bottom v-if="isShowProgressBar"></v-progress-linear>
     </div>
     
     <div class="table-multi-body">
@@ -20,6 +21,7 @@
           <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
         </template>
       </table-multi-body>
+      <v-overlay :absolute="true" :value="isShowProgressBar"></v-overlay>
     </div>
     <!-- <div class="table-multi-footer">
       123
@@ -132,6 +134,7 @@ export default {
     z-index: 30;
   }
   &-body {
+    position: relative;
     display: inline-flex;
     z-index: 20;
     // border: thin solid orange;

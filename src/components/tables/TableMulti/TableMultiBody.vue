@@ -5,13 +5,12 @@
         <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]">
           <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot>
         </table-overflow>
-        
       </div>
       <div class="table-body__col-action">
         <slot name="action" v-bind:activeValue="itemRow['title']"></slot>
       </div>
-      
     </div>
+    
   </div>
 </template>
 
@@ -36,8 +35,6 @@ export default {
   },
   created() {
     window.addEventListener('resize', this.getWindowWidth);
-  },
-  mounted() {
   },
   methods: {
     getWindowWidth() {
