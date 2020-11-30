@@ -60,7 +60,7 @@ export default {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      padding: 0 16px;
+      padding: 0 10px;
       color: rgba(0,0,0,.87);
       line-height: 1.5;
       font-size: .875rem;

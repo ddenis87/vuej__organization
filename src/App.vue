@@ -51,5 +51,11 @@ export default {
     margin-right: auto;
     width: 100%;
   }
+  .tooltip {
+    color: rgba(255, 255, 255);
+    background-color: rgba(0, 0, 0, 1);
+    transition: all .2s;
+    $tooltip-text-color: red;
+  }
 }
 </style>

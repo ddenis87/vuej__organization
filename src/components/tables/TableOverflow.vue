@@ -5,13 +5,14 @@
       <slot></slot>
     </div>
 
-    <v-tooltip v-model="tooltipsShow" max-width="400" bottom :position-x="+tooltipsPosition.left" :position-y="+tooltipsPosition.top">
+    <v-tooltip v-model="tooltipsShow"
+               max-width="400" 
+               bottom 
+               :position-x="+tooltipsPosition.left" 
+               :position-y="+tooltipsPosition.top" 
+               content-class="tooltip">
       <span>{{ textContent }}</span>
     </v-tooltip>
-    
-    <!-- <div class="tooltip" :style="tooltipsPosition"
-         :id="`tooltip-${sequenceOverflowBox}`" v-show="tooltipsShow">{{ textContent }}
-    </div> -->
   </div>
 </template>
 
@@ -35,8 +36,6 @@ export default {
       tooltipsShow: false,
       tooltipsTimer: {},
       tooltipsPosition: {left: '0', top: '0'},
-      // isShowTips: false,
-      // timerTips: {},
     }
   },
   created() {
@@ -65,7 +64,8 @@ export default {
       let shiftTop = parentContainer.top;
       this.tooltipsPosition = {left: event.clientX, top: event.clientY};
       // // console.log(shiftLeft);
-      this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 1000);
+      // this.tooltipsShow = true
+      this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 800);
       
     },
     hideTips() {
@@ -95,14 +95,16 @@ export default {
     overflow: hidden;
   }
   .tooltip {
-    position: fixed;
-    padding: 5px 10px;
-    max-width: 400px;
-    border-radius: 10px;
-    font-size: .8em;
     color: rgba(255, 255, 255);
-    background-color: rgba(0, 0, 0, 0.816);
-    z-index: 999;
+    background-color: rgba(0, 0, 0, 1);
+    // position: fixed;
+    // padding: 5px 10px;
+    // max-width: 400px;
+    // border-radius: 10px;
+    // font-size: .8em;
+    // color: rgba(255, 255, 255);
+    // background-color: rgba(0, 0, 0, 0.816);
+    // z-index: 999;
   }
 }
 </style>

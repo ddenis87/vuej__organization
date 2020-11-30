@@ -80,10 +80,22 @@ export default {
     fieldsTemplate() {
       let fieldsTemplateBase = [].concat(this.tableProperties.fieldsTemplate);
       let fieldsTemplate = { 'grid-template-areas': '', 'grid-template-columns': '' };
+      let minWidth = 100;
       for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplateBase[i].push('action_box');
-      fieldsTemplateBase[0].forEach(item => fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'minmax(100px, 100vw) ');
+
+      // fieldsTemplateBase[0].forEach(item => fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'minmax(100px, 100vw) ');
+
+      fieldsTemplateBase[0].forEach(item => {
+        if (Array.isArray(item)) {
+          fieldsTemplate['grid-template-columns'] += `minmax(${(+item[0]) ? +item[0] : minWidth}px, ${(+item[1]) ? item[1] + 'px' : '100vw'}) `;
+        } else {
+          fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'auto ';
+        }
+      });
+
       fieldsTemplate['grid-template-columns'] += 'repeat(auto-fit, 0px) '; // For action button
       for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplate['grid-template-areas'] += ` "${fieldsTemplateBase[i].join(' ')}"`;
+      console.log(fieldsTemplate['grid-template-columns']);
       return fieldsTemplate;
     }
   },
