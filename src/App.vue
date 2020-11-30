@@ -29,32 +29,26 @@ export default {
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
 .app {
-  // position: relative;
   display: grid;
   grid-template-areas: "app-header" "app-body";
   grid-template-columns: 100%;
-  grid-template-rows: 80px 1fr;
+  grid-template-rows: 80px 1vh;
   width: 100%;
   .button-up {
     z-index: 999;
   }
   &-header { grid-area: app-header; }
   &-body {
-    // position: relative;
-    padding: 10px 10px;
     grid-area: app-body;
-    min-height: calc(100vh - 70px);
-    
+    max-height: calc(100vh - 80px);
     box-sizing: border-box;
-    // border: 1px solid grey;
+    overflow: hidden;
   }
   &-footer { grid-area: app-footer; }
 
   .maxWidth {
     margin-left: auto;
     margin-right: auto;
-    // max-width: 2560px;
-    // min-width: 1240px;
     width: 100%;
   }
 }
