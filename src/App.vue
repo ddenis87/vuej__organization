@@ -40,7 +40,7 @@ export default {
   &-header { grid-area: app-header; }
   &-body {
     grid-area: app-body;
-    max-height: calc(100vh - 80px);
+    max-height: calc(100vh - 70px);
     box-sizing: border-box;
     overflow: hidden;
   }

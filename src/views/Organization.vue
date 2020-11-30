@@ -51,6 +51,11 @@ export default {
       listMultiRow: true,
 
       propsTable: {
+        state: {
+          progress: 'GET_STATUS_LOAD',
+          header: {},
+          body: {},
+        },
         activeField: 'id',
         fieldsTemplate: [
           [ '105',             'qwe',  '120', '160',              '180',               '150',           '180'  ],
@@ -61,9 +66,6 @@ export default {
         header: {
           state: {
             getterData: 'GET_LIST_FIELDS',
-            getterSortedProps: 'GET_LIST_SORTED_PROPS',
-            commitSorted: 'SET_LIST_DATA_SORTED',
-            commitSortedProps: 'SET_LIST_SORTED_PROPS',
             dispatchInit: 'GET_LIST_OPTIONS',
           },
         },
@@ -84,7 +86,7 @@ export default {
 <style lang="scss" scoped>
 .organization {
   width: 100%;
-  padding: 10px 10px;
+  padding: 0px 10px;
   font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.5;
@@ -103,7 +105,7 @@ export default {
       padding: 8px;
     }
     &__body {
-      height: calc(100vh - 200px);
+      height: calc(100vh - 170px);
       padding: 10px;
     }
   }

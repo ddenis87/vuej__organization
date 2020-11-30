@@ -1,9 +1,12 @@
 <template>
-  <div class="table-multi">
+  <div class="table-multi" id="table-multi">
+    
     <div class="table-multi-head">
+      <v-progress-linear class="table-multi-progress" color="blue" indeterminate absolute v-show="isShowProgressBar"></v-progress-linear>
       <table-multi-head :list-data="listHeader" 
                         :style="fieldsTemplate"></table-multi-head>
     </div>
+    
     <div class="table-multi-body">
       <table-multi-body :list-data="listBody"
                         :list-data-header="listHeader"
@@ -21,6 +24,7 @@
     <!-- <div class="table-multi-footer">
       123
     </div> -->
+    <div id="boot-anchor"></div>
   </div>
 </template>
 
@@ -38,6 +42,10 @@ export default {
     tableProperties: Object,
   },
   computed: {
+    isShowProgressBar() {
+      if (!this.$store.getters[this.tableProperties.state.progress]) this.parentElement.addEventListener('scroll', this.scrollBody);
+      return this.$store.getters[this.tableProperties.state.progress];
+    },
     listHeader() {
       let headerItems = new Set();
       let headerFilter = [];
@@ -62,7 +70,7 @@ export default {
           }
         }
       }
-      console.log(headerFilter);
+      // console.log(headerFilter);
       return headerFilter;
     },
     listBody() { return this.$store.getters[this.tableProperties.body.state.getterData]; },
@@ -77,8 +85,28 @@ export default {
       return fieldsTemplate;
     }
   },
+  data() {
+    return {
+      parentElement: '',
+      parentEdge: Number,
+    }
+  },
   created() {
     this.$store.dispatch(this.tableProperties.header.state.dispatchInit);
+  },
+  mounted() {
+    this.parentElement = document.getElementById('table-multi');
+    this.parentEdge = this.parentElement.getBoundingClientRect().bottom;
+  },
+  methods: {
+    scrollBody() {
+      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom;
+      if (bootAnchorEdge < this.parentEdge) {
+        this.parentElement.removeEventListener('scroll', this.scrollBody);
+        this.$store.dispatch(this.tableProperties.body.state.dispatchData);
+        console.log('Load');        
+      }
+    },
   },
 }
 </script>
@@ -101,12 +129,11 @@ export default {
     top: 0px;
     display: inline-flex;
     background-color: #fff;
-    z-index: 3;
-    // border: thin solid blue;
+    z-index: 30;
   }
   &-body {
     display: inline-flex;
-    z-index: 2;
+    z-index: 20;
     // border: thin solid orange;
   }
   &-footer {
