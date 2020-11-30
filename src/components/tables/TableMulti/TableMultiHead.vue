@@ -38,13 +38,15 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 3px 10px;
+    padding: 3px 16px;
     // border: thin solid teal;
     text-indent: initial;
     color: rgba(0,0,0,.6);
     font-size: .75rem;
     font-weight: bold;
+    text-overflow: ellipsis;
     box-sizing: border-box;
+    overflow: hidden;
     // background-color: #FFFFFF;
     &:hover > &-action { opacity: 1; }
     &-action {

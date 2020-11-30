@@ -23,9 +23,6 @@
       </table-multi-body>
       <v-overlay :absolute="true" :value="isShowProgressBar"></v-overlay>
     </div>
-    <!-- <div class="table-multi-footer">
-      123
-    </div> -->
     <div id="boot-anchor"></div>
   </div>
 </template>
@@ -65,9 +62,9 @@ export default {
               // console.log(this.tableProperties.fieldsTemplate[0]);
               let shiftLeft = (+this.tableProperties.fieldsTemplate[0][i - 1]) ? +this.tableProperties.fieldsTemplate[0][i - 1] : 0;
               headerFilter[i].style += `position: sticky; left: ${shiftLeft}px; `;
-              headerFilter[i].style += (i == this.tableProperties.fieldsFixed.length - 1) ? 
-                'background-image: linear-gradient(90deg, white 95%, rgba(0,0,0,0) 100%); ' : 
-                  'background-color: white; ';
+              // headerFilter[i].style += (i == this.tableProperties.fieldsFixed.length - 1) ? 
+              //   'background-image: linear-gradient(90deg, white 95%, rgba(0,0,0,0) 100%); ' : 
+              //     'background-color: white; ';
             }
           }
         }

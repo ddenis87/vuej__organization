@@ -53,7 +53,8 @@ export default {
   align-items: center;
   height: 100%;
   opacity: 0;
-  background-image: linear-gradient(-90deg, white 95%, rgba(0,0,0,0) 100%);
+   background-color: rgb(240, 240, 240);
+  // background-image: linear-gradient(-90deg, white 95%, rgba(0,0,0,0) 100%);
   transition: opacity .2s;
   // border: thin solid blue;
   &__toolbar {
@@ -61,7 +62,8 @@ export default {
     right: 0px;
     display: flex;
     height: 100%;
-    background-image: linear-gradient(-90deg, white 92%, rgba(0,0,0,0) 100%);
+    background-color: rgb(240, 240, 240); 
+    // background-image: linear-gradient(-90deg, white 92%, rgba(0,0,0,0) 100%);
     // background-color: rgb(240, 240, 240);
     box-sizing: border-box;
     .toolbar__item {
