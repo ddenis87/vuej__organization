@@ -1,8 +1,6 @@
 <template>
   <div class="table-multiline" id="table-multiline">
-    
     <div class="table-multiline-head">
-      
       <table-multiline-head :list-data="listHeader" 
                         :style="fieldsTemplate"></table-multiline-head>
       <v-progress-linear class="table-multiline-progress" color="blue" indeterminate absolute bottom v-if="isShowProgressBar"></v-progress-linear>
@@ -21,7 +19,6 @@
           <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
         </template>
       </table-multiline-body>
-      <v-overlay :absolute="true" :value="isShowProgressBar"></v-overlay>
     </div>
     <div id="boot-anchor"></div>
   </div>
@@ -123,6 +120,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'TableMultiline.scss';
+
 .table-multiline {
   background-color: #fff;
   color: rgba(0,0,0,.87);
