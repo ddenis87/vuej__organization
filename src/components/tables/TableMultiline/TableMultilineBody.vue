@@ -1,167 +1,82 @@
 <template>
-  <div class="body" id="body">
-    <div class="body-grid__item"
-         v-for="(itemI, indexI) in listItem" 
-         :key="`body-row-${indexI}`"
-         :style="listStyleLocationModify">
-      
-      <div class="body-grid__item-col" 
-           v-for="(itemF, indexF) in listDataHeader" 
-           :key="`body-col-${indexF}`"
-           :style="styleItems[indexF]">
-        <table-multiline-body-overflow :scrollEvent="isShowPrompt">
-          <!-- <template> -->
-            <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
-          <!-- </template> -->
-        </table-multiline-body-overflow>
+  <div class="table-body">
+    <div class="table-body__row" :style="listStyle" v-for="(itemRow, indexRow) in listData" :key="`bodyRow-${indexRow}`">
+      <div class="table-body__col" v-for="(itemCol, indexCol) in listDataHeader" :key="`bodyCol-${indexCol}`" :style="itemCol.style">
+        <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]">
+          <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot>
+        </table-overflow>
       </div>
-      <div class="body-grid__item-col-action">
-        <slot name="action" v-bind:activeValue="itemI[listDataProps.activeField]"></slot>
+      <div class="table-body__col-action">
+        <slot name="action" v-bind:activeValue="itemRow['title']"></slot>
       </div>
     </div>
-    <div id="anchor"></div>
+    
   </div>
 </template>
 
 <script>
-import { TABLE_MULTILINE } from './TableMultiline.js';
-import TableMultilineBodyOverflow from './TableMultilineBodyOverflow.vue'
+import TableOverflow from '../TableOverflow.vue'
+
 export default {
-  name: 'TableMultilineBody',
-  mixins: [
-    TABLE_MULTILINE,
-  ],
-  components: {
-    TableMultilineBodyOverflow,
-  },
+  components: { TableOverflow },
+  name: 'TableMultiBody',
   props: {
-    listDataProps: Object,
+    listData: Array,
     listDataHeader: Array,
-    listStyleLocation: String,
+    listStyle: Object,
+    rowCount: Number,
   },
   computed: {
-    listStyleLocationModify() {
-      let modifyAreas = this.listStyleLocation.split(';')[1].split(':')[1].split('" "');
-      for (let i = 0; i < modifyAreas.length; i++) {
-        modifyAreas[i] = '"' + (modifyAreas[i].replace(/"/g, '').trim()) + ' action_box"';
-      }
-      return `${this.listStyleLocation.split(';')[0]} 0px; grid-template-areas: ${modifyAreas.join().replace(/,/g, ' ')};`;
-    },
-    listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
-    listData() { return this.listDataHeader; }
   },
   data() {
     return {
-      isShowPrompt: true,
+      windowsWidth: Number,
     }
   },
-  // created() { this.createEvents(); },
-  // updated() { this.createEvents(); },
-  // destroyed() { this.deleteEvents() },
   created() {
-    if(+this.listDataProps.container.height) {
-    if (document.getElementById('table-multiline'))
-      document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
-    } else {
-      window.addEventListener('scroll', this.loadData);
-    }
+    window.addEventListener('resize', this.getWindowWidth);
   },
-  updated() {
-    if(+this.listDataProps.container.height) {
-      if (document.getElementById('table-multiline'))
-        document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
-    } else {
-       window.addEventListener('scroll', this.loadData);
-    }
-  },
-  destroyed() { window.removeEventListener('scroll', this.loadData); },
   methods: {
-    loadData() {
-      this.isShowPrompt = !this.isShowPrompt;
-      // if (+this.listDataProps.container.height) {
-      //   if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-multiline').getBoundingClientRect().bottom + 10) {
-      //     console.log('load');
-      //     document.getElementById('table-multiline').removeEventListener('scroll', this.loadData);
-      //     this.$store.dispatch(this.listDataProps.state.dispatchData);
-      //   }
-      //   (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
-      // } else {
-      //   if (document.getElementById('table-multiline').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
-      //     window.removeEventListener('scroll', this.loadData);
-      //     this.$store.dispatch(this.listDataProps.state.dispatchData);
-      //   }
-      // }
-    },
-    // loadData() {
-    //   // this.deleteEvents();
-    //   console.log('loadData');
-    //   this.isShowPrompt = !this.isShowPrompt;
-    //   (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
-    // },
-    // loadDataForComponent() {
-    //   console.log('loadDataForComponent');
-    //   if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-multiline').getBoundingClientRect().bottom + 10) {
-    //     this.deleteEvents();
-    //     this.$store.dispatch(this.listDataProps.state.dispatchData);
-    //   }
-    //   (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
-    //   // this.createEvents();
-    // },
-    // loadDataForPage() {
-    //   console.log('loadDataForPage');
-    //   if (document.getElementById('table-multiline').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
-    //     this.deleteEvents();
-    //     this.$store.dispatch(this.listDataProps.state.dispatchData);
-    //   }
-    //   // this.createEvents();
-    // },
-    // createEvents() {
-    //   if(+this.listDataProps.container.height) {
-    //     if (document.getElementById('table-multiline'))
-    //       document.getElementById('table-multiline').addEventListener('scroll', this.loadData);
-    //   } else {
-    //     window.addEventListener('scroll', this.loadData);
-    //   }
-    // },
-    // deleteEvents() {
-    //   (+this.listDataProps.container.height) ? 
-    //     document.getElementById('table-multiline').removeEventListener('scroll', this.loadData) : 
-    //       window.removeEventListener('scroll', this.loadData);
-    // }
+    getWindowWidth() {
+      this.windowsWidth = document.documentElement.getBoundingClientRect().width;
+    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.body {
-  .body-grid__item {
+.table-body {
+  &__row {
     display: grid;
-    grid-gap: 0vw;
-    grid-template-rows: auto;
-    grid-template-columns: auto;
-    border-bottom: thin solid rgba(0, 0, 0, 0.12);
-    background-color: rgba(255, 255, 255);
-    overflow: hidden;
-    &:hover { background-color: rgb(240, 240, 240); }
-    &:hover > .body-grid__item-col-action > .action-box { opacity: 1; }
-    &-col {
+    grid-auto-rows: 30px;
+    border-bottom: thin solid rgba(0,0,0,.12);
+    width: 100%;
+    font-size: .875rem;
+    // &:hover { background-color: rgb(240, 240, 240); }
+    &:hover > .table-body__col { background-color: rgb(240, 240, 240); }
+    &:hover > .table-body__col-action > .action-box { opacity: 1; }
+
+    .table-body__col {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      padding: 0px 10px;
-      font-family: "Roboto", sans-serif;
-      font-size: 14px;
-      line-height: 1.5rem;
-      color: rgba(0, 0, 0, 0.87);
-      box-sizing: border-box;
-      min-height: 25px;
+      padding: 0px 16px;
+      color: rgba(0,0,0,.87);
+      line-height: 1.5;
+      font-size: .875rem;
+      text-rendering: optimizeLegibility;
+      text-overflow: ellipsis;
+      transition: height 0.2s cubic-bezier(0.4, 0, 0.6, 1);
+      -webkit-font-smoothing: antialiased;
+      background-color: #FFFFFF;
       overflow: hidden;
       &-action {
-        grid-area: action_box;
-        max-width: 0px;
-        height: 100%;
+        position: sticky;
+        right: 0px;
         // border: thin solid red;
+        grid-area: action_box;
       }
+      // border: thin solid black;
     }
   }
 }

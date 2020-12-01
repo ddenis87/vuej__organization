@@ -1,112 +1,122 @@
 <template>
-  <div class="table-multiline" id="table-multiline" :style="listStyle">
-    <div class="table">
-      <div class="table-header">
-        <table-multiline-head :list-data="listHeader" 
-                              :list-style-location="styleLocation" :isScroll="isShowButtonUp" @go-up="goUp">
-          <template v-for="(item) in listHeader" #[item.key]="itemValue">
-            <slot :name="`header.${(item) ? item.key : ''}`" 
-                  v-bind:itemValue="itemValue.itemValue" ></slot>
-          </template>
-        </table-multiline-head>
-      </div>
+  <div class="table-multiline" id="table-multiline">
+    
+    <div class="table-multiline-head">
       
-      <div class="table-body">
-        <table-multiline-body :list-data-props="preparationBody" 
-                              :list-data-header="listHeader" 
-                              :list-style-location="styleLocation" @scroll="scrollBody">
-          <template v-for="item in listHeader" #[item.key]="itemValue">
-            <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-          </template>
-
-          <template v-slot:action="activeValue">
-            <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
-          </template>
-        </table-multiline-body> 
-      </div>
-
-      <div class="table-footer">
-        <slot name="footer"></slot>
-      </div>
+      <table-multiline-head :list-data="listHeader" 
+                        :style="fieldsTemplate"></table-multiline-head>
+      <v-progress-linear class="table-multiline-progress" color="blue" indeterminate absolute bottom v-if="isShowProgressBar"></v-progress-linear>
     </div>
+    
+    <div class="table-multiline-body">
+      <table-multiline-body :list-data="listBody"
+                        :list-data-header="listHeader"
+                        :list-style="fieldsTemplate"
+                        :row-count="tableProperties.fieldsTemplate.length - 1">
+        <template v-for="item in listHeader" #[item.key]="itemValue">
+          <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+        </template>
+        
+        <template v-slot:action="activeValue">
+          <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
+        </template>
+      </table-multiline-body>
+      <v-overlay :absolute="true" :value="isShowProgressBar"></v-overlay>
+    </div>
+    <div id="boot-anchor"></div>
   </div>
 </template>
 
 <script>
 import TableMultilineHead from './TableMultilineHead.vue';
 import TableMultilineBody from './TableMultilineBody.vue';
+
 export default {
   name: 'TableMultiline',
-  components: {
+  components: { 
     TableMultilineHead,
-    TableMultilineBody,
+    TableMultilineBody, 
   },
   props: {
-    activeField: String,
-    container: {type: Object, default: () => ({ width: undefined, height: undefined })},
-    fieldsTemplate: Array,
-    header: Object,
-    body: Object,
+    tableProperties: Object,
   },
   computed: {
-    listStyle() {
-      let {width, height} = this.container;
-      let listStyleContainer = (width) ? `width: ${width}px; ` : 'width: 100%; ';
-      listStyleContainer += (height) ? `max-height: ${height}px; overflow-y: scroll; ` : '';
-      return listStyleContainer;
+    isShowProgressBar() {
+      if (!this.$store.getters[this.tableProperties.state.progress]) this.parentElement.addEventListener('scroll', this.scrollBody);
+      return this.$store.getters[this.tableProperties.state.progress];
     },
     listHeader() {
       let headerItems = new Set();
       let headerFilter = [];
-      let headerList = this.$store.getters[this.header.state.getterData];
-      for (let i = 1; i < this.fieldsTemplate.length; i++) {
-        this.fieldsTemplate[i].forEach(item => headerItems.add(item));
+      let headerList = this.$store.getters[this.tableProperties.header.state.getterData];
+      for (let i = 1; i < this.tableProperties.fieldsTemplate.length; i++) {
+        this.tableProperties.fieldsTemplate[i].forEach(item => headerItems.add(item));
       }
-      headerItems.forEach(item => headerFilter.push(headerList.find(mitem => mitem.key == item)));
+      if (headerList.length != 0 && headerItems.size != 0) {
+        headerItems.delete('action_box');
+        headerItems.forEach(item => headerFilter.push(headerList.find(mitem => mitem.key == item)));
+        if (headerFilter.length != 0) {
+          for (let i = 0; i < headerFilter.length; i++) {
+            headerFilter[i].style = `grid-area: ${headerFilter[i].key}; `;
+            if ('fieldsFixed' in this.tableProperties && this.tableProperties.fieldsFixed.includes(headerFilter[i].key)) {
+              // console.log(this.tableProperties.fieldsTemplate[0]);
+              let shiftLeft = (this.tableProperties.fieldsTemplate[0][i - 1]) ? +this.tableProperties.fieldsTemplate[0][i - 1][0] : 0;
+              headerFilter[i].style += `position: sticky; left: ${shiftLeft}px; `;
+              // headerFilter[i].style += (i == this.tableProperties.fieldsFixed.length - 1) ? 
+              //   'background-image: linear-gradient(90deg, white 95%, rgba(0,0,0,0) 100%); ' : 
+              //     'background-color: white; ';
+            }
+          }
+        }
+      }
+      // console.log(headerFilter);
       return headerFilter;
     },
-    preparationBody() {
-      let modifyBody = this.body;
-      modifyBody.container = this.container;
-      modifyBody.activeField = this.activeField;
-      return modifyBody;
-    },
-    styleLocation() {
-      let styleLocation = '';
-      
-      if (this.container.width) {
-        let maxWidth = 0;
-        this.fieldsTemplate[0].forEach(element => {if (+element) maxWidth += +element });
-        if (maxWidth < this.container.width) {
-          styleLocation += 'grid-template-columns:';
-          this.fieldsTemplate[0].forEach(element => styleLocation += ` ${(+element) ? `${element}px` : '1fr'}`);
+    listBody() { return this.$store.getters[this.tableProperties.body.state.getterData]; },
+
+    fieldsTemplate() {
+      let fieldsTemplateBase = [].concat(this.tableProperties.fieldsTemplate);
+      let fieldsTemplate = { 'grid-template-areas': '', 'grid-template-columns': '' };
+      let minWidth = 100;
+      for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplateBase[i].push('action_box');
+
+      // fieldsTemplateBase[0].forEach(item => fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'minmax(100px, 100vw) ');
+
+      fieldsTemplateBase[0].forEach(item => {
+        if (Array.isArray(item)) {
+          fieldsTemplate['grid-template-columns'] += `minmax(${(+item[0]) ? +item[0] : minWidth}px, ${(+item[1]) ? item[1] + 'px' : '100vw'}) `;
         } else {
-          styleLocation += 'grid-template-columns: repeat(auto-fit, 1fr) ';
+          fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'auto ';
         }
-      } else {
-        styleLocation += 'grid-template-columns:';
-        this.fieldsTemplate[0].forEach(element => styleLocation += ` ${(+element) ? `${element}px` : '1fr'}`);
-      }
-      styleLocation += '; grid-template-areas:';
-      for (let i = 1; i < this.fieldsTemplate.length; i++) styleLocation += ` "${this.fieldsTemplate[i].join(' ')}"`;
-      styleLocation += '; ';
-      return styleLocation;
-    },
+      });
+
+      fieldsTemplate['grid-template-columns'] += 'repeat(auto-fit, 0px) '; // For action button
+      for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplate['grid-template-areas'] += ` "${fieldsTemplateBase[i].join(' ')}"`;
+      console.log(fieldsTemplate['grid-template-columns']);
+      return fieldsTemplate;
+    }
   },
   data() {
     return {
-      isShowButtonUp: false,
+      parentElement: '',
+      parentEdge: Number,
     }
   },
   created() {
-    this.$store.dispatch(this.header.state.dispatchInit);
+    this.$store.dispatch(this.tableProperties.header.state.dispatchInit);
+  },
+  mounted() {
+    this.parentElement = document.getElementById('table-multiline');
+    this.parentEdge = this.parentElement.getBoundingClientRect().bottom;
   },
   methods: {
-    scrollBody(value) {
-      this.isShowButtonUp = value;
-    },
-    goUp() {
-      document.getElementById('table-multiline').scrollTo(0,0);
+    scrollBody() {
+      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 100;
+      if (bootAnchorEdge < this.parentEdge) {
+        this.parentElement.removeEventListener('scroll', this.scrollBody);
+        this.$store.dispatch(this.tableProperties.body.state.dispatchData);
+        console.log('Load');        
+      }
     },
   },
 }
@@ -114,29 +124,49 @@ export default {
 
 <style lang="scss" scoped>
 .table-multiline {
-  width: 100%;
-  margin-top: -1px;
-  font-family: "Roboto", sans-serif;
-  border-radius: 5px;
-  box-shadow: 0px 1px 1px grey;
-  border: thin solid rgba(0, 0, 0, 0.12);
-  // overflow-x: hidden;
-  .table {
-    .table-header {
-      position: sticky;
-      top: 0px;
-      z-index: 3;
-    }
-    .table-body {
-      z-index: 1;
-    }
-    .table-footer {
-      position: sticky;
-      bottom: 0px;
-      border-top: thin solid rgba(0, 0, 0, 0.12);
-      background-color: #FAFAFA;
-      z-index: 2;
-    }
+  background-color: #fff;
+  color: rgba(0,0,0,.87);
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);
+
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: auto;
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,.4);
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    &-thumb { background-color: rgba(0,0,0,.4); }
+  }
+  &-head {
+    position: sticky;
+    top: 0px;
+    display: inline-flex;
+    background-color: #fff;
+    z-index: 30;
+  }
+  &-body {
+    position: relative;
+    display: inline-flex;
+    z-index: 20;
+    // border: thin solid orange;
+  }
+  &-footer {
+    position: sticky;
+    bottom: 0px;
+    height: 25px;
+    border: thin solid orange;
+  }
+
+  .tooltip {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255);
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 999;
   }
 }
 </style>

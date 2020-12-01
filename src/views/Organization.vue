@@ -11,14 +11,14 @@
       </div>
       <v-divider></v-divider>
       <div class="body-item__body">
-        <table-multi :table-properties="propsTable">
+        <table-multiline :table-properties="propsTable">
           <template #[`body.institution_code`]="itemValue">
             <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
           </template>
           <template #action="activeValue">
             <table-action :activeValue="activeValue"></table-action>
           </template>
-        </table-multi>
+        </table-multiline>
       </div>
     </div>
 
@@ -27,23 +27,17 @@
 
 <script>
 import ControlUser from '@/components/control/ControlUser.vue';
-import TableUno from '@/components/tables/TableUno/TableUno.vue';
 import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
-import TableMulti from '@/components/tables/TableMulti/TableMulti.vue';
 
 import TableAction from '@/components/tables/TableAction.vue';
-import TableOverflow from '../components/tables/TableOverflow.vue';
 
 export default {
   name: 'Organization',
   components: {
     ControlUser,
-    TableUno,
     TableMultiline,
-    TableMulti,
+
     TableAction,
-    
-    TableOverflow,
   },
   data() {
     return {
