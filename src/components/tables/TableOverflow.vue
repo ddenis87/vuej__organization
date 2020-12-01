@@ -55,18 +55,13 @@ export default {
       }
     },
     showTips(event) {
-      // console.log(event);
       let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`).getBoundingClientRect();
-      // let tooltipsContainer = document.getElementById(`tooltip-${this.sequenceOverflowBox}`);
       let shiftLeft = (document.documentElement.getBoundingClientRect().width - event.clientX < 400) ?
         parentContainer.left - (400 - (document.documentElement.getBoundingClientRect().width - event.clientX)) :
           parentContainer.left + parentContainer.width + 20;
       let shiftTop = parentContainer.top;
       this.tooltipsPosition = {left: event.clientX, top: event.clientY};
-      // // console.log(shiftLeft);
-      // this.tooltipsShow = true
       this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 800);
-      
     },
     hideTips() {
       clearTimeout(this.tooltipsTimer);
@@ -82,29 +77,18 @@ export default {
   align-items: center;
   height: 100%;
   width: 100%;
-  // border: thin solid red;
   overflow: hidden;
   .box-full {
     display: -webkit-box;
-    // -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     width: 100%;
     line-height: 1.5;
-    // border: thin solid blue;
     text-overflow: ellipsis;
     overflow: hidden;
   }
   .tooltip {
     color: rgba(255, 255, 255);
     background-color: rgba(0, 0, 0, 1);
-    // position: fixed;
-    // padding: 5px 10px;
-    // max-width: 400px;
-    // border-radius: 10px;
-    // font-size: .8em;
-    // color: rgba(255, 255, 255);
-    // background-color: rgba(0, 0, 0, 0.816);
-    // z-index: 999;
   }
 }
 </style>

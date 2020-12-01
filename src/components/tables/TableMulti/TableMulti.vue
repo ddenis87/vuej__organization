@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     scrollBody() {
-      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom;
+      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 10;
       if (bootAnchorEdge < this.parentEdge) {
         this.parentElement.removeEventListener('scroll', this.scrollBody);
         this.$store.dispatch(this.tableProperties.body.state.dispatchData);
