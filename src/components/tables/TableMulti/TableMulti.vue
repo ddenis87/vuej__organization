@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     scrollBody() {
-      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 10;
+      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 100;
       if (bootAnchorEdge < this.parentEdge) {
         this.parentElement.removeEventListener('scroll', this.scrollBody);
         this.$store.dispatch(this.tableProperties.body.state.dispatchData);
@@ -160,6 +160,13 @@ export default {
     bottom: 0px;
     height: 25px;
     border: thin solid orange;
+  }
+
+  .tooltip {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255);
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 999;
   }
 }
 </style>

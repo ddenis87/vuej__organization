@@ -7,10 +7,11 @@
 
     <v-tooltip v-model="tooltipsShow"
                max-width="600"
-               :fixed="true"
-               bottom
+               right
+               :absolute="true"
+               attach="table-multi"
                :position-x="+tooltipsPosition.left"
-               :position-y="+tooltipsPosition.top">
+               :position-y="+tooltipsPosition.top" content-class="tooltip">
       <span>{{ textContent }}</span>
     </v-tooltip>
   </div>
@@ -63,8 +64,8 @@ export default {
       // this.tooltipsPosition = {left: event.clientX, top: event.clientY};
       
 
-      let shiftLeft = `${parentContainer.left + 285}`; 
-      let shiftTop = `${parentContainer.top - 8}`;
+      let shiftLeft = `${parentContainer.left - 16}`; 
+      let shiftTop = `${parentContainer.top + 31}`;
       this.tooltipsPosition = {left: shiftLeft, top: shiftTop};
       this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 500);
     },
@@ -91,9 +92,10 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  .tooltip {
-    color: rgba(255, 255, 255);
-    background-color: rgba(0, 0, 0, 1);
-  }
+  // .tooltip {
+  //   color: rgba(255, 255, 255);
+  //   background-color: rgba(0, 0, 0, 1);
+  //   z-index: 999;
+  // }
 }
 </style>

@@ -1,70 +1,61 @@
 <template>
-  <div class="about">
+  <div class="organization" id="organization">
+    <h2 class="organization__title">Организации</h2>
+    <div class="organization__control">
+
+    </div>
+
     <div class="body-item">
-    <br>
-    <div class="table-scroll">
-      <table-multiline v-bind="propsTable"
-                 v-if="listMultiRow">
-        <template #action="activeValue">
-          <table-action :activeValue="activeValue"></table-action>
-        </template>
-        <template #[`header.bk`]="itemValue">
-          <div style="width: 100%; text-align: center;">
-            <v-chip color="yellow">{{ itemValue.itemValue }}</v-chip>
-          </div>
-        </template>
-        <template #[`body.institution_code`]="itemValue">
-          <div style="width: 100%; color: blue; text-align: right;">{{ itemValue.itemValue }}</div>
-        </template>
-        <template #[`body.bk`]="itemValue">
-          <div style="color: green; font-weight: bold;">{{ itemValue.itemValue }}</div>
-        </template>
-        <template #[`body.title`]="itemValue">
-          <div style="color: grey;">{{ itemValue.itemValue }}</div>
-        </template>
-        <template #[`body.inn`]="itemValue">
-          <div style="width: 100%; text-align: center; border-radius: 15px 2px 15px 2px; background-color: green; color: white;">{{ itemValue.itemValue }}</div>
-        </template>
-        <!-- <template #[`body.kpp`]="itemValue"> -->
-          <!-- <v-chip style="position: static;" color="blue">{{ itemValue.itemValue }}</v-chip> -->
-          <!-- <div style="width: 100%; text-align: center; border-radius: 2px 10px 2px 10px; background-color: blue; color: white; padding: 5px">{{ itemValue.itemValue }}</div> -->
-        <!-- </template> -->
-        <template #footer>
-          <div style="width: 100%; text-align: center;">I'm Footer</div>
-        </template>
-      </table-multiline>
+      <div class="body-item__title">
+        <a href="#"><v-btn icon><v-icon>mdi-github</v-icon></v-btn></a>
+      </div>
+      <v-divider></v-divider>
+      <div class="body-item__body">
+        <table-multi :table-properties="propsTable">
+          <template #[`body.institution_code`]="itemValue">
+            <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
+          </template>
+          <template #action="activeValue">
+            <table-action :activeValue="activeValue"></table-action>
+          </template>
+        </table-multi>
+      </div>
     </div>
-      
-    </div>
-   </div>
+
+  </div>
 </template>
 
 <script>
-import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
-import TableUno from '@/components/tables/TableUno/TableUno.vue';
+import TableMulti from '@/components/tables/TableMulti/TableMulti.vue';
 
 import TableAction from '@/components/tables/TableAction.vue';
 
 export default {
   name: 'Demo',
   components: {
-    TableMultiline,
-    TableUno,
+    TableMulti,
     TableAction,
   },
   data() {
     return {
-      listMultiRow: true,
       propsTable: {
-        activeField: 'title',
-        container: {
-          height: 500,
-          width: 1340,
+        state: {
+          progress: 'GET_STATUS_LOAD',
+          header: {},
+          body: {},
         },
+        activeField: 'id',
         fieldsTemplate: [
-          ['130',              'auto',  '120', 'auto','160',          '160',             'qwe',              'auto'  ],
-          ['institution_code', 'title', 'inn', 'kpp', 'egrul_status', 'rubpnubp_status', 'institution_type', 'bk'  ],
+          [[80, 80],['400',],[115, 115],[115, 115],[140, 140],[140, 140],[170,170],[170,170], ['200', 200],[180, 180] ],
+          ['institution_code','title','inn','kpp','egrul_status','rubpnubp_status','industry_typing','institution_type','budget_level','bk']
         ],
+        // fieldsTemplate: [
+        //   // [ '105',             'qwe',  '120', '160',              '180',               '150',           '180'  ],
+        //   [[80, 80],                 ['400',],      [115, 115], [140, 140],         [170,170],           ['200', 200],         [180, 180] ],
+        //   ['institution_code', 'title',      'inn',       'egrul_status',     'industry_typing',   'budget_level',  'bk'    ],
+        //   ['institution_code', 'title',      'kpp',       'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]
+        // ],
+        fieldsFixed: ['institution_code', 'title'],
         header: {
           state: {
             getterData: 'GET_LIST_FIELDS',
@@ -72,7 +63,7 @@ export default {
           },
         },
         body: {
-          height: 50,
+          height: 25,
           state: {
             getterData: 'GET_LIST_DATA',
             dispatchData: 'GET_LIST_DATA',
@@ -85,20 +76,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.body-item {
-  padding: 20px 10px;
-    &__text {
-      text-indent: 25px;
-      text-align: justify;
+.organization {
+  width: 100%;
+  padding: 0px 10px;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  a { text-decoration: none; }
+
+  .body-item {
+    color: rgba(0,0,0,.87);
+    border-radius: 4px;
+    border: thin solid rgba(0,0,0,.12);
+    overflow: hidden;
+
+    &__title {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 8px;
     }
-    &__images {
-      height: 80px;
+    &__body {
+      height: calc(100vh - 170px);
+      padding: 10px;
     }
-  .table-scroll {
-    width: 1200px;
-    padding: 5px;
-    border: 1px solid grey;
-    overflow-x: scroll;
   }
 }
 </style>
