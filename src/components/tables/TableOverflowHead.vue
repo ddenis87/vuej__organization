@@ -12,11 +12,14 @@
     </div>
     <v-tooltip v-model="tooltipsShow"
                 max-width="400" 
-                bottom
-                :position-x="+tooltipsPosition.left" 
-                :position-y="+tooltipsPosition.top" 
-                content-class="tooltip">
-      {{ textContent }}
+                :fixed="true"
+                right
+                :position-x="+tooltipsPosition.left"
+                :position-y="+tooltipsPosition.top">
+      <!-- <div class="tooltip"> -->
+        {{ textContent }}
+      <!-- </div> -->
+      
     </v-tooltip>
   </div>
 </template>
@@ -46,7 +49,7 @@ export default {
       let parentContainer = document.getElementById(`box-overflow-head-${this.sequenceOverflowBox}`);
       let fullContainer = document.getElementById(`head-box-full-${this.sequenceOverflowBox}`);
       if (fullContainer.getBoundingClientRect().width > parentContainer.getBoundingClientRect().width + 10) {
-        console.log('123')
+        // console.log('123')
         parentContainer.addEventListener('mouseover', this.showTips);
         parentContainer.addEventListener('mouseout', this.hideTips);
       }
@@ -56,11 +59,12 @@ export default {
       // let shiftLeft = (document.documentElement.getBoundingClientRect().width - event.clientX < 400) ?
       //   parentContainer.left - (400 - (document.documentElement.getBoundingClientRect().width - event.clientX)) :
       //     parentContainer.left + parentContainer.width + 20;
-      let shiftLeft = parentContainer.left; 
-      let shiftTop = parentContainer.top;
-      this.tooltipsPosition = {left: event.clientX, top: event.clientY};
-      // this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 800);
-      this.tooltipsShow = true
+
+      let shiftLeft = `${parentContainer.left - 26}`; 
+      let shiftTop = `${parentContainer.top + 8}`;
+      this.tooltipsPosition = {left: shiftLeft, top: shiftTop};
+      this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 500);
+      // this.tooltipsShow = true
     },
     hideTips() {
       clearTimeout(this.tooltipsTimer);
@@ -92,6 +96,15 @@ export default {
     // white-space: nowrap;
     overflow: hidden;
 // border: thin solid orange;
+  }
+  .tooltip {
+    padding: 6px 6px !important;
+    font-size: .75rem;
+    font-weight: bold;
+    width: 100% !important;
+    opacity: 1;
+    // color: rgba(0, 0, 0, .6);
+    background-color: lemonchiffon;
   }
 }
 </style>

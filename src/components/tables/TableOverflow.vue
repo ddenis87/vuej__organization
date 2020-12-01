@@ -6,11 +6,11 @@
     </div>
 
     <v-tooltip v-model="tooltipsShow"
-               max-width="400" 
-               bottom 
-               :position-x="+tooltipsPosition.left" 
-               :position-y="+tooltipsPosition.top" 
-               content-class="tooltip">
+               max-width="600"
+               :fixed="true"
+               bottom
+               :position-x="+tooltipsPosition.left"
+               :position-y="+tooltipsPosition.top">
       <span>{{ textContent }}</span>
     </v-tooltip>
   </div>
@@ -56,12 +56,17 @@ export default {
     },
     showTips(event) {
       let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`).getBoundingClientRect();
-      let shiftLeft = (document.documentElement.getBoundingClientRect().width - event.clientX < 400) ?
-        parentContainer.left - (400 - (document.documentElement.getBoundingClientRect().width - event.clientX)) :
-          parentContainer.left + parentContainer.width + 20;
-      let shiftTop = parentContainer.top;
-      this.tooltipsPosition = {left: event.clientX, top: event.clientY};
-      this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 800);
+      // let shiftLeft = (document.documentElement.getBoundingClientRect().width - event.clientX < 400) ?
+      //   parentContainer.left - (400 - (document.documentElement.getBoundingClientRect().width - event.clientX)) :
+      //     parentContainer.left + parentContainer.width + 20;
+      // let shiftTop = parentContainer.top;
+      // this.tooltipsPosition = {left: event.clientX, top: event.clientY};
+      
+
+      let shiftLeft = `${parentContainer.left + 285}`; 
+      let shiftTop = `${parentContainer.top - 8}`;
+      this.tooltipsPosition = {left: shiftLeft, top: shiftTop};
+      this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 500);
     },
     hideTips() {
       clearTimeout(this.tooltipsTimer);

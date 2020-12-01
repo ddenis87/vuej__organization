@@ -1,8 +1,9 @@
 // $tooltip-transition-enter-duration: 50ms;
 // $tooltip-transition-leave-duration: 50ms;
-// $tooltip-font-size: 10px;
-// $tooltip-text-color: rgba(0, 0, 0, .6);
-// $tooltip-background-color: lemonchiffon;
-// $tooltip-transition-enter-duration: '';
-// $tooltip-transition-timing-function: '';
-// $tooltip-transition-leave-duration: '';
+$tooltip-padding: 6px 16px;
+$tooltip-border-radius: 2 !important;
+// $tooltip-font-size: 0.75rem ;
+$tooltip-text-color: rgba(0, 0, 0, 1) !important;
+$tooltip-background-color: lemonchiffon !important;
+$tooltip-transition-enter-duration: 0ms !important;
+$tooltip-transition-leave-duration: 0ms !important;
