@@ -135,6 +135,13 @@ export default {
   overflow-x: auto;
   overflow-y: auto;
   height: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,.4);
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    &-thumb { background-color: rgba(0,0,0,.4); }
+  }
   &-head {
     position: sticky;
     top: 0px;

@@ -59,7 +59,7 @@ export default {
         activeField: 'id',
         fieldsTemplate: [
           // [ '105',             'qwe',  '120', '160',              '180',               '150',           '180'  ],
-          [50,                 ['400',],      [100],       [120],              ['160',200],         ['150', 200],         ['180'] ],
+          [[80, 80],                 ['400',],      [115, 115], [140, 140],         [170,170],           ['200', 200],         [180, 180] ],
           ['institution_code', 'title',      'inn',       'egrul_status',     'industry_typing',   'budget_level',  'bk'    ],
           ['institution_code', 'title',      'kpp',       'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]
         ],

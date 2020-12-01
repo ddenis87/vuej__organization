@@ -5,19 +5,28 @@
         v-for="(item, index) in listData" 
         :key="index"
         :style="item.style">
-      <div class="table-head__item-action">
+      <!-- <div class="table-head__item-action">
         <v-btn class="item-action__btn" icon x-small><v-icon small>mdi-sort-ascending</v-icon></v-btn>
         <v-btn class="item-action__btn" icon x-small><v-icon small>mdi-sort-descending</v-icon></v-btn>
         <v-btn class="item-action__btn" icon x-small><v-icon small>mdi-filter-plus</v-icon></v-btn>
         <v-btn class="item-action__btn" icon x-small><v-icon small>mdi-filter-remove</v-icon></v-btn>
-      </div>
-      <slot :name="`${item.key}`" v-bind:itemValue="item.label">{{ item.label }}</slot>
+      </div> -->
+        <!-- <span class="table-head__item_text" :data-text="item.label"> -->
+        <table-overflow-head :text-content="item.label">
+          <slot :name="`${item.key}`" v-bind:itemValue="item.label">{{ item.label }}</slot>
+        </table-overflow-head>
+          
+        <!-- </span> -->
     </div>
   </div>
 </template>
 
 <script>
+import TableOverflowHead from '../TableOverflowHead.vue'
+
+
 export default {
+  components: { TableOverflowHead },
   name: 'TableMultiHead',
   props: {
     listData: Array,
@@ -38,15 +47,30 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 3px 16px;
+    padding: 6px 16px;
     // border: thin solid teal;
     text-indent: initial;
     color: rgba(0,0,0,.6);
     font-size: .75rem;
     font-weight: bold;
-    text-overflow: ellipsis;
-    box-sizing: border-box;
     overflow: hidden;
+    // &_text { 
+    //   text-overflow: ellipsis;
+    //   overflow: hidden;
+    //   // &:hover:after {
+    //   //   content: attr(data-text);
+    //   //   position: absolute;
+    //   //   top: 0px;
+    //   //   left: 0px;
+    //   //   min-width: 300px;
+    //   //   padding: 6px 16px;
+    //   //   font-size: .75rem;
+    //   //   font-weight: bold;
+    //   //   color: rgba(0,0,0,.6);
+    //   //   background-color: lemonchiffon;
+    //   //   z-index: 9999;
+    //   // }
+    // }
     // background-color: #FFFFFF;
     &:hover > &-action { opacity: 1; }
     &-action {
