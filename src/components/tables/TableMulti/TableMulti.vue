@@ -60,7 +60,8 @@ export default {
             headerFilter[i].style = `grid-area: ${headerFilter[i].key}; `;
             if ('fieldsFixed' in this.tableProperties && this.tableProperties.fieldsFixed.includes(headerFilter[i].key)) {
               // console.log(this.tableProperties.fieldsTemplate[0]);
-              let shiftLeft = (+this.tableProperties.fieldsTemplate[0][i - 1]) ? +this.tableProperties.fieldsTemplate[0][i - 1] : 0;
+              let shiftLeft = (this.tableProperties.fieldsTemplate[0][i - 1]) ? +this.tableProperties.fieldsTemplate[0][i - 1][0] : 0;
+              console.log(this.tableProperties.fieldsTemplate[0][i][0]);
               headerFilter[i].style += `position: sticky; left: ${shiftLeft}px; `;
               // headerFilter[i].style += (i == this.tableProperties.fieldsFixed.length - 1) ? 
               //   'background-image: linear-gradient(90deg, white 95%, rgba(0,0,0,0) 100%); ' : 

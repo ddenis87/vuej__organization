@@ -43,7 +43,7 @@ export default {
   // width: 100%;
   font-size: .75rem;
   &__item {
-    position: relative;
+    // position: relative;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -51,6 +51,7 @@ export default {
     // border: thin solid teal;
     text-indent: initial;
     color: rgba(0,0,0,.6);
+    background-color: #FFFFFF;
     font-size: .75rem;
     font-weight: bold;
     overflow: hidden;
