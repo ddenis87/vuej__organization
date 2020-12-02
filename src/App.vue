@@ -55,11 +55,15 @@ html {
     margin-right: auto;
     width: 100%;
   }
-  .tooltip {
-    color: rgba(255, 255, 255);
-    background-color: rgba(0, 0, 0, 1);
-    transition: all .2s;
-    $tooltip-text-color: red;
+  .tooltip-body {
+    max-width: 400px;
+    color:rgba(0, 0, 0, .87);
+    border: thin solid rgba(0,0,0,.3);
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);
+    background-color: white;
+    padding: 6px;
+    opacity: 1;
   }
 }
 </style>

@@ -155,5 +155,14 @@ export default {
     bottom: 0px;
     z-index: 30;
   }
+
+  .tooltip-body {
+    // position: absolute;
+    color:rgba(0, 0, 0, .87);
+    background-color: white;
+    
+    padding: 6px;
+    opacity: 1;
+  }
 }
 </style>

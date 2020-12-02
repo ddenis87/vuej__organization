@@ -6,14 +6,13 @@
     </div>
 
     <v-tooltip v-model="tooltipsShow"
-               max-width="600"
-               right
+               bottom
                :absolute="true"
-               attach="table-multi"
                :position-x="+tooltipsPosition.left"
-               :position-y="+tooltipsPosition.top" content-class="tooltip">
+               :position-y="+tooltipsPosition.top" content-class="tooltip-body">
       <span>{{ textContent }}</span>
     </v-tooltip>
+    
   </div>
 </template>
 
@@ -57,15 +56,15 @@ export default {
     },
     showTips(event) {
       let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`).getBoundingClientRect();
-      // let shiftLeft = (document.documentElement.getBoundingClientRect().width - event.clientX < 400) ?
-      //   parentContainer.left - (400 - (document.documentElement.getBoundingClientRect().width - event.clientX)) :
-      //     parentContainer.left + parentContainer.width + 20;
-      // let shiftTop = parentContainer.top;
-      // this.tooltipsPosition = {left: event.clientX, top: event.clientY};
-      
-
-      let shiftLeft = `${parentContainer.left - 16}`; 
-      let shiftTop = `${parentContainer.top + 31}`;
+      let shiftLeft =  '';
+      let shiftTop
+      if (document.documentElement.getBoundingClientRect().width - event.clientX < 400) {
+        shiftLeft = `${event.target.getBoundingClientRect().left - 100}`;
+        shiftTop = `${event.target.getBoundingClientRect().top - 17}`;
+      } else {
+        shiftLeft = `${event.target.getBoundingClientRect().left + 193}`;
+        shiftTop = `${event.target.getBoundingClientRect().top - 17}`;
+      }
       this.tooltipsPosition = {left: shiftLeft, top: shiftTop};
       this.tooltipsTimer = setTimeout(() => this.tooltipsShow = true, 500);
     },
@@ -93,9 +92,9 @@ export default {
     overflow: hidden;
   }
   // .tooltip {
-  //   color: rgba(255, 255, 255);
-  //   background-color: rgba(0, 0, 0, 1);
-  //   z-index: 999;
+  //   position: absolute;
+  //   color:red;
+  //   background-color: blue;
   // }
 }
 </style>

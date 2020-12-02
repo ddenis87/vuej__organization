@@ -3,8 +3,8 @@
     <div class="table-head__item-uno" 
         v-for="(item, index) in listData" 
         :key="index"
-        :style="item.style">
-        <span class="table-head__item-uno_text">
+        :style="item.style" :data-text="item.label">
+        <span class="table-head__item-uno_text" :data-text="item.label">
           <slot :name="`${item.key}`" v-bind:itemValue="item.label">{{ item.label }}</slot>
         </span>
     </div>

@@ -2,9 +2,11 @@
   <div class="table-body">
     <div class="table-body__row" :style="listStyle" v-for="(itemRow, indexRow) in listData" :key="`bodyRow-${indexRow}`">
       <div class="table-body__col" v-for="(itemCol, indexCol) in listDataHeader" :key="`bodyCol-${indexCol}`" :style="itemCol.style">
+        
         <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]">
           <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot>
         </table-overflow>
+        
       </div>
       <div class="table-body__col-action">
         <slot name="action" v-bind:activeValue="itemRow['title']"></slot>
