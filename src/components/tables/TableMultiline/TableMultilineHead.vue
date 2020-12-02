@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'TableMultiHead',
+  name: 'TableMultilineHead',
   props: {
     listData: Array,
   }
@@ -35,7 +35,7 @@ export default {
 
     font-size: $headFontSize;
     font-weight: $headFontWeight;
-    line-height: $fontLineHeight;
+    line-height: $headFontLineHeight;
     color: $headFontColor;
     
     background-color: $headRowBackgroundColor;

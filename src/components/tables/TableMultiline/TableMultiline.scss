@@ -18,13 +18,27 @@ $headRowBorder: thin solid rgba(0,0,0,.12);
 $headRowBackgroundColor: rgba(255, 255, 255);
 
 $headFontSize: .75rem;
-$headFontColor: rgba(0, 0, 0, .6);
 $headFontWeight: bold;
+$headFontLineHeight: $fontLineHeight;
+$headFontColor: rgba(0, 0, 0, .6);
 $headPaddingTB: 6px;
 $headPaddingLR: 16px;
 
 $headHorizontalAlign: flex-start;
 $headVerticalAlign: center;
 
-//  -- body -- 
-$rowBackgroundColorHover: rgba(240, 240, 240);
+//  -- body --
+$bodyRowHeight: 56px;
+$bodyRowBorder: thin solid rgba(0,0,0,.12);
+$bodyRowBackgroundColor: rgba(255, 255, 255);
+$bodyRowBackgroundColorHover: rgba(240, 240, 240);
+
+$bodyFontSize: .875rem;
+$bodyFontWeight: normal;
+$bodyFontLineHeight: $fontLineHeight;
+$bodyFontColor: rgba(0, 0, 0, .87);
+$bodyPaddingTB: 6px;
+$bodyPaddingLR: 16px;
+
+$bodyHorizontalAlign: flex-start;
+$bodyVerticalAlign: center;

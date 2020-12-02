@@ -46,8 +46,8 @@ export default {
         },
         activeField: 'id',
         fieldsTemplate: [
-          [[80, 80],['400',],[115, 115],[115, 115],[140, 140],[140, 140],[170,170],[170,170], ['200', 200],[180, 180] ],
-          ['institution_code','title','inn','kpp','egrul_status','rubpnubp_status','industry_typing','institution_type','budget_level','bk']
+          [[80, 80],          ['400',],[115, 115],[115, 115],    [140, 140],       [140, 140],       [120,120],        [130,130],         [180, 180],  [180, 180]],
+          ['institution_code','title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status','industry_typing','institution_type','budget_level','bk']
         ],
         // fieldsTemplate: [
         //   // [ '105',             'qwe',  '120', '160',              '180',               '150',           '180'  ],

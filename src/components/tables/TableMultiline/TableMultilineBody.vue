@@ -19,7 +19,7 @@ import TableOverflow from '../TableOverflow.vue'
 
 export default {
   components: { TableOverflow },
-  name: 'TableMultiBody',
+  name: 'TableMultilineBody',
   props: {
     listData: Array,
     listDataHeader: Array,
@@ -45,38 +45,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'TableMultiline';
+
 .table-body {
   &__row {
     display: grid;
-    grid-auto-rows: 30px;
-    border-bottom: thin solid rgba(0,0,0,.12);
-    width: 100%;
-    font-size: .875rem;
-    // &:hover { background-color: rgb(240, 240, 240); }
-    &:hover > .table-body__col { background-color: rgb(240, 240, 240); }
+    grid-auto-rows: $bodyRowHeight;
+    border-bottom: $bodyRowBorder;
+    &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover; }
     &:hover > .table-body__col-action > .action-box { opacity: 1; }
 
     .table-body__col {
       display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 0px 16px;
-      color: rgba(0,0,0,.87);
-      line-height: 1.5;
-      font-size: .875rem;
-      text-rendering: optimizeLegibility;
-      text-overflow: ellipsis;
-      transition: height 0.2s cubic-bezier(0.4, 0, 0.6, 1);
-      -webkit-font-smoothing: antialiased;
-      background-color: #FFFFFF;
+      justify-content: $bodyHorizontalAlign;
+      align-items: $bodyVerticalAlign;
+      padding: $bodyPaddingTB $bodyPaddingLR;
+
+      font-size: $bodyFontSize;
+      font-weight: $bodyFontWeight;
+      line-height: $bodyFontLineHeight;
+      color: $bodyFontColor;
+
+      background-color: $bodyRowBackgroundColor;
+      transition-delay: .1s;
       overflow: hidden;
       &-action {
         position: sticky;
         right: 0px;
-        // border: thin solid red;
         grid-area: action_box;
       }
-      // border: thin solid black;
     }
   }
 }
