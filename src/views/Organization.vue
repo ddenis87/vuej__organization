@@ -66,8 +66,12 @@ export default {
       propsTableMultiline: {
         state: {
           progress: 'GET_STATUS_LOAD',
+          init: 'GET_LIST_OPTIONS',
           header: {},
-          body: {},
+          body: {
+            getData: 'GET_LIST_DATA',
+            loadData: 'GET_LIST_DATA',
+          },
         },
         activeField: 'id',
         fieldsTemplate: [
@@ -94,8 +98,12 @@ export default {
       propsTableUno: {
         state: {
           progress: 'GET_STATUS_LOAD',
+          init: 'GET_LIST_OPTIONS',
           header: {},
-          body: {},
+          body: {
+            getData: 'GET_LIST_DATA',
+            loadData: 'GET_LIST_DATA',
+          },
         },
         activeField: 'id',
         fieldsTemplate: [
