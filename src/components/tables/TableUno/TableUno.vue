@@ -1,37 +1,27 @@
 <template>
-<div class="table-uno" id="table-uno" :style="listStyle">
-  <table class="table">
-    <table-uno-head :list-data="listHeader" 
-                    :list-style-position="stylePosition"
-                    :isScroll="isShowButtonUp"
-                    @go-up="goUp">
-      <template v-for="item in listHeader" 
-                v-slot:[item.key]="itemValue">
-        <slot :name="`header.${(item) ? item.key : ''}`" 
-              v-bind:itemValue="itemValue.itemValue"></slot>
-      </template>
-    </table-uno-head>
-    <table-uno-body :list-data-props="preparationBody"
-                    :list-data-header="listHeader"
-                    @scroll="scrollBody">
-      <template v-for="item in listHeader" v-slot:[item.key]="itemValue">
+  <div class="table-uno" id="table-uno">
+    <div class="table-uno-head">
+      <table-uno-head :list-data="listHeader" 
+                        :style="fieldsTemplate"></table-uno-head>
+      <v-progress-linear class="table-uno-progress" color="blue" indeterminate absolute bottom v-show="isShowProgressBar"></v-progress-linear>
+    </div>
+    
+    <div class="table-uno-body">
+      <table-uno-body :list-data="listBody"
+                        :list-data-header="listHeader"
+                        :list-style="fieldsTemplate"
+                        :row-count="tableProperties.fieldsTemplate.length - 1">
+        <template v-for="item in listHeader" #[item.key]="itemValue">
           <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-      </template>
-
-      <template v-slot:action="activeValue">
-        <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
-      </template>
-    </table-uno-body>
-    <tfoot class="table-footer">
-      <tr>
-        <td :colspan="listHeader.length">
-          <slot name="footer"></slot>
-        </td>
-      </tr>
-    </tfoot>
-  </table>
-</div>
-  
+        </template>
+        
+        <template v-slot:action="activeValue">
+          <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
+        </template>
+      </table-uno-body>
+    </div>
+    <div id="boot-anchor"></div>
+  </div>
 </template>
 
 <script>
@@ -39,91 +29,140 @@ import TableUnoHead from './TableUnoHead.vue';
 import TableUnoBody from './TableUnoBody.vue';
 
 export default {
-  
   name: 'TableUno',
-  components: {
+  components: { 
     TableUnoHead,
-    TableUnoBody,
+    TableUnoBody, 
   },
   props: {
-    activeField: String,
-    container: {type: Object, default: () => ({ width: undefined, height: undefined })},
-    fieldsTemplate: Array,
-    header: Object,
-    body: Object,
+    tableProperties: Object,
   },
   computed: {
-    listStyle() {
-      let {width, height} = this.container;
-
-      let listStyleContainer = (width) ? `width: ${width}px; ` : 'width: 100%; ';
-      listStyleContainer += (height) ? `max-height: ${height}px; overflow-y: scroll; ` : '';
-      return listStyleContainer;
+    isShowProgressBar() {
+      if (!this.$store.getters[this.tableProperties.state.progress]) this.parentElement.addEventListener('scroll', this.scrollBody);
+      return this.$store.getters[this.tableProperties.state.progress];
     },
     listHeader() {
       let headerItems = new Set();
       let headerFilter = [];
-      let headerList = this.$store.getters[this.header.state.getterData];
-      for (let i = 1; i < this.fieldsTemplate.length; i++) {
-        this.fieldsTemplate[i].forEach(item => headerItems.add(item));
+      let headerList = this.$store.getters[this.tableProperties.header.state.getterData];
+      for (let i = 1; i < this.tableProperties.fieldsTemplate.length; i++) {
+        this.tableProperties.fieldsTemplate[i].forEach(item => headerItems.add(item));
       }
-      headerItems.forEach(item => headerFilter.push(headerList.find(mitem => mitem.key == item)));
+      if (headerList.length != 0 && headerItems.size != 0) {
+        headerItems.delete('action_box');
+        headerItems.forEach(item => headerFilter.push(headerList.find(mitem => mitem.key == item)));
+        if (headerFilter.length != 0) {
+          for (let i = 0; i < headerFilter.length; i++) {
+            headerFilter[i].style = `grid-area: ${headerFilter[i].key}; `;
+            if ('fieldsFixed' in this.tableProperties && this.tableProperties.fieldsFixed.includes(headerFilter[i].key)) {
+              // console.log(this.tableProperties.fieldsTemplate[0]);
+              let shiftLeft = (this.tableProperties.fieldsTemplate[0][i - 1]) ? +this.tableProperties.fieldsTemplate[0][i - 1][0] : 0;
+              headerFilter[i].style += `position: sticky; left: ${shiftLeft}px; `;
+              // headerFilter[i].style += (i == this.tableProperties.fieldsFixed.length - 1) ? 
+              //   'background-image: linear-gradient(90deg, white 95%, rgba(0,0,0,0) 100%); ' : 
+              //     'background-color: white; ';
+            }
+          }
+        }
+      }
+      // console.log(headerFilter);
       return headerFilter;
     },
-    preparationBody() {
-      let modifyBody = this.body;
-      modifyBody.container = this.container;
-      modifyBody.activeField = this.activeField;
-      return modifyBody;
-    },
-    stylePosition() {
-      let stylePosition = [];
-      let headerItems = new Set();
-      for (let i = 1; i < this.fieldsTemplate.length; i++) {
-        this.fieldsTemplate[i].forEach(item => headerItems.add(item));
-      }
-      for (let i = 0; i < headerItems.size; i++)
-        stylePosition.push((this.fieldsTemplate[0][i] && +this.fieldsTemplate[0][i]) ? `width: ${this.fieldsTemplate[0][i]}px; ` : 'width: 1fr; ' );
-      return stylePosition;
-    },
+    listBody() { return this.$store.getters[this.tableProperties.body.state.getterData]; },
+
+    fieldsTemplate() {
+      let fieldsTemplateBase = [].concat(this.tableProperties.fieldsTemplate);
+      let fieldsTemplate = { 'grid-template-areas': '', 'grid-template-columns': '' };
+      let minWidth = 100;
+      for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplateBase[i].push('action_box');
+
+      // fieldsTemplateBase[0].forEach(item => fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'minmax(100px, 100vw) ');
+
+      fieldsTemplateBase[0].forEach(item => {
+        if (Array.isArray(item)) {
+          fieldsTemplate['grid-template-columns'] += `minmax(${(+item[0]) ? +item[0] : minWidth}px, ${(+item[1]) ? item[1] + 'px' : '100vw'}) `;
+        } else {
+          fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'auto ';
+        }
+      });
+
+      fieldsTemplate['grid-template-columns'] += 'repeat(auto-fit, 0px) '; // For action button
+      for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplate['grid-template-areas'] += ` "${fieldsTemplateBase[i].join(' ')}"`;
+      console.log(fieldsTemplate['grid-template-columns']);
+      return fieldsTemplate;
+    }
   },
   data() {
     return {
-      isShowButtonUp: false,
+      parentElement: '',
+      parentEdge: Number,
     }
   },
   created() {
-    this.$store.dispatch(this.header.state.dispatchInit);
+    this.$store.dispatch(this.tableProperties.header.state.dispatchInit);
+  },
+  mounted() {
+    this.parentElement = document.getElementById('table-uno');
+    this.parentEdge = this.parentElement.getBoundingClientRect().bottom;
   },
   methods: {
-    scrollBody(value) {
-      this.isShowButtonUp = value;
-    },
-    goUp() {
-      document.getElementById('table-uno').scrollTo(0,0);
+    scrollBody() {
+      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 600;
+      if (bootAnchorEdge < this.parentEdge) {
+        this.parentElement.removeEventListener('scroll', this.scrollBody);
+        this.$store.dispatch(this.tableProperties.body.state.dispatchData);
+        console.log('Load');        
+      }
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.table-uno {
-  width: 100%;
-  font-family: "Roboto", sans-serif;
-  border-radius: 5px;
-  border: thin solid rgba(0, 0, 0, 0.12);
-  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.5);
-  .table {
-    width: 100%;
-    border-collapse: collapse;
+@import 'TableUno.scss';
 
-    .table-footer {
-      position: sticky;
-      bottom: 0px;
-      border-top: thin solid rgba(0, 0, 0, 0.12);
-      background-color: #FAFAFA;
+.table-uno {
+  position: relative;
+  height: 100%;
+  font-family: $fontFamily;
+  border-radius: $borderRadius;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 0px 0 rgba(0,0,0,.12);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    &-thumb {
+      border-radius: 3px;
+      background-color:  rgba(0,0,0,0.2);
     }
   }
-}
+  &-head {
+    position: sticky;
+    display: inline-flex;
+    top: 0px;
+    z-index: 40;
+  }
+  &-body {
+    position: relative;
+    display: inline-flex;
+    z-index: 20;
+  }
+  &-footer {
+    position: sticky;
+    bottom: 0px;
+    z-index: 30;
+  }
 
+  .tooltip-body {
+    // position: absolute;
+    color:rgba(0, 0, 0, .87);
+    background-color: white;
+    
+    padding: 6px;
+    opacity: 1;
+  }
+}
 </style>

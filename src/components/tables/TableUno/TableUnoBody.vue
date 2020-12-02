@@ -1,100 +1,82 @@
 <template>
-  <tbody class="body" id="body">
-    <tr class="body__row" 
-        v-for="(itemI, indexI) in listItem" 
-        :key="`uno-body-row-${indexI}`">
-      <td class="body__col" 
-          v-for="(itemF, indexF) in listDataHeader" 
-          :key="`uno-body-col-${indexF}`">
-        <slot :name="`${itemF.key}`" v-bind:itemValue="itemI[itemF.key]">{{ itemI[itemF.key] }}</slot>
-      </td>
-      <td class="body__col-action">
-        <slot name="action" v-bind:activeValue="itemI[listDataProps.activeField]"></slot>
-      </td>
-    </tr>
-    <tr class="body__row" id="anchor"><td :colspan="listDataHeader.length"></td></tr>
-  </tbody>
+  <div class="table-body">
+    <div class="table-body__row" :style="listStyle" v-for="(itemRow, indexRow) in listData" :key="`bodyRow-${indexRow}`">
+      <div class="table-body__col" v-for="(itemCol, indexCol) in listDataHeader" :key="`bodyCol-${indexCol}`" :style="itemCol.style">
+        
+        <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]">
+          <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot>
+        </table-overflow>
+        
+      </div>
+      <div class="table-body__col-action">
+        <slot name="action" v-bind:activeValue="itemRow['title']"></slot>
+      </div>
+    </div>
+    
+  </div>
 </template>
 
 <script>
+import TableOverflow from '../TableOverflow.vue'
+
 export default {
-  name: 'TableBody',
+  components: { TableOverflow },
+  name: 'TableUnoBody',
   props: {
-    listDataProps: Object,
+    listData: Array,
     listDataHeader: Array,
+    listStyle: Object,
+    rowCount: Number,
   },
   computed: {
-    listItem() { return this.$store.getters[this.listDataProps.state.getterData]; },
   },
-  created() { this.createEvents(); },
-  updated() { this.createEvents(); },
-  destroyed() { this.deleteEvents(); },
+  data() {
+    return {
+      windowsWidth: Number,
+    }
+  },
+  created() {
+    window.addEventListener('resize', this.getWindowWidth);
+  },
   methods: {
-    loadData() {
-      (+this.listDataProps.container.height) ? this.loadDataForComponent() : this.loadDataForPage();
-    },
-    loadDataForComponent() {
-      if (document.getElementById('anchor').getBoundingClientRect().bottom < document.getElementById('table-uno').getBoundingClientRect().bottom + 10) {
-        this.deleteEvents();
-        this.$store.dispatch(this.listDataProps.state.dispatchData);
-      }
-      (document.getElementById('body').getBoundingClientRect().top < 10) ? this.$emit('scroll', true) : this.$emit('scroll', false);
-    },
-    loadDataForPage() {
-      if (document.getElementById('table-uno').getBoundingClientRect().bottom < document.documentElement.clientHeight + 130) {
-        this.deleteEvents();
-        this.$store.dispatch(this.listDataProps.state.dispatchData);
-      }
-    },
-    createEvents() {
-      if (+this.listDataProps.container.height) {
-        if (document.getElementById('table-uno'))
-          document.getElementById('table-uno').addEventListener('scroll', this.loadData);
-      } else {
-        window.addEventListener('scroll', this.loadData);
-      }
-    },
-    deleteEvents() {
-      (+this.listDataProps.container.height) ? document.getElementById('table-uno').removeEventListener('scroll', this.loadData) : window.removeEventListener('scroll', this.loadData);
-    },
+    getWindowWidth() {
+      this.windowsWidth = document.documentElement.getBoundingClientRect().width;
+    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.body {
-  font-size: 14px;
-  padding: 0px 16px;
-  color: rgba(0, 0, 0, 0.87);
+@import 'TableUno';
+
+.table-body {
   &__row {
-    border-bottom: thin solid rgba(0, 0, 0, 0.12);
+    display: grid;
+    grid-auto-rows: $bodyRowHeight;
+    border-bottom: $bodyRowBorder;
+    &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover; }
+    &:hover > .table-body__col-action > .action-box { opacity: 1; }
 
-// height: 30px;
-  
-    &:hover { background-color: rgb(240, 240, 240); }
-    &:hover > .body__col-action > .action-box {
-      opacity: 1;
-    }
-  }
-  &__col {
-    justify-content: start;
-    align-items: center;
-    padding: 0px 10px;
-    text-align: start;
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    line-height: 1.5rem;
-    color: rgba(0, 0, 0, 0.87);
-overflow: hidden;
+    .table-body__col {
+      display: flex;
+      justify-content: $bodyHorizontalAlign;
+      align-items: $bodyVerticalAlign;
+      padding: $bodyPaddingTB $bodyPaddingLR;
 
-    // max-height: 30px;
-    
-    
-    &-action {
-      max-width: 0px;
-      height: 100%;
+      font-size: $bodyFontSize;
+      font-weight: $bodyFontWeight;
+      line-height: $bodyFontLineHeight;
+      color: $bodyFontColor;
+
+      background-color: $bodyRowBackgroundColor;
+      transition-delay: .1s;
+      overflow: hidden;
+      &-action {
+        position: sticky;
+        right: 0px;
+        grid-area: action_box;
+      }
     }
-    
   }
 }
 </style>
