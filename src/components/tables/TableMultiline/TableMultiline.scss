@@ -1,14 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
 
+//  -- primary --
 $fontFamily: Roboto, sans-serif;
 $fontSize: 16px;
 $fontColor: rgba(0, 0, 0, .87);
-$fontLineHeight: 1,5;
+$fontLineHeight: 1.5;
 
 $borderRadius: 4px;
 
-$backgroundColor: rgba(255, 255, 255);
+
+//  --------------
 
 
-$backgroundRowColor: rgba(255, 255, 255);
-$backgroundRowColorHover: rgba(240, 240, 240);
+// -- head --
+$headRowHeight: 56px;
+$headRowBorder: thin solid rgba(0,0,0,.12);
+$headRowBackgroundColor: rgba(255, 255, 255);
+
+$headFontSize: .75rem;
+$headFontColor: rgba(0, 0, 0, .6);
+$headFontWeight: bold;
+$headPaddingTB: 6px;
+$headPaddingLR: 16px;
+
+$headHorizontalAlign: flex-start;
+$headVerticalAlign: center;
+
+//  -- body -- 
+$rowBackgroundColorHover: rgba(240, 240, 240);

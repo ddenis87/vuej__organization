@@ -123,49 +123,37 @@ export default {
 @import 'TableMultiline.scss';
 
 .table-multiline {
-  background-color: #fff;
-  color: rgba(0,0,0,.87);
-  border-radius: 4px;
+  position: relative;
+  height: 100%;
+  font-family: $fontFamily;
+  border-radius: $borderRadius;
+
   box-shadow: 0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);
 
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  overflow-x: auto;
-  overflow-y: auto;
-  height: 100%;
+
+  overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0,0,0,.4);
   &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     &-thumb { background-color: rgba(0,0,0,.4); }
   }
   &-head {
     position: sticky;
-    top: 0px;
     display: inline-flex;
-    background-color: #fff;
-    z-index: 30;
+    top: 0px;
+    z-index: 40;
   }
   &-body {
     position: relative;
     display: inline-flex;
     z-index: 20;
-    // border: thin solid orange;
   }
   &-footer {
     position: sticky;
     bottom: 0px;
-    height: 25px;
-    border: thin solid orange;
-  }
-
-  .tooltip {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255);
-    background-color: rgba(0, 0, 0, 1);
-    z-index: 999;
+    z-index: 30;
   }
 }
 </style>
