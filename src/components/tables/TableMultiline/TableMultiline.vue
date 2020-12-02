@@ -3,7 +3,7 @@
     <div class="table-multiline-head">
       <table-multiline-head :list-data="listHeader" 
                         :style="fieldsTemplate"></table-multiline-head>
-      <v-progress-linear class="table-multiline-progress" color="blue" indeterminate absolute bottom v-if="isShowProgressBar"></v-progress-linear>
+      <v-progress-linear class="table-multiline-progress" color="blue" indeterminate absolute bottom v-show="isShowProgressBar"></v-progress-linear>
     </div>
     
     <div class="table-multiline-body">
@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     scrollBody() {
-      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 100;
+      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 600;
       if (bootAnchorEdge < this.parentEdge) {
         this.parentElement.removeEventListener('scroll', this.scrollBody);
         this.$store.dispatch(this.tableProperties.body.state.dispatchData);
@@ -127,17 +127,17 @@ export default {
   height: 100%;
   font-family: $fontFamily;
   border-radius: $borderRadius;
-
-  box-shadow: 0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);
-
-
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 0px 0 rgba(0,0,0,.12);
   overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0,0,0,.4);
+
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
-    &-thumb { background-color: rgba(0,0,0,.4); }
+    border-radius: 4px;
+    &-thumb {
+      border-radius: 3px;
+      background-color:  rgba(0,0,0,0.2);
+    }
   }
   &-head {
     position: sticky;
