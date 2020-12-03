@@ -149,14 +149,17 @@ export default {
   min-height: 100%;
   display: grid;
   grid-template-areas: "organization-control" "organization-body";
-  grid-template-columns: 1fr;
+  grid-template-columns: 100%;
   grid-template-rows: 55px 100vh;
-
-&-control {
+  width: 100%;
+  box-sizing: border-box;
+  &-control {
     grid-area: organization-control;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    box-sizing: border-box;
     .control-view {
       margin: 0px 10px;
     }
@@ -170,7 +173,7 @@ export default {
       max-height: 100%;
       display: grid;
       grid-template-areas: "body-item__title" "body-item__body";
-      grid-template-columns: 1fr;
+      grid-template-columns: 100%;
       grid-template-rows: 56px 100%;
       border: thin solid rgba(0,0,0,.12);
       border-radius: 4px;

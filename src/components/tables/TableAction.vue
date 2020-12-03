@@ -55,8 +55,7 @@ export default {
   opacity: 0;
    background-color: rgb(240, 240, 240);
   // background-image: linear-gradient(-90deg, white 95%, rgba(0,0,0,0) 100%);
-  transition: opacity .2s;
-  // border: thin solid blue;
+  transition-delay: .1s;
   &__toolbar {
     position: absolute;
     right: 0px;

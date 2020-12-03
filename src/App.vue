@@ -56,8 +56,8 @@ html, body {
   }
 
   .maxWidth {
-    margin-left: auto;
-    margin-right: auto;
+    // margin-left: auto;
+    // margin-right: auto;
     width: 100%;
   }
   .tooltip-body {
