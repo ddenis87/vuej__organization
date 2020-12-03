@@ -1,6 +1,6 @@
 <template>
   <div class="organization" id="organization">
-    <div class="organization__control">
+    <div class="organization-control">
       <control-user></control-user>
       <div class="control-view">
         <v-btn title="Переключить вид"
@@ -11,35 +11,49 @@
           <v-icon> {{ (listMultiRow) ? 'mdi-format-list-bulleted' : 'mdi-view-stream'}}</v-icon>
         </v-btn>
       </div>
-      
     </div>
 
-    <div class="body-item">
-      <div class="body-item__title">
-        <h2>Организации</h2>
-        <div></div>
-      </div>
-      <v-divider></v-divider>
-      <div class="body-item__body">
-        <table-multiline :table-properties="propsTableMultiline" v-if="listMultiRow">
-          <template #[`body.institution_code`]="itemValue">
-            <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
-          </template>
-          <template #action="activeValue">
-            <table-action :activeValue="activeValue"></table-action>
-          </template>
-        </table-multiline>
-        <table-uno :table-properties="propsTableUno" v-if="!listMultiRow">
-          <template #[`body.institution_code`]="itemValue">
-            <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
-          </template>
-          <template #action="activeValue">
-            <table-action :activeValue="activeValue"></table-action>
-          </template>
-        </table-uno>
+    <div class="organization-body">
+      <div class="body-item">
+        <div class="body-item__title" v-if="listMultiRow">
+          <div>
+            <h5>Component: Table-multiline</h5>
+          </div>
+          <div>
+            <h6>Template: ['institution_code', 'title',      'inn',       'egrul_status',     'industry_typing',   'budget_level',  'bk'    ]</h6>
+            <h6>['institution_code', 'title',      'kpp',       'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]</h6>
+          </div>
+        </div>
+         <div class="body-item__title" v-if="!listMultiRow">
+          <div>
+            <h5>Component: Table-uno</h5>
+          </div>
+          <div>
+            <h6>Template: ['institution_code', 'title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status', 'industry_typing', 'institution_type', 'budget_level', 'bk']</h6>
+          </div>
+        </div>
+
+        <div class="body-item__body">
+          <table-multiline :table-properties="propsTableMultiline" v-if="listMultiRow">
+            <template #[`body.institution_code`]="itemValue">
+              <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
+            </template>
+            <template #action="activeValue">
+              <table-action :activeValue="activeValue"></table-action>
+            </template>
+          </table-multiline>
+
+          <table-uno :table-properties="propsTableUno" v-if="!listMultiRow">
+            <template #[`body.institution_code`]="itemValue">
+              <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
+            </template>
+            <template #action="activeValue">
+              <table-action :activeValue="activeValue"></table-action>
+            </template>
+          </table-uno>
+        </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -132,36 +146,46 @@ export default {
 
 <style lang="scss" scoped>
 .organization {
-  width: 100%;
-  padding: 0px 10px;
-  a { text-decoration: none; }
-  &__control {
-    position: relative;
+  min-height: 100%;
+  display: grid;
+  grid-template-areas: "organization-control" "organization-body";
+  grid-template-columns: 1fr;
+  grid-template-rows: 55px 100vh;
+
+&-control {
+    grid-area: organization-control;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0px;
-    height: 55px;
-    z-index: 999;
     .control-view {
       margin: 0px 10px;
     }
   }
-  .body-item {
-    color: rgba(0,0,0,.87);
-    border-radius: 4px;
-    border: thin solid rgba(0,0,0,.12);
-    overflow: hidden;
-    z-index: 888;
-    &__title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px;
-    }
-    &__body {
-      height: calc(100vh - 200px);
-      padding: 10px;
+
+  &-body {
+    max-height: calc(100% - 130px);
+    grid-area: organization-body;
+    padding: 3px;
+    .body-item {
+      max-height: 100%;
+      display: grid;
+      grid-template-areas: "body-item__title" "body-item__body";
+      grid-template-columns: 1fr;
+      grid-template-rows: 56px 100%;
+      border: thin solid rgba(0,0,0,.12);
+      border-radius: 4px;
+      overflow: hidden;
+      &__title {
+        padding: 0px 10px;
+        grid-area: body-item__title;
+        overflow: hidden;
+        border-bottom: thin solid rgba(0,0,0,.12);
+      }
+      &__body {
+        max-height: calc(100vh - 198px);
+        padding: 10px;
+        grid-area: body-item__body;
+      }
     }
   }
 }
