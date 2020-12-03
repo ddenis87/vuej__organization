@@ -39,7 +39,9 @@ export default {
     color: $headFontColor;
     
     background-color: $headRowBackgroundColor;
-    &_text { 
+    &_text {
+      white-space: nowrap;
+
       text-overflow: ellipsis;
       overflow: hidden;
     }

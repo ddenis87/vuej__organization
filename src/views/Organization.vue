@@ -121,10 +121,11 @@ export default {
         },
         activeField: 'id',
         fieldsTemplate: [
-          [[80, 80],          ['400',],[115, 115],[115, 115],    [140, 140],       [140, 140],       [120,120],        [130,130],         [180, 180],  [180, 180]],
+          [[90, 90],          ['400',],[115, 115],[115, 115],    [140, 140],       [140, 140],       [120,120],        [130,130],         [180, 180],  [180, 180]],
           ['institution_code','title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status','industry_typing','institution_type','budget_level','bk']
         ],
         fieldsFixed: ['institution_code', 'title'],
+        countRowBody: 2,
         header: {
           state: {
             getterData: 'GET_LIST_FIELDS',

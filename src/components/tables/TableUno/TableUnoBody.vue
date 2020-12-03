@@ -1,11 +1,15 @@
 <template>
   <div class="table-body">
-    <div class="table-body__row" :style="listStyle" v-for="(itemRow, indexRow) in listData" :key="`bodyRow-${indexRow}`">
+    <div class="table-body__row" :style="listStyle" v-for="(itemRow, indexRow) in listData" :key="`bodyRow-${indexRow}`" @mouseout="showTooltip">
       <div class="table-body__col" v-for="(itemCol, indexCol) in listDataHeader" :key="`bodyCol-${indexCol}`" :style="itemCol.style">
         
-        <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]">
+
+        <table-uno-overflow :count-row="countRow" :text-content="itemRow[itemCol.key]">
           <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot>
-        </table-overflow>
+        </table-uno-overflow>
+        <!-- <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]"> -->
+          <!-- <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot> -->
+        <!-- </table-overflow> -->
         
       </div>
       <div class="table-body__col-action">
@@ -17,22 +21,27 @@
 </template>
 
 <script>
-import TableOverflow from '../TableOverflow.vue'
+import TableUnoOverflow from './TableUnoOverflow';
+import TableOverflow from '../TableOverflow.vue';
 
 export default {
-  components: { TableOverflow },
   name: 'TableUnoBody',
+  components: {
+    TableUnoOverflow,
+    TableOverflow,
+  },
   props: {
     listData: Array,
     listDataHeader: Array,
     listStyle: Object,
-    rowCount: Number,
+    countRow: Number,
   },
   computed: {
   },
   data() {
     return {
       windowsWidth: Number,
+      tooltipTimer: {},
     }
   },
   created() {
@@ -41,7 +50,25 @@ export default {
   methods: {
     getWindowWidth() {
       this.windowsWidth = document.documentElement.getBoundingClientRect().width;
-    }
+    },
+    showTooltip(event) {
+      // this.$emit('hide-tooltip');
+      // if (this.tooltipTimer) {clearTimeout(this.tooltipTimer); }
+      // if (event.relatedTarget && event.relatedTarget.getAttribute('data-overflow')) {
+      //   let tooltipProps = {
+      //     left: event.relatedTarget.getBoundingClientRect().left - 24,
+      //     top: event.relatedTarget.getBoundingClientRect().top - 200,
+      //     content: event.relatedTarget.getAttribute('data-overflow-text'),
+      //   }
+      //   this.tooltipTimer = setTimeout(() => this.$emit('show-tooltip', tooltipProps), 500);
+      // } 
+      // else {
+      //   this.$emit('hide-tooltip');
+      // }
+    },
+    // hideTooltip() {
+    //   console.log('By');
+    // }
   },
 }
 </script>

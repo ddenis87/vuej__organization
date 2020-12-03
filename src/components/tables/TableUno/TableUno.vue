@@ -1,5 +1,8 @@
 <template>
   <div class="table-uno" id="table-uno">
+    <div class="table-tooltip" :style="tooltipsPosition">
+      123
+    </div>
     <div class="table-uno-head">
       <table-uno-head :list-data="listHeader" 
                         :style="fieldsTemplate"></table-uno-head>
@@ -10,7 +13,7 @@
       <table-uno-body :list-data="listBody"
                         :list-data-header="listHeader"
                         :list-style="fieldsTemplate"
-                        :row-count="tableProperties.fieldsTemplate.length - 1">
+                        :count-row="tableProperties.countRowBody" @show-tooltip="showTooltip" @hide-tooltip="hideTooltip">
         <template v-for="item in listHeader" #[item.key]="itemValue">
           <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
         </template>
@@ -97,6 +100,7 @@ export default {
     return {
       parentElement: '',
       parentEdge: Number,
+      tooltipsPosition: { left: '0px', top: '0px', visibility: 'hidden' },
     }
   },
   created() {
@@ -114,6 +118,17 @@ export default {
         this.$store.dispatch(this.tableProperties.body.state.dispatchData);
         console.log('Load');        
       }
+    },
+    showTooltip(value) {
+      this.tooltipsPosition.left = value.left + 'px';
+      this.tooltipsPosition.top = value.top + 'px';
+      this.tooltipsPosition.visibility = 'visible';
+      document.querySelector('.table-tooltip').innerHTML = value.content;
+      console.log(this.tooltipsPosition)
+    },
+    hideTooltip() {
+      this.tooltipsPosition.visibility = 'hidden';
+      document.querySelector('.table-tooltip').innerHTML = '';
     },
   },
 }
@@ -156,13 +171,21 @@ export default {
     z-index: 30;
   }
 
-  .tooltip-body {
-    // position: absolute;
+  .table-tooltip {
+    position: absolute;
+    left: 100px;
+    top: 100px;
+    max-width: 400px;
+    min-width: 400px;
     color:rgba(0, 0, 0, .87);
+    border: thin solid rgba(0,0,0,.3);
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);
     background-color: white;
-    
-    padding: 6px;
+    padding: 4px 6px;
     opacity: 1;
+    z-index: 100;
+    visibility: hidden;
   }
 }
 </style>
