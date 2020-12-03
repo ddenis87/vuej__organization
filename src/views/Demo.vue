@@ -7,7 +7,14 @@
 
     <div class="body-item">
       <div class="body-item__title">
-        <a href="#"><v-btn icon><v-icon>mdi-github</v-icon></v-btn></a>
+        <div>
+          Table-multiline
+        </div>
+        <div>
+          <h5>['institution_code','title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status','industry_typing','institution_type','budget_level','bk']</h5>
+          <h5>['institution_code','title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status','industry_typing','institution_type','budget_level','bk']</h5>
+        </div>
+        
       </div>
       <v-divider></v-divider>
       <div class="body-item__body">
@@ -46,7 +53,8 @@ export default {
         },
         activeField: 'id',
         fieldsTemplate: [
-          [[80, 80],          ['400',],[115, 115],[115, 115],    [140, 140],       [140, 140],       [120,120],        [130,130],         [180, 180],  [180, 180]],
+          [[80, 80],          ['400',],[115, 115],[115, 115],    [140, 140],       [140, 140],       [120,120],        [130,130],         [180, 180],  [190, 190]],
+          ['institution_code','title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status','industry_typing','institution_type','budget_level','bk'],
           ['institution_code','title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status','industry_typing','institution_type','budget_level','bk']
         ],
         // fieldsTemplate: [
@@ -92,7 +100,7 @@ export default {
 
     &__title {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       padding: 8px;
     }
