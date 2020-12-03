@@ -3,9 +3,9 @@
     <div class="table-head__item-uno" 
         v-for="(item, index) in listData" 
         :key="index"
-        :style="item.style" :data-text="item.label">
-        <span class="table-head__item-uno_text" :data-text="item.label">
-          <slot :name="`${item.key}`" v-bind:itemValue="item.label">{{ item.label }}</slot>
+        :data-text="item.label">
+        <span class="table-head__item-uno_text" :data-text="item.text">
+          <slot :name="`${item.value}`" v-bind:itemValue="item.text">{{ item.text }}</slot>
         </span>
     </div>
   </div>
@@ -25,6 +25,10 @@ export default {
 
 .table-head {
   display: grid;
+  // grid-template-columns: repeat(auto-fit, minmax(100px, 100%));
+  // grid-auto-flow: column;
+  // grid-auto-columns: repeat(auto-fill, auto);
+  
   grid-auto-rows: $headRowHeight;
   border-bottom: $headRowBorder;
   &__item-uno {
@@ -39,6 +43,8 @@ export default {
     color: $headFontColor;
     
     background-color: $headRowBackgroundColor;
+
+    border: thin solid red;
     &_text {
       white-space: nowrap;
 

@@ -113,32 +113,46 @@ export default {
         state: {
           progress: 'GET_STATUS_LOAD',
           init: 'GET_LIST_OPTIONS',
-          header: {},
+          header: {
+            getData: 'GET_LIST_FIELDS',
+          },
           body: {
             getData: 'GET_LIST_DATA',
             loadData: 'GET_LIST_DATA',
           },
         },
-        activeField: 'id',
-        fieldsTemplate: [
-          [[90, 90],          ['400',],[115, 115],[115, 115],    [140, 140],       [140, 140],       [120,120],        [130,130],         [180, 180],  [180, 180]],
-          ['institution_code','title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status','industry_typing','institution_type','budget_level','bk']
+        header: [
+          {value: 'institution_code', align: 'end', width: [90, 90]},
+          {value: 'title', width: 400},
+          {value: 'inn', width: [115, 115]},
+          {value: 'kpp', width: [115, 115]},
+          {value: 'egrul_status', width: [140, 140]},
+          {value: 'rubpnubp_status', width: [140, 140]},
+          {value: 'industry_typing', width: [120, 120]},
+          {value: 'institution_type', width: [130, 130]},
+          {value: 'budget_level', width: [180, 180]},
+          {value: 'bk', width: [180, 180]},
         ],
+        activeField: 'id',
+        // fieldsTemplate: [
+        //   [[90, 90],          ['400',],[115, 115],[115, 115],    [140, 140],       [140, 140],       [120,120],        [130,130],         [180, 180],  [180, 180]],
+        //   ['institution_code','title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status','industry_typing','institution_type','budget_level','bk']
+        // ],
         fieldsFixed: ['institution_code', 'title'],
         countRowBody: 2,
-        header: {
-          state: {
-            getterData: 'GET_LIST_FIELDS',
-            dispatchInit: 'GET_LIST_OPTIONS',
-          },
-        },
-        body: {
-          height: 25,
-          state: {
-            getterData: 'GET_LIST_DATA',
-            dispatchData: 'GET_LIST_DATA',
-          },
-        }
+        // header: {
+        //   state: {
+        //     getterData: 'GET_LIST_FIELDS',
+        //     dispatchInit: 'GET_LIST_OPTIONS',
+        //   },
+        // },
+        // body: {
+        //   height: 25,
+        //   state: {
+        //     getterData: 'GET_LIST_DATA',
+        //     dispatchData: 'GET_LIST_DATA',
+        //   },
+        // }
       },
     }
   },
