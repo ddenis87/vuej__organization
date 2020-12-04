@@ -1,16 +1,21 @@
 <template>
   <div class="table-body">
-    <div class="table-body__row" :style="listStyle" v-for="(itemRow, indexRow) in listData" :key="`bodyRow-${indexRow}`" @mouseout="showTooltip">
-      <div class="table-body__col" v-for="(itemCol, indexCol) in listDataHeader" :key="`bodyCol-${indexCol}`" :style="itemCol.style">
-        
-
-        <table-uno-overflow :count-row="countRow" :text-content="itemRow[itemCol.key]">
-          <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot>
-        </table-uno-overflow>
-        <!-- <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]"> -->
-          <!-- <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot> -->
-        <!-- </table-overflow> -->
-        
+    <div v-for="(itemRow, indexRow) in listData"
+         :key="`bodyRow-${indexRow}`"
+         class="table-body__row"
+         :class="`table-body__row_${heightType}`"
+         :style="fieldsTemplate">
+      <div v-for="(itemCol, indexCol) in listDataHeader" 
+           :key="`bodyCol-${indexCol}`" 
+           class="table-body__col"
+           :class="`table-body__col_${heightType}`" @mouseenter="showTooltip">
+        <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
+          <table-uno-overflow :content="itemRow[itemCol.value]">
+            <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`">
+              {{ itemRow[itemCol.value] }}
+            </span>
+          </table-uno-overflow>
+        </slot>
       </div>
       <div class="table-body__col-action">
         <slot name="action" v-bind:activeValue="itemRow['title']"></slot>
@@ -21,54 +26,69 @@
 </template>
 
 <script>
-import TableUnoOverflow from './TableUnoOverflow';
-import TableOverflow from '../TableOverflow.vue';
+import TableUnoOverflow from './TableUnoOverflow.vue';
 
 export default {
   name: 'TableUnoBody',
   components: {
     TableUnoOverflow,
-    TableOverflow,
   },
   props: {
     listData: Array,
     listDataHeader: Array,
-    listStyle: Object,
-    countRow: Number,
+    fieldsTemplate: Object,
+    heightType: {type: String, default: 'fixed'},
   },
   computed: {
   },
   data() {
     return {
-      windowsWidth: Number,
+      tooltipElement: {},
       tooltipTimer: {},
+      // tooltipsPosition: { left: '0px', top: '0px', visibility: 'hidden' },
+      tooltipShift: { left: 7, top: 6 },
     }
   },
   created() {
-    window.addEventListener('resize', this.getWindowWidth);
+    
+  },
+  mounted() {
+    this.tooltipElement = document.getElementById("table-tooltip");
+  },
+  updated() {
+    switch(this.heightType) {
+      case 'fixed': { this.tooltipShift.left = 7; this.tooltipShift.top = 6; break; }
+      case 'dense': { this.tooltipShift.left = 7; this.tooltipShift.top = 0; break; }
+      case 'auto': { this.tooltipShift.left = 7; this.tooltipShift.top = 6; break; }
+    }
   },
   methods: {
-    getWindowWidth() {
-      this.windowsWidth = document.documentElement.getBoundingClientRect().width;
-    },
     showTooltip(event) {
-      // this.$emit('hide-tooltip');
-      // if (this.tooltipTimer) {clearTimeout(this.tooltipTimer); }
-      // if (event.relatedTarget && event.relatedTarget.getAttribute('data-overflow')) {
-      //   let tooltipProps = {
-      //     left: event.relatedTarget.getBoundingClientRect().left - 24,
-      //     top: event.relatedTarget.getBoundingClientRect().top - 200,
-      //     content: event.relatedTarget.getAttribute('data-overflow-text'),
-      //   }
-      //   this.tooltipTimer = setTimeout(() => this.$emit('show-tooltip', tooltipProps), 500);
-      // } 
-      // else {
-      //   this.$emit('hide-tooltip');
-      // }
+      if (this.heightType == 'auto') return;
+      this.tooltipElement.style.visibility = 'hidden';
+      clearTimeout(this.tooltipTimer);
+      let targetChild = event.target.firstChild;  
+      
+      // console.log(document.documentElement.getBoundingClientRect().width);
+      // console.log(event.clientX);
+      if (document.documentElement.getBoundingClientRect().width - event.clientX < 400) {
+        this.tooltipShift.left = 250;
+      } else { this.tooltipShift.left = 7; }
+
+      if (typeof targetChild === 'object') {
+        if (targetChild.hasAttribute('data-overflow-text')) {
+          this.tooltipElement.style.left = targetChild.getBoundingClientRect().left - this.tooltipShift.left + 'px';
+          this.tooltipElement.style.top = targetChild.getBoundingClientRect().top - this.tooltipShift.top + 'px';
+          this.tooltipElement.innerHTML = targetChild.getAttribute('data-overflow-text');
+          this.tooltipTimer = setTimeout(() => this.tooltipElement.style.visibility = 'visible', 1000);
+          // console.log('show');
+        }
+      }
     },
     // hideTooltip() {
-    //   console.log('By');
-    // }
+    //   clearTimeout(this.tooltipTimer);
+    //   this.tooltipElement.style.visibility = 'hidden';
+    // },
   },
 }
 </script>
@@ -79,16 +99,19 @@ export default {
 .table-body {
   &__row {
     display: grid;
-    grid-auto-rows: $bodyRowHeight;
     border-bottom: $bodyRowBorder;
+
+    &_fixed { grid-auto-rows: $bodyRowHeight; }
+    &_dense { grid-auto-rows: $bodyDenseRowHeight; }
+    &_auto { grid-auto-rows: auto; }
+
     &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover; }
     &:hover > .table-body__col-action > .action-box { opacity: 1; }
 
     .table-body__col {
-      display: flex;
+      display: inline-flex;
       justify-content: $bodyHorizontalAlign;
       align-items: $bodyVerticalAlign;
-      padding: $bodyPaddingTB $bodyPaddingLR;
 
       font-size: $bodyFontSize;
       font-weight: $bodyFontWeight;
@@ -98,6 +121,31 @@ export default {
       background-color: $bodyRowBackgroundColor;
       transition-delay: .1s;
       overflow: hidden;
+
+      &_fixed { padding: $bodyPaddingTB $bodyPaddingLR; }
+      &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
+      &_auto { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
+
+      .content {
+        width: 100%;
+        &_fixed {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        &_dense {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        &_auto {
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+
       &-action {
         position: sticky;
         right: 0px;

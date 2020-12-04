@@ -25,12 +25,12 @@
           </div>
         </div>
          <div class="body-item__title" v-if="!listMultiRow">
-          <div>
-            <h5>Component: Table-uno</h5>
-          </div>
-          <div>
-            <h6>Template: ['institution_code', 'title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status', 'industry_typing', 'institution_type', 'budget_level', 'bk']</h6>
-          </div>
+          <v-radio-group v-model="heightType" row dense>
+            <h4>Height row type:</h4>
+            <v-radio label="fixed" value="fixed"></v-radio>
+            <v-radio label="dense" value="dense"></v-radio>
+            <v-radio label="auto" value="auto"></v-radio>
+          </v-radio-group>
         </div>
 
         <div class="body-item__body">
@@ -43,10 +43,10 @@
             </template>
           </table-multiline>
 
-          <table-uno :table-properties="propsTableUno" v-if="!listMultiRow">
-            <template #[`body.institution_code`]="itemValue">
+          <table-uno :table-properties="propsTableUno" v-bind:[heightType]="true" v-if="!listMultiRow">
+            <!-- <template #[`body.institution_code`]="itemValue">
               <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
-            </template>
+            </template> -->
             <template #action="activeValue">
               <table-action :activeValue="activeValue"></table-action>
             </template>
@@ -75,6 +75,7 @@ export default {
   },
   data() {
     return {
+      heightType: 'fixed',
       listMultiRow: false,
 
       propsTableMultiline: {
@@ -124,8 +125,8 @@ export default {
         header: [
           {value: 'institution_code', align: 'end', width: [90, 90]},
           {value: 'title', width: 400},
-          {value: 'inn', width: [115, 115]},
-          {value: 'kpp', width: [115, 115]},
+          {value: 'inn', width: [115, 115], align: 'end'},
+          {value: 'kpp', width: [115, 115], align: 'end'},
           {value: 'egrul_status', width: [140, 140]},
           {value: 'rubpnubp_status', width: [140, 140]},
           {value: 'industry_typing', width: [120, 120]},
@@ -156,6 +157,9 @@ export default {
       },
     }
   },
+  methods: {
+
+  },
 }
 </script>
 
@@ -185,44 +189,48 @@ export default {
     grid-area: organization-body;
     padding: 3px;
 
-    .body-item {
-      color: rgba(0,0,0,.87);
-      border-radius: 4px;
-      border: thin solid rgba(0,0,0,.12);
-      overflow: hidden;
-
-      &__title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px;
-      }
-      &__body {
-        height: calc(100vh - 170px);
-        padding: 10px;
-      }
-    }
     // .body-item {
-    //   max-height: 100%;
-    //   display: grid;
-    //   grid-template-areas: "body-item__title" "body-item__body";
-    //   grid-template-columns: 100%;
-    //   grid-template-rows: 56px 100%;
-    //   border: thin solid rgba(0,0,0,.12);
+    //   color: rgba(0,0,0,.87);
     //   border-radius: 4px;
+    //   border: thin solid rgba(0,0,0,.12);
     //   overflow: hidden;
+
     //   &__title {
-    //     padding: 0px 10px;
-    //     grid-area: body-item__title;
-    //     overflow: hidden;
-    //     border-bottom: thin solid rgba(0,0,0,.12);
+    //     display: flex;
+    //     justify-content: space-between;
+    //     align-items: center;
+    //     padding: 8px;
     //   }
     //   &__body {
-    //     max-height: calc(100vh - 198px);
+    //     height: calc(100vh - 170px);
     //     padding: 10px;
-    //     grid-area: body-item__body;
     //   }
     // }
+    .body-item {
+      max-height: 100%;
+      display: grid;
+      grid-template-areas: "body-item__title" "body-item__body";
+      grid-template-columns: 100%;
+      grid-template-rows: 56px 100%;
+      border: thin solid rgba(0,0,0,.12);
+      border-radius: 4px;
+      overflow: hidden;
+      // border: thin solid blue;
+      &__title {
+        padding: 0px 10px;
+        grid-area: body-item__title;
+        overflow: hidden;
+        border-bottom: thin solid rgba(0,0,0,.12);
+        h4 { margin-right: 10px ; }
+        // border: thin solid red;
+      }
+      &__body {
+        max-height: calc(100% - 56px);
+        padding: 10px;
+        grid-area: body-item__body;
+        // border: thin solid purple;
+      }
+    }
   }
 }
 </style>

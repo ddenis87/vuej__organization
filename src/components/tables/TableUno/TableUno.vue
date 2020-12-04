@@ -1,21 +1,24 @@
 <template>
   <div class="table-uno" id="table-uno">
-    <div class="table-tooltip" :style="tooltipsPosition">
+    <div class="table-tooltip" id="table-tooltip">
       123
     </div>
     <div class="table-uno-head">
-      <table-uno-head :list-data="listHeader" 
-                      :style="fieldsTemplate"></table-uno-head>
+      <table-uno-head :style="fieldsTemplate"
+                      :list-data="listHeader" 
+                      :height-type="heightType"></table-uno-head>
       <v-progress-linear class="table-uno-progress" color="blue" indeterminate absolute bottom v-show="isShowProgressBar"></v-progress-linear>
     </div>
     
-    <!-- <div class="table-uno-body">
+    <div class="table-uno-body">
       <table-uno-body :list-data="listBody"
-                        :list-data-header="listHeader"
-                        :list-style="fieldsTemplate"
-                        :count-row="tableProperties.countRowBody" @show-tooltip="showTooltip" @hide-tooltip="hideTooltip">
-        <template v-for="item in listHeader" #[item.key]="itemValue">
-          <slot :name="`body.${(item) ? item.key : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+                      :list-data-header="listHeader"
+                      :fields-template="fieldsTemplate"
+                      :height-type="heightType"
+                      :count-row="tableProperties.countRowBody" 
+                      >
+        <template v-for="item in listHeader" #[item.value]="itemValue">
+          <slot :name="`body.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
         </template>
         
         <template v-slot:action="activeValue">
@@ -23,7 +26,7 @@
         </template>
       </table-uno-body>
     </div>
-    <div id="boot-anchor"></div> -->
+    <div id="boot-anchor"></div>
   </div>
 </template>
 
@@ -39,58 +42,35 @@ export default {
   },
   props: {
     tableProperties: Object,
+    
+    fixed: {type: Boolean, default: true},
+    dense: {type: Boolean, default: false},
+    auto: {type: Boolean, default: false},
   },
   computed: {
     isShowProgressBar() {
       if (!this.$store.getters[this.tableProperties.state.progress]) this.parentElement.addEventListener('scroll', this.scrollBody);
       return this.$store.getters[this.tableProperties.state.progress];
     },
+    
     listHeader() {
       let listHeaderBase = this.tableProperties.header;
-      // Object.assign(listHeaderBase, this.tableProperties.header);
-      // let listHeaderFilter = [];
       let listHeaderState = this.$store.getters[this.tableProperties.state.header.getData];
       if (listHeaderState.length != 0) {
-        // for (let i = 0; i < this.tableProperties.header.length; i++) {
-          // listHeaderState.find(item => item.key == this.tableProperties.header[i])
-          listHeaderBase.forEach(item => item.text = listHeaderState.find(mitem => mitem.key == item.value).label);
-          // this.tableProperties.header.forEach(item => listHeaderFilter.push(listHeaderState.find(mitem => mitem.key == item.value), ));
-        // }
-        // console.log(listHeaderBase);
+        listHeaderBase.forEach(item => item.text = listHeaderState.find(mitem => mitem.key == item.value).label);
+        console.log(listHeaderBase);
         return listHeaderBase;
       }
     },
-    // listHeader() {
-    //   let headerItems = new Set();
-    //   let headerFilter = [];
-    //   let headerList = this.$store.getters[this.tableProperties.header.state.getterData];
-    //   for (let i = 1; i < this.tableProperties.fieldsTemplate.length; i++) {
-    //     this.tableProperties.fieldsTemplate[i].forEach(item => headerItems.add(item));
-    //   }
-    //   if (headerList.length != 0 && headerItems.size != 0) {
-    //     headerItems.delete('action_box');
-    //     headerItems.forEach(item => headerFilter.push(headerList.find(mitem => mitem.key == item)));
-    //     if (headerFilter.length != 0) {
-    //       for (let i = 0; i < headerFilter.length; i++) {
-    //         headerFilter[i].style = `grid-area: ${headerFilter[i].key}; `;
-    //         if ('fieldsFixed' in this.tableProperties && this.tableProperties.fieldsFixed.includes(headerFilter[i].key)) {
-    //           // console.log(this.tableProperties.fieldsTemplate[0]);
-    //           let shiftLeft = (this.tableProperties.fieldsTemplate[0][i - 1]) ? +this.tableProperties.fieldsTemplate[0][i - 1][0] : 0;
-    //           headerFilter[i].style += `position: sticky; left: ${shiftLeft}px; `;
-    //           // headerFilter[i].style += (i == this.tableProperties.fieldsFixed.length - 1) ? 
-    //           //   'background-image: linear-gradient(90deg, white 95%, rgba(0,0,0,0) 100%); ' : 
-    //           //     'background-color: white; ';
-    //         }
-    //       }
-    //     }
-    //   }
-    //   // console.log(headerFilter);
-    //   return headerFilter;
-    // },
-    // listBody() { return this.$store.getters[this.tableProperties.body.state.getterData]; },
-
+    listBody() { return this.$store.getters[this.tableProperties.state.body.getData]; },
+    
+    heightType() {
+      let heightType = 'fixed';
+      if (this.dense) heightType = 'dense';
+      if (this.auto) heightType = 'auto';
+      return heightType;
+    },
     fieldsTemplate() {
-
       let fieldsTemplate = { 'grid-template-areas': '"', 'grid-template-columns': '' };
       let minWidth = 100;
       this.tableProperties.header.forEach(item => {
@@ -100,28 +80,6 @@ export default {
       });
       fieldsTemplate['grid-template-areas'] += ' action_box"';
       fieldsTemplate['grid-template-columns'] += ' minmax(0px, 0px)';
-      console.log(fieldsTemplate['grid-template-areas']);
-      console.log(fieldsTemplate['grid-template-columns']);
-      
-
-      // let fieldsTemplateBase = [].concat(this.tableProperties.fieldsTemplate);
-      // let fieldsTemplate = { 'grid-template-areas': '', 'grid-template-columns': '' };
-      // let minWidth = 100;
-      // for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplateBase[i].push('action_box');
-
-      // // fieldsTemplateBase[0].forEach(item => fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'minmax(100px, 100vw) ');
-
-      // fieldsTemplateBase[0].forEach(item => {
-        // if (Array.isArray(item)) {
-          // fieldsTemplate['grid-template-columns'] += `minmax(${(+item[0]) ? +item[0] : minWidth}px, ${(+item[1]) ? item[1] + 'px' : '100vw'}) `;
-        // } else {
-          // fieldsTemplate['grid-template-columns'] += (+item) ? `${item}px ` : 'auto ';
-        // }
-      // });
-
-      // fieldsTemplate['grid-template-columns'] += 'repeat(auto-fit, 0px) '; // For action button
-      // for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplate['grid-template-areas'] += ` "${fieldsTemplateBase[i].join(' ')}"`;
-      // console.log(fieldsTemplate['grid-template-columns']);
       return fieldsTemplate;
     }
   },
@@ -129,7 +87,6 @@ export default {
     return {
       parentElement: '',
       parentEdge: Number,
-      tooltipsPosition: { left: '0px', top: '0px', visibility: 'hidden' },
     }
   },
   created() {
@@ -139,25 +96,18 @@ export default {
     this.parentElement = document.getElementById('table-uno');
     this.parentEdge = this.parentElement.getBoundingClientRect().bottom;
   },
+  updated() { this.parentEdge = this.parentElement.getBoundingClientRect().bottom; },
   methods: {
     scrollBody() {
-      // let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 600;
-      // if (bootAnchorEdge < this.parentEdge) {
-      //   this.parentElement.removeEventListener('scroll', this.scrollBody);
-      //   this.$store.dispatch(this.tableProperties.body.state.dispatchData);
-      //   console.log('Load');        
-      // }
-    },
-    showTooltip(value) {
-      this.tooltipsPosition.left = value.left + 'px';
-      this.tooltipsPosition.top = value.top + 'px';
-      this.tooltipsPosition.visibility = 'visible';
-      document.querySelector('.table-tooltip').innerHTML = value.content;
-      console.log(this.tooltipsPosition)
-    },
-    hideTooltip() {
-      this.tooltipsPosition.visibility = 'hidden';
-      document.querySelector('.table-tooltip').innerHTML = '';
+      console.log('Scroll'); 
+      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 500;
+      console.log(bootAnchorEdge);
+      console.log(this.parentEdge);
+      if (bootAnchorEdge < this.parentEdge) {
+        this.parentElement.removeEventListener('scroll', this.scrollBody);
+        this.$store.dispatch(this.tableProperties.state.body.loadData);
+        console.log('Load');        
+      }
     },
   },
 }
@@ -173,6 +123,8 @@ export default {
   border-radius: $borderRadius;
   box-shadow: $boxShadow;
   overflow: auto;
+
+// border: thin solid green;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -201,12 +153,14 @@ export default {
   }
 
   .table-tooltip {
-    position: absolute;
+    position: fixed;
     left: 100px;
     top: 100px;
     max-width: 400px;
     min-width: 400px;
-    color:rgba(0, 0, 0, .87);
+
+    font-size: $tooltipFontSize;
+    color: $tooltipFontColor;
     border: thin solid rgba(0,0,0,.3);
     border-radius: 10px;
     box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);

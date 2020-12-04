@@ -89,7 +89,7 @@ export default {
 
       fieldsTemplate['grid-template-columns'] += 'repeat(auto-fit, 0px) '; // For action button
       for (let i = 1; i < fieldsTemplateBase.length; i++) fieldsTemplate['grid-template-areas'] += ` "${fieldsTemplateBase[i].join(' ')}"`;
-      console.log(fieldsTemplate['grid-template-columns']);
+      console.log(fieldsTemplate);
       return fieldsTemplate;
     }
   },

@@ -1,12 +1,14 @@
 <template>
-  <div class="table-head">
-    <div class="table-head__item-uno" 
-        v-for="(item, index) in listData" 
-        :key="index"
-        :data-text="item.label">
-        <span class="table-head__item-uno_text" :data-text="item.text">
-          <slot :name="`${item.value}`" v-bind:itemValue="item.text">{{ item.text }}</slot>
-        </span>
+  <div class="table-head" :class="`table-head_${heightType}`">
+    <div class="table-head__item-uno"
+         :class="`table-head__item-uno_${heightType}`"
+         v-for="(item, index) in listData" 
+         :key="index">
+      <span class="content" :class="`content_${heightType}`">
+        <slot :name="`${item.value}`" v-bind:itemValue="item.value">
+          {{ item.text }}
+        </slot>
+      </span>
     </div>
   </div>
 </template>
@@ -16,7 +18,8 @@ export default {
   name: 'TableMultilineHead',
   props: {
     listData: Array,
-  }
+    heightType: {type: String, default: 'fixed'},
+  },
 }
 </script>
 
@@ -25,17 +28,16 @@ export default {
 
 .table-head {
   display: grid;
-  // grid-template-columns: repeat(auto-fit, minmax(100px, 100%));
-  // grid-auto-flow: column;
-  // grid-auto-columns: repeat(auto-fill, auto);
-  
-  grid-auto-rows: $headRowHeight;
   border-bottom: $headRowBorder;
+
+  &_fixed { grid-auto-rows: $headRowHeight; }
+  &_dense { grid-auto-rows: $headDenseRowHeight; }
+  &_auto { grid-auto-rows: $headAutoRowHeight; }
+
   &__item-uno {
-    display: flex;
+    display: inline-flex;
     justify-content: $headHorizontalAlign;
     align-items: $headVerticalAlign;
-    padding: $headPaddingTB $headPaddingLR;
 
     font-size: $headFontSize;
     font-weight: $headFontWeight;
@@ -44,12 +46,27 @@ export default {
     
     background-color: $headRowBackgroundColor;
 
-    border: thin solid red;
-    &_text {
-      white-space: nowrap;
+    &_fixed { padding: $headPaddingTB $headPaddingLR; }
+    &_dense { padding: $headDensePaddingTB $headDensePaddingLR; }
+    &_auto { padding: $headAutoPaddingTB $headAutoPaddingLR; }
 
-      text-overflow: ellipsis;
-      overflow: hidden;
+    .content {
+      &_fixed {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      &_dense {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      &_auto {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
   }
 }
