@@ -39,8 +39,8 @@ html, body {
   display: grid;
   min-height: 100%;
   grid-template-areas: "app-header" "app-body";
-  grid-template-columns: 1fr;
-  grid-template-rows: 80px 1fr 60px;
+  grid-template-columns: 100%;
+  grid-template-rows: 80px 100% 60px;
   .button-up {
     z-index: 999;
   }
