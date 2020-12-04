@@ -6,8 +6,6 @@
     <div class="app-body maxWidth">
       <router-view></router-view>
     </div>
-    <!-- <app-lock></app-lock>
-    <app-button-up class="button-up"></app-button-up> -->
   </v-app>
 </template>
 
@@ -27,8 +25,6 @@ export default {
 </script>
 
 <style lang="scss">
-// @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
-
 html, body {
   overflow-y: hidden;
   height: 100%;
@@ -40,7 +36,9 @@ html, body {
   min-height: 100%;
   grid-template-areas: "app-header" "app-body";
   grid-template-columns: 100%;
-  grid-template-rows: 80px 100% 60px;
+  grid-template-rows: 80px 1fr 60px;
+  max-width: 100%;
+  width: 100%;
   .button-up {
     z-index: 999;
   }
@@ -59,16 +57,6 @@ html, body {
     // margin-left: auto;
     // margin-right: auto;
     width: 100%;
-  }
-  .tooltip-body {
-    max-width: 400px;
-    color:rgba(0, 0, 0, .87);
-    border: thin solid rgba(0,0,0,.3);
-    border-radius: 10px;
-    box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);
-    background-color: white;
-    padding: 6px;
-    opacity: 1;
   }
 }
 </style>

@@ -135,25 +135,8 @@ export default {
           {value: 'bk', width: [180, 180]},
         ],
         activeField: 'id',
-        // fieldsTemplate: [
-        //   [[90, 90],          ['400',],[115, 115],[115, 115],    [140, 140],       [140, 140],       [120,120],        [130,130],         [180, 180],  [180, 180]],
-        //   ['institution_code','title', 'inn',     'kpp',         'egrul_status',   'rubpnubp_status','industry_typing','institution_type','budget_level','bk']
-        // ],
         fieldsFixed: ['institution_code', 'title'],
         countRowBody: 2,
-        // header: {
-        //   state: {
-        //     getterData: 'GET_LIST_FIELDS',
-        //     dispatchInit: 'GET_LIST_OPTIONS',
-        //   },
-        // },
-        // body: {
-        //   height: 25,
-        //   state: {
-        //     getterData: 'GET_LIST_DATA',
-        //     dispatchData: 'GET_LIST_DATA',
-        //   },
-        // }
       },
     }
   },

@@ -1,8 +1,7 @@
 <template>
   <div class="table-uno" id="table-uno">
-    <div class="table-tooltip" id="table-tooltip">
-      123
-    </div>
+    <div class="table-tooltip" id="table-tooltip"></div>
+
     <div class="table-uno-head">
       <table-uno-head :style="fieldsTemplate"
                       :list-data="listHeader" 
@@ -26,16 +25,22 @@
         </template>
       </table-uno-body>
     </div>
+
     <div id="boot-anchor"></div>
   </div>
 </template>
 
 <script>
+import { TableUnoBuildingTemplate } from './TableUnoBuildingTemplate.js';
+
 import TableUnoHead from './TableUnoHead.vue';
 import TableUnoBody from './TableUnoBody.vue';
 
 export default {
   name: 'TableUno',
+  mixins: [
+    TableUnoBuildingTemplate,
+  ],
   components: { 
     TableUnoHead,
     TableUnoBody, 
@@ -58,7 +63,7 @@ export default {
       let listHeaderState = this.$store.getters[this.tableProperties.state.header.getData];
       if (listHeaderState.length != 0) {
         listHeaderBase.forEach(item => item.text = listHeaderState.find(mitem => mitem.key == item.value).label);
-        console.log(listHeaderBase);
+        // console.log(listHeaderBase);
         return listHeaderBase;
       }
     },
@@ -70,18 +75,6 @@ export default {
       if (this.auto) heightType = 'auto';
       return heightType;
     },
-    fieldsTemplate() {
-      let fieldsTemplate = { 'grid-template-areas': '"', 'grid-template-columns': '' };
-      let minWidth = 100;
-      this.tableProperties.header.forEach(item => {
-        fieldsTemplate['grid-template-areas'] += `${item.value} `;
-        fieldsTemplate['grid-template-columns'] += (item.width) ? (Array.isArray(item.width)) ? ` minmax(${item.width[0]}px, ${item.width[1]}px)` : ` minmax(${item.width}px, 100vw)` 
-          : ` minmax(${minWidth}px, 100%)`;
-      });
-      fieldsTemplate['grid-template-areas'] += ' action_box"';
-      fieldsTemplate['grid-template-columns'] += ' minmax(0px, 0px)';
-      return fieldsTemplate;
-    }
   },
   data() {
     return {
@@ -99,10 +92,10 @@ export default {
   updated() { this.parentEdge = this.parentElement.getBoundingClientRect().bottom; },
   methods: {
     scrollBody() {
-      console.log('Scroll'); 
+      // console.log('Scroll'); 
       let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 500;
-      console.log(bootAnchorEdge);
-      console.log(this.parentEdge);
+      // console.log(bootAnchorEdge);
+      // console.log(this.parentEdge);
       if (bootAnchorEdge < this.parentEdge) {
         this.parentElement.removeEventListener('scroll', this.scrollBody);
         this.$store.dispatch(this.tableProperties.state.body.loadData);
