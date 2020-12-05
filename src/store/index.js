@@ -27,7 +27,14 @@ export default new Vuex.Store({
     GET_LIST_FIELDS(state) {     
       if (state.listFields.length == 0) {
         Object.keys(state.listDataOptions).forEach(item => {
-          state.listFields.push( {key: item, label: state.listDataOptions[item].label} );
+          state.listFields.push({
+            key: item, 
+            label: state.listDataOptions[item].label, 
+            type: state.listDataOptions[item].type,
+            choices: state.listDataOptions[item].choices,
+            'read_only': state.listDataOptions[item]['read_only'],
+            required: state.listDataOptions[item].required,
+          });
         })
       }
       return state.listFields;
@@ -110,6 +117,7 @@ export default new Vuex.Store({
       axios
         .options(`https://an67.pythonanywhere.com/api/organisations/`)
         .then(response => {
+          console.log(JSON.parse(response.request.response).actions.POST);
           state.commit('SET_LIST_OPTIONS', JSON.parse(response.request.response).actions.POST);
           state.dispatch('GET_LIST_BK');
         })
