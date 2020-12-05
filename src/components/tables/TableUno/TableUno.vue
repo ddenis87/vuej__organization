@@ -1,5 +1,5 @@
 <template>
-  <div class="table-uno" id="table-uno">
+  <div class="table-uno" :id="parentId">
     <div class="table-tooltip" id="table-tooltip"></div>
 
     <div class="table-uno-head">
@@ -14,8 +14,7 @@
                       :list-data-header="listHeader"
                       :fields-template="fieldsTemplate"
                       :height-type="heightType"
-                      :count-row="tableProperties.countRowBody" 
-                      >
+                      :parent-id="parentId">
         <template v-for="item in listHeader" #[item.value]="itemValue">
           <slot :name="`body.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
         </template>
@@ -26,49 +25,46 @@
       </table-uno-body>
     </div>
 
-    <div id="boot-anchor"></div>
+    <div class="boot-anchor" id="boot-anchor"></div>
   </div>
 </template>
 
 <script>
-import { TableUnoBuildingTemplate } from './TableUnoBuildingTemplate.js';
-
 import TableUnoHead from './TableUnoHead.vue';
 import TableUnoBody from './TableUnoBody.vue';
 
+import { LoadData } from './mixins/TableUno/LoadData';
+import { GetterData } from './mixins/TableUno/GetterData';
+import { BuildingTemplate } from './mixins/TableUno/BuildingTemplate';
+
 export default {
   name: 'TableUno',
-  mixins: [
-    TableUnoBuildingTemplate,
-  ],
   components: { 
     TableUnoHead,
     TableUnoBody, 
   },
+  mixins: [
+    LoadData,
+    GetterData,
+    BuildingTemplate,
+  ],
   props: {
+    dId: String,
     tableProperties: Object,
-    
+
+    // props for height type
     fixed: {type: Boolean, default: true},
     dense: {type: Boolean, default: false},
     auto: {type: Boolean, default: false},
   },
+  data() {
+    return {
+      parentId: (this.dId) ? `table-uno-${this.dId}` : 'table-uno',
+      parentElement: '',
+      parentEdge: Number,
+    }
+  },
   computed: {
-    isShowProgressBar() {
-      if (!this.$store.getters[this.tableProperties.state.progress]) this.parentElement.addEventListener('scroll', this.scrollBody);
-      return this.$store.getters[this.tableProperties.state.progress];
-    },
-    
-    listHeader() {
-      let listHeaderBase = this.tableProperties.header;
-      let listHeaderState = this.$store.getters[this.tableProperties.state.header.getData];
-      if (listHeaderState.length != 0) {
-        listHeaderBase.forEach(item => item.text = listHeaderState.find(mitem => mitem.key == item.value).label);
-        // console.log(listHeaderBase);
-        return listHeaderBase;
-      }
-    },
-    listBody() { return this.$store.getters[this.tableProperties.state.body.getData]; },
-    
     heightType() {
       let heightType = 'fixed';
       if (this.dense) heightType = 'dense';
@@ -76,32 +72,9 @@ export default {
       return heightType;
     },
   },
-  data() {
-    return {
-      parentElement: '',
-      parentEdge: Number,
-    }
-  },
-  created() {
-    this.$store.dispatch(this.tableProperties.state.init);
-  },
   mounted() {
-    this.parentElement = document.getElementById('table-uno');
+    this.parentElement = document.getElementById(this.parentId);
     this.parentEdge = this.parentElement.getBoundingClientRect().bottom;
-  },
-  updated() { this.parentEdge = this.parentElement.getBoundingClientRect().bottom; },
-  methods: {
-    scrollBody() {
-      // console.log('Scroll'); 
-      let bootAnchorEdge = document.getElementById('boot-anchor').getBoundingClientRect().bottom - 500;
-      // console.log(bootAnchorEdge);
-      // console.log(this.parentEdge);
-      if (bootAnchorEdge < this.parentEdge) {
-        this.parentElement.removeEventListener('scroll', this.scrollBody);
-        this.$store.dispatch(this.tableProperties.state.body.loadData);
-        console.log('Load');        
-      }
-    },
   },
 }
 </script>
@@ -116,9 +89,7 @@ export default {
   border-radius: $borderRadius;
   box-shadow: $boxShadow;
   overflow: auto;
-
 // border: thin solid green;
-
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -128,22 +99,12 @@ export default {
       background-color:  rgba(0,0,0,0.2);
     }
   }
-  &-head {
-    position: sticky;
-    display: inline-flex;
-    top: 0px;
-    z-index: 40;
-  }
-  &-body {
-    position: relative;
-    display: inline-flex;
-    z-index: 20;
-  }
-  &-footer {
-    position: sticky;
-    bottom: 0px;
-    z-index: 30;
-  }
+
+  &-head, &-footer { position: sticky; }
+  &-head, &-body, &-footer { display: inline-flex; }
+  &-head { top: 0px; z-index: 40; }
+  &-body { position: relative; z-index: 20; }
+  &-footer { bottom: 0px; z-index: 30; }
 
   .table-tooltip {
     position: fixed;

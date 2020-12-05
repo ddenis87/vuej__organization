@@ -14,8 +14,6 @@ export default {
     content: '',
     countRow: Number,
   },
-  watch: {
-  },
   data() {
     return {
       sequenceOverflowBox: this.$store.getters.GET_SEQUENCE_OVERFLOW_BOX,
@@ -32,7 +30,6 @@ export default {
       let parentContainer = document.getElementById(`box-overflow-${this.sequenceOverflowBox}`);
       let fullContainer = document.getElementById(`box-full-${this.sequenceOverflowBox}`);
       if (fullContainer.getBoundingClientRect().height > parentContainer.getBoundingClientRect().height + 10) {
-        // parentContainer.setAttribute('data-overflow', "true"); // ?
         parentContainer.setAttribute('data-overflow-text', this.content);
       }
     },

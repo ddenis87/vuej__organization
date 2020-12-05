@@ -1,4 +1,4 @@
-export const TableUnoBuildingTemplate = {
+export const BuildingTemplate = {
   computed: {
     fieldsTemplate() {
       let fieldsTemplate = { 'grid-template-areas': '"', 'grid-template-columns': '' };

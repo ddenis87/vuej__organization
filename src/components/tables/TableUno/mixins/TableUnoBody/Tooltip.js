@@ -1,4 +1,4 @@
-export const TableUnoBodyTooltip = {
+export const Tooltip = {
   data() {
     return {
       tooltipElement: {},
@@ -7,7 +7,7 @@ export const TableUnoBodyTooltip = {
     }
   },
   mounted() {
-    this.tooltipElement = document.getElementById("table-tooltip");
+    this.tooltipElement = document.querySelector(`#${this.parentId} .table-tooltip`);
   },
   updated() {
     switch(this.heightType) {

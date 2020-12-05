@@ -26,22 +26,24 @@
 </template>
 
 <script>
-import { TableUnoBodyTooltip } from './TableUnoBodyTooltip.js';
 import TableUnoOverflow from './TableUnoOverflow.vue';
+
+import { Tooltip } from './mixins/TableUnoBody/Tooltip';
 
 export default {
   name: 'TableUnoBody',
-  mixins: [
-    TableUnoBodyTooltip,
-  ],
   components: {
     TableUnoOverflow,
-  },
+  },  
+  mixins: [
+    Tooltip,
+  ],
   props: {
     listData: Array,
     listDataHeader: Array,
     fieldsTemplate: Object,
     heightType: {type: String, default: 'fixed'},
+    parentId: String,
   },
 }
 </script>

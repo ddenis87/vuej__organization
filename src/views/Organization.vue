@@ -43,10 +43,7 @@
             </template>
           </table-multiline>
 
-          <table-uno :table-properties="propsTableUno" v-bind:[heightType]="true" v-if="!listMultiRow">
-            <!-- <template #[`body.institution_code`]="itemValue">
-              <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
-            </template> -->
+          <table-uno d-id="organization" :table-properties="propsTableUno" v-bind:[heightType]="true" v-if="!listMultiRow">
             <template #action="activeValue">
               <table-action :activeValue="activeValue"></table-action>
             </template>
