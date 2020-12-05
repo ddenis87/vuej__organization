@@ -9,14 +9,18 @@
            :key="`bodyCol-${indexCol}`" 
            class="table-body__col"
            :class="`table-body__col_${heightType}`" 
-           :style="itemCol.position">
+           :style="itemCol.position"
+           @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])"
+           @mousedown.prevent="">
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
           <table-uno-overflow :content="itemRow[itemCol.value]"
+                              v-if="!editCellShow"
                               @show-tooltip="(event) => $emit('show-tooltip', event)">
             <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`">
               {{ itemRow[itemCol.value] }}
             </span>
           </table-uno-overflow>
+          <table-uno-body-edit v-else></table-uno-body-edit>
         </slot>
       </div>
       <div class="table-body__col-action">
@@ -29,11 +33,13 @@
 
 <script>
 import TableUnoOverflow from './TableUnoOverflow.vue';
+import TableUnoBodyEdit from './TableUnoBodyEdit.vue';
 
 export default {
   name: 'TableUnoBody',
   components: {
     TableUnoOverflow,
+    TableUnoBodyEdit,
   },  
   mixins: [
   ],
@@ -43,6 +49,24 @@ export default {
     fieldsTemplate: Object,
     heightType: {type: String, default: 'fixed'},
     parentId: String,
+  },
+  data() {
+    return {
+      editCellShow: false,
+      editDisabled: false,
+    }
+  },
+  methods: {
+    editCell(event, itemColumn, value) {
+      if (itemColumn['read_only'] == true) {
+        event.target.parentElement.parentElement.classList.add('table-body__col_disabled');
+        setTimeout(() => event.target.parentElement.parentElement.classList.remove('table-body__col_disabled'), 3000)
+        return;
+      }
+      console.log(event);
+      console.log(itemColumn);
+      console.log(value);
+    },
   },
 }
 </script>
@@ -59,7 +83,7 @@ export default {
     &_dense { grid-auto-rows: $bodyDenseRowHeight; }
     &_auto { grid-auto-rows: auto; }
 
-    &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover; }
+    &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
     &:hover > .table-body__col-action > .action-box { opacity: 1; }
 
     .table-body__col {
@@ -72,14 +96,17 @@ export default {
       line-height: $bodyFontLineHeight;
       color: $bodyFontColor;
 
+      // border: thin solid $bodyRowBackgroundColor;
       background-color: $bodyRowBackgroundColor;
       transition-delay: .1s;
       overflow: hidden;
+      box-sizing: border-box;
 
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR; }
       &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
       &_auto { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
 
+      &_disabled { border: thin solid rgba(255, 0, 0, .8) }
       .content {
         width: 100%;
         &_fixed {

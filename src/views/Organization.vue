@@ -120,6 +120,7 @@ export default {
           },
         },
         header: [
+          {value: 'id', width: [50, 50], fixed: true},
           {value: 'institution_code', align: 'end', width: [90, 90], fixed: true},
           {value: 'title', width: [400,], fixed: true},
           {value: 'inn', width: [115, 115], align: 'end'},
