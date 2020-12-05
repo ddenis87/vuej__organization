@@ -3,7 +3,8 @@
     <div class="table-head__item-uno"
          :class="`table-head__item-uno_${heightType}`"
          v-for="(item, index) in listData" 
-         :key="index">
+         :key="index"
+         :style="item.position">
       <span class="content" :class="`content_${heightType}`">
         <slot :name="`${item.value}`" v-bind:itemValue="item.value">
           {{ item.text }}

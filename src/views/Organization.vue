@@ -120,8 +120,8 @@ export default {
           },
         },
         header: [
-          {value: 'institution_code', align: 'end', width: [90, 90]},
-          {value: 'title', width: 400},
+          {value: 'institution_code', align: 'end', width: [90, 90], fixed: true},
+          {value: 'title', width: [400,], fixed: true},
           {value: 'inn', width: [115, 115], align: 'end'},
           {value: 'kpp', width: [115, 115], align: 'end'},
           {value: 'egrul_status', width: [140, 140]},

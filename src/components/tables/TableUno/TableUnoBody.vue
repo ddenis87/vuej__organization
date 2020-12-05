@@ -8,7 +8,9 @@
       <div v-for="(itemCol, indexCol) in listDataHeader" 
            :key="`bodyCol-${indexCol}`" 
            class="table-body__col"
-           :class="`table-body__col_${heightType}`" @mouseenter="showTooltip">
+           :class="`table-body__col_${heightType}`" 
+           :style="itemCol.position"
+           @mouseenter="showTooltip">
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
           <table-uno-overflow :content="itemRow[itemCol.value]">
             <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`">
