@@ -18,9 +18,7 @@ export const Tooltip = {
   methods: {
     showTooltip(event) {
       if (this.heightType == 'auto') return;
-      // this.tooltipElement.style.visibility = 'hidden';
       if (event.target.parentElement.hasAttribute('data-overflow-text')) {
-        console.log('yes');
         let targetChild = event.target.parentElement;
         (document.documentElement.getBoundingClientRect().width - event.clientX < 400) ? this.tooltipShift.left = 250 : this.tooltipShift.left = 7;
         this.tooltipElement.style.left = targetChild.getBoundingClientRect().left - this.tooltipShift.left + 'px';
@@ -30,7 +28,6 @@ export const Tooltip = {
       }
     },
     hideTooltip() {
-      console.log('hide');
       this.tooltipElement.style.visibility = 'hidden';
     },
   },

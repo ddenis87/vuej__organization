@@ -12,8 +12,7 @@
            :style="itemCol.position">
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
           <table-uno-overflow :content="itemRow[itemCol.value]"
-                              @show-tooltip="(event) => $emit('show-tooltip', event)"
-                              @hide-tooltip="() => $emit('hide-tooltip')">
+                              @show-tooltip="(event) => $emit('show-tooltip', event)">
             <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`">
               {{ itemRow[itemCol.value] }}
             </span>

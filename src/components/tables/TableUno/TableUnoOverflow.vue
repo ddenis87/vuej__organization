@@ -37,13 +37,10 @@ export default {
       }
     },
     showTooltip(event) {
-      console.log('show overflow');
       this.tooltipTimer = setTimeout(() => this.$emit('show-tooltip', event), 800);
     },
     hideTooltip() {
-      console.log('hide overflow');
       clearTimeout(this.tooltipTimer); 
-      // this.$emit('hide-tooltip');
     }
   }
 }
