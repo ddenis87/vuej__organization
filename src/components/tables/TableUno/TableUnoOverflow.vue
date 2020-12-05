@@ -1,5 +1,5 @@
 <template>
-  <div class="box-overflow" :id="`box-overflow-${this.sequenceOverflowBox}`" @mouseover.stop.prevent="">
+  <div class="box-overflow" :id="`box-overflow-${this.sequenceOverflowBox}`">
     <div class="box-full" :id="`box-full-${this.sequenceOverflowBox}`">
       {{ content }}
     </div>
@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       sequenceOverflowBox: this.$store.getters.GET_SEQUENCE_OVERFLOW_BOX,
+      tooltipTimer: {},
     }
   },
   created() {
@@ -31,8 +32,19 @@ export default {
       let fullContainer = document.getElementById(`box-full-${this.sequenceOverflowBox}`);
       if (fullContainer.getBoundingClientRect().height > parentContainer.getBoundingClientRect().height + 10) {
         parentContainer.setAttribute('data-overflow-text', this.content);
+        parentContainer.addEventListener('mouseover', this.showTooltip);
+        parentContainer.addEventListener('mouseout', this.hideTooltip);
       }
     },
+    showTooltip(event) {
+      console.log('show overflow');
+      this.tooltipTimer = setTimeout(() => this.$emit('show-tooltip', event), 800);
+    },
+    hideTooltip() {
+      console.log('hide overflow');
+      clearTimeout(this.tooltipTimer); 
+      // this.$emit('hide-tooltip');
+    }
   }
 }
 </script>

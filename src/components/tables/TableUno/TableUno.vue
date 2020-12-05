@@ -1,6 +1,6 @@
 <template>
   <div class="table-uno" :id="parentId">
-    <div class="table-tooltip" id="table-tooltip"></div>
+    <div class="table-tooltip" id="table-tooltip" @mouseout="hideTooltip"></div>
 
     <div class="table-uno-head">
       <table-uno-head :style="fieldsTemplate"
@@ -14,7 +14,9 @@
                       :list-data-header="listHeader"
                       :fields-template="fieldsTemplate"
                       :height-type="heightType"
-                      :parent-id="parentId">
+                      :parent-id="parentId"
+                      @show-tooltip="showTooltip"
+                     >
         <template v-for="item in listHeader" #[item.value]="itemValue">
           <slot :name="`body.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
         </template>
@@ -36,6 +38,7 @@ import TableUnoBody from './TableUnoBody.vue';
 import { LoadData } from './mixins/TableUno/LoadData';
 import { GetterData } from './mixins/TableUno/GetterData';
 import { BuildingTemplate } from './mixins/TableUno/BuildingTemplate';
+import { Tooltip } from './mixins/TableUno/Tooltip';
 
 export default {
   name: 'TableUno',
@@ -47,6 +50,7 @@ export default {
     LoadData,
     GetterData,
     BuildingTemplate,
+    Tooltip,
   ],
   props: {
     dId: String,

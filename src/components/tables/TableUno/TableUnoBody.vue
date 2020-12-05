@@ -9,10 +9,11 @@
            :key="`bodyCol-${indexCol}`" 
            class="table-body__col"
            :class="`table-body__col_${heightType}`" 
-           :style="itemCol.position"
-           @mouseenter="showTooltip">
+           :style="itemCol.position">
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
-          <table-uno-overflow :content="itemRow[itemCol.value]">
+          <table-uno-overflow :content="itemRow[itemCol.value]"
+                              @show-tooltip="(event) => $emit('show-tooltip', event)"
+                              @hide-tooltip="() => $emit('hide-tooltip')">
             <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`">
               {{ itemRow[itemCol.value] }}
             </span>
@@ -30,15 +31,12 @@
 <script>
 import TableUnoOverflow from './TableUnoOverflow.vue';
 
-import { Tooltip } from './mixins/TableUnoBody/Tooltip';
-
 export default {
   name: 'TableUnoBody',
   components: {
     TableUnoOverflow,
   },  
   mixins: [
-    Tooltip,
   ],
   props: {
     listData: Array,
