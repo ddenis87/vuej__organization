@@ -77,7 +77,6 @@ export default {
         type: itemColumn.type,
         text: itemColumn.text,
       };
-      console.log(event.target);
       parentElement.classList.add('table-body__col_focus');
       parentElement.querySelector('.box-overflow').classList.add('display-none');
       parentElement.querySelector('.box-edit').classList.remove('display-none');
