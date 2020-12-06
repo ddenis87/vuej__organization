@@ -11,16 +11,21 @@
            :class="`table-body__col_${heightType}`" 
            :style="itemCol.position"
            @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])"
-           @mousedown.prevent="">
+           @focus.prevent="(event) => focusCell(event, itemCol, itemRow[itemCol.value])"
+           :tabindex="`${(indexRow != 0) ? indexRow : ''}${indexCol}`">
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
           <table-uno-overflow :content="itemRow[itemCol.value]"
-                              v-if="!editCellShow"
                               @show-tooltip="(event) => $emit('show-tooltip', event)">
             <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`">
               {{ itemRow[itemCol.value] }}
             </span>
           </table-uno-overflow>
-          <table-uno-body-edit v-else></table-uno-body-edit>
+          <table-uno-body-edit class="display-none"
+                               :list-props="editProps"
+                               @pressed-key-esc="editCancel"
+                               @pressed-key-enter="editEnter"
+                               @pressed-key-tab="editTab"
+                               @edit-blur="editBlur"></table-uno-body-edit>
         </slot>
       </div>
       <div class="table-body__col-action">
@@ -53,20 +58,86 @@ export default {
   data() {
     return {
       editCellShow: false,
-      editDisabled: false,
+      editProps: {},
     }
   },
   methods: {
+    focusCell(event, itemColumn, value) {
+      // console.log(event);
+      // if (event.relatedTarget) {
+      //   if (event.relatedTarget.parentElement.parentElement == event.target.previousSibling) {
+      //     console.log('tab');
+      //     console.log(event);
+      //     // this.editCell(event, itemColumn, value);
+        
+      //     event.target.parentElement.querySelector('.box-overflow').classList.add('display-none');
+      //     event.target.parentElement.querySelector('.box-edit').classList.remove('display-none');
+      //     event.target.parentElement.querySelector('.box-edit').firstChild.focus();
+      //     event.target.parentElement.classList.add('table-body__col_focus');
+      //   }
+      // }
+    },
+    editBlur(event) {
+      let parentElement = event.target.parentElement.parentElement;
+      console.log(parentElement);
+      // parentElement.querySelector('.box-overflow > .box-full').innerText = value;
+      // parentElement.querySelector('.box-overflow > .content').innerText = value;
+      parentElement.querySelector('.box-edit').classList.add('display-none');
+      parentElement.classList.remove('table-body__col_focus');
+      
+    },
     editCell(event, itemColumn, value) {
       if (itemColumn['read_only'] == true) {
         event.target.parentElement.parentElement.classList.add('table-body__col_disabled');
         setTimeout(() => event.target.parentElement.parentElement.classList.remove('table-body__col_disabled'), 3000)
         return;
       }
-      console.log(event);
-      console.log(itemColumn);
-      console.log(value);
+      this.editProps = {
+        required: itemColumn.required,
+        value,
+        type: itemColumn.type,
+        text: itemColumn.text,
+      };
+      event.target.parentElement.parentElement.classList.add('table-body__col_focus');
+      // event.target.parentElement.parentElement.querySelector('.box-overflow').classList.add('display-none');
+      event.target.parentElement.parentElement.querySelector('.box-edit').classList.remove('display-none');
+      setTimeout(() => {
+        
+        event.target.parentElement.parentElement.querySelector('.box-edit').firstChild.focus();
+      }, 200);
     },
+
+    editCancel(event) {
+      let parentElement = event.target.parentElement.parentElement;
+      parentElement.classList.toggle('table-body__col_focus');
+      // parentElement.querySelector('.box-overflow').classList.remove('display-none');
+      parentElement.querySelector('.box-edit').classList.add('display-none');
+      
+      // setTimeout(() => , 100);
+    },
+
+    editEnter(event, value) {
+      let parentElement = event.target.parentElement.parentElement;
+      parentElement.querySelector('.box-overflow > .box-full').innerText = value;
+      parentElement.querySelector('.box-overflow > .content').innerText = value;
+      // parentElement.querySelector('.box-overflow').classList.toggle('display-none');
+      parentElement.querySelector('.box-edit').classList.add('display-none');
+      parentElement.classList.remove('table-body__col_focus');
+    },
+    editTab(event, value) {
+      // let parentElement = event.target.parentElement.parentElement;
+      // parentElement.querySelector('.box-overflow > .box-full').innerText = value;
+      // parentElement.querySelector('.box-overflow > .content').innerText = value;
+      // parentElement.querySelector('.box-overflow').classList.toggle('display-none');
+      // parentElement.querySelector('.box-edit').classList.toggle('display-none');
+      // parentElement.classList.toggle('table-body__col_focus');
+      // // console.log(parentElement);
+      // // let newEvent = new Event('dblclick');
+      // parentElement.nextSibling.focus();
+      // // parentElement.nextSibling.dispatchEvent(newEvent);
+      
+      
+    }
   },
 }
 </script>
@@ -87,6 +158,7 @@ export default {
     &:hover > .table-body__col-action > .action-box { opacity: 1; }
 
     .table-body__col {
+      position: relative;
       display: inline-flex;
       justify-content: $bodyHorizontalAlign;
       align-items: $bodyVerticalAlign;
@@ -96,17 +168,31 @@ export default {
       line-height: $bodyFontLineHeight;
       color: $bodyFontColor;
 
-      // border: thin solid $bodyRowBackgroundColor;
+      border: thin solid rgba(0, 0, 0, 0);
       background-color: $bodyRowBackgroundColor;
       transition-delay: .1s;
       overflow: hidden;
       box-sizing: border-box;
+      outline: none;
+      // z-index: 9999;
 
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR; }
       &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
       &_auto { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
 
       &_disabled { border: thin solid rgba(255, 0, 0, .8) }
+      &_focus {
+        border: thin solid lightblue;
+        border-radius: 0px;
+        background-color: #FFFFFF;
+        padding: 0px;
+        // box-shadow: 1px 1px 1px lightblue, -1px -1px 1px lightblue;
+      }
+
+      &:focus { border: thin solid rgba(0,0,255, .4); border-radius: 0px; }
+
+      .display-none { display: none;  }
+
       .content {
         width: 100%;
         &_fixed {

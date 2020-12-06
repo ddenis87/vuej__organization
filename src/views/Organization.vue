@@ -44,9 +44,9 @@
           </table-multiline>
 
           <table-uno d-id="organization" :table-properties="propsTableUno" v-bind:[heightType]="true" v-if="!listMultiRow">
-            <template #action="activeValue">
+            <!-- <template #action="activeValue">
               <table-action :activeValue="activeValue"></table-action>
-            </template>
+            </template> -->
           </table-uno>
         </div>
       </div>
@@ -123,7 +123,7 @@ export default {
           {value: 'id', width: [50, 50], fixed: true},
           {value: 'institution_code', align: 'end', width: [90, 90], fixed: true},
           {value: 'title', width: [400,], fixed: true},
-          {value: 'inn', width: [115, 115], align: 'end'},
+          {value: 'inn', width: [150, 150]},
           {value: 'kpp', width: [115, 115], align: 'end'},
           {value: 'egrul_status', width: [140, 140]},
           {value: 'rubpnubp_status', width: [140, 140]},
