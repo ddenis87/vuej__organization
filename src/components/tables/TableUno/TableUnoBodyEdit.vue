@@ -1,6 +1,6 @@
 <template>
   <div class="box-edit">
-    <input class="box-edit__input" v-model="itemValue" @keydown="inputEvent" @blur="inputEvent"/>
+    <input class="box-edit__input" v-model="itemValue" @keydown="inputEvent" @blur="blurInput"/>
   </div>
 </template>
 
@@ -20,16 +20,27 @@ export default {
   },
   methods: {
     inputEvent(event) {
-      if (event.key == 'Enter') { this.$emit('pressed-key-enter', event, this.itemValue); return; }
-      if (event.key == 'Escape') { this.$emit('pressed-key-esc', event); return; }
-      if (event.key == 'Tab') { this.$emit('pressed-key-tab', event, this.itemValue); return; }
-      if (event.key == undefined) {
-        this.$emit('edit-blur', event); return;
+      console.log(event.key);
+      if (event.key == 'Enter') { 
+        console.log(event.target.parentElement.nextElementSibling);
+        event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
+        event.target.parentElement.nextElementSibling.lastElementChild.innerText = this.itemValue;
+        event.target.parentElement.classList.add('display-none');
+        event.target.parentElement.nextElementSibling.classList.remove('display-none');
+        event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
       }
+      // if (event.key == 'Escape') { this.$emit('pressed-key-esc', event); return; }
+      // if (event.key == 'Tab') { this.$emit('pressed-key-tab', event, this.itemValue); return; }
+      // if (event.key == undefined) {
+      //   this.$emit('edit-blur', event); return;
+      // }
     },
-    // blurInput(event) {
-    //   this.$emit('pressed-key-esc', event); return;
-    // }
+    blurInput(event) {
+      // console.log('blur');
+      // this.inputEvent(event);
+      // this.$emit('pressed-key-esc', event);
+      // this.$emit('pressed-key-esc', event); return;
+    }
   }
 }
 </script>

@@ -10,23 +10,25 @@
            class="table-body__col"
            :class="`table-body__col_${heightType}`" 
            :style="itemCol.position"
-           @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])"
-           @focus.prevent="(event) => focusCell(event, itemCol, itemRow[itemCol.value])"
-           :tabindex="`${(indexRow != 0) ? indexRow : ''}${indexCol}`">
+           :tabindex="indexCol"
+           @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])">
+
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
-          <table-uno-overflow :content="itemRow[itemCol.value]"
-                              @show-tooltip="(event) => $emit('show-tooltip', event)">
-            <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`">
-              {{ itemRow[itemCol.value] }}
-            </span>
-          </table-uno-overflow>
           <table-uno-body-edit class="display-none"
                                :list-props="editProps"
                                @pressed-key-esc="editCancel"
                                @pressed-key-enter="editEnter"
                                @pressed-key-tab="editTab"
                                @edit-blur="editBlur"></table-uno-body-edit>
+
+          <table-uno-overflow :content="itemRow[itemCol.value]"
+                              @show-tooltip="(event) => $emit('show-tooltip', event)">
+            <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`">
+              {{ itemRow[itemCol.value] }}
+            </span>
+          </table-uno-overflow>
         </slot>
+
       </div>
       <div class="table-body__col-action">
         <slot name="action" v-bind:activeValue="itemRow['title']"></slot>
@@ -62,6 +64,26 @@ export default {
     }
   },
   methods: {
+    editCell(event, itemColumn, value) {
+      let parentElement = event.target.parentElement.parentElement;
+      if (itemColumn['read_only'] == true) {
+        parentElement.classList.add('table-body__col_disabled');
+        setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 3000)
+        return;
+      }
+      this.editProps = {
+        required: itemColumn.required,
+        value,
+        type: itemColumn.type,
+        text: itemColumn.text,
+      };
+      parentElement.classList.add('table-body__col_focus');
+      parentElement.querySelector('.box-overflow').classList.add('display-none');
+      parentElement.querySelector('.box-edit').classList.remove('display-none');
+      setTimeout(() => {
+        event.target.parentElement.parentElement.querySelector('.box-edit').firstChild.focus();
+      }, 200);
+    },
     focusCell(event, itemColumn, value) {
       // console.log(event);
       // if (event.relatedTarget) {
@@ -78,35 +100,14 @@ export default {
       // }
     },
     editBlur(event) {
-      let parentElement = event.target.parentElement.parentElement;
-      console.log(parentElement);
-      // parentElement.querySelector('.box-overflow > .box-full').innerText = value;
-      // parentElement.querySelector('.box-overflow > .content').innerText = value;
-      parentElement.querySelector('.box-edit').classList.add('display-none');
-      parentElement.classList.remove('table-body__col_focus');
+      // let parentElement = event.target.parentElement.parentElement;
+      // console.log(parentElement);
+      // // parentElement.querySelector('.box-overflow > .box-full').innerText = value;
+      // // parentElement.querySelector('.box-overflow > .content').innerText = value;
+      // parentElement.querySelector('.box-edit').classList.add('display-none');
+      // parentElement.classList.remove('table-body__col_focus');
       
     },
-    editCell(event, itemColumn, value) {
-      if (itemColumn['read_only'] == true) {
-        event.target.parentElement.parentElement.classList.add('table-body__col_disabled');
-        setTimeout(() => event.target.parentElement.parentElement.classList.remove('table-body__col_disabled'), 3000)
-        return;
-      }
-      this.editProps = {
-        required: itemColumn.required,
-        value,
-        type: itemColumn.type,
-        text: itemColumn.text,
-      };
-      event.target.parentElement.parentElement.classList.add('table-body__col_focus');
-      // event.target.parentElement.parentElement.querySelector('.box-overflow').classList.add('display-none');
-      event.target.parentElement.parentElement.querySelector('.box-edit').classList.remove('display-none');
-      setTimeout(() => {
-        
-        event.target.parentElement.parentElement.querySelector('.box-edit').firstChild.focus();
-      }, 200);
-    },
-
     editCancel(event) {
       let parentElement = event.target.parentElement.parentElement;
       parentElement.classList.toggle('table-body__col_focus');
@@ -115,7 +116,6 @@ export default {
       
       // setTimeout(() => , 100);
     },
-
     editEnter(event, value) {
       let parentElement = event.target.parentElement.parentElement;
       parentElement.querySelector('.box-overflow > .box-full').innerText = value;
@@ -125,18 +125,6 @@ export default {
       parentElement.classList.remove('table-body__col_focus');
     },
     editTab(event, value) {
-      // let parentElement = event.target.parentElement.parentElement;
-      // parentElement.querySelector('.box-overflow > .box-full').innerText = value;
-      // parentElement.querySelector('.box-overflow > .content').innerText = value;
-      // parentElement.querySelector('.box-overflow').classList.toggle('display-none');
-      // parentElement.querySelector('.box-edit').classList.toggle('display-none');
-      // parentElement.classList.toggle('table-body__col_focus');
-      // // console.log(parentElement);
-      // // let newEvent = new Event('dblclick');
-      // parentElement.nextSibling.focus();
-      // // parentElement.nextSibling.dispatchEvent(newEvent);
-      
-      
     }
   },
 }
@@ -168,7 +156,7 @@ export default {
       line-height: $bodyFontLineHeight;
       color: $bodyFontColor;
 
-      border: thin solid rgba(0, 0, 0, 0);
+      border: thin solid rgba(0, 0, 255, 0);
       background-color: $bodyRowBackgroundColor;
       transition-delay: .1s;
       overflow: hidden;
@@ -185,7 +173,7 @@ export default {
         border: thin solid lightblue;
         border-radius: 0px;
         background-color: #FFFFFF;
-        padding: 0px;
+        // padding: 0px;
         // box-shadow: 1px 1px 1px lightblue, -1px -1px 1px lightblue;
       }
 
