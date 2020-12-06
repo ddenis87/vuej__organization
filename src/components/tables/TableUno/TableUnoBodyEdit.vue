@@ -20,9 +20,9 @@ export default {
   },
   methods: {
     inputEvent(event) {
-      console.log(event.key);
+      console.log('keydown');
       if (event.key == 'Enter') { 
-        console.log(event.target.parentElement.nextElementSibling);
+        // console.log(event.target.parentElement.nextElementSibling);
         event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
         event.target.parentElement.nextElementSibling.lastElementChild.innerText = this.itemValue;
         event.target.parentElement.classList.add('display-none');
@@ -34,12 +34,15 @@ export default {
         event.target.parentElement.nextElementSibling.classList.remove('display-none');
         event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
       }
-      // if (event.key == 'Tab') { this.$emit('pressed-key-tab', event, this.itemValue); return; }
-      // if (event.key == undefined) {
-      //   this.$emit('edit-blur', event); return;
-      // }
+      if (event.key == 'Tab') {
+        event.preventDefault();
+        let nextElement = event.target.parentElement.parentElement.nextElementSibling;
+        
+        console.log(event.target.parentElement.parentElement.nextElementSibling);
+      }
     },
     blurInput(event) {
+      console.log('blur');
       event.target.parentElement.classList.add('display-none');
       event.target.parentElement.nextElementSibling.classList.remove('display-none');
       event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
