@@ -29,13 +29,20 @@ export default {
         event.target.parentElement.nextElementSibling.classList.remove('display-none');
         event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
       }
-      // if (event.key == 'Escape') { this.$emit('pressed-key-esc', event); return; }
+      if (event.key == 'Escape') {
+        event.target.parentElement.classList.add('display-none');
+        event.target.parentElement.nextElementSibling.classList.remove('display-none');
+        event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
+      }
       // if (event.key == 'Tab') { this.$emit('pressed-key-tab', event, this.itemValue); return; }
       // if (event.key == undefined) {
       //   this.$emit('edit-blur', event); return;
       // }
     },
     blurInput(event) {
+      event.target.parentElement.classList.add('display-none');
+      event.target.parentElement.nextElementSibling.classList.remove('display-none');
+      event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
       // console.log('blur');
       // this.inputEvent(event);
       // this.$emit('pressed-key-esc', event);
