@@ -65,6 +65,8 @@ export default {
   },
   methods: {
     editCell(event, itemColumn, value) {
+      console.log(event);
+      console.log(itemColumn);
       let parentElement = event.target.parentElement.parentElement;
       if (itemColumn['read_only'] == true) {
         parentElement.classList.add('table-body__col_disabled');

@@ -36,20 +36,26 @@ export default {
       }
       if (event.key == 'Tab') {
         event.preventDefault();
-        let nextElement = event.target.parentElement.parentElement.nextElementSibling;
-        
-        console.log(event.target.parentElement.parentElement.nextElementSibling);
+        // console.log(event.target.parentElement);
+        event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
+        event.target.parentElement.nextElementSibling.lastElementChild.innerText = this.itemValue;
+        event.target.parentElement.classList.add('display-none');
+        event.target.parentElement.nextElementSibling.classList.remove('display-none');
+        event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
+
+
+        let nextElement = event.target.parentElement.parentElement.nextElementSibling.lastElementChild.lastElementChild;
+        console.log(nextElement);
+        let nextEvent = new Event('dblclick',{bubbles: true});
+        nextElement.dispatchEvent(nextEvent);
       }
     },
     blurInput(event) {
       console.log('blur');
+      // console.log(event.target.parentElement.parentElement);
       event.target.parentElement.classList.add('display-none');
       event.target.parentElement.nextElementSibling.classList.remove('display-none');
       event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
-      // console.log('blur');
-      // this.inputEvent(event);
-      // this.$emit('pressed-key-esc', event);
-      // this.$emit('pressed-key-esc', event); return;
     }
   }
 }
