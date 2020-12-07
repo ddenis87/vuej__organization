@@ -133,7 +133,7 @@ export default {
           {value: 'bk', width: [180, 180]},
         ],
         activeField: 'id',
-        fieldsFixed: ['institution_code', 'title'],
+        fieldsFixed: ['id', 'institution_code', 'title'],
         countRowBody: 2,
       },
     }

@@ -10,13 +10,13 @@ export const BuildingTemplate = {
             fieldsTemplate['grid-template-columns'] += ` ${+item.width}px`;
           } else {
             if (Array.isArray(item.width)) {
-              fieldsTemplate['grid-template-columns'] += ` minmax(${(+item.width[0]) ? item.width[0] : minWidth}px, ${(+item.width[1]) ? item.width[1] + 'px' : '100%'})`;
+              fieldsTemplate['grid-template-columns'] += ` minmax(${(+item.width[0]) ? item.width[0] : minWidth}px, ${(+item.width[1]) ? item.width[1] + 'px' : '100vw'})`;
             } else {
               fieldsTemplate['grid-template-columns'] += ` ${minWidth}px`;
             }
           }
         } else {
-          fieldsTemplate['grid-template-columns'] += ` minmax(${minWidth}px, 100%)`;
+          fieldsTemplate['grid-template-columns'] += ` minmax(${minWidth}px, 100vw)`;
         }
       });
       fieldsTemplate['grid-template-areas'] += ' action_box"';

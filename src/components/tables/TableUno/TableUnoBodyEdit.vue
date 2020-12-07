@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     inputEvent(event) {
-      console.log(event);
+      // console.log(event);
       if (event.key == 'Enter') { 
         // console.log(event.target.parentElement.nextElementSibling);
         event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
@@ -66,7 +66,7 @@ export default {
       }
     },
     blurInput(event) {
-      console.log('blur');
+      // console.log('blur');
       // console.log(event.target.parentElement.parentElement);
       event.target.parentElement.classList.add('display-none');
       event.target.parentElement.nextElementSibling.classList.remove('display-none');
@@ -85,8 +85,6 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
-  // border: thin solid red;
-  // z-index: 9999;
   &__input {
     width: 100%;
     height: 100%;

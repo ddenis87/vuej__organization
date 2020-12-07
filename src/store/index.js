@@ -117,7 +117,7 @@ export default new Vuex.Store({
       axios
         .options(`https://an67.pythonanywhere.com/api/organisations/`)
         .then(response => {
-          console.log(JSON.parse(response.request.response).actions.POST);
+          // console.log(JSON.parse(response.request.response).actions.POST);
           state.commit('SET_LIST_OPTIONS', JSON.parse(response.request.response).actions.POST);
           state.dispatch('GET_LIST_BK');
         })

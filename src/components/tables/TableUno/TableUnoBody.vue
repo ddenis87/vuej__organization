@@ -10,16 +10,12 @@
            class="table-body__col"
            :class="`table-body__col_${heightType}`" 
            :style="itemCol.position"
-           :tabindex="indexCol"
+           :tabindex="(!itemCol['read_only']) ? +indexCol: (-1 * (+indexCol + 1))"
            @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])">
 
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
           <table-uno-body-edit class="display-none"
-                               :list-props="editProps"
-                               @pressed-key-esc="editCancel"
-                               @pressed-key-enter="editEnter"
-                               @pressed-key-tab="editTab"
-                               @edit-blur="editBlur"></table-uno-body-edit>
+                               :list-props="editProps"></table-uno-body-edit>
 
           <table-uno-overflow :content="itemRow[itemCol.value]"
                               @show-tooltip="(event) => $emit('show-tooltip', event)">
@@ -65,12 +61,11 @@ export default {
   },
   methods: {
     editCell(event, itemColumn, value) {
-      console.log(event);
-      console.log(itemColumn);
       let parentElement = event.target.parentElement.parentElement;
       if (itemColumn['read_only'] == true) {
         parentElement.classList.add('table-body__col_disabled');
-        setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 3000)
+        parentElement.blur();
+        setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000)
         return;
       }
       this.editProps = {
@@ -86,48 +81,6 @@ export default {
         event.target.parentElement.parentElement.querySelector('.box-edit').firstChild.focus();
       }, 200);
     },
-    focusCell(event, itemColumn, value) {
-      // console.log(event);
-      // if (event.relatedTarget) {
-      //   if (event.relatedTarget.parentElement.parentElement == event.target.previousSibling) {
-      //     console.log('tab');
-      //     console.log(event);
-      //     // this.editCell(event, itemColumn, value);
-        
-      //     event.target.parentElement.querySelector('.box-overflow').classList.add('display-none');
-      //     event.target.parentElement.querySelector('.box-edit').classList.remove('display-none');
-      //     event.target.parentElement.querySelector('.box-edit').firstChild.focus();
-      //     event.target.parentElement.classList.add('table-body__col_focus');
-      //   }
-      // }
-    },
-    editBlur(event) {
-      // let parentElement = event.target.parentElement.parentElement;
-      // console.log(parentElement);
-      // // parentElement.querySelector('.box-overflow > .box-full').innerText = value;
-      // // parentElement.querySelector('.box-overflow > .content').innerText = value;
-      // parentElement.querySelector('.box-edit').classList.add('display-none');
-      // parentElement.classList.remove('table-body__col_focus');
-      
-    },
-    editCancel(event) {
-      let parentElement = event.target.parentElement.parentElement;
-      parentElement.classList.toggle('table-body__col_focus');
-      // parentElement.querySelector('.box-overflow').classList.remove('display-none');
-      parentElement.querySelector('.box-edit').classList.add('display-none');
-      
-      // setTimeout(() => , 100);
-    },
-    editEnter(event, value) {
-      let parentElement = event.target.parentElement.parentElement;
-      parentElement.querySelector('.box-overflow > .box-full').innerText = value;
-      parentElement.querySelector('.box-overflow > .content').innerText = value;
-      // parentElement.querySelector('.box-overflow').classList.toggle('display-none');
-      parentElement.querySelector('.box-edit').classList.add('display-none');
-      parentElement.classList.remove('table-body__col_focus');
-    },
-    editTab(event, value) {
-    }
   },
 }
 </script>
@@ -164,25 +117,19 @@ export default {
       overflow: hidden;
       box-sizing: border-box;
       outline: none;
-      // z-index: 9999;
 
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR; }
       &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
       &_auto { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
-
-      &_disabled { border: thin solid rgba(255, 0, 0, .8) }
       &_focus {
         border: thin solid lightblue;
         border-radius: 0px;
         background-color: #FFFFFF;
-        // padding: 0px;
-        // box-shadow: 1px 1px 1px lightblue, -1px -1px 1px lightblue;
       }
+      &_disabled { border: thin solid rgba(255, 0, 0, .8) }
 
       &:focus { border: thin solid rgba(0,0,255, .4); border-radius: 0px; }
-
       .display-none { display: none;  }
-
       .content {
         width: 100%;
         &_fixed {

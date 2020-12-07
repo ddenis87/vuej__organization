@@ -37,7 +37,7 @@ export default {
       }
     },
     showTooltip(event) {
-      this.tooltipTimer = setTimeout(() => this.$emit('show-tooltip', event), 800);
+      this.tooltipTimer = setTimeout(() => this.$emit('show-tooltip', event), 1500);
     },
     hideTooltip() {
       clearTimeout(this.tooltipTimer); 
