@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     inputEvent(event) {
-      console.log('keydown');
+      console.log(event);
       if (event.key == 'Enter') { 
         // console.log(event.target.parentElement.nextElementSibling);
         event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
@@ -36,6 +36,7 @@ export default {
       }
       if (event.key == 'Tab') {
         event.preventDefault();
+        if (!event.shiftKey) {
         // console.log(event.target.parentElement);
         event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
         event.target.parentElement.nextElementSibling.lastElementChild.innerText = this.itemValue;
@@ -45,9 +46,23 @@ export default {
 
 
         let nextElement = event.target.parentElement.parentElement.nextElementSibling.lastElementChild.lastElementChild;
-        console.log(nextElement);
+        // console.log(nextElement);
         let nextEvent = new Event('dblclick',{bubbles: true});
         nextElement.dispatchEvent(nextEvent);
+        } else {
+          // console.log(event.target.parentElement);
+          event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
+          event.target.parentElement.nextElementSibling.lastElementChild.innerText = this.itemValue;
+          event.target.parentElement.classList.add('display-none');
+          event.target.parentElement.nextElementSibling.classList.remove('display-none');
+          event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
+
+
+          let previousElement = event.target.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild;
+          // console.log(previousElement);
+          let nextEvent = new Event('dblclick',{bubbles: true});
+          previousElement.dispatchEvent(nextEvent);
+        }
       }
     },
     blurInput(event) {
