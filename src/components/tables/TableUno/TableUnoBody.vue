@@ -10,17 +10,11 @@
            class="table-body__col"
            :class="`table-body__col_${heightType}`" 
            :style="itemCol.position"
-           :tabindex="(!itemCol['read_only']) ? +indexCol: (-1 * (+indexCol + 1))"
-           >
+           :tabindex="(!itemCol['read_only']) ? +indexCol: (-1 * (+indexCol + 1))">
 
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
           <table-uno-body-edit class="display-none"
-                               :list-props="{
-                                  required: itemCol.required, 
-                                  type: itemCol.type, 
-                                  text: itemCol.text, 
-                                  value: itemRow[itemCol.value],
-                                  choices: itemCol.choices}"></table-uno-body-edit>
+                               :list-props="editProps"></table-uno-body-edit>
 
           <table-uno-overflow :content="itemRow[itemCol.value]"
                               @show-tooltip="(event) => $emit('show-tooltip', event)">
@@ -66,7 +60,7 @@ export default {
   },
   methods: {
     editCell(event, itemColumn, value) {
-      console.log(itemColumn);
+      // console.log(itemColumn);
       let parentElement = event.target.parentElement.parentElement;
       if (itemColumn['read_only'] == true) {
         parentElement.classList.add('table-body__col_disabled');
@@ -74,12 +68,13 @@ export default {
         setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000)
         return;
       }
-      // this.editProps = {
-      //   required: itemColumn.required,
-      //   value: event.target.innerText,
-      //   type: itemColumn.type,
-      //   text: itemColumn.text,
-      // };
+      this.editProps = {
+        required: itemColumn.required,
+        value: event.target.innerText,
+        type: itemColumn.type,
+        text: itemColumn.text,
+        choices: itemColumn.choices
+      };
       parentElement.classList.add('table-body__col_focus');
       parentElement.querySelector('.box-overflow').classList.add('display-none');
       parentElement.querySelector('.box-edit').classList.remove('display-none');

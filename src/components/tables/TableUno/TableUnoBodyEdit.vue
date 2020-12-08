@@ -26,8 +26,9 @@ export default {
     listProps() {
       this.itemValue = this.listProps.value;
       this.editType = this.listProps.type;
+      this.editSelectList = (this.listProps.choices) ? this.listProps.choices : null
       // ('choices' in this.listProps) ? this.editSelectList = this.listProps.choices : null;
-      console.log(this.listProps);
+      // console.log(this.listProps);
     }
   },
   methods: {
