@@ -1,6 +1,6 @@
 <template>
   <div class="table-uno" :id="parentId">
-    <div class="table-tooltip" id="table-tooltip" @mouseout="hideTooltip"></div>
+    <div class="table-tooltip" id="table-tooltip" @mouseout="hideTooltip" @click="hideTooltip"></div>
 
     <div class="table-uno-head">
       <table-uno-head :style="fieldsTemplate"
@@ -15,8 +15,7 @@
                       :fields-template="fieldsTemplate"
                       :height-type="heightType"
                       :parent-id="parentId"
-                      @show-tooltip="showTooltip"
-                     >
+                      @show-tooltip="showTooltip">
         <template v-for="item in listHeader" #[item.value]="itemValue">
           <slot :name="`body.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
         </template>
