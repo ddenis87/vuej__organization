@@ -11,7 +11,7 @@
            :class="`table-body__col_${heightType}`" 
            :style="itemCol.position"
            :tabindex="(!itemCol['read_only']) ? +indexCol: (-1 * (+indexCol + 1))"
-           @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])">
+           @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])" @mousedown="() => {return false}">
 
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
           <table-uno-body-edit class="display-none"
@@ -19,7 +19,7 @@
 
           <table-uno-overflow :content="itemRow[itemCol.value]"
                               @show-tooltip="(event) => $emit('show-tooltip', event)">
-            <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`">
+            <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`" disabled>
               {{ itemRow[itemCol.value] }}
             </span>
           </table-uno-overflow>
@@ -78,8 +78,10 @@ export default {
       parentElement.querySelector('.box-overflow').classList.add('display-none');
       parentElement.querySelector('.box-edit').classList.remove('display-none');
       setTimeout(() => {
+        event.target.parentElement.parentElement.querySelector('.box-edit').firstChild.select()
         event.target.parentElement.parentElement.querySelector('.box-edit').firstChild.focus();
-      }, 200);
+        ;
+      }, 100);
     },
   },
 }
@@ -122,7 +124,7 @@ export default {
       &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
       &_auto { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
       &_focus {
-        border: thin solid lightblue;
+        // border: thin solid lightblue;
         border-radius: 0px;
         background-color: #FFFFFF;
       }
@@ -132,6 +134,7 @@ export default {
       .display-none { display: none;  }
       .content {
         width: 100%;
+        -webkit-user-select: none;
         &_fixed {
           display: -webkit-box;
           -webkit-box-orient: vertical;
