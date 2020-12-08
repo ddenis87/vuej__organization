@@ -13,8 +13,8 @@
            :tabindex="(!itemCol['read_only']) ? +indexCol: (-1 * (+indexCol + 1))">
 
         <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
-          <table-uno-body-edit class="display-none"
-                               :list-props="editProps"></table-uno-body-edit>
+          <!-- <table-uno-body-edit class="display-none"
+                               :list-props="editProps"></table-uno-body-edit> -->
 
           <table-uno-overflow :content="itemRow[itemCol.value]"
                               @show-tooltip="(event) => $emit('show-tooltip', event)">
@@ -34,14 +34,15 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import TableUnoOverflow from './TableUnoOverflow.vue';
-import TableUnoBodyEdit from './TableUnoBodyEdit.vue';
+import TableCellEdit from './TableCellEdit.vue';
 
 export default {
   name: 'TableUnoBody',
   components: {
     TableUnoOverflow,
-    TableUnoBodyEdit,
+    // TableUnoBodyEdit,
   },  
   mixins: [
   ],
@@ -54,37 +55,61 @@ export default {
   },
   data() {
     return {
-      editCellShow: false,
-      editProps: {},
+      // editCellShow: false,
+      // editProps: {},
+      cellEditProps: {type: 'string', value: 'null', choices: null},
+      cellEditComponent: null,
+      vueCellEdit: Vue.extend(TableCellEdit),
     }
   },
+  create() {
+  },
+  mounted() {
+  },
   methods: {
-    editCell(event, itemColumn, value) {
-      // console.log(itemColumn);
-      let parentElement = event.target.parentElement.parentElement;
+    editCell(event, itemColumn, itemValue) {
+      let cellEditParent = event.target.parentElement.parentElement;
       if (itemColumn['read_only'] == true) {
-        parentElement.classList.add('table-body__col_disabled');
-        parentElement.blur();
-        setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000)
+        cellEditParent.classList.add('table-body__col_disabled');
+        cellEditParent.blur();
+        setTimeout(() => cellEditParent.classList.remove('table-body__col_disabled'), 1000)
         return;
       }
-      this.editProps = {
-        required: itemColumn.required,
-        value: event.target.innerText,
-        type: itemColumn.type,
-        text: itemColumn.text,
-        choices: itemColumn.choices
-      };
-      parentElement.classList.add('table-body__col_focus');
-      parentElement.querySelector('.box-overflow').classList.add('display-none');
-      parentElement.querySelector('.box-edit').classList.remove('display-none');
-      setTimeout(() => {
-        // console.log(event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild);
-        if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.select()
-        event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.focus();
-        ;
-      }, 100);
-    },
+      this.cellEditProps.value = event.target.innerText;
+      this.cellEditProps.type = itemColumn.type;
+      if (itemColumn.choices) this.cellEditProps.choices = itemColumn.choices;
+      this.cellEditComponent = new this.vueCellEdit({  propsData: {listProps: this.cellEditProps} }).$mount();  
+      cellEditParent.prepend(this.cellEditComponent.$el);
+      if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.select();
+      cellEditParent.querySelector('.box-edit').firstElementChild.focus();
+    } // plug
+
+    // editCell(event, itemColumn, value) {
+    //   // console.log(itemColumn);
+    //   let parentElement = event.target.parentElement.parentElement;
+    //   if (itemColumn['read_only'] == true) {
+    //     parentElement.classList.add('table-body__col_disabled');
+    //     parentElement.blur();
+    //     setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000)
+    //     return;
+    //   }
+    //   this.editProps = {
+    //     required: itemColumn.required,
+    //     value: event.target.innerText,
+    //     type: itemColumn.type,
+    //     text: itemColumn.text,
+    //     choices: itemColumn.choices
+    //   };
+    //   parentElement.classList.add('table-body__col_focus');
+    //   parentElement.querySelector('.box-overflow').classList.add('display-none');
+    //   parentElement.querySelector('.box-edit').classList.remove('display-none');
+    //   setTimeout(() => {
+    //     // console.log(event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild);
+    //     if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.select()
+    //     event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.focus();
+    //     ;
+    //   }, 100);
+    // },
   },
 }
 </script>
@@ -97,13 +122,13 @@ export default {
     display: grid;
     border-bottom: $bodyRowBorder;
 
-    &_fixed { grid-auto-rows: $bodyRowHeight; }
-    &_dense { grid-auto-rows: $bodyDenseRowHeight; }
-    &_auto { grid-auto-rows: auto; }
+    &_fixed { grid-auto-rows: $bodyRowHeight;       }
+    &_dense { grid-auto-rows: $bodyDenseRowHeight;  }
+    &_auto  { grid-auto-rows: $bodyAutoRowHeight;   }
 
     &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
     &:hover > .table-body__col-action > .action-box { opacity: 1; }
-
+    
     .table-body__col {
       position: relative;
       display: inline-flex;
@@ -122,18 +147,25 @@ export default {
       box-sizing: border-box;
       outline: none;
 
-      &_fixed { padding: $bodyPaddingTB $bodyPaddingLR; }
-      &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
-      &_auto { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
-      &_focus {
-        // border: thin solid lightblue;
-        border-radius: 0px;
-        background-color: #FFFFFF;
-      }
+      &:focus { border: $bodyCellBorderFocus }
+
       &_disabled { border: thin solid rgba(255, 0, 0, .8) }
 
-      &:focus { border: thin solid rgba(0,0,255, .4); border-radius: 0px; }
-      .display-none { display: none;  }
+      &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }
+      &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
+      &_auto  { padding: $bodyAutoPaddingTB $bodyAutoPaddingLR;   }
+
+
+      // &_focus {
+      //   // border: thin solid lightblue;
+      //   border-radius: 0px;
+      //   background-color: #FFFFFF;
+      // }
+      
+
+      
+
+      // .display-none { display: none;  }
       .content {
         width: 100%;
         -webkit-user-select: none;

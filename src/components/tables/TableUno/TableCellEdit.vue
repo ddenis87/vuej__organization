@@ -1,34 +1,25 @@
 <template>
   <div class="box-edit">
-    <input class="box-edit__input" v-if="editType == 'string'" v-model="itemValue" @keydown="inputEvent" @blur="blurInput"/>
-    <input class="box-edit__input number" v-if="editType == 'integer'" v-model="itemValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
+    <input class="box-edit__input" v-if="cellType == 'string'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/>
+    <input class="box-edit__input number" v-if="cellType == 'integer'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
 
-    <select class="box-edit__input select" v-if="editType == 'choice' || editType == 'nested object'" v-model="itemValue" @keydown="inputEvent" @blur="blurInput">
-      <option v-for="(item, index) in editSelectList" :key="index" :value="item['display_name']">{{ item['display_name'] }}</option>
+    <select class="box-edit__input select" v-if="cellType == 'choice' || cellType == 'nested object'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput">
+      <option v-for="(item, index) in cellSelectList" :key="index" :value="item['display_name']">{{ item['display_name'] }}</option>
     </select>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TableUnoBodyEdit',
+  name: 'TableCellEdit',
   props: {
     listProps: Object,
   },
   data() {
     return {
-      editType: this.listProps.value,
-      editSelectList: (this.listProps.choices) ? this.listProps.choices : null,
-      itemValue: (this.listProps.value) ? this.listProps.value : '',
-    }
-  },
-  watch: {
-    listProps() {
-      this.itemValue = this.listProps.value;
-      this.editType = this.listProps.type;
-      this.editSelectList = (this.listProps.choices) ? this.listProps.choices : null
-      // ('choices' in this.listProps) ? this.editSelectList = this.listProps.choices : null;
-      // console.log(this.listProps);
+      cellType: (this.listProps) ? this.listProps.type : 'string',
+      cellSelectList: (this.listProps.choices) ? this.listProps.choices : null,
+      cellValue: (this.listProps) ? this.listProps.value : '',
     }
   },
   methods: {
@@ -41,19 +32,17 @@ export default {
     },
     inputEvent(event) {
       // console.log(event);
+      let parentElement = event.target.parentElement;
       if (event.key == 'Enter') { 
-        // console.log(event.target.parentElement.nextElementSibling);
-        event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
-        event.target.parentElement.nextElementSibling.lastElementChild.innerText = this.itemValue;
-        event.target.parentElement.classList.add('display-none');
-        event.target.parentElement.nextElementSibling.classList.remove('display-none');
-        event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
+        parentElement.nextElementSibling.firstElementChild.innerText = this.cellValue;
+        parentElement.nextElementSibling.lastElementChild.innerText = this.cellValue;
+        parentElement.parentElement.classList.remove('table-body__col_focus');
+        parentElement.remove();
       }
       if (event.key == 'Escape') {
-        this.itemValue = this.listProps.value
-        event.target.parentElement.classList.add('display-none');
-        event.target.parentElement.nextElementSibling.classList.remove('display-none');
-        event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
+        this.cellValue = this.listProps.value
+        parentElement.parentElement.classList.remove('table-body__col_focus');
+        parentElement.remove();
       }
       if (event.key == 'Tab') {
         event.preventDefault();

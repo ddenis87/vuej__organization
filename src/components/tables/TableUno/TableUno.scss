@@ -44,6 +44,8 @@ $bodyRowBorder: thin solid rgba(0,0,0,.12);
 $bodyRowBackgroundColor: rgba(255, 255, 255);
 $bodyRowBackgroundColorHover: rgba(240, 240, 240);
 
+$bodyCellBorderFocus: thin solid rgba(0, 0, 255, .4);
+
 $bodyFontSize: .875rem;
 $bodyFontWeight: normal;
 $bodyFontLineHeight: $fontLineHeight;
@@ -58,6 +60,11 @@ $bodyVerticalAlign: center;
 $bodyDenseRowHeight: 30px;
 $bodyDensePaddingTB: 0px;
 $bodyDensePaddingLR: 16px;
+
+// -- body auto --
+$bodyAutoRowHeight: auto;
+$bodyAutoPaddingTB: 0px;
+$bodyAutoPaddingLR: 16px;
 
 // -- tooltip --
 $tooltipFontSize: .875rem;
