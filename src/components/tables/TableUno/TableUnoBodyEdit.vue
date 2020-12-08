@@ -1,6 +1,7 @@
 <template>
   <div class="box-edit">
-    <input class="box-edit__input" v-model="itemValue" @keydown="inputEvent" @blur="blurInput"/>
+    <input class="box-edit__input" v-if="editType == 'string'" v-model="itemValue" @keydown="inputEvent" @blur="blurInput"/>
+    <input class="box-edit__input number" v-if="editType == 'integer'" v-model="itemValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
   </div>
 </template>
 
@@ -12,13 +13,25 @@ export default {
   },
   data() {
     return {
+      editType: 'string',
       itemValue: (this.listProps.value) ? this.listProps.value : '',
     }
   },
   watch: {
-    listProps() { this.itemValue = this.listProps.value }
+    listProps() {
+      this.itemValue = this.listProps.value;
+      this.editType = this.listProps.type;
+
+    }
   },
   methods: {
+    validationNumber(event) {
+      if (!+event.data && event.data != null) {
+        this.itemValue = this.itemValue.replace(event.data, '');
+        event.target.classList.add('invalid');
+        setTimeout(() => { event.target.classList.remove('invalid'); }, 1000)
+      }
+    },
     inputEvent(event) {
       // console.log(event);
       if (event.key == 'Enter') { 
@@ -30,6 +43,7 @@ export default {
         event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
       }
       if (event.key == 'Escape') {
+        this.itemValue = this.listProps.value
         event.target.parentElement.classList.add('display-none');
         event.target.parentElement.nextElementSibling.classList.remove('display-none');
         event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
@@ -68,6 +82,7 @@ export default {
     blurInput(event) {
       // console.log('blur');
       // console.log(event.target.parentElement.parentElement);
+      this.itemValue = this.listProps.value;
       event.target.parentElement.classList.add('display-none');
       event.target.parentElement.nextElementSibling.classList.remove('display-none');
       event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
@@ -91,7 +106,13 @@ export default {
     padding: 6px 16px;
     background-color: #FFFFFF;
     outline: none;
-    z-index: 100;
+    // z-index: 100;
+  }
+  .invalid {
+    background-color: rgba(255, 0, 0, .1);
+  }
+  .number {
+    text-align: right;
   }
 }
 </style>
