@@ -80,7 +80,8 @@ export default {
       if (itemColumn.choices) this.cellEditProps.choices = itemColumn.choices;
       this.cellEditComponent = new this.vueCellEdit({  propsData: {listProps: this.cellEditProps} }).$mount();  
       cellEditParent.prepend(this.cellEditComponent.$el);
-      if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.select();
+      if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') 
+        event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.select();
       cellEditParent.querySelector('.box-edit').firstElementChild.focus();
     } // plug
 

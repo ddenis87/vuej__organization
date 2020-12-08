@@ -33,11 +33,13 @@ export default {
     inputEvent(event) {
       // console.log(event);
       let parentElement = event.target.parentElement;
-      if (event.key == 'Enter') { 
+      if (event.key == 'Enter') {
+        console.log('enter');
         parentElement.nextElementSibling.firstElementChild.innerText = this.cellValue;
         parentElement.nextElementSibling.lastElementChild.innerText = this.cellValue;
         parentElement.parentElement.classList.remove('table-body__col_focus');
         parentElement.remove();
+        console.log('enter remove');
       }
       if (event.key == 'Escape') {
         this.cellValue = this.listProps.value
@@ -46,42 +48,30 @@ export default {
       }
       if (event.key == 'Tab') {
         event.preventDefault();
+        let nextEvent = new Event('dblclick', {bubbles: false});
+
+        parentElement.nextElementSibling.firstElementChild.innerText = this.cellValue;
+        parentElement.nextElementSibling.lastElementChild.innerText = this.cellValue;
+        parentElement.parentElement.classList.remove('table-body__col_focus');
+        
         if (!event.shiftKey) {
-        // console.log(event.target.parentElement);
-        event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
-        event.target.parentElement.nextElementSibling.lastElementChild.innerText = this.itemValue;
-        event.target.parentElement.classList.add('display-none');
-        event.target.parentElement.nextElementSibling.classList.remove('display-none');
-        event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
-
-
-        let nextElement = event.target.parentElement.parentElement.nextElementSibling.lastElementChild.lastElementChild;
-        // console.log(nextElement);
-        let nextEvent = new Event('dblclick',{bubbles: true});
-        nextElement.dispatchEvent(nextEvent);
+          let nextElement = parentElement.parentElement.nextElementSibling.lastElementChild.lastElementChild;
+          nextElement.dispatchEvent(nextEvent);
         } else {
-          // console.log(event.target.parentElement);
-          event.target.parentElement.nextElementSibling.firstElementChild.innerText = this.itemValue;
-          event.target.parentElement.nextElementSibling.lastElementChild.innerText = this.itemValue;
-          event.target.parentElement.classList.add('display-none');
-          event.target.parentElement.nextElementSibling.classList.remove('display-none');
-          event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
-
-
-          let previousElement = event.target.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild;
-          // console.log(previousElement);
-          let nextEvent = new Event('dblclick',{bubbles: true});
+          let previousElement = parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild;
           previousElement.dispatchEvent(nextEvent);
         }
+        parentElement.remove();
       }
     },
     blurInput(event) {
-      // console.log('blur');
-      // console.log(event.target.parentElement.parentElement);
-      this.itemValue = this.listProps.value;
-      event.target.parentElement.classList.add('display-none');
-      event.target.parentElement.nextElementSibling.classList.remove('display-none');
-      event.target.parentElement.parentElement.classList.remove('table-body__col_focus');
+      console.log('blur');
+      let parentElement = event.target.parentElement ;
+      console.log(parentElement);
+      this.cellValue = this.listProps.value;
+      parentElement.parentElement.classList.remove('table-body__col_focus');
+      parentElement.remove();
+      console.log('blur remove');
     }
   }
 }
