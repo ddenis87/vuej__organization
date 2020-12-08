@@ -2,6 +2,10 @@
   <div class="box-edit">
     <input class="box-edit__input" v-if="editType == 'string'" v-model="itemValue" @keydown="inputEvent" @blur="blurInput"/>
     <input class="box-edit__input number" v-if="editType == 'integer'" v-model="itemValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
+
+    <select class="box-edit__input select" v-if="editType == 'choice' || editType == 'nested object'" v-model="itemValue" @keydown="inputEvent" @blur="blurInput">
+      <option v-for="(item, index) in editSelectList" :key="index" :value="item['display_name']">{{ item['display_name'] }}</option>
+    </select>
   </div>
 </template>
 
@@ -13,7 +17,8 @@ export default {
   },
   data() {
     return {
-      editType: 'string',
+      editType: this.listProps.value,
+      editSelectList: (this.listProps.choices) ? this.listProps.choices : null,
       itemValue: (this.listProps.value) ? this.listProps.value : '',
     }
   },
@@ -21,7 +26,8 @@ export default {
     listProps() {
       this.itemValue = this.listProps.value;
       this.editType = this.listProps.type;
-
+      // ('choices' in this.listProps) ? this.editSelectList = this.listProps.choices : null;
+      console.log(this.listProps);
     }
   },
   methods: {
@@ -106,7 +112,7 @@ export default {
     padding: 6px 16px;
     background-color: #FFFFFF;
     outline: none;
-    // z-index: 100;
+    z-index: 100;
   }
   .invalid {
     background-color: rgba(255, 0, 0, .1);

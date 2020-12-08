@@ -19,7 +19,8 @@
                                   required: itemCol.required, 
                                   type: itemCol.type, 
                                   text: itemCol.text, 
-                                  value: itemRow[itemCol.value]}"></table-uno-body-edit>
+                                  value: itemRow[itemCol.value],
+                                  choices: itemCol.choices}"></table-uno-body-edit>
 
           <table-uno-overflow :content="itemRow[itemCol.value]"
                               @show-tooltip="(event) => $emit('show-tooltip', event)">
@@ -65,7 +66,7 @@ export default {
   },
   methods: {
     editCell(event, itemColumn, value) {
-      // console.log(event.target);
+      console.log(itemColumn);
       let parentElement = event.target.parentElement.parentElement;
       if (itemColumn['read_only'] == true) {
         parentElement.classList.add('table-body__col_disabled');
@@ -84,7 +85,7 @@ export default {
       parentElement.querySelector('.box-edit').classList.remove('display-none');
       setTimeout(() => {
         // console.log(event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild);
-        event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.select()
+        if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.select()
         event.target.parentElement.parentElement.querySelector('.box-edit').firstElementChild.focus();
         ;
       }, 100);
