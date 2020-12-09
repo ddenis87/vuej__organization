@@ -6,7 +6,7 @@
       <table-uno-head :style="fieldsTemplate"
                       :list-data="listHeader" 
                       :height-type="heightType"></table-uno-head>
-      <v-progress-linear class="table-uno-progress" color="blue" indeterminate absolute bottom v-show="isShowProgressBar"></v-progress-linear>
+      <table-progress-line :is-show="isShowProgressBar"></table-progress-line>
     </div>
     
     <div class="table-uno-body">
@@ -34,6 +34,8 @@
 import TableUnoHead from './TableUnoHead.vue';
 import TableUnoBody from './TableUnoBody.vue';
 
+import TableProgressLine from './TableProgressLine.vue';
+
 import { LoadData } from './mixins/TableUno/LoadData';
 import { GetterData } from './mixins/TableUno/GetterData';
 import { BuildingTemplate } from './mixins/TableUno/BuildingTemplate';
@@ -43,7 +45,8 @@ export default {
   name: 'TableUno',
   components: { 
     TableUnoHead,
-    TableUnoBody, 
+    TableUnoBody,
+    TableProgressLine,
   },
   mixins: [
     LoadData,
@@ -92,7 +95,6 @@ export default {
   border-radius: $borderRadius;
   box-shadow: $boxShadow;
   overflow: auto;
-// border: thin solid green;
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
