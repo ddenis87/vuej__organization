@@ -34,7 +34,6 @@ export default {
     inputEvent(event) {
       let parentElement = event.target.parentElement;
       if (event.key == 'Enter') {
-        console.log('enter');
         parentElement.nextElementSibling.firstElementChild.innerText = this.cellValue;
         parentElement.nextElementSibling.lastElementChild.innerText = this.cellValue;
         parentElement.parentElement.classList.remove('table-body__col_focus');
