@@ -20,6 +20,7 @@ export default {
       cellType: (this.listProps) ? this.listProps.type : 'string',
       cellSelectList: (this.listProps.choices) ? this.listProps.choices : null,
       cellValue: (this.listProps) ? this.listProps.value : '',
+      isEditComponent: true,
     }
   },
   methods: {
@@ -31,20 +32,18 @@ export default {
       }
     },
     inputEvent(event) {
-      // console.log(event);
       let parentElement = event.target.parentElement;
       if (event.key == 'Enter') {
         console.log('enter');
         parentElement.nextElementSibling.firstElementChild.innerText = this.cellValue;
         parentElement.nextElementSibling.lastElementChild.innerText = this.cellValue;
         parentElement.parentElement.classList.remove('table-body__col_focus');
-        parentElement.remove();
-        console.log('enter remove');
+        parentElement.firstElementChild.blur();
       }
       if (event.key == 'Escape') {
         this.cellValue = this.listProps.value
         parentElement.parentElement.classList.remove('table-body__col_focus');
-        parentElement.remove();
+        parentElement.firstElementChild.blur();
       }
       if (event.key == 'Tab') {
         event.preventDefault();
@@ -65,13 +64,10 @@ export default {
       }
     },
     blurInput(event) {
-      console.log('blur');
       let parentElement = event.target.parentElement ;
-      console.log(parentElement);
       this.cellValue = this.listProps.value;
       parentElement.parentElement.classList.remove('table-body__col_focus');
       parentElement.remove();
-      console.log('blur remove');
     }
   }
 }
