@@ -34,7 +34,6 @@
 import TableUnoOverflow from './TableUnoOverflow.vue';
 import { TableCellEditMix } from './mixins/TableUnoBody/TableCellEdit.js';
 
-
 export default {
   name: 'TableUnoBody',
   components: {
@@ -97,22 +96,15 @@ export default {
       .content {
         width: 100%;
         -webkit-user-select: none;
+        text-overflow: ellipsis;
+        overflow: hidden;
         &_fixed {
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
-          text-overflow: ellipsis;
-          overflow: hidden;
         }
-        &_dense {
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
-        &_auto {
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
+        &_dense { white-space: nowrap; }
+        // &_auto {  }
       }
 
       &-action {
