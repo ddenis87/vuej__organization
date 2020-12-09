@@ -72,5 +72,5 @@ table-properties: {
             width: Array            // min, max width
         }
     ]
-    activeField: String             // value field for use in slot
+    activeField: String             // key header, value field for use in slot
 }
