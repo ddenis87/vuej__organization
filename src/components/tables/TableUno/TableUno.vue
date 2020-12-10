@@ -16,14 +16,17 @@
                       :height-type="heightType"
                       :parent-id="parentId"
                       @show-tooltip="showTooltip">
-        
-        <template v-for="item in listHeader" #[item.value]="itemValue">
 
-          <slot :name="`body-display.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+        <!-- editing slot -->
+        <template v-for="item in listHeader" #[`body-editing.${item.value}`]="itemValue">
           <slot :name="`body-editing.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-          
         </template>
-        
+        <!-- display slot -->
+        <template v-for="item in listHeader" #[`body-display.${item.value}`]="itemValue">
+          <slot :name="`body-display.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
+        </template>
+
+        <!-- action slot -->
         <template v-slot:action="activeValue">
           <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
         </template>

@@ -44,6 +44,13 @@
           </table-multiline>
 
           <table-uno d-id="organization" :table-properties="propsTableUno" v-bind:[heightType]="true" v-if="!listMultiRow">
+            <template #[`body-editing.inn`] = "itemValue" >
+              <span style="color: blue">{{ itemValue.itemValue }}</span>
+            </template>
+            <template #[`body-display.inn`] = "itemValue" >
+              <span style="color: red">{{ itemValue.itemValue }}</span>
+            </template>
+            
             <!-- <template #action="activeValue">
               <table-action :activeValue="activeValue"></table-action>
             </template> -->
