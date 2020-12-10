@@ -10,12 +10,14 @@
            class="table-body__col"
            :class="`table-body__col_${heightType}`" 
            :style="itemCol.position"
-           :tabindex="(!itemCol['read_only']) ? +indexCol: (-1 * (+indexCol + 1))">
+           :tabindex="(!itemCol['read_only']) ? +indexCol: (-1 * (+indexCol + 1))" @dblclick="checkDisplayEdit">
 
         <!-- slot editing -->
         <div class="box-editing display-none">
           <slot :name="`body-editing.${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
-
+            <div class="box-editing-default">
+              <!-- includes default component -->
+            </div>
           </slot>
         </div>
         
@@ -25,7 +27,20 @@
           <slot :name="`body-display.${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
             <table-uno-overflow :content="itemRow[itemCol.value]"
                                 @show-tooltip="(event) => $emit('show-tooltip', event)">
-              <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`" disabled @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])" @mousedown="() => {return false}">
+              <!-- <span class="content" 
+                    :class="`content_${heightType}`" 
+                    :style="`text-align: ${itemCol.align}`" 
+                    disabled 
+                    @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])" 
+                    @mousedown="() => {return false}">
+                {{ itemRow[itemCol.value] }}
+              </span> -->
+              <span class="content" 
+                    :class="`content_${heightType}`" 
+                    :style="`text-align: ${itemCol.align}`" 
+                    disabled 
+                    
+                    @mousedown="() => {return false}">
                 {{ itemRow[itemCol.value] }}
               </span>
             </table-uno-overflow>
@@ -44,7 +59,7 @@
 
 <script>
 import TableUnoOverflow from './TableUnoOverflow.vue';
-import { TableCellEditMix } from './mixins/TableUnoBody/TableCellEdit.js';
+// import { TableCellEditMix } from './mixins/TableUnoBody/TableCellEdit.js';
 
 export default {
   name: 'TableUnoBody',
@@ -52,7 +67,7 @@ export default {
     TableUnoOverflow,
   },  
   mixins: [
-    TableCellEditMix,
+    // TableCellEditMix,
   ],
   props: {
     listData: Array,
@@ -60,6 +75,17 @@ export default {
     fieldsTemplate: Object,
     heightType: {type: String, default: 'fixed'},
     parentId: String,
+    editable: Boolean,
+  },
+  methods: {
+    checkDisplayEdit(event) {
+      if (!this.editable) return;
+      let parentElement = event.target.closest('.table-body__col');
+      parentElement.lastElementChild.classList.add('display-none');
+      parentElement.firstElementChild.classList.remove('display-none');
+      if (this.editCell) console.log('true');
+    },
+    editCell() {},
   },
 }
 </script>
@@ -104,6 +130,20 @@ export default {
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }
       &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
       &_auto  { padding: $bodyAutoPaddingTB $bodyAutoPaddingLR;   }
+
+      .box-editing {
+        width: inherit;
+        height: inherit;
+        border: thin solid red;
+      }
+      .box-display {
+        width: inherit;
+        height: inherit;
+        border: thin solid blue;
+      }
+      .display-none {
+        display: none;
+      }
 
       .content {
         width: 100%;

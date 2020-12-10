@@ -43,7 +43,11 @@
             </template>
           </table-multiline>
 
-          <table-uno d-id="organization" :table-properties="propsTableUno" v-bind:[heightType]="true" v-if="!listMultiRow">
+          <table-uno d-id="organization" 
+                     :table-properties="propsTableUno" 
+                     v-bind:[heightType]="true" 
+                     v-if="!listMultiRow"
+                     editable>
             <template #[`body-editing.inn`] = "itemValue" >
               <span style="color: blue">{{ itemValue.itemValue }}</span>
             </template>

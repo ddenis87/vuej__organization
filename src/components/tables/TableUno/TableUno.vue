@@ -15,6 +15,7 @@
                       :fields-template="fieldsTemplate"
                       :height-type="heightType"
                       :parent-id="parentId"
+                      :editable="editable"
                       @show-tooltip="showTooltip">
 
         <!-- editing slot -->
@@ -69,6 +70,7 @@ export default {
     fixed: {type: Boolean, default: true},
     dense: {type: Boolean, default: false},
     auto: {type: Boolean, default: false},
+    editable: {type: Boolean, default: false},
   },
   data() {
     return {
