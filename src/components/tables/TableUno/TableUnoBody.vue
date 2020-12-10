@@ -12,14 +12,26 @@
            :style="itemCol.position"
            :tabindex="(!itemCol['read_only']) ? +indexCol: (-1 * (+indexCol + 1))">
 
-        <slot :name="`${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
-          <table-uno-overflow :content="itemRow[itemCol.value]"
-                              @show-tooltip="(event) => $emit('show-tooltip', event)">
-            <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`" disabled @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])" @mousedown="() => {return false}">
-              {{ itemRow[itemCol.value] }}
-            </span>
-          </table-uno-overflow>
-        </slot>
+        <!-- slot editing -->
+        <div class="box-editing display-none">
+          <slot :name="`body-editing.${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
+
+          </slot>
+        </div>
+        
+
+        <!-- slot display -->
+        <div class="box-display">
+          <slot :name="`body-display.${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
+            <table-uno-overflow :content="itemRow[itemCol.value]"
+                                @show-tooltip="(event) => $emit('show-tooltip', event)">
+              <span class="content" :class="`content_${heightType}`" :style="`text-align: ${itemCol.align}`" disabled @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])" @mousedown="() => {return false}">
+                {{ itemRow[itemCol.value] }}
+              </span>
+            </table-uno-overflow>
+          </slot>
+        </div>
+        
 
       </div>
       <div class="table-body__col-action">

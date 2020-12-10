@@ -74,17 +74,19 @@ export default {
 
 <style lang="scss" scoped>
 .box-edit {
-  position: absolute;
-  left: 0px;
-  top: 0px;
+  // position: absolute;
+  position: relative;
+  // left: 0px;
+  // top: 0px;
   display: flex;
-  align-items: center;
+  align-items: start;
   width: 100%;
   height: 100%;
+  background-color: white;
   &__input {
     width: 100%;
-    height: 100%;
-    padding: 6px 16px;
+    // height: 100%;
+    // padding: 6px 16px;
     background-color: #FFFFFF;
     outline: none;
     z-index: 100;
