@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'TableOverflow',
+  name: 'ContentOverflow',
   props: {
     content: '',
     countRow: Number,

@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'TableCellEdit',
+  name: 'EditCell',
   props: {
     listProps: Object,
   },

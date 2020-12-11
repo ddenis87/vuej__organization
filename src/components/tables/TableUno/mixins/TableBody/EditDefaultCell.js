@@ -1,12 +1,12 @@
 
 import Vue from 'vue';
-import TableCellEdit from '../../TableCellEdit.vue';
-export const TableCellEditDefault = {
+import EditCell from '../../components/TableBody/EditCell.vue';
+export const EditDefaultCell = {
   data() {
     return {
       cellEditProps: {type: 'string', value: null, choices: null},
       cellEditComponent: null,
-      vueCellEdit: Vue.extend(TableCellEdit),
+      vueCellEdit: Vue.extend(EditCell),
     }
   },
   methods: {
@@ -19,7 +19,6 @@ export const TableCellEditDefault = {
       if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') {
         parentElement.firstElementChild.firstElementChild.select()
       }
-      // console.log(parentElement.firstElementChild);
       parentElement.firstElementChild.firstElementChild.focus();
     }
   },

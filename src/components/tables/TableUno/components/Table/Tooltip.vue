@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'TableTooltip',
+  name: 'Tooltip',
   props: {
     heightType: String,
   },

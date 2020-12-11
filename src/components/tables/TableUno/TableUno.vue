@@ -1,14 +1,14 @@
 <template>
   <div class="table-uno" :id="parentId">
     <div class="table-tooltip" id="table-tooltip" @mouseout="hideTooltip" @click="hideTooltip"></div>
-
+    <!-- table head -->
     <div class="table-uno-head">
       <table-uno-head :style="fieldsTemplate"
                       :list-data="listHeader" 
                       :height-type="heightType"></table-uno-head>
-      <table-progress-line :is-show="isShowProgressBar"></table-progress-line>
+      <progress-line :is-show="isShowProgressBar"></progress-line>
     </div>
-    
+    <!-- table body -->
     <div class="table-uno-body">
       <table-uno-body :list-data="listBody"
                       :list-data-header="listHeader"
@@ -35,26 +35,29 @@
     </div>
 
     <div class="boot-anchor" id="boot-anchor"></div>
+    <!-- component footer -->
+    <div class="table-uno-head">
+      <slot name="component-footer"></slot>
+    </div>
   </div>
 </template>
 
 <script>
 import TableUnoHead from './TableUnoHead.vue';
 import TableUnoBody from './TableUnoBody.vue';
+import ProgressLine from './components/Table/ProgressLine.vue';
 
-import TableProgressLine from './TableProgressLine.vue';
-
-import { LoadData } from './mixins/TableUno/LoadData';
-import { GetterData } from './mixins/TableUno/GetterData';
-import { BuildingTemplate } from './mixins/TableUno/BuildingTemplate';
-import { Tooltip } from './mixins/TableUno/Tooltip';
+import { LoadData } from './mixins/Table/LoadData';
+import { GetterData } from './mixins/Table/GetterData';
+import { BuildingTemplate } from './mixins/Table/BuildingTemplate';
+import { Tooltip } from './mixins/Table/Tooltip';
 
 export default {
   name: 'TableUno',
   components: { 
     TableUnoHead,
     TableUnoBody,
-    TableProgressLine,
+    ProgressLine,
   },
   mixins: [
     LoadData,

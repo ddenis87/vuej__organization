@@ -29,7 +29,7 @@
         <!-- slot display -->
         <div class="box-display" :data-value="itemRow[itemColumn.value]">
           <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
-            <table-uno-overflow :content="itemRow[itemColumn.value]"
+            <content-overflow :content="itemRow[itemColumn.value]"
                                 @show-tooltip="(event) => $emit('show-tooltip', event)">
               <!-- <span class="content" 
                     :class="`content_${heightType}`" 
@@ -47,7 +47,7 @@
                     @mousedown="() => {return false}">
                 {{ itemRow[itemColumn.value] }}
               </span>
-            </table-uno-overflow>
+            </content-overflow>
           </slot>
         </div>
         
@@ -62,19 +62,16 @@
 </template>
 
 <script>
-// import TableCellEdit from './TableCellEdit.vue';
-import TableUnoOverflow from './TableUnoOverflow.vue';
-
-import { TableCellEditDefault } from './mixins/TableUnoBody/TableCellEditDefault.js';
+import ContentOverflow from './components/TableBody/ContentOverflow.vue';
+import { EditDefaultCell } from './mixins/TableBody/EditDefaultCell.js';
 
 export default {
   name: 'TableUnoBody',
   components: {
-    // TableCellEdit,
-    TableUnoOverflow,
+    ContentOverflow,
   },  
   mixins: [
-    TableCellEditDefault,
+    EditDefaultCell,
   ],
   props: {
     listData: Array,
