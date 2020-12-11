@@ -48,20 +48,27 @@ export default {
       }
       if (event.key == 'Tab') {
         event.preventDefault();
+       
         let nextEvent = new Event('dblclick', {bubbles: false});
 
-        parentElement.nextElementSibling.firstElementChild.innerText = this.cellValue;
-        parentElement.nextElementSibling.lastElementChild.innerText = this.cellValue;
+        parentElement.querySelector('.box-full').innerText = this.cellValue;
+        parentElement.querySelector('.content').innerText = this.cellValue;
+        event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
         // parentElement.parentElement.classList.remove('table-body__col_focus');
         
         if (!event.shiftKey) {
-          let nextElement = parentElement.parentElement.nextElementSibling.lastElementChild.lastElementChild;
+          let nextElement = parentElement.nextElementSibling;
+          console.log(nextElement);
+          // let nextElement = parentElement.parentElement.nextElementSibling.lastElementChild.lastElementChild;
           nextElement.dispatchEvent(nextEvent);
+          
         } else {
-          let previousElement = parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild;
+          let previousElement = parentElement.previousElementSibling;
+          // console.log(previousElement);
+          // let previousElement = parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild;
           previousElement.dispatchEvent(nextEvent);
         }
-        parentElement.remove();
+        event.target.blur();
       }
       // this.emit('edit')
     },

@@ -148,8 +148,8 @@ export default {
       box-sizing: border-box;
       outline: none;
 
-      &:focus { border: $bodyCellBorderFocus;  background-color: white;}
-      &_focus { border: $bodyCellBorderFocus; }
+      &:focus { border: $bodyCellBorderFocus; }
+      &_focus { border: $bodyCellBorderFocus; background-color: white; }
       &_disabled { border: thin solid rgba(255, 0, 0, .8) }
 
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }

@@ -16,9 +16,11 @@ export const TableCellEditDefault = {
       if (itemColumn.choices) this.cellEditProps.choices = itemColumn.choices;
       this.cellEditComponent = new this.vueCellEdit({  propsData: {listProps: this.cellEditProps} }).$mount(); 
       parentElement.prepend(this.cellEditComponent.$el);
-      if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') 
+      if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') {
         parentElement.firstElementChild.firstElementChild.select()
-      parentElement.firstElementChild.focus();
+      }
+      // console.log(parentElement.firstElementChild);
+      parentElement.firstElementChild.firstElementChild.focus();
     }
   },
 }
