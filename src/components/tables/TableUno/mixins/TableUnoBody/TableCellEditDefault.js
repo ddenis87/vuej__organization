@@ -10,8 +10,7 @@ export const TableCellEditDefault = {
     }
   },
   methods: {
-    displayEditComponent(itemColumn, parentElement) {
-      // console.log(itemColumn);
+    editingStart(itemColumn, parentElement) {
       this.cellEditProps.value = parentElement.getAttribute('data-value');
       this.cellEditProps.type = itemColumn.type;
       if (itemColumn.choices) this.cellEditProps.choices = itemColumn.choices;

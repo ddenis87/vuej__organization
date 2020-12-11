@@ -21,18 +21,9 @@ export default {
       cellSelectList: (this.listProps.choices) ? this.listProps.choices : null,
       cellValue: (this.listProps) ? this.listProps.value : '',
       isEditComponent: true,
-      // cellType:  'string',
-      // cellSelectList: null,
-      // cellValue:'',
-      // isEditComponent: true,
     }
   },
   methods: {
-    // displayEditComponent(parentElement, itemColumn) {
-    //   console.log(parentElement);
-    //   console.log(itemColumn);
-    //   return;
-    // },
     validationNumber(event) {
       if (!+event.data && event.data != null) {
         this.itemValue = this.itemValue.replace(event.data, '');
@@ -41,17 +32,19 @@ export default {
       }
     },
     inputEvent(event) {
-      let parentElement = event.target.parentElement;
+      let parentElement = event.target.closest('.table-body__col');
       if (event.key == 'Enter') {
-        parentElement.nextElementSibling.firstElementChild.innerText = this.cellValue;
-        parentElement.nextElementSibling.lastElementChild.innerText = this.cellValue;
-        parentElement.parentElement.classList.remove('table-body__col_focus');
-        parentElement.firstElementChild.blur();
+        parentElement.querySelector('.box-full').innerText = this.cellValue;
+        parentElement.querySelector('.content').innerText = this.cellValue;
+        event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
+        event.target.blur();
+        // let eventEditingCompleted = new CustomEvent('editing-completed');
+        // parentElement.dispatchEvent(eventEditingCompleted);
       }
       if (event.key == 'Escape') {
         this.cellValue = this.listProps.value
-        parentElement.parentElement.classList.remove('table-body__col_focus');
-        parentElement.firstElementChild.blur();
+        // parentElement.parentElement.classList.remove('table-body__col_focus');
+        event.target.blur();
       }
       if (event.key == 'Tab') {
         event.preventDefault();
@@ -59,7 +52,7 @@ export default {
 
         parentElement.nextElementSibling.firstElementChild.innerText = this.cellValue;
         parentElement.nextElementSibling.lastElementChild.innerText = this.cellValue;
-        parentElement.parentElement.classList.remove('table-body__col_focus');
+        // parentElement.parentElement.classList.remove('table-body__col_focus');
         
         if (!event.shiftKey) {
           let nextElement = parentElement.parentElement.nextElementSibling.lastElementChild.lastElementChild;
@@ -70,12 +63,13 @@ export default {
         }
         parentElement.remove();
       }
+      // this.emit('edit')
     },
     blurInput(event) {
-      let parentElement = event.target.parentElement ;
-      this.cellValue = this.listProps.value;
-      parentElement.parentElement.classList.remove('table-body__col_focus');
-      parentElement.remove();
+      let parentElement = event.target.closest('.table-body__col');
+      let eventEditingCompleted = new CustomEvent('editing-completed');
+      parentElement.dispatchEvent(eventEditingCompleted);
+      parentElement.querySelector('.box-edit-default-component').remove();
     }
   }
 }

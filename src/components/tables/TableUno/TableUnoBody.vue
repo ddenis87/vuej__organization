@@ -11,13 +11,16 @@
            :class="`table-body__col_${heightType}`" 
            :style="itemColumn.position"
            :tabindex="(!itemColumn['read_only']) ? +indexCol: (-1 * (+indexCol + 1))" 
-           :data-value="itemRow[itemColumn.value]"
-           @dblclick="(event) => checkDisplayEdit(event, itemColumn)">
+
+           @dblclick="(event) => checkDisplayEdit(event, itemColumn)"
+           @editing-completed="editingCompleted">
 
         <!-- slot editing -->
         <div class="box-editing display-none">
           <slot :name="`body-editing.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
-            <div class="box-editing-default" :data-value="itemRow[itemColumn.value]">
+            <div class="box-editing-default"
+                 :data-value="itemRow[itemColumn.value]" 
+                 >
               <!-- includes default component -->
             </div>
           </slot>
@@ -94,9 +97,19 @@ export default {
       }
       parentElement.querySelector('.box-display').classList.add('display-none');
       parentElement.querySelector('.box-editing').classList.remove('display-none');
+      parentElement.classList.add('table-body__col_focus');
+
       if (parentElement.querySelector('.box-editing-default')) {
-        this.displayEditComponent(itemColumn, parentElement.querySelector('.box-editing-default'));
+        this.editingStart(itemColumn, parentElement.querySelector('.box-editing-default'));
+      } else {
+        // custom element edit function this.$refs[nameCustomElement].editingStart(params)
       }
+    },
+    editingCompleted(event) {
+      let parentElement = event.target;
+      parentElement.querySelector('.box-display').classList.remove('display-none');
+      parentElement.querySelector('.box-editing').classList.add('display-none');
+      parentElement.classList.remove('table-body__col_focus');
     },
   },
 }
@@ -135,8 +148,8 @@ export default {
       box-sizing: border-box;
       outline: none;
 
-      &:focus { border: $bodyCellBorderFocus }
-
+      &:focus { border: $bodyCellBorderFocus;  background-color: white;}
+      &_focus { border: $bodyCellBorderFocus; }
       &_disabled { border: thin solid rgba(255, 0, 0, .8) }
 
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }
@@ -148,13 +161,14 @@ export default {
         width: 100%;
         height: 100%;
         border: thin solid red;
+        
       }
       .box-display {
         display: inline-flex;
         align-items: $bodyVerticalAlign;
         width: 100%;
         height: 100%;
-        border: thin solid blue;
+        // border: thin solid blue;
       }
       .display-none {
         display: none;
