@@ -5,17 +5,19 @@
          class="table-body__row"
          :class="`table-body__row_${heightType}`"
          :style="fieldsTemplate">
-      <div v-for="(itemCol, indexCol) in listDataHeader" 
+      <div v-for="(itemColumn, indexCol) in listDataHeader" 
            :key="`bodyCol-${indexCol}`" 
            class="table-body__col"
            :class="`table-body__col_${heightType}`" 
-           :style="itemCol.position"
-           :tabindex="(!itemCol['read_only']) ? +indexCol: (-1 * (+indexCol + 1))" @dblclick="checkDisplayEdit">
+           :style="itemColumn.position"
+           :tabindex="(!itemColumn['read_only']) ? +indexCol: (-1 * (+indexCol + 1))" 
+           :data-value="itemRow[itemColumn.value]"
+           @dblclick="(event) => checkDisplayEdit(event, itemColumn)">
 
         <!-- slot editing -->
         <div class="box-editing display-none">
-          <slot :name="`body-editing.${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
-            <div class="box-editing-default">
+          <slot :name="`body-editing.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
+            <div class="box-editing-default" :data-value="itemRow[itemColumn.value]">
               <!-- includes default component -->
             </div>
           </slot>
@@ -23,25 +25,25 @@
         
 
         <!-- slot display -->
-        <div class="box-display">
-          <slot :name="`body-display.${itemCol.value}`" v-bind:itemValue="itemRow[itemCol.value]">
-            <table-uno-overflow :content="itemRow[itemCol.value]"
+        <div class="box-display" :data-value="itemRow[itemColumn.value]">
+          <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
+            <table-uno-overflow :content="itemRow[itemColumn.value]"
                                 @show-tooltip="(event) => $emit('show-tooltip', event)">
               <!-- <span class="content" 
                     :class="`content_${heightType}`" 
-                    :style="`text-align: ${itemCol.align}`" 
+                    :style="`text-align: ${itemColumn.align}`" 
                     disabled 
-                    @dblclick="(event) => editCell(event, itemCol, itemRow[itemCol.value])" 
+                    @dblclick="(event) => editCell(event, itemColumn, itemRow[itemColumn.value])" 
                     @mousedown="() => {return false}">
-                {{ itemRow[itemCol.value] }}
+                {{ itemRow[itemColumn.value] }}
               </span> -->
               <span class="content" 
                     :class="`content_${heightType}`" 
-                    :style="`text-align: ${itemCol.align}`" 
+                    :style="`text-align: ${itemColumn.align}`" 
                     disabled 
                     
                     @mousedown="() => {return false}">
-                {{ itemRow[itemCol.value] }}
+                {{ itemRow[itemColumn.value] }}
               </span>
             </table-uno-overflow>
           </slot>
@@ -58,16 +60,19 @@
 </template>
 
 <script>
+// import TableCellEdit from './TableCellEdit.vue';
 import TableUnoOverflow from './TableUnoOverflow.vue';
-// import { TableCellEditMix } from './mixins/TableUnoBody/TableCellEdit.js';
+
+import { TableCellEditDefault } from './mixins/TableUnoBody/TableCellEditDefault.js';
 
 export default {
   name: 'TableUnoBody',
   components: {
+    // TableCellEdit,
     TableUnoOverflow,
   },  
   mixins: [
-    // TableCellEditMix,
+    TableCellEditDefault,
   ],
   props: {
     listData: Array,
@@ -78,14 +83,21 @@ export default {
     editable: Boolean,
   },
   methods: {
-    checkDisplayEdit(event) {
+    checkDisplayEdit(event, itemColumn) {
       if (!this.editable) return;
       let parentElement = event.target.closest('.table-body__col');
-      parentElement.lastElementChild.classList.add('display-none');
-      parentElement.firstElementChild.classList.remove('display-none');
-      if (this.editCell) console.log('true');
+      if (itemColumn['read_only']) {
+        parentElement.classList.add('table-body__col_disabled');
+        parentElement.blur();
+        setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000);
+        return;
+      }
+      parentElement.querySelector('.box-display').classList.add('display-none');
+      parentElement.querySelector('.box-editing').classList.remove('display-none');
+      if (parentElement.querySelector('.box-editing-default')) {
+        this.displayEditComponent(itemColumn, parentElement.querySelector('.box-editing-default'));
+      }
     },
-    editCell() {},
   },
 }
 </script>

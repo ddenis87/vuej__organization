@@ -1,9 +1,9 @@
 <template>
-  <div class="box-edit">
-    <input class="box-edit__input" v-if="cellType == 'string'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/>
-    <input class="box-edit__input number" v-if="cellType == 'integer'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
+  <div class="box-edit-default-component">
+    <input class="box-edit-default-component__input" v-if="cellType == 'string'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/>
+    <input class="box-edit-default-component__input number" v-if="cellType == 'integer'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
 
-    <select class="box-edit__input select" v-if="cellType == 'choice' || cellType == 'nested object'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput">
+    <select class="box-edit-default-component__input select" v-if="cellType == 'choice' || cellType == 'nested object'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput">
       <option v-for="(item, index) in cellSelectList" :key="index" :value="item['display_name']">{{ item['display_name'] }}</option>
     </select>
   </div>
@@ -21,9 +21,18 @@ export default {
       cellSelectList: (this.listProps.choices) ? this.listProps.choices : null,
       cellValue: (this.listProps) ? this.listProps.value : '',
       isEditComponent: true,
+      // cellType:  'string',
+      // cellSelectList: null,
+      // cellValue:'',
+      // isEditComponent: true,
     }
   },
   methods: {
+    // displayEditComponent(parentElement, itemColumn) {
+    //   console.log(parentElement);
+    //   console.log(itemColumn);
+    //   return;
+    // },
     validationNumber(event) {
       if (!+event.data && event.data != null) {
         this.itemValue = this.itemValue.replace(event.data, '');
@@ -73,7 +82,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.box-edit {
+.box-edit-default-component {
   // position: absolute;
   position: relative;
   // left: 0px;
