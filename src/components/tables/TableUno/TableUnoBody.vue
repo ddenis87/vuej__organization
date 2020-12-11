@@ -108,8 +108,8 @@ export default {
     .table-body__col {
       position: relative;
       display: inline-flex;
-      justify-content: $bodyHorizontalAlign;
-      align-items: $bodyVerticalAlign;
+      // justify-content: $bodyHorizontalAlign;
+      // align-items: $bodyVerticalAlign;
 
       font-size: $bodyFontSize;
       font-weight: $bodyFontWeight;
@@ -132,13 +132,16 @@ export default {
       &_auto  { padding: $bodyAutoPaddingTB $bodyAutoPaddingLR;   }
 
       .box-editing {
-        width: inherit;
-        height: inherit;
+        // width: inherit;
+        width: 100%;
+        height: 100%;
         border: thin solid red;
       }
       .box-display {
-        width: inherit;
-        height: inherit;
+        display: inline-flex;
+        align-items: $bodyVerticalAlign;
+        width: 100%;
+        height: 100%;
         border: thin solid blue;
       }
       .display-none {

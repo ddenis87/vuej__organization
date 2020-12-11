@@ -50,7 +50,8 @@ export default {
 .box-overflow {
   position: relative;
   display: inline-flex;
-  align-items: center;
+  justify-content: inherit;
+  align-items: inherit;
   height: 100%;
   width: 100%;
   background-color: inherit;
