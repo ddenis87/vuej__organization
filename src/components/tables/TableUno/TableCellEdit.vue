@@ -38,12 +38,9 @@ export default {
         parentElement.querySelector('.content').innerText = this.cellValue;
         event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
         event.target.blur();
-        // let eventEditingCompleted = new CustomEvent('editing-completed');
-        // parentElement.dispatchEvent(eventEditingCompleted);
       }
       if (event.key == 'Escape') {
-        this.cellValue = this.listProps.value
-        // parentElement.parentElement.classList.remove('table-body__col_focus');
+        this.cellValue = this.listProps.value // ?
         event.target.blur();
       }
       if (event.key == 'Tab') {
@@ -54,18 +51,13 @@ export default {
         parentElement.querySelector('.box-full').innerText = this.cellValue;
         parentElement.querySelector('.content').innerText = this.cellValue;
         event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
-        // parentElement.parentElement.classList.remove('table-body__col_focus');
         
         if (!event.shiftKey) {
           let nextElement = parentElement.nextElementSibling;
-          console.log(nextElement);
-          // let nextElement = parentElement.parentElement.nextElementSibling.lastElementChild.lastElementChild;
           nextElement.dispatchEvent(nextEvent);
           
         } else {
           let previousElement = parentElement.previousElementSibling;
-          // console.log(previousElement);
-          // let previousElement = parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild;
           previousElement.dispatchEvent(nextEvent);
         }
         event.target.blur();

@@ -19,8 +19,7 @@
         <div class="box-editing display-none">
           <slot :name="`body-editing.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
             <div class="box-editing-default"
-                 :data-value="itemRow[itemColumn.value]" 
-                 >
+                 :data-value="itemRow[itemColumn.value]">
               <!-- includes default component -->
             </div>
           </slot>
@@ -128,6 +127,7 @@ export default {
     &_auto  { grid-auto-rows: $bodyAutoRowHeight;   }
 
     &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
+    &:hover > .table-body__col_focus { background-color: white; }
     &:hover > .table-body__col-action > .action-box { opacity: 1; }
     
     .table-body__col {
@@ -149,26 +149,23 @@ export default {
       outline: none;
 
       &:focus { border: $bodyCellBorderFocus; }
-      &_focus { border: $bodyCellBorderFocus; background-color: white; }
-      &_disabled { border: thin solid rgba(255, 0, 0, .8) }
+
+      &_focus     { border: $bodyCellBorderFocus;             }
+      &_disabled  { border: thin solid rgba(255, 0, 0, .8)  }
 
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }
       &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
       &_auto  { padding: $bodyAutoPaddingTB $bodyAutoPaddingLR;   }
 
       .box-editing {
-        // width: inherit;
         width: 100%;
         height: 100%;
-        border: thin solid red;
-        
       }
       .box-display {
         display: inline-flex;
         align-items: $bodyVerticalAlign;
         width: 100%;
         height: 100%;
-        // border: thin solid blue;
       }
       .display-none {
         display: none;
