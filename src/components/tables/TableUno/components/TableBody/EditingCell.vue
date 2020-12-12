@@ -34,25 +34,17 @@ export default {
     inputEvent(event) {
       let parentElement = event.target.closest('.table-body__col');
       if (event.key == 'Enter') {
-        // parentElement.querySelector('.box-full').innerText = this.cellValue;
-        // parentElement.querySelector('.content').innerText = this.cellValue;
-        // event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
         this.cellEditStatus = true;
         event.target.blur();
       }
       if (event.key == 'Escape') {
-        this.cellValue = this.listProps.value // ?
+        this.cellValue = this.listProps.value;
         event.target.blur();
       }
       if (event.key == 'Tab') {
         event.preventDefault();
         this.cellEditStatus = true;
         let nextEvent = new Event('dblclick', {bubbles: false});
-
-        // parentElement.querySelector('.box-full').innerText = this.cellValue;
-        // parentElement.querySelector('.content').innerText = this.cellValue;
-        // event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
-        
         if (!event.shiftKey) {
           let nextElement = parentElement.nextElementSibling;
           nextElement.dispatchEvent(nextEvent);
@@ -63,7 +55,6 @@ export default {
         }
         event.target.blur();
       }
-      // this.emit('edit')
     },
     blurInput(event) {
       if (!this.cellEditStatus) {

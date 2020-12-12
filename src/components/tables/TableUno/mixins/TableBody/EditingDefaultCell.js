@@ -20,6 +20,12 @@ export const EditingDefaultCell = {
         parentElement.firstElementChild.firstElementChild.select()
       }
       parentElement.firstElementChild.firstElementChild.focus();
+    },
+    displayUpdate(event, value) {
+      let parentElement = event.target;
+      parentElement.querySelector('.box-full').innerText = value;
+      parentElement.querySelector('.content').innerText = value;
+      parentElement.querySelector('.box-editing-default').setAttribute('data-value', value);
     }
   },
 }
