@@ -29,16 +29,19 @@
         <!-- slot display -->
         <div class="box-display" :data-value="itemRow[itemColumn.value]">
           <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
-            <content-overflow :content="itemRow[itemColumn.value]"
+            <div class="box-display-default">
+              <display-cell :data-value="itemRow[itemColumn.value]"></display-cell>
+            </div>
+            <!-- <content-overflow :content="itemRow[itemColumn.value]"
                                 @show-tooltip="(event) => $emit('show-tooltip', event)">
-              <!-- <span class="content" 
+              <span class="content" 
                     :class="`content_${heightType}`" 
                     :style="`text-align: ${itemColumn.align}`" 
                     disabled 
                     @dblclick="(event) => editCell(event, itemColumn, itemRow[itemColumn.value])" 
                     @mousedown="() => {return false}">
                 {{ itemRow[itemColumn.value] }}
-              </span> -->
+              </span>
               <span class="content" 
                     :class="`content_${heightType}`" 
                     :style="`text-align: ${itemColumn.align}`" 
@@ -47,7 +50,7 @@
                     @mousedown="() => {return false}">
                 {{ itemRow[itemColumn.value] }}
               </span>
-            </content-overflow>
+            </content-overflow> -->
           </slot>
         </div>
         
@@ -62,16 +65,19 @@
 </template>
 
 <script>
-import ContentOverflow from './components/TableBody/ContentOverflow.vue';
-import { EditDefaultCell } from './mixins/TableBody/EditDefaultCell.js';
+// import ContentOverflow from './components/TableBody/ContentOverflow.vue';
+import DisplayCell from './components/TableBody/DisplayCell.vue'
+
+import { EditingDefaultCell } from './mixins/TableBody/EditingDefaultCell.js';
 
 export default {
   name: 'TableUnoBody',
   components: {
-    ContentOverflow,
+    // ContentOverflow,
+    DisplayCell,
   },  
   mixins: [
-    EditDefaultCell,
+    EditingDefaultCell,
   ],
   props: {
     listData: Array,
@@ -168,19 +174,19 @@ export default {
         display: none;
       }
 
-      .content {
-        width: 100%;
-        -webkit-user-select: none;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        &_fixed {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-        }
-        &_dense { white-space: nowrap; }
-        // &_auto {  }
-      }
+      // .content {
+      //   width: 100%;
+      //   -webkit-user-select: none;
+      //   text-overflow: ellipsis;
+      //   overflow: hidden;
+      //   &_fixed {
+      //     display: -webkit-box;
+      //     -webkit-box-orient: vertical;
+      //     -webkit-line-clamp: 2;
+      //   }
+      //   &_dense { white-space: nowrap; }
+      //   // &_auto {  }
+      // }
 
       &-action {
         position: sticky;

@@ -1,12 +1,12 @@
 
 import Vue from 'vue';
-import EditCell from '../../components/TableBody/EditCell.vue';
-export const EditDefaultCell = {
+import EditingCell from '../../components/TableBody/EditingCell.vue';
+export const EditingDefaultCell = {
   data() {
     return {
       cellEditProps: {type: 'string', value: null, choices: null},
       cellEditComponent: null,
-      vueCellEdit: Vue.extend(EditCell),
+      vueCellEdit: Vue.extend(EditingCell),
     }
   },
   methods: {

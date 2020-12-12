@@ -35,7 +35,7 @@
     </div>
 
     <div class="boot-anchor" id="boot-anchor"></div>
-    <!-- component footer -->
+      <!-- component footer -->
     <div class="table-uno-head">
       <slot name="component-footer"></slot>
     </div>
