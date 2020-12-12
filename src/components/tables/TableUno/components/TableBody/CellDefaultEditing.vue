@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'EditCell',
+  name: 'EditDefaultCell',
   props: {
     listProps: Object,
   },

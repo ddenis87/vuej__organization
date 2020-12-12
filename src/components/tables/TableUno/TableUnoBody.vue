@@ -30,17 +30,13 @@
         <div class="box-display">
           <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
             <div class="box-display-default" :data-value="itemRow[itemColumn.value]">
-
-              <display-cell :data-value="itemRow[itemColumn.value].toString()"
+              <cell-default-display :data-value="itemRow[itemColumn.value].toString()"
                             :data-props="itemColumn" 
                             :height-type="heightType"
-                            @show-tooltip="(event) => $emit('show-tooltip', event)"></display-cell>
-
+                            @show-tooltip="(event) => $emit('show-tooltip', event)"></cell-default-display>
             </div>
           </slot>
         </div>
-        
-
       </div>
       <div class="table-body__col-action">
         <slot name="action" v-bind:activeValue="itemRow['title']"></slot>
@@ -51,17 +47,17 @@
 </template>
 
 <script>
-import DisplayCell from './components/TableBody/DisplayCell.vue'
+import CellDefaultDisplay from './components/TableBody/CellDefaultDisplay.vue'
 
-import { EditingDefaultCell } from './mixins/TableBody/EditingDefaultCell.js';
+import { EditingCell } from './mixins/TableBody/EditingCell.js';
 
 export default {
   name: 'TableUnoBody',
   components: {
-    DisplayCell,
+    CellDefaultDisplay,
   },  
   mixins: [
-    EditingDefaultCell,
+    EditingCell,
   ],
   props: {
     listData: Array,
@@ -72,36 +68,6 @@ export default {
     editable: Boolean,
   },
   methods: {
-    checkDisplayEdit(event, itemColumn) {
-      if (!this.editable) return;
-      let parentElement = event.target.closest('.table-body__col');
-      if (itemColumn['read_only']) {
-        parentElement.classList.add('table-body__col_disabled');
-        parentElement.blur();
-        setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000);
-        return;
-      }
-      parentElement.querySelector('.box-display').classList.add('display-none');
-      parentElement.querySelector('.box-editing').classList.remove('display-none');
-      parentElement.classList.add('table-body__col_focus');
-
-      if (parentElement.querySelector('.box-editing-default')) {
-        this.editingStart(itemColumn, parentElement.querySelector('.box-editing-default'));
-      } else {
-        // custom element edit function this.$refs[nameCustomElement].editingStart(params)
-      }
-    },
-    editingCompleted(event) {
-      let parentElement = event.target;
-      if (parentElement.querySelector('.box-display-default')) {
-        this.displayUpdate(event, event.detail);
-      } else {
-        // custom element display function for update view this.$refs[nameCustomElement].displayUpdate
-      }
-      parentElement.querySelector('.box-display').classList.remove('display-none');
-      parentElement.querySelector('.box-editing').classList.add('display-none');
-      parentElement.classList.remove('table-body__col_focus');
-    },
   },
 }
 </script>
