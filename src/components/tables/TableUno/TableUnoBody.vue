@@ -30,27 +30,11 @@
         <div class="box-display" :data-value="itemRow[itemColumn.value]">
           <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
             <div class="box-display-default">
-              <display-cell :data-value="itemRow[itemColumn.value]"></display-cell>
+              <display-cell :data-value="itemRow[itemColumn.value].toString()"
+                            :data-props="itemColumn" 
+                            :height-type="heightType"
+                            @show-tooltip="(event) => $emit('show-tooltip', event)"></display-cell>
             </div>
-            <!-- <content-overflow :content="itemRow[itemColumn.value]"
-                                @show-tooltip="(event) => $emit('show-tooltip', event)">
-              <span class="content" 
-                    :class="`content_${heightType}`" 
-                    :style="`text-align: ${itemColumn.align}`" 
-                    disabled 
-                    @dblclick="(event) => editCell(event, itemColumn, itemRow[itemColumn.value])" 
-                    @mousedown="() => {return false}">
-                {{ itemRow[itemColumn.value] }}
-              </span>
-              <span class="content" 
-                    :class="`content_${heightType}`" 
-                    :style="`text-align: ${itemColumn.align}`" 
-                    disabled 
-                    
-                    @mousedown="() => {return false}">
-                {{ itemRow[itemColumn.value] }}
-              </span>
-            </content-overflow> -->
           </slot>
         </div>
         
@@ -65,7 +49,6 @@
 </template>
 
 <script>
-// import ContentOverflow from './components/TableBody/ContentOverflow.vue';
 import DisplayCell from './components/TableBody/DisplayCell.vue'
 
 import { EditingDefaultCell } from './mixins/TableBody/EditingDefaultCell.js';
@@ -73,7 +56,6 @@ import { EditingDefaultCell } from './mixins/TableBody/EditingDefaultCell.js';
 export default {
   name: 'TableUnoBody',
   components: {
-    // ContentOverflow,
     DisplayCell,
   },  
   mixins: [
@@ -169,25 +151,14 @@ export default {
         align-items: $bodyVerticalAlign;
         width: 100%;
         height: 100%;
-      }
-      .display-none {
-        display: none;
-      }
 
-      // .content {
-      //   width: 100%;
-      //   -webkit-user-select: none;
-      //   text-overflow: ellipsis;
-      //   overflow: hidden;
-      //   &_fixed {
-      //     display: -webkit-box;
-      //     -webkit-box-orient: vertical;
-      //     -webkit-line-clamp: 2;
-      //   }
-      //   &_dense { white-space: nowrap; }
-      //   // &_auto {  }
-      // }
-
+        .box-display-default {
+          width: inherit;
+          height: inherit;
+        }
+      }
+      .display-none { display: none; }
+      
       &-action {
         position: sticky;
         right: 0px;

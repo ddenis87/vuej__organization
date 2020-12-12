@@ -2,7 +2,8 @@
   <div class="box-display-default-component">
     <content-overflow :content="dataValue" @show-tooltip="(event) => $emit('show-tooltip', event)">
       <span class="content" 
-           
+            :class="`content_${heightType}`"
+            :style="`text-align: ${dataProps.align}`"
             
             @mousedown="() => {return false}">
         {{ dataValue }}
@@ -21,6 +22,8 @@ export default {
   },
   props: {
     dataValue: String,
+    dataProps: Object,
+    heightType: String,
   },
 }
 </script>
