@@ -20,7 +20,7 @@ export default {
       cellType: (this.listProps) ? this.listProps.type : 'string',
       cellSelectList: (this.listProps.choices) ? this.listProps.choices : null,
       cellValue: (this.listProps) ? this.listProps.value : '',
-      isEditComponent: true,
+      cellEditStatus: false,
     }
   },
   methods: {
@@ -34,9 +34,10 @@ export default {
     inputEvent(event) {
       let parentElement = event.target.closest('.table-body__col');
       if (event.key == 'Enter') {
-        parentElement.querySelector('.box-full').innerText = this.cellValue;
-        parentElement.querySelector('.content').innerText = this.cellValue;
-        event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
+        // parentElement.querySelector('.box-full').innerText = this.cellValue;
+        // parentElement.querySelector('.content').innerText = this.cellValue;
+        // event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
+        this.cellEditStatus = true;
         event.target.blur();
       }
       if (event.key == 'Escape') {
@@ -45,12 +46,12 @@ export default {
       }
       if (event.key == 'Tab') {
         event.preventDefault();
-       
+        this.cellEditStatus = true;
         let nextEvent = new Event('dblclick', {bubbles: false});
 
-        parentElement.querySelector('.box-full').innerText = this.cellValue;
-        parentElement.querySelector('.content').innerText = this.cellValue;
-        event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
+        // parentElement.querySelector('.box-full').innerText = this.cellValue;
+        // parentElement.querySelector('.content').innerText = this.cellValue;
+        // event.target.closest('.box-editing-default').setAttribute('data-value', this.cellValue);
         
         if (!event.shiftKey) {
           let nextElement = parentElement.nextElementSibling;
@@ -65,8 +66,11 @@ export default {
       // this.emit('edit')
     },
     blurInput(event) {
+      if (!this.cellEditStatus) {
+        this.cellValue = this.listProps.value;
+      }
       let parentElement = event.target.closest('.table-body__col');
-      let eventEditingCompleted = new CustomEvent('editing-completed');
+      let eventEditingCompleted = new CustomEvent('editing-completed', {detail: this.cellValue});
       parentElement.dispatchEvent(eventEditingCompleted);
       parentElement.querySelector('.box-edit-default-component').remove();
     }

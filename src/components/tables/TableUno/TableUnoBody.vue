@@ -27,13 +27,15 @@
         
 
         <!-- slot display -->
-        <div class="box-display" :data-value="itemRow[itemColumn.value]">
+        <div class="box-display">
           <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
-            <div class="box-display-default">
+            <div class="box-display-default" :data-value="itemRow[itemColumn.value]">
+
               <display-cell :data-value="itemRow[itemColumn.value].toString()"
                             :data-props="itemColumn" 
                             :height-type="heightType"
                             @show-tooltip="(event) => $emit('show-tooltip', event)"></display-cell>
+
             </div>
           </slot>
         </div>
@@ -90,11 +92,25 @@ export default {
       }
     },
     editingCompleted(event) {
+      // console.log(event);
       let parentElement = event.target;
+      if (parentElement.querySelector('.box-display-default')) {
+        this.displayUpdate(event, event.detail);
+      } else {
+        // custom element display function for update view this.$refs[nameCustomElement].displayUpdate
+      }
       parentElement.querySelector('.box-display').classList.remove('display-none');
       parentElement.querySelector('.box-editing').classList.add('display-none');
       parentElement.classList.remove('table-body__col_focus');
     },
+    displayUpdate(event, value) {
+      let parentElement = event.target;
+      parentElement.querySelector('.box-full').innerText = value;
+      parentElement.querySelector('.content').innerText = value;
+      parentElement.querySelector('.box-editing-default').setAttribute('data-value', value);
+      // console.log(event);
+      // console.log(value);
+    }
   },
 }
 </script>
