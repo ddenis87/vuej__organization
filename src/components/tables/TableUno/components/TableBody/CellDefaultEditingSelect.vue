@@ -5,7 +5,7 @@
                   v-model="cellValue" 
                   :items="cellList"
                   @keydown="inputEvent" 
-                  @blur="blurInput" @change="focusSelf"></v-autocomplete>
+                  @blur="blurInput" @change="changeValue"></v-autocomplete>
 </template>
 
 <script>
@@ -27,25 +27,23 @@ export default {
   data() {
     return {
       cellValue: this.dataValue,
+      cellChange: false,
     }
   },
   methods: {
     inputEvent(event) {
-      // event.preventDefault();
-      console.log(event);
       if (event.key == 'Enter') {
-        
-      }
-      // 
+        event.preventDefault();
+        return;
+      } 
       this.$emit('input-event', event, this.cellValue);
     },
     blurInput(event) {
-      console.log('blur autocomplite');
+      event.preventDefault();
       this.$emit('input-blur', event);
     },
-    focusSelf(event) {
-      console.log('change');
-      // event.target.focus();
+    changeValue() {
+      this.$emit('input-input', event, this.cellValue);
     },
   },
 }

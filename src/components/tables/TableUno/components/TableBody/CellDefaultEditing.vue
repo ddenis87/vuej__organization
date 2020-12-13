@@ -76,7 +76,6 @@ export default {
       }
     },
     blurInput(event) {
-      // console.log('blur');
       if (!this.cellEditStatus) {
         this.cellValue = this.listProps.value;
       }
