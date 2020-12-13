@@ -1,17 +1,23 @@
 <template>
-  <div class="box-edit-default-component">
-    <input class="box-edit-default-component__input" v-if="cellType == 'string'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/>
-    <input class="box-edit-default-component__input number" v-if="cellType == 'integer'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
+  <div class="box-editing-component">
+    <cell-default-editing-string v-if="cellType == 'string'" :data-value="cellValue" @input-event="inputEvent" @input-blur="blurInput"></cell-default-editing-string>
+    <!-- <input class="box-edit-default-component__input" v-if="cellType == 'string'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/> -->
+    <!-- <input class="box-edit-default-component__input number" v-if="cellType == 'integer'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
 
     <select class="box-edit-default-component__input select" v-if="cellType == 'choice' || cellType == 'nested object'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput">
       <option v-for="(item, index) in cellSelectList" :key="index" :value="item['display_name']">{{ item['display_name'] }}</option>
-    </select>
+    </select> -->
   </div>
 </template>
 
 <script>
+import CellDefaultEditingString from './CellDefaultEditingString.vue';
+
 export default {
   name: 'EditDefaultCell',
+  components: {
+    CellDefaultEditingString,
+  },
   props: {
     listProps: Object,
   },
@@ -31,10 +37,12 @@ export default {
         setTimeout(() => { event.target.classList.remove('invalid'); }, 1000)
       }
     },
-    inputEvent(event) {
+    inputEvent(event, value) {
+
       let parentElement = event.target.closest('.table-body__col');
       if (event.key == 'Enter') {
         this.cellEditStatus = true;
+        this.cellValue = value;
         event.target.blur();
       }
       if (event.key == 'Escape') {
@@ -44,6 +52,7 @@ export default {
       if (event.key == 'Tab') {
         event.preventDefault();
         this.cellEditStatus = true;
+        this.cellValue = value;
         let nextEvent = new Event('dblclick', {bubbles: false});
         if (!event.shiftKey) {
           let nextElement = parentElement.nextElementSibling;
@@ -63,7 +72,7 @@ export default {
       let parentElement = event.target.closest('.table-body__col');
       let eventEditingCompleted = new CustomEvent('editing-completed', {detail: this.cellValue});
       parentElement.dispatchEvent(eventEditingCompleted);
-      parentElement.querySelector('.box-edit-default-component').remove();
+      parentElement.querySelector('.box-editing-component').remove();
     }
   }
 }
