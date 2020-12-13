@@ -1,10 +1,14 @@
 <template>
   <div class="box-editing-component">
-    <cell-default-editing-string v-if="cellType == 'string'" :data-value="cellValue" @input-event="inputEvent" @input-blur="blurInput"></cell-default-editing-string>
-    <cell-default-editing-select v-if="cellType == 'choice'"
-                                 
+    <cell-default-editing-string v-if="cellType == 'string'"
+                                 :data-value="cellValue" 
                                  @input-event="inputEvent" 
-                                 @inputBlur="blurInput"></cell-default-editing-select>
+                                 @input-blur="blurInput"></cell-default-editing-string>
+    <cell-default-editing-select v-if="cellType == 'choice'"
+                                 :data-value="cellValue"
+                                 :data-list="cellSelectList"
+                                 @input-event="inputEvent" 
+                                 @input-blur="blurInput"></cell-default-editing-select>
     <!-- <input class="box-edit-default-component__input" v-if="cellType == 'string'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/> -->
     <!-- <input class="box-edit-default-component__input number" v-if="cellType == 'integer'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
 
@@ -72,6 +76,7 @@ export default {
       }
     },
     blurInput(event) {
+      // console.log('blur');
       if (!this.cellEditStatus) {
         this.cellValue = this.listProps.value;
       }

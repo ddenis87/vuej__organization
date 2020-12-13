@@ -18,6 +18,8 @@ export default {
       this.$emit('input-event', event, this.cellValue);
     },
     blurInput(event) {
+      console.log('blur string');
+      console.log(event);
       this.$emit('input-blur', event);
     },
   },

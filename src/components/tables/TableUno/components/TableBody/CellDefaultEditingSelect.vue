@@ -1,42 +1,52 @@
 <template>
-  <!-- <v-autocomplete dense 
+  <v-autocomplete dense id="boxEditingComponentSelect"
+  class="box-editing-component select"
+                  tabindex="10"
                   v-model="cellValue" 
-                  :items="selectList"
-                  ></v-autocomplete> -->
-  <!-- <input type="text" value="test" /> -->
-  <v-autocomplete
-            v-model="values"
-            :items="items"
-            outlined
-            dense
-            chips
-            small-chips
-            label="Outlined"
-            multiple
-          ></v-autocomplete>
+                  :items="cellList"
+                  @keydown="inputEvent" 
+                  @blur="blurInput" @change="focusSelf"></v-autocomplete>
 </template>
 
 <script>
 export default {
   name: 'CellDefaultEditingSelect',
   props: {
-    dataValue: String,
-    dataList: Array,
+    dataValue: null,
+    dataList: null,
   },
-  // computed: {
-  //   selectList() {
-  //     // console.log(this.dataValue);
-  //     // console.log(this.dataList);
-  //     // return this.dataList;
-  //   }
-  // },
+  computed: {
+    cellList() {
+      let cellList = [];
+      this.dataList.forEach(element => {
+        cellList.push({text: element['display_name'], value: element['display_name']})
+      })
+      return cellList;
+    },
+  },
   data() {
     return {
-  //     // cellValue: this.dataValue,
-      items: ['foo', 'bar', 'fizz', 'buzz'],
-      values: ['foo', 'bar'],
-      value: null,
+      cellValue: this.dataValue,
     }
+  },
+  methods: {
+    inputEvent(event) {
+      // event.preventDefault();
+      console.log(event);
+      if (event.key == 'Enter') {
+        
+      }
+      // 
+      this.$emit('input-event', event, this.cellValue);
+    },
+    blurInput(event) {
+      console.log('blur autocomplite');
+      this.$emit('input-blur', event);
+    },
+    focusSelf(event) {
+      console.log('change');
+      // event.target.focus();
+    },
   },
 }
 </script>

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import vuetify from '@/plugins/vuetify';
 import CellDefaultEditing from '../../components/TableBody/CellDefaultEditing.vue';
 
 export const EditingCell = {
@@ -11,7 +12,6 @@ export const EditingCell = {
   },
   methods: {
     checkDisplayEdit(event, itemColumn) {
-      console.log(itemColumn);
       if (!this.editable) return;
       let parentElement = event.target.closest('.table-body__col');
       if (itemColumn['read_only']) {
@@ -48,12 +48,19 @@ export const EditingCell = {
       this.cellEditProps.value = parentElement.getAttribute('data-value');
       this.cellEditProps.type = itemColumn.type;
       if (itemColumn.choices) this.cellEditProps.choices = itemColumn.choices;
-      this.cellEditComponent = new this.vueCellEdit({  propsData: {listProps: this.cellEditProps} }).$mount(); 
+      // console.log(this.cellEditProps);
+      this.cellEditComponent = new this.vueCellEdit({ vuetify, propsData: {listProps: this.cellEditProps} }).$mount(); 
       parentElement.prepend(this.cellEditComponent.$el);
       if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') {
-        parentElement.firstElementChild.firstElementChild.select()
+        parentElement.firstElementChild.firstElementChild.select();
+        parentElement.firstElementChild.firstElementChild.focus();
+      } else {
+        // console.log(parentElement.firstElementChild.firstElementChild.querySelector('.v-select__slot').firstElementChild.focus());
+        parentElement.firstElementChild.firstElementChild.querySelector('.v-select__slot').firstElementChild.focus()
       }
-      parentElement.firstElementChild.firstElementChild.focus();
+      
+      
+      
     },
     displayUpdate(event, value) {
       let parentElement = event.target;
