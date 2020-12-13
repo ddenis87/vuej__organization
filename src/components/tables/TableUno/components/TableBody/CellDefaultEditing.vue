@@ -1,6 +1,10 @@
 <template>
   <div class="box-editing-component">
     <cell-default-editing-string v-if="cellType == 'string'" :data-value="cellValue" @input-event="inputEvent" @input-blur="blurInput"></cell-default-editing-string>
+    <cell-default-editing-select v-if="cellType == 'choice'"
+                                 
+                                 @input-event="inputEvent" 
+                                 @inputBlur="blurInput"></cell-default-editing-select>
     <!-- <input class="box-edit-default-component__input" v-if="cellType == 'string'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/> -->
     <!-- <input class="box-edit-default-component__input number" v-if="cellType == 'integer'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
 
@@ -12,11 +16,13 @@
 
 <script>
 import CellDefaultEditingString from './CellDefaultEditingString.vue';
+import CellDefaultEditingSelect from './CellDefaultEditingSelect.vue';
 
 export default {
   name: 'EditDefaultCell',
   components: {
     CellDefaultEditingString,
+    CellDefaultEditingSelect,
   },
   props: {
     listProps: Object,

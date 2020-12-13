@@ -11,6 +11,7 @@ export const EditingCell = {
   },
   methods: {
     checkDisplayEdit(event, itemColumn) {
+      console.log(itemColumn);
       if (!this.editable) return;
       let parentElement = event.target.closest('.table-body__col');
       if (itemColumn['read_only']) {
