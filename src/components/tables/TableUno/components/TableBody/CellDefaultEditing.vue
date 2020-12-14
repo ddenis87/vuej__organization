@@ -4,6 +4,10 @@
                                  :data-value="cellValue" 
                                  @input-event="inputEvent" 
                                  @input-blur="blurInput"></cell-default-editing-string>
+    <cell-default-editing-string v-if="cellType == 'integer'"
+                                 :data-value="cellValue" 
+                                 @input-event="inputEvent" 
+                                 @input-blur="blurInput"></cell-default-editing-string>
     <cell-default-editing-select v-if="cellType == 'choice'"
                                  :data-value="cellValue"
                                  :data-list="cellSelectList"
