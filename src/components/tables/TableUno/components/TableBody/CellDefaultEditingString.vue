@@ -25,11 +25,16 @@ export default {
     return {
       cellValue: this.dataProps.text,
       // rules: [v => v.length <= this.dataProps['max_length'] || `макс. ${this.dataProps['max_length']}`],
-      rules: [v => v.length <= this.dataProps['max_length'] || `макс. ${this.dataProps['max_length']}`],
+      rules: [v => v.length > 0 || `мин. 1`],
     }
   },
   methods: {
     inputEvent(event) {
+      console.log(event.key);
+      if (this.cellValue.length < 1) {
+        if (event.key == 'Escape') this.$emit('input-event', event);
+        return;
+      };
       this.$emit('input-event', event, this.cellValue);
     },
     blurInput(event) {
