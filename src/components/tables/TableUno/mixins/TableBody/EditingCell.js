@@ -46,10 +46,9 @@ export const EditingCell = {
 
     // default methods for editing 
     editingStart(itemColumn, parentElement) {
-      console.log(itemColumn);
       this.cellEditProps = itemColumn;
       this.cellEditProps.text = parentElement.getAttribute('data-value');
-      console.log( this.cellEditProps);
+      console.log(this.cellEditProps);
       // this.cellEditProps.type = itemColumn.type;
       // if (itemColumn.choices) this.cellEditProps.choices = itemColumn.choices;
       this.cellEditComponent = new this.vueCellEdit({ vuetify, propsData: {listProps: this.cellEditProps} }).$mount(); 

@@ -1,7 +1,9 @@
 <template>
   <v-text-field class="number" 
                 dense 
-                single-line 
+                single-line
+                :rules="[...rules.required, ...rules.number]"
+                
                 v-model="cellValue" 
                 @keydown="inputEvent"
                 @blur="blurInput"></v-text-field>
@@ -15,11 +17,26 @@ export default {
   },
   data() {
     return {
-      cellValue: this.dataProps.value,
+      cellValue: this.dataProps.text,
+      rules: {
+        required: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1`],
+        number: [v => (!!+v || v == '') || 'не число'],
+      },
     }
   },
   methods: {
     inputEvent(event) {
+      if (this.dataProps.required) {
+        if (this.cellValue.length < 1) {
+          if (event.key == 'Escape') this.$emit('input-event', event);
+          return;
+        }
+      } else {
+        if (!+this.cellValue) {
+          if (event.key == 'Escape') this.$emit('input-event', event);
+          return;
+        }
+      }
       this.$emit('input-event', event, this.cellValue);
     },
     blurInput(event) {
