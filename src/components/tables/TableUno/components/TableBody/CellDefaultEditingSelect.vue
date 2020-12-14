@@ -1,11 +1,11 @@
 <template>
   <v-autocomplete dense id="boxEditingComponentSelect"
-                  class="box-editing-component select"
+                  class="select"
                   tabindex="10"
                   v-model="cellValue" 
                   :items="cellList"
                   @keydown="inputEvent" 
-                  @blur="blurInput" @change="changeValue"></v-autocomplete>
+                  @blur="blurInput" @change="changeValue" @focus="focusEvent"></v-autocomplete>
 </template>
 
 <script>
@@ -44,6 +44,9 @@ export default {
     },
     changeValue() {
       this.$emit('input-input', event, this.cellValue);
+    },
+    focusEvent(event) {
+      setTimeout(() => { event.target.select() }, 100) 
     },
   },
 }

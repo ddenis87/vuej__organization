@@ -1,5 +1,11 @@
 <template>
-  <input class="box-editing-component string" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/>
+<v-text-field class="string" 
+              dense 
+              single-line 
+              v-model="cellValue" 
+              @keydown="inputEvent"
+              @blur="blurInput" ref="boxEditing"></v-text-field>
+  <!-- <input class="box-editing-component string" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/> -->
 </template>
 
 <script>
@@ -27,8 +33,9 @@ export default {
 <style lang="scss" scoped>
 .string {
   width: 100%;
-  background-color: #FFFFFF;
-  outline: none;
-  z-index: 100;
+  font-size: 14px;
+}
+.v-text-field {
+  margin-top: -3.5px;
 }
 </style>

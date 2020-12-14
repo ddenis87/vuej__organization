@@ -20,6 +20,7 @@ export const EditingCell = {
         setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000);
         return;
       }
+      if (parentElement.querySelector('.box-display.display-none')) return;
       parentElement.querySelector('.box-display').classList.add('display-none');
       parentElement.querySelector('.box-editing').classList.remove('display-none');
       parentElement.classList.add('table-body__col_focus');
@@ -50,13 +51,17 @@ export const EditingCell = {
       if (itemColumn.choices) this.cellEditProps.choices = itemColumn.choices;
       this.cellEditComponent = new this.vueCellEdit({ vuetify, propsData: {listProps: this.cellEditProps} }).$mount(); 
       parentElement.prepend(this.cellEditComponent.$el);
-      if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') {
-        parentElement.firstElementChild.firstElementChild.select();
-        parentElement.firstElementChild.firstElementChild.focus();
+      if (itemColumn.type == 'string' || itemColumn.type == 'integer') {
+        parentElement.querySelector('input').select();
+        parentElement.querySelector('input').focus();
       } else if ( itemColumn.type == 'nested object' ) {
         parentElement.firstElementChild.firstElementChild.focus()
       } else {
-        parentElement.firstElementChild.firstElementChild.querySelector('.v-select__slot').firstElementChild.focus();
+        // console.log('select');
+        // console.log(parentElement.querySelector('input'));
+        parentElement.querySelector('input').focus();
+        // parentElement.querySelector('.v-select__slot').firstElementChild.focus();
+        // parentElement.firstElementChild.firstElementChild.querySelector('.v-select__slot').firstElementChild.focus();
       }
     },
     displayUpdate(event, value) {
