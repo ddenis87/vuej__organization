@@ -42,6 +42,7 @@ export default {
       event.preventDefault();
       this.$emit('input-blur', event);
     },
+    blurInput1(event) {},
     changeValue() {
       this.$emit('input-input', event, this.cellValue);
     },
@@ -50,5 +51,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-input {
+  text-align: center;
+  font-size: 14px;
+  .v-input__control {
+    padding: 0px;
 
+  }
+}
+.v-text-field {
+  margin-top: -3px;
+   input {
+    padding: 0px;
+  }
+}
 </style>
