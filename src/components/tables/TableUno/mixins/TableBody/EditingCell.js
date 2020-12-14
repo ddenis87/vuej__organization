@@ -15,9 +15,9 @@ export const EditingCell = {
       if (!this.editable) return;
       let parentElement = event.target.closest('.table-body__col');
       if (itemColumn['read_only']) {
-        parentElement.classList.add('table-body__col_disabled');
-        parentElement.blur();
-        setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000);
+        // parentElement.classList.add('table-body__col_disabled');
+        // parentElement.blur();
+        // setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000);
         return;
       }
       if (parentElement.querySelector('.box-display.display-none')) return;

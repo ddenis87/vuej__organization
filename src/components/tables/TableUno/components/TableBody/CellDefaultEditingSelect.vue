@@ -1,6 +1,9 @@
 <template>
-  <v-autocomplete dense id="boxEditingComponentSelect"
+  <v-autocomplete id="boxEditingComponentSelect"
                   class="select"
+                  dense
+                  single-line
+                  :rules="rules"
                   tabindex="10"
                   v-model="cellValue" 
                   :items="cellList"
@@ -12,13 +15,12 @@
 export default {
   name: 'CellDefaultEditingSelect',
   props: {
-    dataValue: String,
-    dataList: null,
+    dataProps: Object,
   },
   computed: {
     cellList() {
       let cellList = [];
-      this.dataList.forEach(element => {
+      this.dataProps.choices.forEach(element => {
         cellList.push({text: element['display_name'], value: element['display_name']})
       })
       return cellList;
@@ -26,7 +28,8 @@ export default {
   },
   data() {
     return {
-      cellValue: this.dataValue,
+      cellValue: this.dataProps.text,
+      rules: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1` ],
       cellChange: false,
     }
   },

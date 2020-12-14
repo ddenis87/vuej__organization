@@ -32,7 +32,7 @@ export default {
           return;
         }
       } else {
-        if (!+this.cellValue) {
+        if ((!+this.cellValue) && (this.cellValue != '')) {
           if (event.key == 'Escape') this.$emit('input-event', event);
           return;
         }

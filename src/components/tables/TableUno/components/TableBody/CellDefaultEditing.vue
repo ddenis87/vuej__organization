@@ -9,8 +9,8 @@
                                  @input-event="inputEvent" 
                                  @input-blur="blurInput"></cell-default-editing-number>
     <cell-default-editing-select v-if="cellType == 'choice'"
-                                 :data-value="cellValue"
-                                 :data-list="cellSelectList"
+                                 :data-props="listProps"
+                                 
                                  @input-event="inputEvent" 
                                  @input-blur="blurInput"></cell-default-editing-select>
     <cell-default-editing-dialog v-if="cellType == 'nested object'"
