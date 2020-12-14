@@ -138,7 +138,7 @@ export default new Vuex.Store({
       axios
         .get(`https://an67.pythonanywhere.com/api/organisations/?page=${option.currentPage}${option.stringFilter}`)
         .then(response => {
-          console.log(response.data.results);
+          // console.log(response.data.results);
           if (response.data.count !== 0) {
             state.commit('SET_LIST_DATA', response.data.results);
           } 

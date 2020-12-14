@@ -28,6 +28,6 @@ export const GetterData = {
         return listHeaderBase;
       }
     },
-    listBody() { console.log(this.$store.getters[this.tableProperties.state.body.getData]); return this.$store.getters[this.tableProperties.state.body.getData]; },
+    listBody() { return this.$store.getters[this.tableProperties.state.body.getData]; },
   }
 }

@@ -48,19 +48,16 @@ export const EditingCell = {
       this.cellEditProps.value = parentElement.getAttribute('data-value');
       this.cellEditProps.type = itemColumn.type;
       if (itemColumn.choices) this.cellEditProps.choices = itemColumn.choices;
-      // console.log(this.cellEditProps);
       this.cellEditComponent = new this.vueCellEdit({ vuetify, propsData: {listProps: this.cellEditProps} }).$mount(); 
       parentElement.prepend(this.cellEditComponent.$el);
       if (itemColumn.type != 'choice' && itemColumn.type != 'nested object') {
         parentElement.firstElementChild.firstElementChild.select();
         parentElement.firstElementChild.firstElementChild.focus();
+      } else if ( itemColumn.type == 'nested object' ) {
+        parentElement.firstElementChild.firstElementChild.focus()
       } else {
-        // console.log(parentElement.firstElementChild.firstElementChild.querySelector('.v-select__slot').firstElementChild.focus());
-        parentElement.firstElementChild.firstElementChild.querySelector('.v-select__slot').firstElementChild.focus()
+        parentElement.firstElementChild.firstElementChild.querySelector('.v-select__slot').firstElementChild.focus();
       }
-      
-      
-      
     },
     displayUpdate(event, value) {
       let parentElement = event.target;

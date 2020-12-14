@@ -9,24 +9,25 @@
                                  :data-list="cellSelectList"
                                  @input-event="inputEvent" 
                                  @input-blur="blurInput"></cell-default-editing-select>
-    <!-- <input class="box-edit-default-component__input" v-if="cellType == 'string'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/> -->
-    <!-- <input class="box-edit-default-component__input number" v-if="cellType == 'integer'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput" @input="validationNumber"/>
-
-    <select class="box-edit-default-component__input select" v-if="cellType == 'choice' || cellType == 'nested object'" v-model="cellValue" @keydown="inputEvent" @blur="blurInput">
-      <option v-for="(item, index) in cellSelectList" :key="index" :value="item['display_name']">{{ item['display_name'] }}</option>
-    </select> -->
+    <cell-default-editing-dialog v-if="cellType == 'nested object'"
+                                 :data-value="cellValue"
+                                 :data-list="cellSelectList"
+                                 @input-event="inputEvent"
+                                 @input-blur="blurInput"></cell-default-editing-dialog>
   </div>
 </template>
 
 <script>
 import CellDefaultEditingString from './CellDefaultEditingString.vue';
 import CellDefaultEditingSelect from './CellDefaultEditingSelect.vue';
+import CellDefaultEditingDialog from './CellDefaultEditingDialog.vue';
 
 export default {
   name: 'EditDefaultCell',
   components: {
     CellDefaultEditingString,
     CellDefaultEditingSelect,
+    CellDefaultEditingDialog,
   },
   props: {
     listProps: Object,
@@ -40,13 +41,6 @@ export default {
     }
   },
   methods: {
-    validationNumber(event) {
-      if (!+event.data && event.data != null) {
-        this.itemValue = this.itemValue.replace(event.data, '');
-        event.target.classList.add('invalid');
-        setTimeout(() => { event.target.classList.remove('invalid'); }, 1000)
-      }
-    },
     inputEvent(event, value) {
 
       let parentElement = event.target.closest('.table-body__col');
@@ -90,10 +84,7 @@ export default {
 
 <style lang="scss" scoped>
 .box-edit-default-component {
-  // position: absolute;
   position: relative;
-  // left: 0px;
-  // top: 0px;
   display: flex;
   align-items: start;
   width: 100%;
@@ -101,17 +92,9 @@ export default {
   background-color: white;
   &__input {
     width: 100%;
-    // height: 100%;
-    // padding: 6px 16px;
     background-color: #FFFFFF;
     outline: none;
     z-index: 100;
-  }
-  .invalid {
-    background-color: rgba(255, 0, 0, .1);
-  }
-  .number {
-    text-align: right;
   }
 }
 </style>
