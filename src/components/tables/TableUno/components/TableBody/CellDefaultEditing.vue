@@ -1,13 +1,13 @@
 <template>
   <div class="box-editing-component">
     <cell-default-editing-string v-if="cellType == 'string'"
-                                 :data-value="cellValue" 
+                                 :data-props="listProps" 
                                  @input-event="inputEvent" 
                                  @input-blur="blurInput"></cell-default-editing-string>
-    <cell-default-editing-string v-if="cellType == 'integer'"
-                                 :data-value="cellValue" 
+    <cell-default-editing-number v-if="cellType == 'integer'"
+                                 :data-props="listProps" 
                                  @input-event="inputEvent" 
-                                 @input-blur="blurInput"></cell-default-editing-string>
+                                 @input-blur="blurInput"></cell-default-editing-number>
     <cell-default-editing-select v-if="cellType == 'choice'"
                                  :data-value="cellValue"
                                  :data-list="cellSelectList"
@@ -23,6 +23,7 @@
 
 <script>
 import CellDefaultEditingString from './CellDefaultEditingString.vue';
+import CellDefaultEditingNumber from './CellDefaultEditingNumber.vue';
 import CellDefaultEditingSelect from './CellDefaultEditingSelect.vue';
 import CellDefaultEditingDialog from './CellDefaultEditingDialog.vue';
 
@@ -30,6 +31,7 @@ export default {
   name: 'EditDefaultCell',
   components: {
     CellDefaultEditingString,
+    CellDefaultEditingNumber,
     CellDefaultEditingSelect,
     CellDefaultEditingDialog,
   },
@@ -75,7 +77,7 @@ export default {
     },
     blurInput(event) {
       if (!this.cellEditStatus) {
-        this.cellValue = this.listProps.value;
+        this.cellValue = this.listProps.text;
       }
       let parentElement = event.target.closest('.table-body__col');
       let eventEditingCompleted = new CustomEvent('editing-completed', {detail: this.cellValue});

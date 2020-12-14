@@ -1,16 +1,21 @@
 <template>
-  <input class="box-editing-component number" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/>
+  <v-text-field class="number" 
+                dense 
+                single-line 
+                v-model="cellValue" 
+                @keydown="inputEvent"
+                @blur="blurInput"></v-text-field>
 </template>
 
 <script>
 export default {
-  name: 'CellDefaultEditingString',
+  name: 'CellDefaultEditingNumber',
   props: {
-    dataValue: String,
+    dataProps: Object,
   },
   data() {
     return {
-      cellValue: this.dataValue,
+      cellValue: this.dataProps.value,
     }
   },
   methods: {
@@ -26,11 +31,14 @@ export default {
 
 <style lang="scss" scoped>
 .number {
-  // justify-content: end;
-  text-align: right;
   width: 100%;
-  background-color: #FFFFFF;
-  outline: none;
-  z-index: 100;
+  font-size: 14px;
 }
+.v-text-field {
+  margin-top: -3.5px;
+}
+::v-deep {
+  input { text-align: end; }
+}
+
 </style>

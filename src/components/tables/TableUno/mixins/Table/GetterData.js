@@ -9,11 +9,13 @@ export const GetterData = {
         listHeaderBase.forEach((item, index, array) => {
           if (listHeaderState.find(mitem => mitem.key == item.value)) {
             let itemState = listHeaderState.find(mitem => mitem.key == item.value);
-            item.text = itemState.label;
-            item.type = itemState.type;
-            if (itemState.choices != undefined) item.choices = itemState.choices;
-            item['read_only'] = itemState['read_only'];
-            item.required = itemState.required;
+            // item.text = itemState.label;
+            // item.type = itemState.type;
+            // if (itemState.choices != undefined) item.choices = itemState.choices;
+            // item['read_only'] = itemState['read_only'];
+            // item.required = itemState.required;
+            Object.assign(item, itemState);
+            // console.log(item);
           }
           if ('fixed' in item) {
             shiftLeft = (array[index - 1]) ? (array[index - 1].width) ? +array[index - 1].width[0] + +shiftLeft : +100 : +0;

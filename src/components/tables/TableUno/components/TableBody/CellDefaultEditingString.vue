@@ -1,22 +1,31 @@
 <template>
-<v-text-field class="string" 
-              dense 
-              single-line 
-              v-model="cellValue" 
-              @keydown="inputEvent"
-              @blur="blurInput" ref="boxEditing"></v-text-field>
-  <!-- <input class="box-editing-component string" v-model="cellValue" @keydown="inputEvent" @blur="blurInput"/> -->
+  <v-text-field class="string" 
+                dense 
+                single-line
+                :rules="rules"
+                counter
+                :maxlength="maxLength"
+                v-model="cellValue" 
+                @keydown="inputEvent"
+                @blur="blurInput"></v-text-field>
 </template>
 
 <script>
 export default {
   name: 'CellDefaultEditingString',
   props: {
-    dataValue: String,
+    dataProps: Object,
+  },
+  computed: {
+    maxLength() {
+      return (this.dataProps['max_length']) ? this.dataProps['max_length'] : Infinity;
+    },
   },
   data() {
     return {
-      cellValue: this.dataValue,
+      cellValue: this.dataProps.text,
+      // rules: [v => v.length <= this.dataProps['max_length'] || `макс. ${this.dataProps['max_length']}`],
+      rules: [v => v.length <= this.dataProps['max_length'] || `макс. ${this.dataProps['max_length']}`],
     }
   },
   methods: {

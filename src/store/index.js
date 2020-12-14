@@ -24,19 +24,26 @@ export default new Vuex.Store({
     GET_SEQUENCE_OVERFLOW_BOX(state) { return state.sequenceOverflowBox; },
     GET_STATUS_LOAD(state) { return state.statusLoad; },
     GET_OPTIONS_REQUEST(state) { return state.optionRequest; },
-    GET_LIST_FIELDS(state) {     
+    GET_LIST_FIELDS(state) {
+      // console.log(state.listDataOptions);
       if (state.listFields.length == 0) {
         Object.keys(state.listDataOptions).forEach(item => {
-          state.listFields.push({
-            key: item, 
-            label: state.listDataOptions[item].label, 
-            type: state.listDataOptions[item].type,
-            choices: state.listDataOptions[item].choices,
-            'read_only': state.listDataOptions[item]['read_only'],
-            required: state.listDataOptions[item].required,
-          });
+        // state.listDataOptions.forEach(item => {
+          state.listDataOptions[item].key = item;
+          state.listFields.push( state.listDataOptions[item]
+            // {
+
+            // key: item, 
+            // label: state.listDataOptions[item].label, 
+            // type: state.listDataOptions[item].type,
+            // choices: state.listDataOptions[item].choices,
+            // 'read_only': state.listDataOptions[item]['read_only'],
+            // required: state.listDataOptions[item].required,
+          // }
+          );
         })
       }
+      // console.log(state.listFields);
       return state.listFields;
     },
     GET_LIST_DATA(state) { return state.listData; },

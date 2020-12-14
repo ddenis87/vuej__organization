@@ -7,7 +7,7 @@
          :style="item.position">
       <span class="content" :class="`content_${heightType}`">
         <slot :name="`${item.value}`" v-bind:itemValue="item.value">
-          {{ item.text }}
+          {{ item.label }}
         </slot>
       </span>
     </div>
