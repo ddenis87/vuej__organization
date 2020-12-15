@@ -1,6 +1,6 @@
 <template>
   <v-text-field class="number" 
-                dense 
+                dense
                 single-line
                 :rules="[...rules.required, ...rules.number]"
                 

@@ -57,7 +57,8 @@ export const EditingCell = {
         parentElement.querySelector('input').select();
         parentElement.querySelector('input').focus();
       } else if ( itemColumn.type == 'nested object' ) {
-        parentElement.firstElementChild.firstElementChild.focus()
+        parentElement.querySelector('input').setSelectionRange(0, 0);
+        // parentElement.querySelector('input').select();
       } else {
         parentElement.querySelector('input').focus();
       }

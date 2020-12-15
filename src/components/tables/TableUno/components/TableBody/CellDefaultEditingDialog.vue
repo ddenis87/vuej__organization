@@ -1,17 +1,17 @@
 <template>
-  <div class="box-editing-component dialog"
-       id="boxEditingComponentDialog"
-       tabindex="10"
-       @blur="blurInput"
-       @keydown="inputEvent" >
-
     <v-dialog v-model="dialog" persistent >
-      <template v-slot:activator="{ on, attrs }">
-        <input class="dialog__text" 
-               :value="cellValue" disabled>
-        <v-btn icon small class="dialog__btn" v-bind="attrs" v-on="on">
-          <v-icon small>mdi-credit-card-multiple</v-icon>
-        </v-btn>
+      <template v-slot:activator="{  }">
+        <v-text-field class="dialog__text" id="boxEditingComponentDialog"
+                      dense 
+                      single-line
+                      autofocus
+                      :rules="rules"
+                      v-model="cellValue"
+                      append-icon="mdi-credit-card-multiple"
+                      @blur="blurInput"
+                      @keydown="inputEvent"
+                      @focus="focusEvent" 
+                      @click:append="() => {dialog = true}"></v-text-field>
       </template>
     <v-card>
       <v-card-title>BK</v-card-title>
@@ -21,22 +21,19 @@
                     disable-pagination
                     hide-default-footer
                     :headers="dataListHeader"
-                    :items="dataList" height="500"
+                    :items="cellList" height="500"
                     @dblclick:row="selectItem"></v-data-table>
       <v-divider></v-divider>
 
     </v-card>
     </v-dialog>
-    
-  </div>
 </template>
 
 <script>
 export default {
   name: 'CellDefaultEditingDialog',
   props: {
-    dataValue: String,
-    dataList: null,
+    dataProps: Object,
   },
   computed: {
     dataListHeader() {
@@ -50,7 +47,9 @@ export default {
   data() {
     return {
       dialog: null,
-      cellValue: this.dataValue,
+      cellValue: this.dataProps.text,
+      cellList: this.dataProps.choices,
+      rules: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1` ],
       cellEditStatus: false,
     }
   },
@@ -62,40 +61,63 @@ export default {
       let inputEvent = new CustomEvent('keydown');
       parentElement.dispatchEvent(inputEvent);
       this.dialog = null;
+      // parentElement.focus(); // focus ?
     },
     inputEvent(event) {
-      setTimeout(() => {event.target.focus()}, 100) ;
+      // event.preventDefault();
+
+      // if (this.dataProps.required) {
+      if (event.key == 'Escape') {
+        // event.preventDefault();
+        console.log(event);
+        this.$emit('input-blur', event);
+        return;
+      }
+      if (event.key == 'Enter') {
+        if (!this.cellEditStatus) this.$emit('input-blur', event);
+        event.preventDefault();
+        this.$emit('input-event', event, this.cellValue);
+        return;
+      }
+          // return;}
+      // }
       this.$emit('input-event', event, this.cellValue);
     },
     blurInput(event) {
+      
+      console.log(event);
       if (this.cellEditStatus) {
+        // event.preventDefault();
+        console.log('edit blur');
+        this.cellEditStatus = false;
         this.$emit('input-blur', event);
         return;
       }
       if (event.relatedTarget && event.relatedTarget.classList[0] == 'table-body__col') {
+        console.log('relate target blur');
         this.$emit('input-blur', event);
         return;
       }
+
+    },
+    focusEvent(event) {
+      setTimeout(() => { event.target.select() }, 100) 
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.dialog {
-  display: flex;
-  flex-wrap: nowrap;
-  width: 100%;
-  outline: none;
-  &__text {
-    width: 100%;
-    background-color: #FFFFFF;
-    outline: none;
-    z-index: 100;
-    &:disabled { color: inherit; }
+.v-input {
+  font-size: 14px;
+}
+::v-deep {
+  .v-icon {
+    font-size: 14px;
   }
-  &__btn {
-    width: 30px;
-  }
+}
+
+.v-text-field {
+  margin-top: -3.5px;
 }
 </style>
