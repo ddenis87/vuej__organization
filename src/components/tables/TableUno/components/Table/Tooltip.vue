@@ -16,6 +16,7 @@ export default {
         (document.documentElement.getBoundingClientRect().width - event.clientX < 400) ? this.tooltipShift.left = 250 : this.tooltipShift.left = 7;
         this.tooltipElement.style.left = targetChild.getBoundingClientRect().left - this.tooltipShift.left + 'px';
         this.tooltipElement.style.top = targetChild.getBoundingClientRect().top - this.tooltipShift.top + 'px';
+        this.tooltipElement.style.width = targetChild.getBoundingClientRect().width + 'px';
         this.tooltipElement.innerHTML = targetChild.getAttribute('data-overflow-text');
         this.tooltipElement.style.visibility = 'visible';
       }

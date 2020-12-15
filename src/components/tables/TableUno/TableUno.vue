@@ -127,7 +127,7 @@ export default {
     position: fixed;
     left: 100px;
     top: 100px;
-    max-width: 400px;
+    // max-width: 400px;
     min-width: 400px;
 
     font-size: $tooltipFontSize;

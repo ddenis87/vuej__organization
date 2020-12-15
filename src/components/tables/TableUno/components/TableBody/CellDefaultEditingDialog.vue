@@ -69,7 +69,7 @@ export default {
       // if (this.dataProps.required) {
       if (event.key == 'Escape') {
         // event.preventDefault();
-        console.log(event);
+        // console.log(event);
         this.$emit('input-blur', event);
         return;
       }
@@ -81,20 +81,26 @@ export default {
       }
           // return;}
       // }
-      this.$emit('input-event', event, this.cellValue);
+      
+      // event.preventDefault();
+      if (event.key == 'Tab') {
+        this.$emit('input-event', event, this.cellValue);
+        this.$emit('input-blur', event);
+      }
+      
     },
     blurInput(event) {
       
-      console.log(event);
+      // console.log(event);
       if (this.cellEditStatus) {
         // event.preventDefault();
-        console.log('edit blur');
+        // console.log('edit blur');
         this.cellEditStatus = false;
         this.$emit('input-blur', event);
         return;
       }
       if (event.relatedTarget && event.relatedTarget.classList[0] == 'table-body__col') {
-        console.log('relate target blur');
+        // console.log('relate target blur');
         this.$emit('input-blur', event);
         return;
       }

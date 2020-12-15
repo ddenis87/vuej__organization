@@ -21,15 +21,20 @@ export const EditingCell = {
         return;
       }
       if (parentElement.querySelector('.box-display.display-none')) return;
-      parentElement.querySelector('.box-display').classList.add('display-none');
-      parentElement.querySelector('.box-editing').classList.remove('display-none');
       parentElement.classList.add('table-body__col_focus');
+      setTimeout(() => {
+        parentElement.querySelector('.box-display').classList.add('display-none');
+        parentElement.querySelector('.box-editing').classList.remove('display-none');
+        if (parentElement.querySelector('.box-editing-default')) {
+          this.editingStart(itemColumn, parentElement.querySelector('.box-editing-default'));
+        } else {
+          // custom element edit function this.$refs[nameCustomElement].editingStart(params)
+        }
+      }, 10);
+      
+      
 
-      if (parentElement.querySelector('.box-editing-default')) {
-        this.editingStart(itemColumn, parentElement.querySelector('.box-editing-default'));
-      } else {
-        // custom element edit function this.$refs[nameCustomElement].editingStart(params)
-      }
+      
     },
     
     editingCompleted(event) {
@@ -48,7 +53,7 @@ export const EditingCell = {
     editingStart(itemColumn, parentElement) {
       this.cellEditProps = itemColumn;
       this.cellEditProps.text = parentElement.getAttribute('data-value');
-      console.log(this.cellEditProps);
+      // console.log(this.cellEditProps);
       // this.cellEditProps.type = itemColumn.type;
       // if (itemColumn.choices) this.cellEditProps.choices = itemColumn.choices;
       this.cellEditComponent = new this.vueCellEdit({ vuetify, propsData: {listProps: this.cellEditProps} }).$mount(); 
