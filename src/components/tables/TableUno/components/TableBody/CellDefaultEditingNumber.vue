@@ -2,8 +2,7 @@
   <v-text-field class="number" 
                 dense
                 single-line
-                :rules="[...rules.required, ...rules.number]"
-                
+                :rules="[...rules.required]"
                 v-model="cellValue" 
                 @keydown="inputEvent"
                 @blur="blurInput"></v-text-field>
@@ -26,20 +25,22 @@ export default {
   },
   methods: {
     inputEvent(event) {
+      console.log('input number component');
       if (this.dataProps.required) {
         if (this.cellValue.length < 1) {
-          if (event.key == 'Escape') this.$emit('input-event', event);
-          return;
-        }
-      } else {
-        if ((!+this.cellValue) && (this.cellValue != '')) {
-          if (event.key == 'Escape') this.$emit('input-event', event);
-          return;
-        }
-      }
-      this.$emit('input-event', event, this.cellValue);
+          if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
+          if (event.key == 'Enter') return;
+          if (event.key == 'Tab') { event.preventDefault(); return; }
+        } 
+      };
+      if (event.code.includes('Key')) { event.preventDefault(); return }
+
+      if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
+      if (event.key == 'Enter') { this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return; }
+      if (event.key == 'Tab') { event.preventDefault(); this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
     },
     blurInput(event) {
+      console.log('blur number component');
       this.$emit('input-blur', event);
     },
   },

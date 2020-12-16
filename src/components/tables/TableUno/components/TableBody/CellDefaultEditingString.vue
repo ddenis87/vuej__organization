@@ -3,11 +3,10 @@
                 dense 
                 single-line
                 :rules="rules"
-                counter
                 :maxlength="maxLength"
                 v-model="cellValue" 
-                @keydown="inputEvent"
-                @blur="blurInput"></v-text-field>
+                @keydown.stop="inputEvent"
+                @blur.stop="blurInput"></v-text-field>
 </template>
 
 <script>
@@ -29,15 +28,21 @@ export default {
   },
   methods: {
     inputEvent(event) {
+      console.log('input string component');
       if (this.dataProps.required) {
         if (this.cellValue.length < 1) {
-          if (event.key == 'Escape') this.$emit('input-event', event);
-          return;
-        }
+          if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
+          if (event.key == 'Enter') return;
+          if (event.key == 'Tab') { event.preventDefault(); return; }
+        } 
       };
-      this.$emit('input-event', event, this.cellValue);
+      if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
+      if (event.key == 'Enter') { this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return; }
+      if (event.key == 'Tab') { event.preventDefault(); this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
     },
+
     blurInput(event) {
+      console.log('blur string component');
       this.$emit('input-blur', event);
     },
   },

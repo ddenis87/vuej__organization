@@ -5,6 +5,7 @@ import CellDefaultEditing from '../../components/TableBody/CellDefaultEditing.vu
 export const EditingCell = {
   data() {
     return {
+      cellEditable: null,
       cellEditProps: Object,
       cellEditComponent: null,
       vueCellEdit: Vue.extend(CellDefaultEditing),
@@ -13,14 +14,12 @@ export const EditingCell = {
   methods: {
     checkDisplayEdit(event, itemColumn) {
       if (!this.editable) return;
+      if (itemColumn['read_only']) return;
       let parentElement = event.target.closest('.table-body__col');
-      if (itemColumn['read_only']) {
-        // parentElement.classList.add('table-body__col_disabled');
-        // parentElement.blur();
-        // setTimeout(() => parentElement.classList.remove('table-body__col_disabled'), 1000);
-        return;
-      }
       if (parentElement.querySelector('.box-display.display-none')) return;
+
+      console.log('check display edit for dblclick');
+      
       parentElement.classList.add('table-body__col_focus');
       setTimeout(() => {
         parentElement.querySelector('.box-display').classList.add('display-none');
@@ -31,11 +30,19 @@ export const EditingCell = {
           // custom element edit function this.$refs[nameCustomElement].editingStart(params)
         }
       }, 10);
-      
-      
-
-      
     },
+
+    // check editing for keydown
+    checkDisplayEditForKeydown(event, itemColumn) {
+      if (!this.editable) return;
+      if (itemColumn['read_only']) return;
+      let parentElement = event.target.closest('.table-body__col');
+      if (parentElement == null || parentElement.querySelector('.box-display.display-none')) return;
+
+      console.log('check display edit for keydown');
+      
+      if (event.code.includes('Key') || event.code.includes('Digit')) this.checkDisplayEdit(event, itemColumn);
+    }, 
     
     editingCompleted(event) {
       let parentElement = event.target;

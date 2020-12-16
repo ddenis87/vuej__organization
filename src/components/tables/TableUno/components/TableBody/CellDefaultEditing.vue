@@ -45,36 +45,31 @@ export default {
     }
   },
   methods: {
-    inputEvent(event, value) {
-
+    inputEvent(event, params) {
+      // console.log(event);
+      // console.log(params);
+      console.log('input base component');
       let parentElement = event.target.closest('.table-body__col');
-      if (event.key == 'Enter') {
+
+      this.cellValue = params.value;  // --
+
+      if (params.key == 'Enter') {
         this.cellEditStatus = true;
-        this.cellValue = value;
-        event.target.blur();
+        parentElement.focus();
       }
-      if (event.key == 'Escape') {
-        this.cellValue = this.listProps.value;
-        event.target.blur();
-      }
-      if (event.key == 'Tab') {
-        event.preventDefault();
+      if (params.key == 'Tab') {
         this.cellEditStatus = true;
-        this.cellValue = value;
         let nextEvent = new Event('dblclick', {bubbles: false});
-        if (!event.shiftKey) {
-          let nextElement = parentElement.nextElementSibling;
-          nextElement.dispatchEvent(nextEvent);
-          
-        } else {
-          let previousElement = parentElement.previousElementSibling;
-          previousElement.dispatchEvent(nextEvent);
-        }
-        event.target.blur();
+        let nextElement = null;
+        if (!event.shiftKey) nextElement = parentElement.nextElementSibling;
+        else nextElement = parentElement.previousElementSibling;
+        nextElement.dispatchEvent(nextEvent);
       }
+      event.target.blur(); // -- //
     },
     blurInput(event) {
-      if (!this.cellEditStatus) {
+      console.log('blur base component')
+      if (!this.cellEditStatus) { 
         this.cellValue = this.listProps.text;
       }
       let parentElement = event.target.closest('.table-body__col');

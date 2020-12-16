@@ -12,7 +12,8 @@
            :style="itemColumn.position"
            :tabindex="(!itemColumn['read_only']) ? +indexCol: (-1 * (+indexCol + 1))" 
 
-           @dblclick="(event) => checkDisplayEdit(event, itemColumn)"
+           @dblclick.stop="(event) => checkDisplayEdit(event, itemColumn)"
+           @keydown.stop="(event) => checkDisplayEditForKeydown(event, itemColumn)"
            @editing-completed="editingCompleted">
 
         <!-- slot editing -->
