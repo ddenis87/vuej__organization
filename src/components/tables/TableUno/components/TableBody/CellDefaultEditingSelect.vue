@@ -1,6 +1,6 @@
 <template>
   <v-autocomplete id="boxEditingComponentSelect"
-  auto-select-first
+                  auto-select-first
                   class="select"
                   tabindex="10"
                   dense
@@ -40,38 +40,25 @@ export default {
   methods: {
     inputInput() {
       console.log('input input select component');
-      // console.log(document.getElementById('boxEditingComponentSelect'));
       this.cellEditStatus = true;
     },
     inputEvent(event) {
       console.log('input select component');
       console.log(event);
-      // event.preventDefault();
-      // if (this.cellEditStatus) { event.preventDefault(); }
+      if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
       if (event.key == 'Enter') {
-        
         if (this.cellEditStatus) {
-          
-          // setTimeout(() => {
-            // event.preventDefault();
             this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return;
-          // }, 100) 
         }
-        // event.preventDefault();
-        // return;
       }
-      // this.$emit('input-event', event, this.cellValue);
+      if (event.key == 'Tab') { console.log('tab'); event.preventDefault(); this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
     },
     blurInput(event) {
       console.log('blur select component');
-      // event.preventDefault();
       this.$emit('input-blur', event);
     },
     changeValue() {
       console.log('change select component');
-
-    //   // this.cellEditStatus = true;
-    //   // this.$emit('input-input', event, this.cellValue);
     },
     focusEvent(event) {
       console.log('focus select component');
