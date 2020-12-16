@@ -55,7 +55,7 @@ export default {
 
       if (params.key == 'Enter') {
         this.cellEditStatus = true;
-        parentElement.focus();
+        setTimeout(() => { parentElement.focus() }, 100);
       }
       if (params.key == 'Tab') {
         this.cellEditStatus = true;

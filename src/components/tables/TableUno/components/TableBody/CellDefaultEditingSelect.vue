@@ -1,14 +1,18 @@
 <template>
   <v-autocomplete id="boxEditingComponentSelect"
+  auto-select-first
                   class="select"
+                  tabindex="10"
                   dense
                   single-line
                   :rules="rules"
-                  tabindex="10"
                   v-model="cellValue" 
                   :items="cellList"
-                  @keydown="inputEvent" 
-                  @blur="blurInput" @change="changeValue" @focus="focusEvent"></v-autocomplete>
+                  @input="inputInput"
+                  @keydown.stop="inputEvent" 
+                  @blur.stop="blurInput"
+                  @change="changeValue"
+                  @focus="focusEvent"></v-autocomplete>
 </template>
 
 <script>
@@ -16,6 +20,13 @@ export default {
   name: 'CellDefaultEditingSelect',
   props: {
     dataProps: Object,
+  },
+  data() {
+    return {
+      cellValue: this.dataProps.text,
+      rules: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1` ],
+      cellEditStatus: false,
+    }
   },
   computed: {
     cellList() {
@@ -26,30 +37,45 @@ export default {
       return cellList;
     },
   },
-  data() {
-    return {
-      cellValue: this.dataProps.text,
-      rules: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1` ],
-      cellChange: false,
-    }
-  },
   methods: {
+    inputInput() {
+      console.log('input input select component');
+      // console.log(document.getElementById('boxEditingComponentSelect'));
+      this.cellEditStatus = true;
+    },
     inputEvent(event) {
+      console.log('input select component');
+      console.log(event);
+      // event.preventDefault();
+      // if (this.cellEditStatus) { event.preventDefault(); }
       if (event.key == 'Enter') {
-        event.preventDefault();
-        return;
-      } 
-      this.$emit('input-event', event, this.cellValue);
+        
+        if (this.cellEditStatus) {
+          
+          // setTimeout(() => {
+            // event.preventDefault();
+            this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return;
+          // }, 100) 
+        }
+        // event.preventDefault();
+        // return;
+      }
+      // this.$emit('input-event', event, this.cellValue);
     },
     blurInput(event) {
-      event.preventDefault();
+      console.log('blur select component');
+      // event.preventDefault();
       this.$emit('input-blur', event);
     },
     changeValue() {
-      this.$emit('input-input', event, this.cellValue);
+      console.log('change select component');
+
+    //   // this.cellEditStatus = true;
+    //   // this.$emit('input-input', event, this.cellValue);
     },
     focusEvent(event) {
-      setTimeout(() => { event.target.select() }, 100) 
+      console.log('focus select component');
+      setTimeout(() => { event.target.select() }, 10) 
     },
   },
 }
