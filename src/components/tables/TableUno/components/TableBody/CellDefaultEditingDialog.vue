@@ -1,32 +1,20 @@
 <template>
-    <v-dialog v-model="dialog" persistent >
-      <template v-slot:activator="{  }">
-        <v-text-field class="dialog__text" id="boxEditingComponentDialog"
-                      dense 
-                      single-line
-                      autofocus
-                      :rules="rules"
-                      v-model="cellValue"
-                      append-icon="mdi-credit-card-multiple"
-                      @blur="blurInput"
-                      @keydown="inputEvent"
-                      @focus="focusEvent" 
-                      @click:append="() => {dialog = true}"></v-text-field>
-      </template>
-    <v-card>
-      <v-card-title>BK</v-card-title>
-      <v-divider></v-divider>
-      <v-data-table fixed-header
-                    disable-filtering
-                    disable-pagination
-                    hide-default-footer
-                    :headers="dataListHeader"
-                    :items="cellList" height="500"
-                    @dblclick:row="selectItem"></v-data-table>
-      <v-divider></v-divider>
-
-    </v-card>
-    </v-dialog>
+  <v-autocomplete id="boxEditingComponentSelect"
+                  auto-select-first
+                  class="select"
+                  tabindex="10"
+                  dense
+                  single-line
+                  :rules="rules"
+                  v-model="cellValue" 
+                  :items="cellList"
+                  append-outer-icon="mdi-credit-card-multiple"
+                  small
+                  @input="inputInput"
+                  @keydown.stop="inputEvent" 
+                  @blur.stop="blurInput"
+                  @change="changeValue"
+                  @focus="focusEvent"></v-autocomplete>
 </template>
 
 <script>
@@ -35,79 +23,48 @@ export default {
   props: {
     dataProps: Object,
   },
-  computed: {
-    dataListHeader() {
-      let dataListHeader = [
-        {text: 'Id', value: 'value'},
-        {text: 'Наименование', value: 'display_name'}
-      ];
-      return dataListHeader;
-    },
-  },
   data() {
     return {
-      dialog: null,
       cellValue: this.dataProps.text,
-      cellList: this.dataProps.choices,
       rules: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1` ],
       cellEditStatus: false,
     }
   },
+  computed: {
+    cellList() {
+      let cellList = [];
+      this.dataProps.choices.forEach(element => {
+        cellList.push({text: element['display_name'], value: element['display_name']})
+      })
+      return cellList;
+    },
+  },
   methods: {
-    selectItem(event) {
-      this.cellValue = event.target.innerText;
+    inputInput() {
+      console.log('input input select component');
       this.cellEditStatus = true;
-      let parentElement = document.getElementById('boxEditingComponentDialog');
-      let inputEvent = new CustomEvent('keydown');
-      parentElement.dispatchEvent(inputEvent);
-      this.dialog = null;
-      // parentElement.focus(); // focus ?
     },
     inputEvent(event) {
-      // event.preventDefault();
-
-      // if (this.dataProps.required) {
-      if (event.key == 'Escape') {
-        // event.preventDefault();
-        // console.log(event);
-        this.$emit('input-blur', event);
-        return;
-      }
+      console.log('input select component');
+      console.log(event);
+      if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
       if (event.key == 'Enter') {
-        if (!this.cellEditStatus) this.$emit('input-blur', event);
-        event.preventDefault();
-        this.$emit('input-event', event, this.cellValue);
-        return;
+        if (this.cellEditStatus) {
+            this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return;
+        }
       }
-          // return;}
-      // }
-      
-      // event.preventDefault();
-      if (event.key == 'Tab') {
-        this.$emit('input-event', event, this.cellValue);
-        this.$emit('input-blur', event);
-      }
-      
+      if (event.key == 'Tab') { console.log('tab'); event.preventDefault(); this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
     },
     blurInput(event) {
-      
-      // console.log(event);
-      if (this.cellEditStatus) {
-        // event.preventDefault();
-        // console.log('edit blur');
-        this.cellEditStatus = false;
-        this.$emit('input-blur', event);
-        return;
-      }
-      if (event.relatedTarget && event.relatedTarget.classList[0] == 'table-body__col') {
-        // console.log('relate target blur');
-        this.$emit('input-blur', event);
-        return;
-      }
-
+      console.log('blur select component');
+      this.$emit('input-blur', event);
+    },
+    changeValue() {
+      console.log('change select component');
     },
     focusEvent(event) {
-      setTimeout(() => { event.target.select() }, 100) 
+      console.log('focus select component');
+      setTimeout(() => { event.target.select() }, 10) 
     },
   },
 }
@@ -115,15 +72,16 @@ export default {
 
 <style lang="scss" scoped>
 .v-input {
+  text-align: center;
   font-size: 14px;
-}
-::v-deep {
-  .v-icon {
-    font-size: 14px;
+  .v-input__control {
+    padding: 0px;
   }
 }
-
 .v-text-field {
   margin-top: -3.5px;
+   input {
+    padding: 0px;
+  }
 }
 </style>

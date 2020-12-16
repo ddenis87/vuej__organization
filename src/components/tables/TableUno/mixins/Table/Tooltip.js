@@ -11,7 +11,7 @@ export const Tooltip = {
   },
   updated() {
     switch(this.heightType) {
-      case 'fixed': { this.tooltipShift.left = 7; this.tooltipShift.top = 7; break; }
+      case 'fixed': { this.tooltipShift.left = 7; this.tooltipShift.top = 5; break; }
       case 'dense': { this.tooltipShift.left = 7; this.tooltipShift.top = 0; break; }
       case 'auto': { this.tooltipShift.left = 7; this.tooltipShift.top = 7; break; }
     }
