@@ -1,16 +1,16 @@
 <template>
-  <div class="table-uno" :id="parentId">
-    <div class="table-tooltip" id="table-tooltip" @mouseout="hideTooltip" @click="hideTooltip"></div>
+  <div class="data-table" :id="parentId">
+    <div class="data-table-tooltip" id="data-table-tooltip" @mouseout="hideTooltip" @click="hideTooltip"></div>
     <!-- table head -->
-    <div class="table-uno-head">
-      <table-uno-head :style="fieldsTemplate"
+    <div class="data-table-head">
+      <data-table-head :style="fieldsTemplate"
                       :list-data="listHeader" 
-                      :height-type="heightType"></table-uno-head>
+                      :height-type="heightType"></data-table-head>
       <progress-line :is-show="isShowProgressBar"></progress-line>
     </div>
     <!-- table body -->
-    <div class="table-uno-body">
-      <table-uno-body :list-data="listBody"
+    <div class="data-table-body">
+      <data-table-body :list-data="listBody"
                       :list-data-header="listHeader"
                       :fields-template="fieldsTemplate"
                       :height-type="heightType"
@@ -31,32 +31,32 @@
         <template v-slot:action="activeValue">
           <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
         </template>
-      </table-uno-body>
+      </data-table-body>
     </div>
 
-    <div class="boot-anchor" id="boot-anchor"></div>
+    <div class="data-table-boot-anchor" id="boot-anchor"></div>
       <!-- component footer -->
-    <div class="table-uno-head">
+    <div class="data-table-footer">
       <slot name="component-footer"></slot>
     </div>
   </div>
 </template>
 
 <script>
-import TableUnoHead from './TableUnoHead.vue';
-import TableUnoBody from './TableUnoBody.vue';
-import ProgressLine from './components/Table/ProgressLine.vue';
+import DataTableHead from './components/DataTableHead/DataTableHead.vue';
+import DataTableBody from './components/DataTableBody/DataTableBody.vue';
+import ProgressLine from './components/ProgressLine.vue';
 
-import { LoadData } from './mixins/Table/LoadData';
-import { GetterData } from './mixins/Table/GetterData';
-import { BuildingTemplate } from './mixins/Table/BuildingTemplate';
-import { Tooltip } from './mixins/Table/Tooltip';
+import { LoadData } from './mixins/LoadData.js';
+import { GetterData } from './mixins/GetterData.js';
+import { BuildingTemplate } from './mixins/BuildingTemplate.js';
+import { Tooltip } from './mixins/Tooltip.js';
 
 export default {
-  name: 'TableUno',
+  name: 'DataTable',
   components: { 
-    TableUnoHead,
-    TableUnoBody,
+    DataTableHead,
+    DataTableBody,
     ProgressLine,
   },
   mixins: [
@@ -77,7 +77,7 @@ export default {
   },
   data() {
     return {
-      parentId: (this.dId) ? `table-uno-${this.dId}` : 'table-uno',
+      parentId: (this.dId) ? `data-table-${this.dId}` : 'data-table',
       parentElement: '',
       parentEdge: Number,
     }
@@ -98,9 +98,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'TableUno.scss';
+@import './DataTable.scss';
 
-.table-uno {
+.data-table {
   position: relative;
   height: 100%;
   font-family: $fontFamily;
@@ -123,7 +123,7 @@ export default {
   &-body { position: relative; z-index: 20; }
   &-footer { bottom: 0px; z-index: 30; }
 
-  .table-tooltip {
+  &-tooltip {
     position: fixed;
     left: 100px;
     top: 100px;

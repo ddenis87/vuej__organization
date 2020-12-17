@@ -11,7 +11,7 @@ export const LoadData = {
   updated() { this.parentEdge = this.parentElement.getBoundingClientRect().bottom; },
   methods: {
     scrollBody() {
-      let bootAnchorEdge = document.querySelector(`#${this.parentId} .boot-anchor`).getBoundingClientRect().bottom - 500;
+      let bootAnchorEdge = document.querySelector(`#${this.parentId} .data-table-boot-anchor`).getBoundingClientRect().bottom - 500;
       if (bootAnchorEdge < this.parentEdge) {
         this.parentElement.removeEventListener('scroll', this.scrollBody);
         this.$store.dispatch(this.tableProperties.state.body.loadData);

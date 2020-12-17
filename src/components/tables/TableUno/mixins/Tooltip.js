@@ -7,7 +7,7 @@ export const Tooltip = {
     }
   },
   mounted() {
-    this.tooltipElement = document.querySelector(`#${this.parentId} .table-tooltip`);
+    this.tooltipElement = document.querySelector(`#${this.parentId} .data-table-tooltip`);
   },
   updated() {
     switch(this.heightType) {

@@ -43,7 +43,7 @@
             </template>
           </table-multiline>
 
-          <table-uno d-id="organization" 
+          <data-table d-id="organization" 
                      :table-properties="propsTableUno" 
                      v-bind:[heightType]="true" 
                      v-if="!listMultiRow"
@@ -58,7 +58,7 @@
             <!-- <template #action="activeValue">
               <table-action :activeValue="activeValue"></table-action>
             </template> -->
-          </table-uno>
+          </data-table>
         </div>
       </div>
     </div>
@@ -68,7 +68,7 @@
 <script>
 import ControlUser from '@/components/control/ControlUser.vue';
 import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
-import TableUno from '@/components/tables/TableUno/TableUno.vue';
+import DataTable from '@/components/tables/TableUno/DataTable.vue';
 
 import TableAction from '@/components/tables/TableAction.vue';
 
@@ -77,7 +77,7 @@ export default {
   components: {
     ControlUser,
     TableMultiline,
-    TableUno,
+    DataTable,
 
     TableAction,
   },

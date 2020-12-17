@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'CellDefaultEditingNumber',
+  name: 'CellEditingNumber',
   props: {
     dataProps: Object,
   },
@@ -26,6 +26,7 @@ export default {
   methods: {
     inputEvent(event) {
       console.log('input number component');
+      console.log(event.code);
       if (this.dataProps.required) {
         if (this.cellValue.length < 1) {
           if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }

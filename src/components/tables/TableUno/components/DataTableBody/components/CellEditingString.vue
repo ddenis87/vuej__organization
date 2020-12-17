@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'CellDefaultEditingString',
+  name: 'CellEditingString',
   props: {
     dataProps: Object,
   },

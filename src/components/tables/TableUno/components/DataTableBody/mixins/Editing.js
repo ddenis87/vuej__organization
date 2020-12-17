@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import vuetify from '@/plugins/vuetify';
-import CellDefaultEditing from '../../components/TableBody/CellDefaultEditing.vue';
+import CellEditing from '../components/CellEditing.vue';
 
-export const EditingCell = {
+export const Editing = {
   data() {
     return {
       cellEditable: null,
       cellEditProps: Object,
       cellEditComponent: null,
-      vueCellEdit: Vue.extend(CellDefaultEditing),
+      vueCellEdit: Vue.extend(CellEditing),
     }
   },
   methods: {
@@ -34,6 +34,14 @@ export const EditingCell = {
 
     // check editing for keydown
     checkDisplayEditForKeydown(event, itemColumn) {
+      // console.log(event.key);
+      // console.log(event.code);
+      if (event.code.includes('Arrow')) {
+        event.preventDefault();
+        if (event.code == 'ArrowRight' && event.target.nextElementSibling) { event.target.nextElementSibling.focus(); return }
+        if (event.code == 'ArrowLeft' && event.target.previousElementSibling) { event.target.previousElementSibling.focus(); return }
+        // console.log(event.target);
+      }
       if (!this.editable) return;
       if (itemColumn['read_only']) return;
       let parentElement = event.target.closest('.table-body__col');

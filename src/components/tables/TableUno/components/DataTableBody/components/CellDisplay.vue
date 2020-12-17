@@ -16,7 +16,7 @@
 import ContentOverflow from './ContentOverflow.vue';
 
 export default {
-  name: 'DisplayCell',
+  name: 'CellDisplay',
   components: {
     ContentOverflow,
   },

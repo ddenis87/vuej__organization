@@ -8,8 +8,6 @@
                   :rules="rules"
                   v-model="cellValue" 
                   :items="cellList"
-                  append-outer-icon="mdi-credit-card-multiple"
-                  small
                   @input="inputInput"
                   @keydown.stop="inputEvent" 
                   @blur.stop="blurInput"
@@ -19,7 +17,7 @@
 
 <script>
 export default {
-  name: 'CellDefaultEditingDialog',
+  name: 'CellEditingSelect',
   props: {
     dataProps: Object,
   },

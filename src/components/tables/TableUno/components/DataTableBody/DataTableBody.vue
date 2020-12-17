@@ -31,10 +31,10 @@
         <div class="box-display">
           <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
             <div class="box-display-default" :data-value="itemRow[itemColumn.value]">
-              <cell-default-display :data-value="itemRow[itemColumn.value].toString()"
+              <cell-display :data-value="itemRow[itemColumn.value].toString()"
                             :data-props="itemColumn" 
                             :height-type="heightType"
-                            @show-tooltip="(event) => $emit('show-tooltip', event)"></cell-default-display>
+                            @show-tooltip="(event) => $emit('show-tooltip', event)"></cell-display>
             </div>
           </slot>
         </div>
@@ -48,17 +48,17 @@
 </template>
 
 <script>
-import CellDefaultDisplay from './components/TableBody/CellDefaultDisplay.vue'
+import CellDisplay from './components/CellDisplay.vue'
 
-import { EditingCell } from './mixins/TableBody/EditingCell.js';
+import { Editing } from './mixins/Editing.js';
 
 export default {
-  name: 'TableUnoBody',
+  name: 'DataTableBody',
   components: {
-    CellDefaultDisplay,
+    CellDisplay,
   },  
   mixins: [
-    EditingCell,
+    Editing,
   ],
   props: {
     listData: Array,
@@ -74,7 +74,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'TableUno';
+@import './DataTableBody.scss';
 
 .table-body {
   &__row {
@@ -92,8 +92,6 @@ export default {
     .table-body__col {
       position: relative;
       display: inline-flex;
-      // justify-content: $bodyHorizontalAlign;
-      // align-items: $bodyVerticalAlign;
 
       font-size: $bodyFontSize;
       font-weight: $bodyFontWeight;

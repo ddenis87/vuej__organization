@@ -1,37 +1,37 @@
 <template>
   <div class="box-editing-component">
-    <cell-default-editing-string v-if="cellType == 'string'"
+    <cell-editing-string v-if="cellType == 'string'"
                                  :data-props="listProps" 
                                  @input-event="inputEvent" 
-                                 @input-blur="blurInput"></cell-default-editing-string>
-    <cell-default-editing-number v-if="cellType == 'integer'"
+                                 @input-blur="blurInput"></cell-editing-string>
+    <cell-editing-number v-if="cellType == 'integer'"
                                  :data-props="listProps" 
                                  @input-event="inputEvent" 
-                                 @input-blur="blurInput"></cell-default-editing-number>
-    <cell-default-editing-select v-if="cellType == 'choice'"
+                                 @input-blur="blurInput"></cell-editing-number>
+    <cell-editing-select v-if="cellType == 'choice'"
                                  :data-props="listProps"
                                  @input-event="inputEvent" 
-                                 @input-blur="blurInput"></cell-default-editing-select>
-    <cell-default-editing-dialog v-if="cellType == 'nested object'"
+                                 @input-blur="blurInput"></cell-editing-select>
+    <cell-editing-dialog v-if="cellType == 'nested object'"
                                  :data-props="listProps"
                                  @input-event="inputEvent"
-                                 @input-blur="blurInput"></cell-default-editing-dialog>
+                                 @input-blur="blurInput"></cell-editing-dialog>
   </div>
 </template>
 
 <script>
-import CellDefaultEditingString from './CellDefaultEditingString.vue';
-import CellDefaultEditingNumber from './CellDefaultEditingNumber.vue';
-import CellDefaultEditingSelect from './CellDefaultEditingSelect.vue';
-import CellDefaultEditingDialog from './CellDefaultEditingDialog.vue';
+import CellEditingString from './CellEditingString.vue';
+import CellEditingNumber from './CellEditingNumber.vue';
+import CellEditingSelect from './CellEditingSelect.vue';
+import CellEditingDialog from './CellEditingDialog.vue';
 
 export default {
-  name: 'EditDefaultCell',
+  name: 'CellEditing',
   components: {
-    CellDefaultEditingString,
-    CellDefaultEditingNumber,
-    CellDefaultEditingSelect,
-    CellDefaultEditingDialog,
+    CellEditingString,
+    CellEditingNumber,
+    CellEditingSelect,
+    CellEditingDialog,
   },
   props: {
     listProps: Object,

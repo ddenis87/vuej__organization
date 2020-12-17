@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'TableMultilineHead',
+  name: 'DataTableHead',
   props: {
     listData: Array,
     heightType: {type: String, default: 'fixed'},
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'TableUno.scss';
+@import './DataTableHead.scss';
 
 .table-head {
   display: grid;
