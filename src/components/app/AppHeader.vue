@@ -2,8 +2,8 @@
   <v-toolbar color="teal">
     <v-toolbar-items>
       <v-list dense color="teal">
-        <v-list-item class="list" to="/" tag="router-link" dense color="white">Организации</v-list-item>
-        <v-list-item class="list" to="/demo" tag="router-link" dense color="white">Demo</v-list-item>
+        <v-list-item class="list" to="/Register/Organization" tag="router-link" dense color="white">Организации</v-list-item>
+        <v-list-item class="list" to="/Catalog/Bk" tag="router-link" dense color="white">БК</v-list-item>
       </v-list>
     </v-toolbar-items>
   </v-toolbar>

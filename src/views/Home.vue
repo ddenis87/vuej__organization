@@ -34,20 +34,20 @@
         </div>
 
         <div class="body-item__body">
-          <table-multiline :table-properties="propsTableMultiline" v-if="listMultiRow">
+          <!-- <table-multiline :table-properties="propsTableMultiline" v-if="listMultiRow">
             <template #[`body.institution_code`]="itemValue">
               <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
             </template>
             <template #action="activeValue">
               <table-action :activeValue="activeValue"></table-action>
             </template>
-          </table-multiline>
+          </table-multiline> -->
 
-          <data-table d-id="organization" 
+          <!-- <data-table d-id="organization" 
                      :table-properties="propsTableUno" 
                      v-bind:[heightType]="true" 
                      v-if="!listMultiRow"
-                     editable>
+                     editable> -->
             <!-- <template #[`body-editing.inn`] = "itemValue" >
               <span style="color: blue">{{ itemValue.itemValue }}</span>
             </template> -->
@@ -58,7 +58,7 @@
             <!-- <template #action="activeValue">
               <table-action :activeValue="activeValue"></table-action>
             </template> -->
-          </data-table>
+          <!-- </data-table> -->
         </div>
       </div>
     </div>
@@ -68,12 +68,12 @@
 <script>
 import ControlUser from '@/components/control/ControlUser.vue';
 import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
-import DataTable from '@/components/tables/TableUno/DataTable.vue';
+import DataTable from '@/components/tables/DataTable/DataTable.vue';
 
 import TableAction from '@/components/tables/TableAction.vue';
 
 export default {
-  name: 'Organization',
+  name: 'Home',
   components: {
     ControlUser,
     TableMultiline,

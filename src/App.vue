@@ -4,22 +4,30 @@
       <app-header></app-header>
     </div>
     <div class="app-body maxWidth">
-      <router-view></router-view>
+      <component :is="layout">
+        <router-view></router-view>
+      </component>
     </div>
   </v-app>
 </template>
 
 <script>
 import AppHeader from '@/components/app/AppHeader';
-import AppLock from '@/components/app/AppLock';
-import AppButtonUp from '@/components/app/AppButtonUp';
+
+import LayoutMain from '@/layout/LayoutMain.vue';
+import LayoutCatalog from '@/layout/LayoutCatalog.vue';
+import LayoutRegister from '@/layout/LayoutRegister.vue';
 
 export default {
   name: 'App',
   components: {
     AppHeader,
-    AppLock,
-    AppButtonUp
+    LayoutMain,
+    LayoutCatalog,
+    LayoutRegister,
+  },
+  computed: {
+    layout() { console.log(this.$route.meta); return 'Layout' + (this.$route.meta.layout || 'Main') },
   },
 };
 </script>
@@ -54,8 +62,6 @@ html, body {
   }
 
   .maxWidth {
-    // margin-left: auto;
-    // margin-right: auto;
     width: 100%;
   }
 }
