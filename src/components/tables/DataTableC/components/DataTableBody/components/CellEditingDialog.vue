@@ -23,11 +23,8 @@
     </template>
     <v-card>
       <div class="dialog__box" id="dialog__box">
-        <!-- <catalog-bk ></catalog-bk> -->
-        <!-- <keep-alive>
-         
-        </keep-alive> -->
-         <component :is="catalogComponent" ></component>
+        <!-- <catalog-bk></catalog-bk> -->
+        <!-- <component :is="CatalogBk"></component> -->
         <v-btn @click="isDialog = false">123</v-btn>
       </div>
     </v-card>
@@ -36,15 +33,14 @@
 </template>
 
 <script>
-// import Vue from 'vue';
-// import store from '@/store'
-// import CatalogBk from '@/views/Catalog/CatalogBk.vue';
+import Vue from 'vue';
+// import vuetify from '@/plugins/vuetify';
+import CatalogBk from '@/views/Catalog/CatalogBk.vue';
 
 export default {
   name: 'CellEditingDialog',
   components: {
-    // CatalogBk
-    // catalogBk() { import('@/views/Catalog/CatalogBk.vue') },
+    // CatalogBk: () => import('@/views/Catalog/CatalogBk.vue'),
   },
   props: {
     dataProps: Object,
@@ -59,9 +55,7 @@ export default {
     }
   },
   computed: {
-    catalogComponent() {
-      return () => import('@/views/Catalog/CatalogBk')
-    },
+    // CatalogBk() {return import('@/views/Catalog/CatalogBk.vue') },
     cellList() {
       let cellList = [];
       this.dataProps.choices.forEach(element => {
@@ -69,10 +63,6 @@ export default {
       })
       return cellList;
     },
-  },
-  mounted() {
-    console.log(this.$store)
-    // this.$options.components.catalogBk = require('@/views/Catalog/CatalogBk.vue')
   },
   methods: {
     inputInput() {
@@ -103,17 +93,16 @@ export default {
     },
     openDialog() {
       this.isDialog = true;
-      // this.$options.components.catalogBk = require('@/views/Catalog/CatalogBk.vue')
-      // let CatalogBk = import('@/views/Catalog/CatalogBk.vue');
+      // let catalogComponent = import('@/views/Catalog/CatalogBk.vue');
       
-      // let vueCellEdit = Vue.extend(CatalogBk);
-      // console.log(vueCellEdit);
-      // let cellEditComponent = new vueCellEdit({ store }).$mount();
-      // setTimeout(() => {
-        // let parentElement = document.querySelector('#dialog__box');
-      // //   console.log(parentElement);
-        // parentElement.prepend(cellEditComponent.$el);
-      // }, 200)
+      let vueCellEdit = Vue.extend(CatalogBk);
+      console.log(vueCellEdit);
+      let cellEditComponent = new vueCellEdit({ }).$mount();
+      setTimeout(() => {
+        let parentElement = document.querySelector('#dialog__box');
+      //   console.log(parentElement);
+        parentElement.prepend(cellEditComponent.$el);
+      }, 200)
       
     },
   },

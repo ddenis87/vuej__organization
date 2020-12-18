@@ -1,19 +1,20 @@
 <template>
-  <div class="catalog">
-    <data-table d-id="Bk" 
+  <div class="catalog">123456
+    <data-table-c d-id="Bk" 
                 :table-properties="propsDataTable" 
                 fixed 
-                ></data-table>
+                ></data-table-c>
   </div>
 </template>
 
 <script>
-import DataTable from '@/components/tables/DataTable/DataTable.vue';
+// import store from '@/store'
+import DataTableC from '@/components/tables/DataTable/DataTable.vue';
 
 export default {
-  name: 'CatalogBK',
+  name: 'CatalogBk',
   components: {
-    DataTable,
+    DataTableC,
   },
   data() {
     return {
@@ -27,6 +28,9 @@ export default {
         activeField: 'id',
       },
     }
+  },
+  mounted() {
+    console.log('CatalogBk;')
   },
 }
 </script>
