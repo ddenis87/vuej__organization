@@ -16,7 +16,7 @@
                       :height-type="heightType"
                       :parent-id="parentId"
                       :editable="editable"
-                      @show-tooltip="showTooltip">
+                      @show-tooltip="showTooltip" @dblclick-row="(eventTarget, itemColumn) => $emit('dblclick-row', eventTarget, itemColumn)">
 
         <!-- editing slot -->
         <template v-for="item in listHeader" #[`body-editing.${item.value}`]="itemValue">

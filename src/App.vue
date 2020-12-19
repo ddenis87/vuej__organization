@@ -27,7 +27,7 @@ export default {
     LayoutRegister,
   },
   computed: {
-    layout() { console.log(this.$route.meta); return 'Layout' + (this.$route.meta.layout || 'Main') },
+    layout() { return 'Layout' + (this.$route.meta.layout || 'Main') },
   },
 };
 </script>

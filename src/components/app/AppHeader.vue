@@ -4,6 +4,7 @@
       <v-list dense color="teal">
         <v-list-item class="list" to="/Register/Organization" tag="router-link" dense color="white">Организации</v-list-item>
         <v-list-item class="list" to="/Catalog/Bk" tag="router-link" dense color="white">БК</v-list-item>
+        <v-list-item class="list" to="/Register/Test" tag="router-link" dense color="white">TEST</v-list-item>
       </v-list>
     </v-toolbar-items>
   </v-toolbar>

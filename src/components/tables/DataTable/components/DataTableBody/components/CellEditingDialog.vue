@@ -1,9 +1,8 @@
 <template>
-  <v-dialog v-model="isDialog" max-width="70%" persistent class="dialog">
-    <template v-slot:activator="{  }">
-      <v-autocomplete id="boxEditingComponentSelect"
+<div class="dialog" id="boxEditingComponentDialog">
+        <v-autocomplete
                       auto-select-first
-                      class="select"
+                      class="dialog__select"
                       tabindex="10"
                       dense
                       single-line
@@ -20,31 +19,33 @@
                       @change="changeValue"
                       @focus="focusEvent"
                       @click:append-outer="openDialog"></v-autocomplete>
-    </template>
+  <v-dialog v-model="isDialog" max-width="70%" persistent class="dialog">
     <v-card>
       <div class="dialog__box" id="dialog__box">
-        <!-- <catalog-bk ></catalog-bk> -->
-        <!-- <keep-alive>
-         
-        </keep-alive> -->
-         <component :is="catalogComponent" ></component>
-        <v-btn @click="isDialog = false">123</v-btn>
+         <component :is="catalogComponent" @dblclick-row="selectInDialog"></component>
+        <v-btn @click="dialogClose">Close</v-btn>
       </div>
     </v-card>
   </v-dialog>
+</div>
+  <!-- <v-dialog v-model="isDialog" max-width="70%" persistent class="dialog" id="boxEditingComponentDialog">
+    <template v-slot:activator="{  }"> -->
+
+    <!-- </template>
+    <v-card>
+      <div class="dialog__box" id="dialog__box">
+         <component :is="catalogComponent" @dblclick-row="selectInDialog"></component>
+        <v-btn @click="isDialog = false">123</v-btn>
+      </div>
+    </v-card>
+  </v-dialog> -->
   
 </template>
 
 <script>
-// import Vue from 'vue';
-// import store from '@/store'
-// import CatalogBk from '@/views/Catalog/CatalogBk.vue';
-
 export default {
   name: 'CellEditingDialog',
   components: {
-    // CatalogBk
-    // catalogBk() { import('@/views/Catalog/CatalogBk.vue') },
   },
   props: {
     dataProps: Object,
@@ -55,11 +56,11 @@ export default {
       rules: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1` ],
       cellEditStatus: false,
       isDialog: false,
-      // catalogName: 'CatalogBk',
     }
   },
   computed: {
     catalogComponent() {
+      console.log(this.dataProps);
       return () => import('@/views/Catalog/CatalogBk')
     },
     cellList() {
@@ -71,10 +72,23 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$store)
+    // console.log(document.querySelector('.dialog'));
+    // console.log(this.$store);
     // this.$options.components.catalogBk = require('@/views/Catalog/CatalogBk.vue')
   },
   methods: {
+    dialogClose(event) {
+      console.log(event);
+      // console.log(document.getElementById('boxEditingComponentDialog').querySelector('.dialog__select').focus());
+      this.isDialog = false;
+document.getElementById('boxEditingComponentDialog').querySelector('input').focus()
+      // event.target.closest('.dialog').querySelector('.dialog__select').focus();
+    },
+    selectInDialog(event, param) {
+      console.log(event.target.closest('.table-body__col').querySelector('.box-editing-default').getAttribute('data-value'));
+      console.log(param);
+
+    },
     inputInput() {
       console.log('input input select component');
       this.cellEditStatus = true;
@@ -92,14 +106,19 @@ export default {
     },
     blurInput(event) {
       console.log('blur select component');
-      this.$emit('input-blur', event);
+      if (event.relatedTarget && event.relatedTarget.classList.contains('table-body__col')) {
+        console.log('blur outer component');
+        this.$emit('input-blur', event);
+      }
     },
     changeValue() {
       console.log('change select component');
     },
     focusEvent(event) {
       console.log('focus select component');
-      setTimeout(() => { event.target.select() }, 10) 
+      setTimeout(() => { 
+        console.log(event);
+        event.target.select(); }, 100)
     },
     openDialog() {
       this.isDialog = true;

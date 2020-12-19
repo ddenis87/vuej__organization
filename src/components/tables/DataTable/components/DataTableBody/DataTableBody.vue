@@ -10,7 +10,7 @@
            class="table-body__col"
            :class="`table-body__col_${heightType}`" 
            :style="itemColumn.position"
-           :tabindex="(!itemColumn['read_only']) ? +indexCol: (-1 * (+indexCol + 1))" 
+           :tabindex="indexCol"
 
            @dblclick.stop="(event) => checkDisplayEdit(event, itemColumn)"
            @keydown.stop="(event) => checkDisplayEditForKeydown(event, itemColumn)"

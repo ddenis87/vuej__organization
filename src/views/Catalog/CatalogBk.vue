@@ -1,20 +1,20 @@
 <template>
-  <div class="catalog">123456
-    <data-table-c d-id="Bk" 
+  <div class="catalog">
+    <data-table d-id="Bk" 
                 :table-properties="propsDataTable" 
                 fixed 
-                ></data-table-c>
+                @dblclick-row="(eventTarget, itemColumn) => $emit('dblclick-row', eventTarget, itemColumn)"></data-table>
   </div>
 </template>
 
 <script>
 // import store from '@/store'
-import DataTableC from '@/components/tables/DataTable/DataTable.vue';
+import DataTable from '@/components/tables/DataTable/DataTable.vue';
 
 export default {
   name: 'CatalogBk',
   components: {
-    DataTableC,
+    DataTable,
   },
   data() {
     return {
