@@ -2,7 +2,6 @@
   <div class="register">
     <data-table d-id="Organization" 
                 :table-properties="propsDataTable" 
-                fixed 
                 editable></data-table>
   </div>
 </template>
@@ -19,17 +18,6 @@ export default {
     return {
       propsDataTable: {
         stateName: 'RegisterOrganization',
-        // state: {
-        //   progress: 'GET_STATUS_LOAD',
-        //   init: 'GET_LIST_OPTIONS',
-        //   header: {
-        //     getData: 'GET_LIST_FIELDS',
-        //   },
-        //   body: {
-        //     getData: 'GET_LIST_DATA',
-        //     loadData: 'GET_LIST_DATA',
-        //   },
-        // },
         header: [
           {value: 'id', width: [50, 50], },
           {value: 'institution_code', align: 'end', width: [90, 90], },
@@ -54,6 +42,5 @@ export default {
 .register {
   height: 100%;
   padding: 10px;
-  // border: thin solid green;
 }
 </style>

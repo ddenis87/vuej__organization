@@ -1,13 +1,12 @@
 export const LoadData = {
   computed: {
-    isShowProgressBar() {
-      if (!this.$store.getters[`${this.stateName}/GET_IS_DATA_LOAD`]) this.parentElement.addEventListener('scroll', this.scrollBody);
-      return this.$store.getters[`${this.stateName}/GET_IS_DATA_LOAD`];
+    isProgressBar() {
+      let statusLoad = this.$store.getters[`${this.stateName}/GET_IS_DATA_LOAD`];
+      if (!statusLoad) this.parentElement.addEventListener('scroll', this.scrollBody);
+      return statusLoad;
     },
   },
   created() {
-    console.log(`${this.stateName}/GET_LIST_OPTION`);
-    console.log(this.$store);
     this.$store.dispatch(`${this.stateName}/GET_LIST_OPTION`);
   },
   updated() { this.parentEdge = this.parentElement.getBoundingClientRect().bottom; },
@@ -17,7 +16,6 @@ export const LoadData = {
       if (bootAnchorEdge < this.parentEdge) {
         this.parentElement.removeEventListener('scroll', this.scrollBody);
         this.$store.dispatch(`${this.stateName}/GET_LIST_DATA`);
-        console.log('Load');
       }
     },
   },

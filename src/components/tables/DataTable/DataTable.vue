@@ -1,23 +1,24 @@
 <template>
   <div class="data-table" :id="parentId">
-    <div class="data-table-tooltip" id="data-table-tooltip" @mouseout="hideTooltip" @click="hideTooltip"></div>
+    <!-- <div class="data-table-tooltip" id="data-table-tooltip" @mouseout="hideTooltip" @click="hideTooltip"></div> -->
     <!-- table head -->
     <div class="data-table-head">
       <data-table-head :style="fieldsTemplate"
                        :list-data="listHeader" 
                        :height-type="heightType"></data-table-head>
-      <progress-line :is-show="isShowProgressBar"></progress-line>
+      <progress-line :is-show="isProgressBar"></progress-line>
     </div>
     <!-- table body -->
     <div class="data-table-body">
+      <!-- @dblClick-row - emit event for parent component or page -->
       <data-table-body :list-data="listBody"
-                      :list-data-header="listHeader"
-                      :fields-template="fieldsTemplate"
-                      :height-type="heightType"
-                      :parent-id="parentId"
-                      :editable="editable"
-                      @show-tooltip="showTooltip" @dblclick-row="(eventTarget, itemColumn) => $emit('dblclick-row', eventTarget, itemColumn)">
-
+                       :list-data-header="listHeader"
+                       :fields-template="fieldsTemplate"
+                       :height-type="heightType"
+                       :parent-id="parentId"
+                       :editable="editable"
+                       
+                       @dblclick-row="(event, props) => $emit('dblclick-row', event, props)">
         <!-- editing slot -->
         <template v-for="item in listHeader" #[`body-editing.${item.value}`]="itemValue">
           <slot :name="`body-editing.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
@@ -26,7 +27,6 @@
         <template v-for="item in listHeader" #[`body-display.${item.value}`]="itemValue">
           <slot :name="`body-display.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
         </template>
-
         <!-- action slot -->
         <template v-slot:action="activeValue">
           <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
@@ -34,8 +34,10 @@
       </data-table-body>
     </div>
 
+    <!-- anchor for lazy load data -->
     <div class="data-table-boot-anchor" id="boot-anchor"></div>
-      <!-- component footer -->
+
+    <!-- component footer -->
     <div class="data-table-footer">
       <slot name="component-footer"></slot>
     </div>
@@ -47,10 +49,11 @@ import DataTableHead from './components/DataTableHead/DataTableHead.vue';
 import DataTableBody from './components/DataTableBody/DataTableBody.vue';
 import ProgressLine from './components/ProgressLine.vue';
 
-import { LoadData } from './mixins/LoadData.js';
-import { GetterData } from './mixins/GetterData.js';
-import { BuildingTemplate } from './mixins/BuildingTemplate.js';
-import { Tooltip } from './mixins/Tooltip.js';
+import { Styles } from './mixins/Styles.js'; // heightType
+import { LoadData } from './mixins/LoadData.js'; // isProgressBar
+import { GetterData } from './mixins/GetterData.js'; // listHeader, listBody
+import { BuildingTemplate } from './mixins/BuildingTemplate.js'; // fieldsTemplate
+// import { Tooltip } from './mixins/Tooltip.js';
 
 export default {
   name: 'DataTable',
@@ -60,19 +63,16 @@ export default {
     ProgressLine,
   },
   mixins: [
+    Styles,
     LoadData,
     GetterData,
     BuildingTemplate,
-    Tooltip,
+    // Tooltip,
   ],
   props: {
     dId: String,
     tableProperties: Object,
 
-    // props for height type
-    fixed: {type: Boolean, default: true},
-    dense: {type: Boolean, default: false},
-    auto: {type: Boolean, default: false},
     editable: {type: Boolean, default: false},
   },
   data() {
@@ -82,14 +82,6 @@ export default {
       parentElement: '',
       parentEdge: Number,
     }
-  },
-  computed: {
-    heightType() {
-      let heightType = 'fixed';
-      if (this.dense) heightType = 'dense';
-      if (this.auto) heightType = 'auto';
-      return heightType;
-    },
   },
   mounted() {
     this.parentElement = document.getElementById(this.parentId);
@@ -109,12 +101,12 @@ export default {
   box-shadow: $boxShadow;
   overflow: auto;
   &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;
+    width: $scrollWidth;
+    height: $scrollHeight;
+    border-radius: $scrollBorderRadius;
     &-thumb {
-      border-radius: 3px;
-      background-color:  rgba(0,0,0,0.2);
+      border-radius: $scrollThumbBorderRadius;
+      background-color: $scrollThumbBackgroundColor;
     }
   }
 
@@ -124,23 +116,23 @@ export default {
   &-body { position: relative; z-index: 20; }
   &-footer { bottom: 0px; z-index: 30; }
 
-  &-tooltip {
-    position: fixed;
-    left: 100px;
-    top: 100px;
-    // max-width: 400px;
-    min-width: 400px;
+  // &-tooltip {
+  //   position: fixed;
+  //   left: 100px;
+  //   top: 100px;
+  //   // max-width: 400px;
+  //   min-width: 400px;
 
-    font-size: $tooltipFontSize;
-    color: $tooltipFontColor;
-    border: thin solid rgba(0,0,0,.3);
-    border-radius: 10px;
-    box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);
-    background-color: white;
-    padding: 4px 6px;
-    opacity: 1;
-    z-index: 100;
-    visibility: hidden;
-  }
+  //   font-size: $tooltipFontSize;
+  //   color: $tooltipFontColor;
+  //   border: thin solid rgba(0,0,0,.3);
+  //   border-radius: 10px;
+  //   box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);
+  //   background-color: white;
+  //   padding: 4px 6px;
+  //   opacity: 1;
+  //   z-index: 100;
+  //   visibility: hidden;
+  // }
 }
 </style>
