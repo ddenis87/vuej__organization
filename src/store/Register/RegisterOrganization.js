@@ -41,8 +41,8 @@ export default {
       option.forEach(item => {
         state.listDataOption.bk.choices.push({
           value: item.id, 
-          display_name: `${item.head_code} - ${item.head_name}`,
-          // display_name: `${item.head_name}`,
+          // display_name: `${item.head_code} - ${item.head_name}`,
+          display_name: `${item.head_name}`,
         });
       });
     },
@@ -53,8 +53,8 @@ export default {
           if (state.listDataOption[key].choices && typeof(item[key]) != 'object') {
             item[key] = state.listDataOption[key].choices.find(mitem => mitem.value == item[key]).display_name;
           }
-          if (typeof(item[key]) == 'object') item[key] = `${item[key].head_code} - ${item[key].head_name}`; ///???????????
-          // if (typeof(item[key]) == 'object') item[key] = `${item[key].head_name}`; ///???????????
+          // if (typeof(item[key]) == 'object') item[key] = `${item[key].head_code} - ${item[key].head_name}`; ///???????????
+          if (typeof(item[key]) == 'object') item[key] = `${item[key].head_name}`; ///???????????
         }
         state.listData.push(item);
       })
