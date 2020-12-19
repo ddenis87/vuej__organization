@@ -20,15 +20,14 @@
                         @input="inputInput"
                         @keydown.stop="inputEvent" 
                         @blur.stop="blurInput"
-                        @change="changeValue"
                         @focus="focusEvent"
-                        @click:append-outer="openDialog"
+                        @click:append-outer="isDialog = true"
                         @click.stop=""></v-autocomplete>
-    <v-dialog v-model="isDialog" max-width="70%" persistent class="dialog">
+    <v-dialog v-model="isDialog" max-width="80%" persistent class="dialog">
       <v-card>
         <div class="dialog__box" id="dialog__box">
           <v-btn @click="dialogClose">Close</v-btn>
-          <component :is="catalogComponent" @dblclick-row="selectInDialog"></component>
+          <component :is="catalogComponent" v-bind:editable="false" @dblclick-row="selectInDialog"></component>
           
         </div>
       </v-card>
@@ -49,14 +48,14 @@ export default {
       cellValue: this.dataProps.text,
       rules: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1` ],
       cellEditStatus: false,
-      cellEditStatusDialog: false,
+      // cellEditStatusDialog: false,
       isDialog: false,
     }
   },
   computed: {
     catalogComponent() {
       console.log(this.dataProps);
-      return () => import('@/views/Catalog/CatalogBk')
+      return () => import('@/views/Catalog/CatalogBk');
     },
     cellList() {
       let cellList = [];
@@ -67,80 +66,48 @@ export default {
     },
   },
   methods: {
-    // defaultClick(event) {
-    //   event.preventDefault();
-    //   console.log('event default click');
-    // },
-    // clickAppend(event) {
-    //   console.log('event click append');
-    // },
     dialogClose(event) {
-      console.log('close dialog');
+      // console.log('close dialog');
       this.isDialog = false;
       document.getElementById('boxEditingComponentDialog').querySelector('input').focus();
     },
     selectInDialog(event, param) {
-      console.log('select in dialog');
+      // console.log('select in dialog');
       this.isDialog = false;
       document.getElementById('boxEditingComponentDialog').querySelector('input').focus();
       let cellValueNew = event.target.closest('.table-body__col').querySelector('.box-editing-default').getAttribute('data-value');
       this.cellValue = cellValueNew;
-      // this.cellEditStatus = true;
-      // this.cellEditStatusDialog = true;
-      
       this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'});
       
     },
     inputInput() {
-      console.log('input input select component');
+      // console.log('input input select component');
       this.cellEditStatus = true;
     },
     inputEvent(event) {
-      console.log('input select component');
-      // console.log(event);
+      // console.log('input select component');
       if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
       if (event.key == 'Enter') {
         if (this.cellEditStatus) {
           this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return;
-        } else {
-          // this.isDialog = true;
         }
       }
       if (event.key == 'Tab') { console.log('tab'); event.preventDefault(); this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
     },
     blurInput(event) {
-      console.log('blur dialog component');
-      // if (this.cellEditStatusDialog) { this.cellEditStatusDialog = false; return; }
+      // console.log('blur dialog component');
       if (this.cellEditStatus) { this.$emit('input-blur', event); return; }
       if (event.relatedTarget && event.relatedTarget.classList.contains('table-body__col')) {
-        console.log('blur outer component');
+        // console.log('blur outer component');
         this.$emit('input-blur', event);
         return;
       }
     },
-    changeValue() {
-      console.log('change select component');
-    },
     focusEvent(event) {
-      console.log('focus dialog component');
+      // console.log('focus dialog component');
       setTimeout(() => { 
         console.log(event);
         event.target.select(); }, 100)
-    },
-    openDialog() {
-      this.isDialog = true;
-      // this.$options.components.catalogBk = require('@/views/Catalog/CatalogBk.vue')
-      // let CatalogBk = import('@/views/Catalog/CatalogBk.vue');
-      
-      // let vueCellEdit = Vue.extend(CatalogBk);
-      // console.log(vueCellEdit);
-      // let cellEditComponent = new vueCellEdit({ store }).$mount();
-      // setTimeout(() => {
-        // let parentElement = document.querySelector('#dialog__box');
-      // //   console.log(parentElement);
-        // parentElement.prepend(cellEditComponent.$el);
-      // }, 200)
-      
     },
   },
 }

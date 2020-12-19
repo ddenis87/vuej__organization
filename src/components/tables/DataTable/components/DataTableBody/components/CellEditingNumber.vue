@@ -4,7 +4,7 @@
                 single-line
                 :rules="[...rules.required]"
                 v-model="cellValue" 
-                @keydown="inputEvent"
+                @keydown.stop="inputEvent"
                 @blur="blurInput"></v-text-field>
 </template>
 
@@ -27,6 +27,8 @@ export default {
     inputEvent(event) {
       console.log('input number component');
       console.log(event.code);
+      console.log(event.key);
+
       if (this.dataProps.required) {
         if (this.cellValue.length < 1) {
           if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
@@ -34,11 +36,19 @@ export default {
           if (event.key == 'Tab') { event.preventDefault(); return; }
         } 
       };
-      if (event.code.includes('Key')) { event.preventDefault(); return }
+      
 
       if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
       if (event.key == 'Enter') { this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return; }
       if (event.key == 'Tab') { event.preventDefault(); this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
+      
+      if (event.code.includes('Key') || 
+          event.code == 'BracketLeft' || 
+          event.code == 'BracketRight' ||
+          event.code == 'Semicolon' || 
+          event.code == 'Quote' || 
+          event.code == 'Comma' ||
+          event.code == 'Period') { event.preventDefault(); return }
     },
     blurInput(event) {
       console.log('blur number component');

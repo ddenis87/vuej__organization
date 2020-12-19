@@ -2,7 +2,8 @@
   <div class="catalog">
     <data-table d-id="Bk" 
                 :table-properties="propsDataTable" 
-                fixed 
+                fixed
+                :editable="isEditable"
                 @dblclick-row="(eventTarget, itemColumn) => $emit('dblclick-row', eventTarget, itemColumn)"></data-table>
   </div>
 </template>
@@ -15,6 +16,15 @@ export default {
   name: 'CatalogBk',
   components: {
     DataTable,
+  },
+  props: {
+    editable: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  computed: {
+    isEditable() { return this.editable; }
   },
   data() {
     return {
@@ -30,7 +40,7 @@ export default {
     }
   },
   mounted() {
-    console.log('CatalogBk;')
+    // console.log('CatalogBk;')
   },
 }
 </script>
