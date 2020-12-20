@@ -22,9 +22,9 @@
                     @click:append-outer="isDialog = true"
 
                     @click.stop=""></v-autocomplete>
-    <v-dialog v-model="isDialog" max-width="80%" persistent class="dialog">
-      <v-card>
-        <div class="dialog__box" id="dialog__box">
+    <v-dialog v-model="isDialog" max-width="80%" persistent scrollable class="dialog__box">
+      <v-card height="700">
+        <div class="dialog__table" id="dialog__table">
           <v-btn @click="dialogClose">Close</v-btn>
           <component :is="catalogComponent" v-bind:editable="false" @dblclick-row="selectInDialog"></component>
         </div>
@@ -125,6 +125,41 @@ export default {
   margin-top: -3.5px;
    input {
     padding: 0px;
+  }
+}
+.dialog {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    &-thumb {
+      border-radius: 3px;
+      background-color: rgba(0,0,0,0.2);
+    }
+  }
+  &__box {
+    // max-height: 70%;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      &-thumb {
+        border-radius: 3px;
+        background-color: rgba(0,0,0,0.2);
+      }
+    }
+  }
+  &__table {
+    height: 94%;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      &-thumb {
+        border-radius: 3px;
+        background-color: rgba(0,0,0,0.2);
+      }
+    }
   }
 }
 </style>
