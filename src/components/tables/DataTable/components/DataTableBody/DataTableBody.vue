@@ -14,7 +14,9 @@
           v-bind:tabindex="(editable) ? indexCol : ''"
           @dblclick.stop="(event) => checkDisplayEdit(event, itemColumn)"
           @keydown.stop="(event) => checkDisplayEditForKeydown(event, itemColumn)"
-          @editing-completed="editingCompleted">
+          @editing-completed="editingCompleted" 
+          @mouseover.stop.prevent="(event) => $emit('show-tooltip', event)"
+          @mouseout.stop.prevent="$emit('hide-tooltip')">
 
         
         <!-- slot editing -->
@@ -29,12 +31,11 @@
         <!-- slot display -->
         <div class="box-display">
           <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
-            <div class="box-display-default" :data-value="itemRow[itemColumn.value]">
+            <div class="box-display-default" :data-value="itemRow[itemColumn.value]" @mouseover.stop.prevent="">
               <cell-display :data-value="itemRow[itemColumn.value].toString()"
                             :data-props="itemColumn" 
-                            :height-type="heightType"
-                            @show-tooltip="(event) => $emit('show-tooltip', event)"></cell-display>
-              <cell-overflow :content="itemRow[itemColumn.value]" :overflowSequence="incrementOverflowSequence"></cell-overflow>
+                            :height-type="heightType"></cell-display>
+              <cell-overflow :content="itemRow[itemColumn.value]" @destroy-self="(event) => destroyOverflow(event)"></cell-overflow>
             </div>
           </slot>
         </div>
@@ -74,18 +75,12 @@ export default {
   },
   data() {
     return {
-      overflowSequence: 0,
     }
   },
-  computed: {
-    
-  },
   methods: {
-    incrementOverflowSequence() {
-      this.overflowSequence = this.overflowSequence + 1;
-      console.log(this.incrementOverflowSequence)
-      return this.overflowSequence;
-    },
+    destroyOverflow(event) {
+      document.querySelector('.box-display-default #box-overflow').remove();
+    }
   },
 }
 </script>

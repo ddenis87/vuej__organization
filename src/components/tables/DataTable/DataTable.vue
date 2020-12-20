@@ -1,6 +1,6 @@
 <template>
   <div class="data-table" :id="parentId">
-    <data-tooltip></data-tooltip>
+    <data-tooltip @hide-tooltip="hideTooltip" @mouseout="hideTooltip"></data-tooltip>
     <div class="data-table-head">
       <data-table-head :style="fieldsTemplate"
                        :list-data="listHeader" 
@@ -17,6 +17,7 @@
                        :parent-id="parentId"
                        :editable="editable"
                        @show-tooltip="showTooltip"
+                       
                        @dblclick-row="(event, props) => $emit('dblclick-row', event, props)">
         <!-- editing slot -->
         <template v-for="item in listHeader" #[`body-editing.${item.value}`]="itemValue">

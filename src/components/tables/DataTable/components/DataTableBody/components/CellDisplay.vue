@@ -5,7 +5,7 @@
       <span class="content" 
             :class="`content_${heightType}`"
             :style="`text-align: ${dataProps.align}`"
-            
+            @mouseover.stop.prevent="() => {return false}"
             @mousedown="() => {return false}">
         {{ dataValue }}
       </span>
