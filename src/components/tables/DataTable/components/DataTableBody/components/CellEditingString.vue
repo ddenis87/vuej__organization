@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     inputEvent(event) {
-      console.log('input string component');
+      // console.log('input string component');
       if (this.dataProps.required) {
         if (this.cellValue.length < 1) {
           if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
@@ -42,7 +42,7 @@ export default {
     },
 
     blurInput(event) {
-      console.log('blur string component');
+      // console.log('blur string component');
       this.$emit('input-blur', event);
     },
   },

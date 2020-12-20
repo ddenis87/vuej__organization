@@ -39,29 +39,31 @@ export default {
   },
   methods: {
     inputInput() {
-      console.log('input input select component');
+      // console.log('input input select component');
       this.cellEditStatus = true;
     },
     inputEvent(event) {
-      console.log('input select component');
-      console.log(event);
+      // console.log('input select component');
       if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
       if (event.key == 'Enter') {
         if (this.cellEditStatus) {
             this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return;
         }
       }
-      if (event.key == 'Tab') { console.log('tab'); event.preventDefault(); this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
+      if (event.key == 'Tab') {
+        event.preventDefault();
+        this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return;
+      }
     },
     blurInput(event) {
-      console.log('blur select component');
+      // console.log('blur select component');
       this.$emit('input-blur', event);
     },
     changeValue() {
-      console.log('change select component');
+      // console.log('change select component');
     },
     focusEvent(event) {
-      console.log('focus select component');
+      // console.log('focus select component');
       setTimeout(() => { event.target.select() }, 10) 
     },
   },
@@ -80,6 +82,11 @@ export default {
   margin-top: -3.5px;
    input {
     padding: 0px;
+  }
+}
+::v-deep {
+  .v-input__append-inner {
+    cursor: pointer;
   }
 }
 </style>

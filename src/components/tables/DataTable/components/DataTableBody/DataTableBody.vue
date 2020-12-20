@@ -102,6 +102,7 @@ export default {
     &:focus { outline: none; border-top: $bodyRowBorderFocus; border-bottom: $bodyRowBorderFocus; }
 
     &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
+    &_hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
     &:hover > .table-body__col_focus { background-color: white; }
     // &:hover > .table-body__col-action > .action-box { opacity: 1; }
     
@@ -115,14 +116,14 @@ export default {
       color: $bodyFontColor;
 
       border: thin solid rgba(0, 0, 255, 0);
-      background-color: $bodyRowBackgroundColor;
+      // background-color: $bodyRowBackgroundColor;
       transition-delay: .1s;
       overflow: hidden;
       box-sizing: border-box;
       outline: none;
 
       &:focus { border: $bodyCellBorderFocus; }
-      &_focus { border: $bodyCellBorderFocus; }
+      &_focus { border: $bodyCellBorderFocus; background-color: $bodyRowBackgroundColor; }
 
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }
       &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }

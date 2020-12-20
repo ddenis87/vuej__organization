@@ -14,57 +14,45 @@ export const Editing = {
   },
   methods: {
     checkDisplayEdit(event, itemColumn) {
-      if (!this.editable) { this.$emit('dblclick-row', event, itemColumn); return;}
+      // console.log('check display edit for dblclick');
+      if (!this.editable) {
+        this.$emit('dblclick-row', event, itemColumn); return;
+      }
       if (itemColumn['read_only']) return;
       let parentElement = event.target.closest('.table-body__col');
       if (parentElement.querySelector('.box-display.display-none')) return;
 
-      console.log('check display edit for dblclick');
-      
       parentElement.classList.add('table-body__col_focus');
       setTimeout(() => {
         parentElement.querySelector('.box-display').classList.add('display-none');
         parentElement.querySelector('.box-editing').classList.remove('display-none');
         if (parentElement.querySelector('.box-editing-default')) {
+          parentElement.parentElement.classList.add('table-body__row_hover');
           this.editingStart(itemColumn, parentElement.querySelector('.box-editing-default'));
         } else {
           // custom element edit function this.$refs[nameCustomElement].editingStart(params)
         }
       }, 10);
+      
     },
 
     // check editing for keydown
     checkDisplayEditForKeydown(event, itemColumn) {
-      console.log(event);
+      // console.log('check display edit for keydown');
       if (event.code.includes('Arrow') || event.code == 'Tab') {
         event.preventDefault();
         if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return }
         if ((event.code == 'ArrowLeft' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return }
         if (event.code == 'ArrowDown' && event.target.parentElement.nextElementSibling) { event.target.parentElement.nextElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
         if (event.code == 'ArrowUp' && event.target.parentElement.previousElementSibling) { event.target.parentElement.previousElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
-        // console.log(event.target);
       }
       if (!this.editable) return;
       if (itemColumn['read_only']) return;
       let parentElement = event.target.closest('.table-body__col');
       if (parentElement == null || parentElement.querySelector('.box-display.display-none')) return;
-      // console.log('check display edit for keydown');
       if (event.code.includes('Key') || event.code.includes('Digit')) this.checkDisplayEdit(event, itemColumn);
-    }, 
-    
-    editingCompleted(event) {
-      let parentElement = event.target;
-      if (parentElement.querySelector('.box-display-default')) {
-        this.displayUpdate(event, event.detail);
-      } else {
-        // custom element display function for update view this.$refs[nameCustomElement].displayUpdate
-      }
-      parentElement.querySelector('.box-display').classList.remove('display-none');
-      parentElement.querySelector('.box-editing').classList.add('display-none');
-      parentElement.classList.remove('table-body__col_focus');
     },
 
-    // default methods for editing 
     editingStart(itemColumn, parentElement) {
       this.cellEditProps = itemColumn;
       this.cellEditProps.text = parentElement.getAttribute('data-value');
@@ -80,10 +68,28 @@ export const Editing = {
         parentElement.querySelector('input').focus();
       }
     },
+
+    editingCompleted(event) {
+      let parentElement = event.target;
+      if (parentElement.querySelector('.box-display-default')) {
+        this.displayUpdate(event, event.detail);
+      } else {
+        // custom element display function for update view this.$refs[nameCustomElement].displayUpdate
+      }
+      parentElement.classList.remove('table-body__col_focus');
+      parentElement.querySelector('.box-display').classList.remove('display-none');
+      parentElement.querySelector('.box-editing').classList.add('display-none');
+      setTimeout(() => {
+        if (!document.querySelector('.box-editing-component'))
+          parentElement.parentElement.classList.remove('table-body__row_hover');
+      }, 50)
+    },
+
     displayUpdate(event, value) {
       let parentElement = event.target;
       parentElement.querySelector('.content').innerText = value;
       parentElement.querySelector('.box-editing-default').setAttribute('data-value', value);
+      parentElement.querySelector('.box-display-default').setAttribute('data-value', value);
     },
   }
 }

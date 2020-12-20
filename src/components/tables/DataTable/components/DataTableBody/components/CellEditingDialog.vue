@@ -11,15 +11,16 @@
                     :rules="rules"
                     v-model="cellValue" 
                     :items="cellList"
-                    append-icon=""
+                    append-icon="mdi-dots-horizontal"
                     hide-selected
-                    append-outer-icon="mdi-dots-horizontal"
                     small
                     @input="inputInput"
                     @keydown.stop="inputEvent" 
                     @blur.stop="blurInput"
                     @focus="focusEvent"
+                    @click:append="isDialog = true"
                     @click:append-outer="isDialog = true"
+
                     @click.stop=""></v-autocomplete>
     <v-dialog v-model="isDialog" max-width="80%" persistent class="dialog">
       <v-card>
@@ -51,7 +52,7 @@ export default {
   },
   computed: {
     catalogComponent() {
-      console.log(this.dataProps);
+      // console.log(this.dataProps);
       return () => import('@/views/Catalog/CatalogBk');
     },
     cellList() {
@@ -66,9 +67,11 @@ export default {
     dialogClose(event) {
       // console.log('close dialog');
       this.isDialog = false;
-      document.getElementById('boxEditingComponentDialog').querySelector('input').focus();
+      setTimeout(() => {
+        document.getElementById('boxEditingComponentDialog').querySelector('input').focus();
+      }, 10);
     },
-    selectInDialog(event, param) {
+    selectInDialog(event, itemColumn, value) {
       // console.log('select in dialog');
       this.isDialog = false;
       document.getElementById('boxEditingComponentDialog').querySelector('input').focus();
@@ -103,7 +106,7 @@ export default {
     focusEvent(event) {
       // console.log('focus dialog component');
       setTimeout(() => { 
-        console.log(event);
+        // console.log(event);
         event.target.select(); }, 100)
     },
   },

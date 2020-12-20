@@ -56,7 +56,7 @@ export default {
       }
     },
     blurInput(event) {
-      console.log('blur number component');
+      // console.log('blur number component');
       this.$emit('input-blur', event);
     },
   },

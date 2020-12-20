@@ -43,6 +43,7 @@ export default {
       axios
         .get(`https://an67.pythonanywhere.com/api/budget-classifications/`)
         .then(response => {
+          console.log(response.data);
           state.commit('SET_LIST_DATA', response.data);
         })
         .catch(err => {console.log(err)})

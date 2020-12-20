@@ -46,9 +46,7 @@ export default {
   },
   methods: {
     inputEvent(event, params) {
-      // console.log(event);
-      // console.log(params);
-      console.log('input base component');
+      // console.log('input base component');
       let parentElement = event.target.closest('.table-body__col');
 
       this.cellValue = params.value;  // --
@@ -62,13 +60,13 @@ export default {
         let nextEvent = new Event('dblclick', {bubbles: false});
         let nextElement = null;
         if (!event.shiftKey) nextElement = parentElement.nextElementSibling;
-        else nextElement = parentElement.previousElementSibling;
+        else nextElement = parentElement.previousElementSibling; 
         nextElement.dispatchEvent(nextEvent);
       }
       event.target.blur(); // -- //
     },
     blurInput(event) {
-      console.log('blur base component')
+      // console.log('blur base component');
       if (!this.cellEditStatus) { 
         this.cellValue = this.listProps.text;
       }
