@@ -88,7 +88,7 @@ export const Editing = {
     },
     displayUpdate(event, value) {
       let parentElement = event.target;
-      parentElement.querySelector('.box-full').innerText = value;
+      // parentElement.querySelector('.box-full').innerText = value;
       parentElement.querySelector('.content').innerText = value;
       parentElement.querySelector('.box-editing-default').setAttribute('data-value', value);
     },

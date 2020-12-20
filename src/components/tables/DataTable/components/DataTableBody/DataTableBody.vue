@@ -3,30 +3,29 @@
     <div v-for="(itemRow, indexRow) in listData"
          :key="`bodyRow-${indexRow}`"
          class="table-body__row"
-         :class="`table-body__row_${heightType}`"
-         :style="fieldsTemplate">
-      <div v-for="(itemColumn, indexCol) in listDataHeader" 
-           :key="`bodyCol-${indexCol}`" 
-           class="table-body__col"
-           :class="`table-body__col_${heightType}`" 
-           :style="itemColumn.position"
-           :tabindex="indexCol"
+         :class="styleRow"
+         :style="fieldsTemplate"
+         :tabindex="indexRow">
+      <div v-for="(itemColumn, indexCol) in listDataHeader"
+          :key="`bodyCol-${indexCol}`" 
+          class="table-body__col"
+          :class="styleCell" 
+          :style="itemColumn.position"
+          v-bind:tabindex="(editable) ? indexCol : ''"
+          @dblclick.stop="(event) => checkDisplayEdit(event, itemColumn)"
+          @keydown.stop="(event) => checkDisplayEditForKeydown(event, itemColumn)"
+          @editing-completed="editingCompleted">
 
-           @dblclick.stop="(event) => checkDisplayEdit(event, itemColumn)"
-           @keydown.stop="(event) => checkDisplayEditForKeydown(event, itemColumn)"
-           @editing-completed="editingCompleted">
-
+        
         <!-- slot editing -->
         <div class="box-editing display-none">
           <slot :name="`body-editing.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
             <div class="box-editing-default"
-                 :data-value="itemRow[itemColumn.value]">
+                :data-value="itemRow[itemColumn.value]">
               <!-- includes default component -->
             </div>
           </slot>
         </div>
-        
-
         <!-- slot display -->
         <div class="box-display">
           <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
@@ -35,30 +34,35 @@
                             :data-props="itemColumn" 
                             :height-type="heightType"
                             @show-tooltip="(event) => $emit('show-tooltip', event)"></cell-display>
+              <cell-overflow :content="itemRow[itemColumn.value]" :overflowSequence="incrementOverflowSequence"></cell-overflow>
             </div>
           </slot>
         </div>
       </div>
+      
       <div class="table-body__col-action">
         <slot name="action" v-bind:activeValue="itemRow['title']"></slot>
       </div>
     </div>
-    
   </div>
 </template>
 
 <script>
-import CellDisplay from './components/CellDisplay.vue'
+import CellDisplay from './components/CellDisplay.vue';
+import CellOverflow from './components/CellOverflow.vue';
 
-import { Editing } from './mixins/Editing.js';
+import { Editing } from './mixins/Editing.js'; // checkDisplayEdit, checkDisplayEditForKeydown
+import { Styles } from './mixins/Styles.js'; // styleRow, styleCell
 
 export default {
   name: 'DataTableBody',
   components: {
     CellDisplay,
-  },  
+    CellOverflow,
+  },
   mixins: [
     Editing,
+    Styles,
   ],
   props: {
     listData: Array,
@@ -68,7 +72,20 @@ export default {
     parentId: String,
     editable: Boolean,
   },
+  data() {
+    return {
+      overflowSequence: 0,
+    }
+  },
+  computed: {
+    
+  },
   methods: {
+    incrementOverflowSequence() {
+      this.overflowSequence = this.overflowSequence + 1;
+      console.log(this.incrementOverflowSequence)
+      return this.overflowSequence;
+    },
   },
 }
 </script>
@@ -85,9 +102,13 @@ export default {
     &_dense { grid-auto-rows: $bodyDenseRowHeight;  }
     &_auto  { grid-auto-rows: $bodyAutoRowHeight;   }
 
+    &_editable_false { border-top: thin solid white; }
+
+    &:focus { outline: none; border-top: $bodyRowBorderFocus; border-bottom: $bodyRowBorderFocus; }
+
     &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
     &:hover > .table-body__col_focus { background-color: white; }
-    &:hover > .table-body__col-action > .action-box { opacity: 1; }
+    // &:hover > .table-body__col-action > .action-box { opacity: 1; }
     
     .table-body__col {
       position: relative;
@@ -106,23 +127,19 @@ export default {
       outline: none;
 
       &:focus { border: $bodyCellBorderFocus; }
-
-      &_focus     { border: $bodyCellBorderFocus;             }
-      &_disabled  { border: thin solid rgba(255, 0, 0, .8)  }
+      &_focus { border: $bodyCellBorderFocus; }
 
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }
       &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
       &_auto  { padding: $bodyAutoPaddingTB $bodyAutoPaddingLR;   }
 
-      .box-editing {
+      .box-editing, .box-display {
         width: 100%;
         height: 100%;
       }
       .box-display {
         display: inline-flex;
         align-items: $bodyVerticalAlign;
-        width: 100%;
-        height: 100%;
 
         .box-display-default {
           width: inherit;

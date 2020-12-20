@@ -2,33 +2,30 @@
   <div class="dialog" id="boxEditingComponentDialog">
     <!-- @click.stop - stop slider list -->
     <!-- @click:append-outer - open dialog -->
-    <!-- @focus - for select inner text -->
-
-          <v-autocomplete
-                        auto-select-first
-                        class="dialog__select"
-                        tabindex="10"
-                        dense
-                        single-line
-                        :rules="rules"
-                        v-model="cellValue" 
-                        :items="cellList"
-                        append-icon=""
-                        hide-selected
-                        append-outer-icon="mdi-dots-horizontal"
-                        small
-                        @input="inputInput"
-                        @keydown.stop="inputEvent" 
-                        @blur.stop="blurInput"
-                        @focus="focusEvent"
-                        @click:append-outer="isDialog = true"
-                        @click.stop=""></v-autocomplete>
+    <!-- @focus - for selected inner text -->
+    <v-autocomplete auto-select-first
+                    class="dialog__select"
+                    tabindex="10"
+                    dense
+                    single-line
+                    :rules="rules"
+                    v-model="cellValue" 
+                    :items="cellList"
+                    append-icon=""
+                    hide-selected
+                    append-outer-icon="mdi-dots-horizontal"
+                    small
+                    @input="inputInput"
+                    @keydown.stop="inputEvent" 
+                    @blur.stop="blurInput"
+                    @focus="focusEvent"
+                    @click:append-outer="isDialog = true"
+                    @click.stop=""></v-autocomplete>
     <v-dialog v-model="isDialog" max-width="80%" persistent class="dialog">
       <v-card>
         <div class="dialog__box" id="dialog__box">
           <v-btn @click="dialogClose">Close</v-btn>
           <component :is="catalogComponent" v-bind:editable="false" @dblclick-row="selectInDialog"></component>
-          
         </div>
       </v-card>
     </v-dialog>

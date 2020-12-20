@@ -1,12 +1,11 @@
 <template>
   <div class="data-table" :id="parentId">
-    <!-- <div class="data-table-tooltip" id="data-table-tooltip" @mouseout="hideTooltip" @click="hideTooltip"></div> -->
-    <!-- table head -->
+    <data-tooltip></data-tooltip>
     <div class="data-table-head">
       <data-table-head :style="fieldsTemplate"
                        :list-data="listHeader" 
                        :height-type="heightType"></data-table-head>
-      <progress-line :is-show="isProgressBar"></progress-line>
+      <data-progress-line :is-show="isProgressBar"></data-progress-line>
     </div>
     <!-- table body -->
     <div class="data-table-body">
@@ -17,7 +16,7 @@
                        :height-type="heightType"
                        :parent-id="parentId"
                        :editable="editable"
-                       
+                       @show-tooltip="showTooltip"
                        @dblclick-row="(event, props) => $emit('dblclick-row', event, props)">
         <!-- editing slot -->
         <template v-for="item in listHeader" #[`body-editing.${item.value}`]="itemValue">
@@ -47,27 +46,29 @@
 <script>
 import DataTableHead from './components/DataTableHead/DataTableHead.vue';
 import DataTableBody from './components/DataTableBody/DataTableBody.vue';
-import ProgressLine from './components/ProgressLine.vue';
+import DataProgressLine from './components/DataProgressLine.vue';
+import DataTooltip from './components/DataTooltip.vue';
 
 import { Styles } from './mixins/Styles.js'; // heightType
 import { LoadData } from './mixins/LoadData.js'; // isProgressBar
 import { GetterData } from './mixins/GetterData.js'; // listHeader, listBody
 import { BuildingTemplate } from './mixins/BuildingTemplate.js'; // fieldsTemplate
-// import { Tooltip } from './mixins/Tooltip.js';
+import { MDataTooltip } from './mixins/DataTooltip.js';
 
 export default {
   name: 'DataTable',
   components: { 
     DataTableHead,
     DataTableBody,
-    ProgressLine,
+    DataProgressLine,
+    DataTooltip,
   },
   mixins: [
     Styles,
     LoadData,
     GetterData,
     BuildingTemplate,
-    // Tooltip,
+    MDataTooltip,
   ],
   props: {
     dId: String,
