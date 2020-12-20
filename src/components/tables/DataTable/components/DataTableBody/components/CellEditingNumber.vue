@@ -4,6 +4,7 @@
                 single-line
                 :rules="[...rules.required]"
                 v-model="cellValue" 
+                @input="inputValidation"
                 @keydown.stop="inputEvent"
                 @blur="blurInput"></v-text-field>
 </template>
@@ -24,6 +25,10 @@ export default {
     }
   },
   methods: {
+    inputValidation() {
+      // this.cellValue = this.cellValue.replace(/[^\d\.]/g, '')
+      // if (this.cellValue.match(/\./g).length > 1) this.cellValue = this.cellValue.substr(0, this.cellValue.lastIndexOf('.'));
+    },
     inputEvent(event) {
       console.log('input number component');
       console.log(event.code);
@@ -39,16 +44,34 @@ export default {
       
 
       if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
-      if (event.key == 'Enter') { this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return; }
-      if (event.key == 'Tab') { event.preventDefault(); this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
+      if (event.key == 'Enter') {
+        this.cellValue = this.cellValue.replace(/\./g, ','); 
+        this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return; 
+      }
+      if (event.key == 'Tab') { 
+        event.preventDefault(); 
+        this.cellValue = this.cellValue.replace(/\./g, ','); 
+        this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
       
+      
+//       this.cellValue = this.cellValue.replace(/[^\d\.]/g, '')
+// if (this.cellValue.match(/\./g).length > 1) this.cellValue = this.value.substr(0, this.cellValue.lastIndexOf('.'));
+// if (this.cellValue.match(/\.\,/g).length > 1) { event.preventDefault(); return; }
+
       if (event.code.includes('Key') || 
           event.code == 'BracketLeft' || 
           event.code == 'BracketRight' ||
           event.code == 'Semicolon' || 
           event.code == 'Quote' || 
           event.code == 'Comma' ||
-          event.code == 'Period') { event.preventDefault(); return }
+          event.code == 'Period') { event.preventDefault(); return; }
+
+      if (event.code == 'NumpadDecimal' || event.code == 'Slash') {
+        if ((this.cellValue.match(/[\.\,]/g)) && (this.cellValue.match(/[\.\,]/g).length > 0)) { event.preventDefault(); return; }
+      }
+      // this.cellValue = this.cellValue.replace(/[^\d\.]/g, '')
+      // if (this.cellValue.match(/\./g).length > 1) this.cellValue = this.cellValue.substr(0, this.cellValue.lastIndexOf('.'));
+
     },
     blurInput(event) {
       console.log('blur number component');
