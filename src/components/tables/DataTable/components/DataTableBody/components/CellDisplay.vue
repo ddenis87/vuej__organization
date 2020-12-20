@@ -1,7 +1,5 @@
 <template>
   <div class="box-display-default-component">
-    <!-- <cell-overflow :content="dataValue" 
-                   @show-tooltip="(event) => $emit('show-tooltip', event)"> -->
       <span class="content" 
             :class="`content_${heightType}`"
             :style="`text-align: ${dataProps.align}`"
@@ -9,17 +7,13 @@
             @mousedown="() => {return false}">
         {{ dataValue }}
       </span>
-    <!-- </cell-overflow> -->
   </div>
 </template>
 
 <script>
-// import CellOverflow from './CellOverflow.vue';
-
 export default {
   name: 'CellDisplay',
   components: {
-    // CellOverflow,
   },
   props: {
     dataValue: String,

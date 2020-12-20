@@ -17,7 +17,6 @@
                        :parent-id="parentId"
                        :editable="editable"
                        @show-tooltip="showTooltip"
-                       
                        @dblclick-row="(event, props) => $emit('dblclick-row', event, props)">
         <!-- editing slot -->
         <template v-for="item in listHeader" #[`body-editing.${item.value}`]="itemValue">
@@ -74,7 +73,6 @@ export default {
   props: {
     dId: String,
     tableProperties: Object,
-
     editable: {type: Boolean, default: false},
   },
   data() {
@@ -117,24 +115,5 @@ export default {
   &-head { top: 0px; z-index: 40; }
   &-body { position: relative; z-index: 20; }
   &-footer { bottom: 0px; z-index: 30; }
-
-  // &-tooltip {
-  //   position: fixed;
-  //   left: 100px;
-  //   top: 100px;
-  //   // max-width: 400px;
-  //   min-width: 400px;
-
-  //   font-size: $tooltipFontSize;
-  //   color: $tooltipFontColor;
-  //   border: thin solid rgba(0,0,0,.3);
-  //   border-radius: 10px;
-  //   box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);
-  //   background-color: white;
-  //   padding: 4px 6px;
-  //   opacity: 1;
-  //   z-index: 100;
-  //   visibility: hidden;
-  // }
 }
 </style>

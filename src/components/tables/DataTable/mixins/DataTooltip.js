@@ -19,21 +19,13 @@ export const MDataTooltip = {
       this.tooltipTimer = setTimeout(() => this.visibleTooltip(event), 1500);
     },
     visibleTooltip(event) {
-      // console.log(event);
-      // if (this.heightType == 'auto') return;
-      // if (event.relatedTarget.classList.contains('content')) return;
-      // if (!event.target.hasAttribute('data-overflow')) return;
-
         let targetChild = event.target.querySelector('.box-display-default');
         (document.documentElement.getBoundingClientRect().width - event.clientX < 400) ? this.tooltipShift.left = 250 : this.tooltipShift.left = 7;
-        // console.log(targetChild.getBoundingClientRect());
         this.tooltipElement.style.left = targetChild.getBoundingClientRect().left - this.tooltipShift.left + 'px';
         this.tooltipElement.style.top = targetChild.getBoundingClientRect().top - this.tooltipShift.top + 'px';
         this.tooltipElement.style.width = targetChild.getBoundingClientRect().width + 'px';
         this.tooltipElement.innerHTML = targetChild.getAttribute('data-value');
         this.tooltipElement.style.visibility = 'visible';
-        // console.log(this.tooltipElement);
-
     },
     hideTooltip() {
       this.tooltipElement.style.visibility = 'hidden';
