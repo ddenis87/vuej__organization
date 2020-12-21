@@ -59,6 +59,8 @@ export default {
         state.listData.push(item);
       })
       // if (state.listSortedProps.key != '') this.SET_LIST_DATA_SORTED;
+      // option.forEach(item => state.listData.push(item));
+      // state.listData = option;
     },
     SET_OPTIONS_REQUEST(state, option = {}) {
       state.optionRequest.currentPage = ('currentPage' in option) ? option.currentPage : 1;
@@ -71,7 +73,7 @@ export default {
       axios
         .options(`https://an67.pythonanywhere.com/api/organisations/`)
         .then(response => {
-          // console.log(JSON.parse(response.request.response).actions.POST);
+          console.log(JSON.parse(response.request.response).actions.POST);
           state.commit('SET_LIST_OPTION', JSON.parse(response.request.response).actions.POST);
           state.dispatch('GET_LIST_BK');
         })
@@ -92,7 +94,7 @@ export default {
       axios
         .get(`https://an67.pythonanywhere.com/api/organisations/?page=${option.currentPage}${option.stringFilter}`)
         .then(response => {
-          // console.log(response.data.results);
+          console.log(response.data.results);
           if (response.data.count !== 0) {
             state.commit('SET_LIST_DATA', response.data.results);
           } 

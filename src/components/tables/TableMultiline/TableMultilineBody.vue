@@ -3,9 +3,9 @@
     <div class="table-body__row" :style="listStyle" v-for="(itemRow, indexRow) in listData" :key="`bodyRow-${indexRow}`">
       <div class="table-body__col" v-for="(itemCol, indexCol) in listDataHeader" :key="`bodyCol-${indexCol}`" :style="itemCol.style">
         
-        <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]">
+        <!-- <table-overflow :row-count="rowCount" :window-width="windowsWidth" :text-content="itemRow[itemCol.key]"> -->
           <slot :name="`${itemCol.key}`" v-bind:itemValue="itemRow[itemCol.key]">{{ itemRow[itemCol.key] }}</slot>
-        </table-overflow>
+        <!-- </table-overflow> -->
         
       </div>
       <div class="table-body__col-action">
@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import TableOverflow from '../TableOverflow.vue'
+// import TableOverflow from '../TableOverflow.vue'
 
 export default {
-  components: { TableOverflow },
+  // components: { TableOverflow },
   name: 'TableMultilineBody',
   props: {
     listData: Array,
