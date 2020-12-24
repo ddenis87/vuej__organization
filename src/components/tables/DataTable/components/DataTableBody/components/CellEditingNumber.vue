@@ -42,8 +42,8 @@ export default {
         event.preventDefault(); 
         this.cellValue = this.cellValue.replace(/\./g, ','); 
         this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return; }
-      console.log(event.code);
-      console.log(event.key);
+      // console.log(event.code);
+      // console.log(event.key);
       if (event.code.includes('Key') || 
           event.code == 'BracketLeft' || 
           event.code == 'BracketRight' ||

@@ -45,7 +45,7 @@ export default {
     }
   },
   created() {
-    console.log(this.listProps);
+    // console.log(this.listProps);
   },
   methods: {
     inputEvent(event, params) {

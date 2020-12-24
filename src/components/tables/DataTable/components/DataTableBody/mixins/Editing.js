@@ -58,7 +58,7 @@ export const Editing = {
       // this.cellEditProps.objectValue = itemValue;
       // 
       this.cellEditProps.text = parentElement.getAttribute('data-value');
-      console.log(this.cellEditProps);
+      // console.log(this.cellEditProps);
       this.cellEditComponent = new this.vueCellEdit({ vuetify, store, propsData: {listProps: this.cellEditProps} }).$mount(); 
       parentElement.prepend(this.cellEditComponent.$el);
 
@@ -75,7 +75,7 @@ export const Editing = {
     editingCompleted(event) {
       let parentElement = event.target;
       if (parentElement.querySelector('.box-display')) {
-        console.log(event.detail);
+        // console.log(event.detail);
         if (event.detail.status == true)
           this.displayUpdate(event, event.detail.value);
       } else {
