@@ -12,7 +12,7 @@
 import DataTable from '@/components/tables/DataTable/DataTable.vue';
 
 export default {
-  name: 'CatalogBk',
+  name: 'Bk',
   components: {
     DataTable,
   },
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       propsDataTable: {
-        stateName: 'CatalogBk',
+        tableName: 'budget-classifications',
         header: [
           {value: 'id', width: [50, 50], },
           {value: 'head_code', align: 'end', width: [200, 200], },

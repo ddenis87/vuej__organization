@@ -5,6 +5,7 @@
                   tabindex="10"
                   dense
                   single-line
+                  return-object
                   :rules="rules"
                   v-model="cellValue" 
                   :items="cellList"
@@ -30,10 +31,12 @@ export default {
   },
   computed: {
     cellList() {
+      console.log(this.dataProps);
       let cellList = [];
       this.dataProps.choices.forEach(element => {
-        cellList.push({text: element['display_name'], value: element['display_name']})
+        cellList.push({text: element['display_name'], value: `${element['value']}`})
       })
+      console.log(cellList);
       return cellList;
     },
   },
@@ -41,9 +44,11 @@ export default {
     inputInput() {
       // console.log('input input select component');
       this.cellEditStatus = true;
+      console.log(this.cellValue);
     },
     inputEvent(event) {
       // console.log('input select component');
+      console.log(this.dataProps.text);
       if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
       if (event.key == 'Enter') {
         if (this.cellEditStatus) {

@@ -15,16 +15,7 @@
 
     <div class="organization-body">
       <div class="body-item">
-        <div class="body-item__title" v-if="listMultiRow">
-          <div>
-            <h5>Component: Table-multiline</h5>
-          </div>
-          <div>
-            <h6>Template: ['institution_code', 'title',      'inn',       'egrul_status',     'industry_typing',   'budget_level',  'bk'    ]</h6>
-            <h6>['institution_code', 'title',      'kpp',       'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]</h6>
-          </div>
-        </div>
-         <div class="body-item__title" v-if="!listMultiRow">
+        <div class="body-item__title">
           <v-radio-group v-model="heightType" row dense>
             <h4>Height row type:</h4>
             <v-radio label="fixed" value="fixed"></v-radio>
@@ -34,31 +25,12 @@
         </div>
 
         <div class="body-item__body">
-          <!-- <table-multiline :table-properties="propsTableMultiline" v-if="listMultiRow">
-            <template #[`body.institution_code`]="itemValue">
-              <div style="width: 100%; text-align: right;">{{ itemValue.itemValue }}</div>
-            </template>
-            <template #action="activeValue">
-              <table-action :activeValue="activeValue"></table-action>
-            </template>
-          </table-multiline> -->
-
-          <!-- <data-table d-id="organization" 
+          <data-table d-id="organization" 
                      :table-properties="propsTableUno" 
                      v-bind:[heightType]="true" 
-                     v-if="!listMultiRow"
-                     editable> -->
-            <!-- <template #[`body-editing.inn`] = "itemValue" >
-              <span style="color: blue">{{ itemValue.itemValue }}</span>
-            </template> -->
-            <!-- <template #[`body-display.inn`] = "itemValue" >
-              <span style="color: red">{{ itemValue.itemValue }}</span>
-            </template> -->
-            
-            <!-- <template #action="activeValue">
-              <table-action :activeValue="activeValue"></table-action>
-            </template> -->
-          <!-- </data-table> -->
+                     
+                     editable>
+          </data-table>
         </div>
       </div>
     </div>
@@ -67,69 +39,20 @@
 
 <script>
 import ControlUser from '@/components/control/ControlUser.vue';
-import TableMultiline from '@/components/tables/TableMultiline/TableMultiline.vue';
 import DataTable from '@/components/tables/DataTable/DataTable.vue';
-
-import TableAction from '@/components/tables/TableAction.vue';
 
 export default {
   name: 'Home',
   components: {
     ControlUser,
-    TableMultiline,
     DataTable,
-
-    TableAction,
   },
   data() {
     return {
       heightType: 'fixed',
       listMultiRow: false,
-
-      propsTableMultiline: {
-        state: {
-          progress: 'GET_STATUS_LOAD',
-          init: 'GET_LIST_OPTIONS',
-          header: {},
-          body: {
-            getData: 'GET_LIST_DATA',
-            loadData: 'GET_LIST_DATA',
-          },
-        },
-        activeField: 'id',
-        fieldsTemplate: [
-          [[80, 80],                 ['400',],      [115, 115], [140, 140],         [170,170],           ['200', 200],         [180, 180] ],
-          ['institution_code', 'title',      'inn',       'egrul_status',     'industry_typing',   'budget_level',  'bk'    ],
-          ['institution_code', 'title',      'kpp',       'rubpnubp_status',  'institution_type',  'budget_level',  'bk'    ]
-        ],
-        fieldsFixed: ['institution_code', 'title'],
-        header: {
-          state: {
-            getterData: 'GET_LIST_FIELDS',
-            dispatchInit: 'GET_LIST_OPTIONS',
-          },
-        },
-        body: {
-          height: 25,
-          state: {
-            getterData: 'GET_LIST_DATA',
-            dispatchData: 'GET_LIST_DATA',
-          },
-        }
-      },
-
       propsTableUno: {
-        state: {
-          progress: 'GET_STATUS_LOAD',
-          init: 'GET_LIST_OPTIONS',
-          header: {
-            getData: 'GET_LIST_FIELDS',
-          },
-          body: {
-            getData: 'GET_LIST_DATA',
-            loadData: 'GET_LIST_DATA',
-          },
-        },
+        tableName: 'organisations',
         header: [
           {value: 'id', width: [50, 50], },
           {value: 'institution_code', align: 'end', width: [90, 90], },
@@ -141,16 +64,11 @@ export default {
           {value: 'industry_typing', width: [120, 120]},
           {value: 'institution_type', width: [130, 130]},
           {value: 'budget_level', width: [180, 180]},
-          {value: 'bk', width: [180, 180]},
+          {value: 'bk', width: [180, 180], objectValue: 'head_name'},
         ],
         activeField: 'id',
-        // fieldsFixed: ['id', 'institution_code', 'title'],
-        // countRowBody: 2,
       },
     }
-  },
-  methods: {
-
   },
 }
 </script>
@@ -180,24 +98,7 @@ export default {
     max-height: calc(100% - 130px);
     grid-area: organization-body;
     padding: 3px;
-
-    // .body-item {
-    //   color: rgba(0,0,0,.87);
-    //   border-radius: 4px;
-    //   border: thin solid rgba(0,0,0,.12);
-    //   overflow: hidden;
-
-    //   &__title {
-    //     display: flex;
-    //     justify-content: space-between;
-    //     align-items: center;
-    //     padding: 8px;
-    //   }
-    //   &__body {
-    //     height: calc(100vh - 170px);
-    //     padding: 10px;
-    //   }
-    // }
+    
     .body-item {
       max-height: 100%;
       display: grid;

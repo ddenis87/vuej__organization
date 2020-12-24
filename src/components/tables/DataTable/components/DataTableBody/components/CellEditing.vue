@@ -39,23 +39,28 @@ export default {
   data() {
     return {
       cellType: (this.listProps) ? this.listProps.type : 'string',
-      cellSelectList: (this.listProps.choices) ? this.listProps.choices : null,
+      // cellSelectList: (this.listProps.choices) ? this.listProps.choices : null,
       cellValue: (this.listProps) ? this.listProps.value : '',
       cellEditStatus: false,
     }
+  },
+  created() {
+    console.log(this.listProps);
   },
   methods: {
     inputEvent(event, params) {
       // console.log('input base component');
       let parentElement = event.target.closest('.table-body__col');
 
-      this.cellValue = params.value;  // --
-
+      
+      // console.log(params.value);
       if (params.key == 'Enter') {
+        this.cellValue = params.value;  // --
         this.cellEditStatus = true;
         setTimeout(() => { parentElement.focus() }, 100);
       }
       if (params.key == 'Tab') {
+        this.cellValue = params.value;  // --
         this.cellEditStatus = true;
         let nextEvent = new Event('dblclick', {bubbles: false});
         let nextElement = null;
@@ -71,7 +76,9 @@ export default {
         this.cellValue = this.listProps.text;
       }
       let parentElement = event.target.closest('.table-body__col');
-      let eventEditingCompleted = new CustomEvent('editing-completed', {detail: this.cellValue});
+      // console.log(event.target);
+      // console.log(parentElement);
+      let eventEditingCompleted = new CustomEvent('editing-completed', {detail: {value: this.cellValue, status: this.cellEditStatus}});
       parentElement.dispatchEvent(eventEditingCompleted);
       parentElement.querySelector('.box-editing-component').remove();
     }

@@ -16,7 +16,7 @@ import AppHeader from '@/components/app/AppHeader';
 
 import LayoutMain from '@/layout/LayoutMain.vue';
 import LayoutCatalog from '@/layout/LayoutCatalog.vue';
-import LayoutRegister from '@/layout/LayoutRegister.vue';
+import LayoutTables from '@/layout/LayoutTables.vue';
 
 export default {
   name: 'App',
@@ -24,7 +24,7 @@ export default {
     AppHeader,
     LayoutMain,
     LayoutCatalog,
-    LayoutRegister,
+    LayoutTables,
   },
   computed: {
     layout() { return 'Layout' + (this.$route.meta.layout || 'Main') },

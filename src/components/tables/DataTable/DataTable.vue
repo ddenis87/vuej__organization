@@ -1,5 +1,5 @@
 <template>
-  <div class="data-table" :id="parentId">
+  <div class="data-table" :id="parentId" @click="actionMouse" @dblclick="actionMouse" @mouseenter="actionMouse" @mouseleave="actionMouse">
     <data-tooltip @hide-tooltip="hideTooltip" @mouseout="hideTooltip"></data-tooltip>
     <div class="data-table-head">
       <data-table-head :style="fieldsTemplate"
@@ -30,7 +30,7 @@
         <template v-slot:action="activeValue">
           <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
         </template>
-      </data-table-body>
+      </data-table-body> 
     </div>
 
     <!-- anchor for lazy load data -->
@@ -51,7 +51,7 @@ import DataTooltip from './components/DataTooltip.vue';
 
 import { Styles } from './mixins/Styles.js'; // heightType
 import { LoadData } from './mixins/LoadData.js'; // isProgressBar
-import { GetterData } from './mixins/GetterData.js'; // listHeader, listBody
+import { GetData } from './mixins/GetData.js'; // listHeader, listBody
 import { BuildingTemplate } from './mixins/BuildingTemplate.js'; // fieldsTemplate
 import { MDataTooltip } from './mixins/DataTooltip.js';
 
@@ -66,7 +66,7 @@ export default {
   mixins: [
     Styles,
     LoadData,
-    GetterData,
+    GetData,
     BuildingTemplate,
     MDataTooltip,
   ],
@@ -77,7 +77,7 @@ export default {
   },
   data() {
     return {
-      stateName: this.tableProperties.stateName,
+      tableName: this.tableProperties.tableName,
       parentId: (this.dId) ? `data-table-${this.dId}` : 'data-table',
       parentElement: '',
       parentEdge: Number,
@@ -86,6 +86,12 @@ export default {
   mounted() {
     this.parentElement = document.getElementById(this.parentId);
     this.parentEdge = this.parentElement.getBoundingClientRect().bottom;
+  },
+  methods: {
+    actionMouse(event) {
+      // console.log('actionMouse');
+      // console.log(event);
+    }
   },
 }
 </script>

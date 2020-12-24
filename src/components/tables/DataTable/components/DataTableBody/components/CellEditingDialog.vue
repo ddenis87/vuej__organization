@@ -22,7 +22,7 @@
                     @click:append-outer="isDialog = true"
 
                     @click.stop=""></v-autocomplete>
-    <v-dialog v-model="isDialog" max-width="80%" persistent scrollable class="dialog__box">
+    <v-dialog v-model="isDialog" max-width="80%" scrollable class="dialog__box">
       <v-card height="700">
         <div class="dialog__table" id="dialog__table">
           <v-btn @click="dialogClose">Close</v-btn>
@@ -53,7 +53,7 @@ export default {
   computed: {
     catalogComponent() {
       // console.log(this.dataProps);
-      return () => import('@/views/Catalog/CatalogBk');
+      return () => import('@/views/Tables/Bk'); /// ??????
     },
     cellList() {
       let cellList = [];

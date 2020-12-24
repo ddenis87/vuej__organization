@@ -1,11 +1,11 @@
 <template>
   <div class="layout-register">
     <div class="title">
-      <h4>Реестр</h4>
+      <h4></h4>
     </div>
     <div class="control">
       <v-toolbar dense >
-        <v-toolbar-title>Организации</v-toolbar-title>
+        <v-toolbar-title></v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn class="control__btn" icon><v-icon>mdi-filter-outline</v-icon></v-btn>
       </v-toolbar>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'LayoutRegister',
+  name: 'LayoutTables',
   data() {
     return {
       heightType: 'fixed',

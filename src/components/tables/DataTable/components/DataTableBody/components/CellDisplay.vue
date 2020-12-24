@@ -1,13 +1,9 @@
 <template>
-  <div class="box-display-default-component">
-      <span class="content" 
-            :class="`content_${heightType}`"
-            :style="`text-align: ${dataProps.align}`"
-            @mouseover.stop.prevent="() => {return false}"
-            @mousedown="() => {return false}">
-        {{ dataValue }}
-      </span>
-  </div>
+  <span class="content" 
+        :class="`content_${heightType}`"
+        :style="`text-align: ${dataProps.align}`">
+      {{ displayValue }}
+  </span>
 </template>
 
 <script>
@@ -16,15 +12,23 @@ export default {
   components: {
   },
   props: {
-    dataValue: String,
+    dataValue: null,
     dataProps: Object,
     heightType: String,
+  },
+  computed: {
+    displayValue() {
+      let newValue = '';
+      if (this.dataProps.type == 'string' || this.dataProps.type == 'integer') newValue = this.dataValue;
+      if (this.dataProps.type == 'choice') newValue = this.dataValue['display_name'];
+      if (this.dataProps.type == 'nested object') newValue = this.dataValue[this.dataProps.objectValue];
+      return newValue;
+    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.box-display-default-component {
   .content {
     width: 100%;
     -webkit-user-select: none;
@@ -38,5 +42,4 @@ export default {
     &_dense { white-space: nowrap; }
     // &_auto {  }
   }
-}
 </style>

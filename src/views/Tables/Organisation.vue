@@ -10,14 +10,14 @@
 import DataTable from '@/components/tables/DataTable/DataTable.vue';
 
 export default {
-  name: 'RegisterOrganization',
+  name: 'Organisation',
   components: {
     DataTable,
   },
   data() {
     return {
       propsDataTable: {
-        stateName: 'RegisterOrganization',
+        tableName: 'organisations',
         header: [
           {value: 'id', width: [50, 50], },
           {value: 'institution_code', align: 'end', width: [90, 90], },
@@ -29,7 +29,7 @@ export default {
           {value: 'industry_typing', width: [120, 120]},
           {value: 'institution_type', width: [130, 130]},
           {value: 'budget_level', width: [180, 180]},
-          {value: 'bk', width: [180, 180]},
+          {value: 'bk', width: [180, 180], objectValue: 'head_name'},
         ],
         activeField: 'id',
       },

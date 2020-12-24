@@ -11,23 +11,17 @@ const routes = [
     component: Home,
   },
   {
-    path: '/Register/Organization',
-    name: 'RegisterOrganization',
-    meta: { layout: 'Register' },
-    component: () => import('@/views/Register/RegisterOrganization.vue'),
+    path: '/Tables/Organisation',
+    name: 'Organization',
+    meta: { layout: 'Tables' },
+    component: () => import('@/views/Tables/Organisation.vue'),
   },
   {
-    path: '/Catalog/Bk',
-    name: 'CatalogBk',
-    meta: { layout: 'Catalog' },
-    component: () => import('@/views/Catalog/CatalogBk.vue'),
+    path: '/Tables/Bk',
+    name: 'Bk',
+    meta: { layout: 'Tables' },
+    component: () => import('@/views/Tables/Bk.vue'),
   },
-  {
-    path: '/Register/Test',
-    name: 'Test',
-    meta: { layout: 'Register' },
-    component: () => import('@/views/Register/Test.vue'),
-  }
 ]
 
 const router = new VueRouter({

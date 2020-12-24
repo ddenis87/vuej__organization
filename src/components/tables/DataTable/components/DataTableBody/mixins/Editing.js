@@ -13,7 +13,7 @@ export const Editing = {
     }
   },
   methods: {
-    checkDisplayEdit(event, itemColumn) {
+    checkDisplayEdit(event, itemColumn, itemValue = null) {
       // console.log('check display edit for dblclick');
       if (!this.editable) {
         this.$emit('dblclick-row', event, itemColumn); return;
@@ -21,14 +21,14 @@ export const Editing = {
       if (itemColumn['read_only']) return;
       let parentElement = event.target.closest('.table-body__col');
       if (parentElement.querySelector('.box-display.display-none')) return;
-
+      // console.log(parentElement);
       parentElement.classList.add('table-body__col_focus');
       setTimeout(() => {
         parentElement.querySelector('.box-display').classList.add('display-none');
         parentElement.querySelector('.box-editing').classList.remove('display-none');
-        if (parentElement.querySelector('.box-editing-default')) {
+        if (parentElement.querySelector('.box-editing')) {
           parentElement.parentElement.classList.add('table-body__row_hover');
-          this.editingStart(itemColumn, parentElement.querySelector('.box-editing-default'));
+          this.editingStart(itemColumn, parentElement.querySelector('.box-editing'));
         } else {
           // custom element edit function this.$refs[nameCustomElement].editingStart(params)
         }
@@ -53,9 +53,12 @@ export const Editing = {
       if (event.code.includes('Key') || event.code.includes('Digit')) this.checkDisplayEdit(event, itemColumn);
     },
 
-    editingStart(itemColumn, parentElement) {
+    editingStart(itemColumn, parentElement, itemValue = null) {
       this.cellEditProps = itemColumn;
+      // this.cellEditProps.objectValue = itemValue;
+      // 
       this.cellEditProps.text = parentElement.getAttribute('data-value');
+      console.log(this.cellEditProps);
       this.cellEditComponent = new this.vueCellEdit({ vuetify, store, propsData: {listProps: this.cellEditProps} }).$mount(); 
       parentElement.prepend(this.cellEditComponent.$el);
 
@@ -71,8 +74,10 @@ export const Editing = {
 
     editingCompleted(event) {
       let parentElement = event.target;
-      if (parentElement.querySelector('.box-display-default')) {
-        this.displayUpdate(event, event.detail);
+      if (parentElement.querySelector('.box-display')) {
+        console.log(event.detail);
+        if (event.detail.status == true)
+          this.displayUpdate(event, event.detail.value);
       } else {
         // custom element display function for update view this.$refs[nameCustomElement].displayUpdate
       }
@@ -87,9 +92,16 @@ export const Editing = {
 
     displayUpdate(event, value) {
       let parentElement = event.target;
+      if (typeof(value) == 'object') {
+        console.log(value);
+        parentElement.querySelector('.content').innerText = value.text;
+        parentElement.querySelector('.box-editing').setAttribute('data-value', value.value);
+        parentElement.querySelector('.box-display').setAttribute('data-value', value.text);
+        return;
+      }
       parentElement.querySelector('.content').innerText = value;
-      parentElement.querySelector('.box-editing-default').setAttribute('data-value', value);
-      parentElement.querySelector('.box-display-default').setAttribute('data-value', value);
+      parentElement.querySelector('.box-editing').setAttribute('data-value', value);
+      parentElement.querySelector('.box-display').setAttribute('data-value', value);
     },
   }
 }

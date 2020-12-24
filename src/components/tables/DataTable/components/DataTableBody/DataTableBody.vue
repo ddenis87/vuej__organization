@@ -14,29 +14,23 @@
           v-bind:tabindex="(editable) ? indexCol : ''"
           @dblclick.stop="(event) => checkDisplayEdit(event, itemColumn)"
           @keydown.stop="(event) => checkDisplayEditForKeydown(event, itemColumn)"
-          @editing-completed="editingCompleted" 
-          @mouseover.stop.prevent="(event) => $emit('show-tooltip', event)"
-          @mouseout.stop.prevent="$emit('hide-tooltip')">
+          @editing-completed="editingCompleted">
 
-        
         <!-- slot editing -->
-        <div class="box-editing display-none">
+        <div class="box-editing display-none" :data-value="computedDataValueAttribute(itemRow[itemColumn.value])">
           <slot :name="`body-editing.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
-            <div class="box-editing-default"
-                :data-value="itemRow[itemColumn.value]">
+            <div class="box-editing-default">
               <!-- includes default component -->
             </div>
           </slot>
         </div>
         <!-- slot display -->
-        <div class="box-display">
+        <div class="box-display" :data-value="itemRow[itemColumn.value]">
           <slot :name="`body-display.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
-            <div class="box-display-default" :data-value="itemRow[itemColumn.value]" @mouseover.stop.prevent="">
-              <cell-display :data-value="itemRow[itemColumn.value].toString()"
-                            :data-props="itemColumn" 
-                            :height-type="heightType"></cell-display>
-              <cell-overflow :content="itemRow[itemColumn.value]" @destroy-self="(event) => destroyOverflow(event)"></cell-overflow>
-            </div>
+            <cell-display :data-value="itemRow[itemColumn.value]"
+                          :data-props="itemColumn" 
+                          :height-type="heightType"></cell-display>
+            <cell-overflow :content="itemRow[itemColumn.value]" @destroy-self="(event) => destroyOverflow(event)"></cell-overflow>
           </slot>
         </div>
       </div>
@@ -77,9 +71,18 @@ export default {
     return {
     }
   },
+  mounted() {
+    console.log(this.listData);
+  },
   methods: {
     destroyOverflow(event) {
-      document.querySelector('.box-display-default #box-overflow').remove();
+      document.querySelector('.box-display #box-overflow').remove();
+    },
+    computedDataValueAttribute(value) {
+      if (typeof(value) == 'object') {
+        return value.value;
+      }
+      return value;
     }
   },
 }
@@ -137,10 +140,10 @@ export default {
         display: inline-flex;
         align-items: $bodyVerticalAlign;
 
-        .box-display-default {
-          width: inherit;
-          height: inherit;
-        }
+        // .box-display-default {
+        //   width: inherit;
+        //   height: inherit;
+        // }
       }
       .display-none { display: none; }
       

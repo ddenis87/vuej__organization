@@ -2,14 +2,16 @@ import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 import axios from 'axios';
 
-import CatalogBk from './Catalog/CatalogBk.js';
-import RegisterOrganization from './Register/RegisterOrganization.js';
+// import CatalogBk from './Catalog/CatalogBk.js';
+// import RegisterOrganization from './Register/RegisterOrganization.js';
+import DataTable from './DataTable/DataTable.js';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   namespaced: true,
   state: {
+    addressApi: 'https://an67.pythonanywhere.com/api/',
     // sequenceOverflowBox: 0,
     // statusLoad: false,
     // optionRequest: {
@@ -164,7 +166,8 @@ export default new Vuex.Store({
     // },
   },
   modules: {
-    CatalogBk,
-    RegisterOrganization,
+    // CatalogBk,
+    // RegisterOrganization,
+    DataTable
   },
 })
