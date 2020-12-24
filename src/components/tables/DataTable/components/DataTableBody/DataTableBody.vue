@@ -12,7 +12,7 @@
           :class="styleCell" 
           :style="itemColumn.position"
           v-bind:tabindex="(editable) ? indexCol : ''"
-          @dblclick.stop="(event) => checkDisplayEdit(event, itemColumn)"
+          @dblclick.stop="(event) => checkDisplayEdit(event, itemColumn, itemRow)"
           @keydown.stop="(event) => checkDisplayEditForKeydown(event, itemColumn)"
           @editing-completed="editingCompleted">
 
@@ -79,7 +79,9 @@ export default {
       document.querySelector('.box-display #box-overflow').remove();
     },
     computedDataValueAttribute(value) {
+      // console.log(value);
       if (typeof(value) == 'object') {
+        if ('id' in value) { return value.id; }
         return value.value;
       }
       return value;

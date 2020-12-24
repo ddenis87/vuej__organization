@@ -8,7 +8,7 @@
                     tabindex="10"
                     dense
                     single-line
-                    :rules="rules"
+                    return-object
                     v-model="cellValue" 
                     :items="cellList"
                     append-icon="mdi-dots-horizontal"
@@ -43,41 +43,45 @@ export default {
   },
   data() {
     return {
-      cellValue: this.dataProps.text,
-      rules: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1` ],
+      cellValue: null,
+      // rules: [v => (this.dataProps.required) ? v.length > 0 : true || `мин. 1` ],
       cellEditStatus: false,
-      // cellEditStatusDialog: false,
       isDialog: false,
     }
   },
   computed: {
     catalogComponent() {
-      // console.log(this.dataProps);
       return () => import('@/views/Tables/Bk'); /// ??????
     },
     cellList() {
       let cellList = [];
-      this.dataProps.choices.forEach(element => {
-        cellList.push({text: element['display_name'], value: element['display_name']})
-      })
-      return cellList;
+      cellList = this.$store.getters[`DataTable/GET_LIST_DATA`]('budget-classifications');
+      if (cellList.length == 0) {
+        this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: 'budget-classifications'});
+      } else {
+        this.cellValue = this.dataProps.text;
+      }
+      let modCellList = [];
+      cellList.forEach(element => {
+        modCellList.push({text: element[this.dataProps.objectValue], value: `${element.id}`});
+      });
+      return modCellList;
     },
   },
   methods: {
     dialogClose(event) {
-      // console.log('close dialog');
       this.isDialog = false;
       setTimeout(() => {
         document.getElementById('boxEditingComponentDialog').querySelector('input').focus();
       }, 10);
     },
-    selectInDialog(event, itemColumn, value) {
+    selectInDialog(event, itemColumn, valueIn) {
       // console.log('select in dialog');
       this.isDialog = false;
       document.getElementById('boxEditingComponentDialog').querySelector('input').focus();
-      let cellValueNew = event.target.closest('.table-body__col').querySelector('.box-editing-default').getAttribute('data-value');
-      this.cellValue = cellValueNew;
-      this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'});
+      this.cellValue = valueIn;
+      this.cellEditStatus = true;
+      this.$emit('input-event', event,  {value: valueIn, key: 'Enter'});
       
     },
     inputInput() {
@@ -98,7 +102,10 @@ export default {
       // console.log('blur dialog component');
       if (this.cellEditStatus) { this.$emit('input-blur', event); return; }
       if (event.relatedTarget && event.relatedTarget.classList.contains('table-body__col')) {
-        // console.log('blur outer component');
+        this.$emit('input-blur', event);
+        return;
+      }
+      if (event.relatedTarget == null) {
         this.$emit('input-blur', event);
         return;
       }
@@ -106,7 +113,6 @@ export default {
     focusEvent(event) {
       // console.log('focus dialog component');
       setTimeout(() => { 
-        // console.log(event);
         event.target.select(); }, 100)
     },
   },

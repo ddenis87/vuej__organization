@@ -4,7 +4,7 @@
                 :table-properties="propsDataTable" 
                 fixed
                 :editable="isEditable"
-                @dblclick-row="(eventTarget, itemColumn) => $emit('dblclick-row', eventTarget, itemColumn)"></data-table>
+                @dblclick-row="(eventTarget, itemColumn, objectValue) => $emit('dblclick-row', eventTarget, itemColumn, objectValue)"></data-table>
   </div>
 </template>
 

@@ -51,16 +51,22 @@ export default {
     inputEvent(event, params) {
       // console.log('input base component');
       let parentElement = event.target.closest('.table-body__col');
-
-      
-      // console.log(params.value);
       if (params.key == 'Enter') {
         this.cellValue = params.value;  // --
+        // console.log(params);
+        if (typeof(params.value) == 'object' && 'id' in params.value) {
+          let modCellValue = {value: `${params.value.id}`, text: `${params.value[this.listProps.objectValue]}`};
+          Object.assign(this.cellValue, modCellValue);
+        } 
         this.cellEditStatus = true;
         setTimeout(() => { parentElement.focus() }, 100);
       }
       if (params.key == 'Tab') {
         this.cellValue = params.value;  // --
+        if (typeof(params.value) == 'object' && 'id' in params.value) {
+          let modCellValue = {value: `${params.value.id}`, text: `${params.value[this.listProps.objectValue]}`};
+          Object.assign(this.cellValue, modCellValue);
+        }
         this.cellEditStatus = true;
         let nextEvent = new Event('dblclick', {bubbles: false});
         let nextElement = null;
@@ -76,8 +82,6 @@ export default {
         this.cellValue = this.listProps.text;
       }
       let parentElement = event.target.closest('.table-body__col');
-      // console.log(event.target);
-      // console.log(parentElement);
       let eventEditingCompleted = new CustomEvent('editing-completed', {detail: {value: this.cellValue, status: this.cellEditStatus}});
       parentElement.dispatchEvent(eventEditingCompleted);
       parentElement.querySelector('.box-editing-component').remove();

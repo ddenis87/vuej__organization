@@ -5,6 +5,7 @@ export default {
     axios
       .options(state.getters.GET_ADDRESS_API + option.tableName)
       .then(response => {
+        console.log(response);
         let mutationOption = {
           tableName: option.tableName,
           data: JSON.parse(response.request.response).actions.POST

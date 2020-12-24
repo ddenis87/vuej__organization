@@ -13,15 +13,14 @@ export const Editing = {
     }
   },
   methods: {
-    checkDisplayEdit(event, itemColumn, itemValue = null) {
+    checkDisplayEdit(event, itemColumn, objectValue = null) {
       // console.log('check display edit for dblclick');
       if (!this.editable) {
-        this.$emit('dblclick-row', event, itemColumn); return;
+        this.$emit('dblclick-row', event, itemColumn, objectValue); return;
       }
       if (itemColumn['read_only']) return;
       let parentElement = event.target.closest('.table-body__col');
       if (parentElement.querySelector('.box-display.display-none')) return;
-      // console.log(parentElement);
       parentElement.classList.add('table-body__col_focus');
       setTimeout(() => {
         parentElement.querySelector('.box-display').classList.add('display-none');
@@ -55,10 +54,8 @@ export const Editing = {
 
     editingStart(itemColumn, parentElement, itemValue = null) {
       this.cellEditProps = itemColumn;
-      // this.cellEditProps.objectValue = itemValue;
       // 
       this.cellEditProps.text = parentElement.getAttribute('data-value');
-      // console.log(this.cellEditProps);
       this.cellEditComponent = new this.vueCellEdit({ vuetify, store, propsData: {listProps: this.cellEditProps} }).$mount(); 
       parentElement.prepend(this.cellEditComponent.$el);
 
@@ -75,7 +72,6 @@ export const Editing = {
     editingCompleted(event) {
       let parentElement = event.target;
       if (parentElement.querySelector('.box-display')) {
-        // console.log(event.detail);
         if (event.detail.status == true)
           this.displayUpdate(event, event.detail.value);
       } else {
@@ -93,12 +89,13 @@ export const Editing = {
     displayUpdate(event, value) {
       let parentElement = event.target;
       if (typeof(value) == 'object') {
-        console.log(value);
+        // console.log(value);
         parentElement.querySelector('.content').innerText = value.text;
         parentElement.querySelector('.box-editing').setAttribute('data-value', value.value);
         parentElement.querySelector('.box-display').setAttribute('data-value', value.text);
         return;
       }
+      // console.log(value);
       parentElement.querySelector('.content').innerText = value;
       parentElement.querySelector('.box-editing').setAttribute('data-value', value);
       parentElement.querySelector('.box-display').setAttribute('data-value', value);
