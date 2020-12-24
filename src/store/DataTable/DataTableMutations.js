@@ -2,6 +2,7 @@ export default {
   SET_IS_DATA_LOAD(state, status = false) { state.isDataLoad = status; },
   SET_LIST_OPTION(state, option) {
     state[option.tableName].listOption = option.data;
+    state[option.tableName].description = option.description;
   },
   SET_LIST_DATA(state, option) { 
     let listOption = state[option.tableName].listOption; //

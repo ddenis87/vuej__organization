@@ -47,7 +47,8 @@ export default {
 <style lang="scss" scoped>
 .catalog {
   height: 100%;
-  padding: 10px;
+  padding: 0px 0px;
+  // padding-top: 10px;
   // border: thin solid green;
 }
 </style>

@@ -24,8 +24,12 @@
                     @click.stop=""></v-autocomplete>
     <v-dialog v-model="isDialog" max-width="80%" scrollable class="dialog__box">
       <v-card height="700">
+        <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
+          <span class="dialog__title">{{ descriptionTable }}</span>
+          <v-spacer></v-spacer>
+          <v-btn class="system__btn" color="white" tile icon small @click="dialogClose"><v-icon small color="white">mdi-close</v-icon></v-btn>
+        </v-system-bar>
         <div class="dialog__table" id="dialog__table">
-          <v-btn @click="dialogClose">Close</v-btn>
           <component :is="catalogComponent" v-bind:editable="false" @dblclick-row="selectInDialog"></component>
         </div>
       </v-card>
@@ -54,6 +58,7 @@ export default {
       return () => import('@/views/Tables/Bk'); /// ??????
     },
     cellList() {
+      console.log(this.dataProps);
       let cellList = [];
       cellList = this.$store.getters[`DataTable/GET_LIST_DATA`]('budget-classifications');
       if (cellList.length == 0) {
@@ -66,6 +71,9 @@ export default {
         modCellList.push({text: element[this.dataProps.objectValue], value: `${element.id}`});
       });
       return modCellList;
+    },
+    descriptionTable() {
+      return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`]('budget-classifications');
     },
   },
   methods: {
@@ -133,30 +141,14 @@ export default {
     padding: 0px;
   }
 }
+
 .dialog {
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;
-    &-thumb {
-      border-radius: 3px;
-      background-color: rgba(0,0,0,0.2);
-    }
-  }
-  &__box {
-    // max-height: 70%;
-    &::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-      border-radius: 4px;
-      &-thumb {
-        border-radius: 3px;
-        background-color: rgba(0,0,0,0.2);
-      }
-    }
+  &__title {
+    color: white;
   }
   &__table {
     height: 94%;
+    color: white;
     &::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -167,5 +159,8 @@ export default {
       }
     }
   }
+}
+::v-deep {
+  .v-icon { margin-right: 0px; }
 }
 </style>

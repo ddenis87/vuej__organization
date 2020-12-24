@@ -9,10 +9,12 @@ export default {
     isDataLoad: false,
 
     "budget-classifications": {
+      description: '',
       listOption: [],
       listData: [],
     },
     "organisations" : {
+      description: '',
       listOption: [],
       listData: [],
     }

@@ -9,5 +9,9 @@ export default {
   },
   GET_LIST_DATA:(state) => (tableName) => {
     // console.log(state[tableName]);
-    return state[tableName].listData; },
+    return state[tableName].listData;
+  },
+  GET_DESCRIPTION_TABLE:(state) => (tableName) => {
+    return state[tableName].description;
+  },
 }

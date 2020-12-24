@@ -57,6 +57,7 @@ export default {
     grid-area: body;
     // border: thin solid orangered;
     // height: 100%;
+    padding: 0px 10px;
     height: calc(100vh - 160px);
   }
 }

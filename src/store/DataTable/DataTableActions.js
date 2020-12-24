@@ -8,6 +8,7 @@ export default {
         console.log(response);
         let mutationOption = {
           tableName: option.tableName,
+          description: response.data.description,
           data: JSON.parse(response.request.response).actions.POST
         }
         state.commit('SET_LIST_OPTION', mutationOption);
