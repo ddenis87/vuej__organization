@@ -1,11 +1,13 @@
 import axios from 'axios';
 export default {
   GET_LIST_OPTION(state, option) {
+    
+    if  (state.getters.GET_DESCRIPTION_TABLE(option.tableName)) { return; };
     state.commit('SET_IS_DATA_LOAD', true);
     axios
       .options(state.getters.GET_ADDRESS_API + option.tableName)
       .then(response => {
-        console.log(response);
+        // console.log(response);
         let mutationOption = {
           tableName: option.tableName,
           description: response.data.description,

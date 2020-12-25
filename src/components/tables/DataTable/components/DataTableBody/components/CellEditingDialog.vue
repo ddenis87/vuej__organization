@@ -23,7 +23,7 @@
 
                     @click.stop=""></v-autocomplete>
     <v-dialog v-model="isDialog" max-width="80%" scrollable class="dialog__box">
-      <v-card height="700">
+      <v-card max-height="700">
         <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
           <span class="dialog__title">{{ descriptionTable }}</span>
           <v-spacer></v-spacer>
@@ -55,14 +55,14 @@ export default {
   },
   computed: {
     catalogComponent() {
-      return () => import('@/views/Tables/Bk'); /// ??????
+      return () => import('@/views/Tables/Bk'); /// ?????? необходимо получать по API
     },
     cellList() {
-      console.log(this.dataProps);
+      // console.log(this.dataProps);
       let cellList = [];
-      cellList = this.$store.getters[`DataTable/GET_LIST_DATA`]('budget-classifications');
+      cellList = this.$store.getters[`DataTable/GET_LIST_DATA`]('budget-classifications');  /// ?????? необходимо получать по API
       if (cellList.length == 0) {
-        this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: 'budget-classifications'});
+        this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: 'budget-classifications'});  /// ?????? необходимо получать по API
       } else {
         this.cellValue = this.dataProps.text;
       }
@@ -73,7 +73,7 @@ export default {
       return modCellList;
     },
     descriptionTable() {
-      return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`]('budget-classifications');
+      return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`]('budget-classifications');  /// ?????? необходимо получать по API
     },
   },
   methods: {
@@ -143,11 +143,12 @@ export default {
 }
 
 .dialog {
+  background-color: white;
   &__title {
     color: white;
   }
   &__table {
-    height: 94%;
+    height: calc(100% - 82px);
     color: white;
     &::-webkit-scrollbar {
       width: 8px;

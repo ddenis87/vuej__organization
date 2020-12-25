@@ -16,6 +16,7 @@
                        :height-type="heightType"
                        :parent-id="parentId"
                        :editable="editable"
+                       @item-selected="itemSelected"
                        @show-tooltip="showTooltip"
                        @dblclick-row="(event, itemColumn, objectValue) => $emit('dblclick-row', event, itemColumn, objectValue)">
         <!-- editing slot -->
@@ -49,6 +50,7 @@ import DataTableBody from './components/DataTableBody/DataTableBody.vue';
 import DataProgressLine from './components/DataProgressLine.vue';
 import DataTooltip from './components/DataTooltip.vue';
 
+import { Events } from './mixins/Events.js'; // 
 import { Styles } from './mixins/Styles.js'; // heightType
 import { LoadData } from './mixins/LoadData.js'; // isProgressBar
 import { GetData } from './mixins/GetData.js'; // listHeader, listBody
@@ -64,6 +66,7 @@ export default {
     DataTooltip,
   },
   mixins: [
+    Events,
     Styles,
     LoadData,
     GetData,

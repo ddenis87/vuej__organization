@@ -47,7 +47,7 @@ export default {
       if (event.key == 'Escape') { this.$emit('input-event', event, {value: this.dataProps.text, key: 'Escape'}); return; }
       if (event.key == 'Enter') {
         if (this.cellEditStatus) {
-          console.log(this.cellValue);
+          // console.log(this.cellValue);
           this.$emit('input-event', event,  {value: this.cellValue, key: 'Enter'}); return;
         }
       }
@@ -55,16 +55,16 @@ export default {
         event.preventDefault();
         
         if (this.cellEditStatus) {
-          console.log(this.cellValue);
+          // console.log(this.cellValue);
           this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return;
         } 
         else {
-          console.log(this.dataProps);
+          // console.log(this.dataProps);
           this.cellValue = {
             text: this.dataProps.choices.find(item => item.value == this.cellValue).display_name,
             value: this.dataProps.text
           }
-          console.log(this.cellValue);
+          // console.log(this.cellValue);
           this.$emit('input-event', event, {value: this.cellValue, key: 'Tab'}); return;
         }
       }

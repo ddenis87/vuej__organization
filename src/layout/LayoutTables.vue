@@ -3,13 +3,6 @@
     <div class="title">
       <h4></h4>
     </div>
-    <div class="control">
-      <v-toolbar dense >
-        <v-toolbar-title></v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn class="control__btn" icon><v-icon>mdi-filter-outline</v-icon></v-btn>
-      </v-toolbar>
-    </div>
     <div class="body">
       <router-view></router-view>
     </div>
@@ -30,8 +23,8 @@ export default {
 <style lang="scss" scoped>
 .layout-register {
   display: grid;
-  grid-template-areas: "title" "control" "body";
-  grid-template-rows: 40px 50px 1fr;
+  grid-template-areas: "title" "body";
+  grid-template-rows: 40px 1fr;
   grid-template-columns: 100%;
   // border: thin solid purple;
   width: 100%;
@@ -45,7 +38,7 @@ export default {
   .control {
     grid-area: control;
     // border: thin solid blue;
-    height: 100%;
+    // height: 100%;
     padding: 0px 10px;
     overflow: hidden;
 

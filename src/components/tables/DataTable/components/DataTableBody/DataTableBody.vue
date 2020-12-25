@@ -5,7 +5,8 @@
          class="table-body__row"
          :class="styleRow"
          :style="fieldsTemplate"
-         :tabindex="indexRow">
+         :tabindex="indexRow"
+         @click="(event) => $emit('item-selected', event, itemRow)">
       <div v-for="(itemColumn, indexCol) in listDataHeader"
           :key="`bodyCol-${indexCol}`" 
           class="table-body__col"
@@ -46,6 +47,7 @@
 import CellDisplay from './components/CellDisplay.vue';
 import CellOverflow from './components/CellOverflow.vue';
 
+import { Events } from './mixins/Events.js'; // 
 import { Editing } from './mixins/Editing.js'; // checkDisplayEdit, checkDisplayEditForKeydown
 import { Styles } from './mixins/Styles.js'; // styleRow, styleCell
 
@@ -56,6 +58,7 @@ export default {
     CellOverflow,
   },
   mixins: [
+    Events,
     Editing,
     Styles,
   ],
@@ -72,7 +75,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.listData);
+    // console.log(this.listData);
   },
   methods: {
     destroyOverflow(event) {

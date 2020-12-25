@@ -22,4 +22,24 @@ export default {
       // console.log(state[option.tableName]);
     }
   },
+  ADDING_LIST_DATA(state, option) {
+    let newItem = {};
+    Object.assign(newItem, option.values);
+    state[option.tableName].listData.unshift(newItem);
+  },
+  DELETING_LIST_DATA(state, option) {
+    let index = state[option.tableName].listData.findIndex(item => item.id == option.values.id);
+    // console.log(index);
+    state[option.tableName].listData.splice(index, 1);
+    // console.log(state[option.tableName].listData);
+  },
+  EDITING_LIST_DATA(state, option) {
+    let newItem = {};
+    Object.assign(newItem, option.values);
+    let index = state[option.tableName].listData.findIndex(item => item.id == option.values.id);
+    // console.log(index);
+    // console.log(option.values);
+
+    state[option.tableName].listData.splice(index, 1, newItem);
+  },
 }
