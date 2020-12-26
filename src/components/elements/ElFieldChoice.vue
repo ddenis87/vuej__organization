@@ -9,16 +9,11 @@
                   :label="fieldLabel"
                   :hide-details="fieldShowValidation"
 
-                  tabindex="10"
-
                   :items="fieldList"
 
                   @keydown.stop="eventKeyDown"
                   @change="eventChangeValue"
-                  @blur.stop="eventBlur"
-
-                  @input="inputInput"
-                  @focus="focusEvent"></v-autocomplete>
+                  @blur.stop="eventBlur"></v-autocomplete>
 </template>
 
 <script>
@@ -37,7 +32,6 @@ export default {
       fieldId: `El-${this.properties.value}`,
       fieldLabel: this.label ? this.properties.label : '',
       fieldValue: this.properties.text.value.toString(),
-      // fieldList: this.properties.choices,
       fieldRequired: this.properties.required,
       fieldRules: {
         required: value => !!value || 'мин. 1 символ',
@@ -52,11 +46,9 @@ export default {
       })
       return fieldList;
     },
-    // fieldMaxLength() { return (this.properties['max_length']) ? this.properties['max_length'] : Infinity; },
     fieldShowValidation() { return (this.showValidation) ? false : true }
   },
   mounted() {
-    console.log(this.properties);
     setTimeout(() => {
       if (this.selectedValue) {
         document.querySelector(`#${this.fieldId}`).select();
@@ -66,10 +58,11 @@ export default {
   },
   methods: {
     eventChangeValue() {
+      // console.log('change choice component');
       this.isInputFirstEnter = true;
     },
     eventKeyDown() {
-      console.log('input choice component');
+      // console.log('input choice component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
@@ -100,12 +93,10 @@ export default {
 
     eventBlur() {
       if (!this.isInputEmit) {
-        console.log('blur choice component');
+        // console.log('input choice component');
         this.$emit('editing-canceled');
       }
     },
-    inputInput() {},
-    focusEvent() {},
   }
 }
 </script>
