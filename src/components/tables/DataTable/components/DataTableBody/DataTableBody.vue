@@ -79,19 +79,11 @@ export default {
     parentId: String,
     editable: Boolean,
   },
-  data() {
-    return {
-    }
-  },
-  mounted() {
-    // console.log(this.listData);
-  },
   methods: {
     destroyOverflow(event) {
       document.querySelector('.box-display #box-overflow').remove();
     },
     computedDataValueAttribute(value) {
-      // console.log(value);
       if (typeof(value) == 'object') {
         if ('id' in value) { return value.id; }
         return value.value;

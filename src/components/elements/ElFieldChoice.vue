@@ -1,0 +1,132 @@
+<template>
+  <v-autocomplete :id="fieldId"
+                  class="el-field-choice"
+                  dense
+                  single-line
+                  auto-select-first
+                  return-object
+                  v-model="fieldValue"
+                  :label="fieldLabel"
+                  :hide-details="fieldShowValidation"
+
+                  tabindex="10"
+
+                  :items="fieldList"
+
+                  @keydown.stop="eventKeyDown"
+                  @change="eventChangeValue"
+                  @blur.stop="eventBlur"
+
+                  @input="inputInput"
+                  @focus="focusEvent"></v-autocomplete>
+</template>
+
+<script>
+export default {
+  name: 'ElFieldChoice',
+  props: {
+    properties: Object,
+    label: {type: Boolean, default: false}, // hidden or show label
+    showValidation: {type: Boolean, default: false}, // hidden or show hint error
+    selectedValue: {type: Boolean, defalt: false} // selected value in text field after mounted
+  },
+  data() {
+    return {
+      isInputEmit: false,
+      isInputFirstEnter: false,
+      fieldId: `El-${this.properties.value}`,
+      fieldLabel: this.label ? this.properties.label : '',
+      fieldValue: this.properties.text.value.toString(),
+      // fieldList: this.properties.choices,
+      fieldRequired: this.properties.required,
+      fieldRules: {
+        required: value => !!value || 'мин. 1 символ',
+      }
+    }
+  },
+  computed: {
+    fieldList() {
+      let fieldList = [];
+      this.properties.choices.forEach(element => {
+        fieldList.push({text: element['display_name'], value: `${element['value']}`})
+      })
+      return fieldList;
+    },
+    // fieldMaxLength() { return (this.properties['max_length']) ? this.properties['max_length'] : Infinity; },
+    fieldShowValidation() { return (this.showValidation) ? false : true }
+  },
+  mounted() {
+    console.log(this.properties);
+    setTimeout(() => {
+      if (this.selectedValue) {
+        document.querySelector(`#${this.fieldId}`).select();
+        document.querySelector(`#${this.fieldId}`).focus();
+      }
+    }, 10);
+  },
+  methods: {
+    eventChangeValue() {
+      this.isInputFirstEnter = true;
+    },
+    eventKeyDown() {
+      console.log('input choice component');
+      if (event.key == 'Escape') {
+        this.isInputEmit = true;
+        this.$emit('editing-canceled', {key: 'Escape'});
+        return;
+      }
+      if (event.key == 'Enter')
+        if (!this.isInputFirstEnter) { this.isInputFirstEnter = true; return; }
+      
+      if (event.key == 'Enter' || event.key == 'Tab') {
+        event.preventDefault();
+
+        if (this.fieldRequired && this.fieldValue.length == 0) return;
+        let newFieldValue = (this.isInputFirstEnter) ? {
+          'display_name': this.fieldValue.text,
+          value: this.fieldValue.value
+        } : this.properties.text;
+        this.isInputEmit = true;
+        this.$emit('editing-accepted', {
+          tableName: this.properties.tableName,
+          key: event.key,
+          keyShift: event.shiftKey,
+          value: newFieldValue,
+          field: this.properties.value,
+          id: this.properties.idRow
+        });
+      }
+    },
+
+    eventBlur() {
+      if (!this.isInputEmit) {
+        console.log('blur choice component');
+        this.$emit('editing-canceled');
+      }
+    },
+    inputInput() {},
+    focusEvent() {},
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.v-input {
+  text-align: center;
+  font-size: 14px;
+  .v-input__control {
+    padding: 0px;
+  }
+}
+.v-text-field {
+  margin-top: -3.5px;
+   input {
+    padding: 0px;
+  }
+}
+::v-deep {
+  .v-input__append-inner {
+    cursor: pointer;
+  }
+}
+</style>

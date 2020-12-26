@@ -45,7 +45,7 @@ export default {
         document.querySelector(`#${this.fieldId}`).select();
         document.querySelector(`#${this.fieldId}`).focus();
       }
-    }, 100);
+    }, 10);
   },
   methods: {
     eventKeyDown(event) {

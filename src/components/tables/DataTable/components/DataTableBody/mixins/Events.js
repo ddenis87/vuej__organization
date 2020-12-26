@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import vuetify from '@/plugins/vuetify';
 import store from '@/store';
 import CellEditing from '../components/CellEditing.vue';
 
@@ -61,7 +62,7 @@ export const Events = {
         columnValue,
       };
       let editingComponentVue = Vue.extend(CellEditing);
-      let editingComponent = new editingComponentVue({ store, propsData: { properties: editingComponentProperties }}).$mount();
+      let editingComponent = new editingComponentVue({ vuetify, store, propsData: { properties: editingComponentProperties }}).$mount();
       target.prepend(editingComponent.$el);
     },
 
