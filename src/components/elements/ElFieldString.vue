@@ -1,0 +1,82 @@
+<template>
+  <v-text-field :id="fieldId"
+                class="el-field-string" 
+                dense 
+                single-line
+                v-model="fieldValue" 
+                :label="fieldLabel"
+                :maxlength="fieldMaxLength"
+                :hide-details="fieldShowValidation"
+                :rules="(fieldRequired) ? [fieldRules.required] : []"
+                @keydown.stop="eventKeyDown"
+                @blur.stop="eventBlur"></v-text-field>
+</template>
+
+<script>
+export default {
+  name: 'ElFieldString',
+  props: {
+    properties: Object,
+    label: {type: Boolean, default: false}, // hidden or show label
+    showValidation: {type: Boolean, default: false}, // hidden or show hint error
+    selectedValue: {type: Boolean, defalt: false} // selected value in text field after mounted
+  },
+  data() {
+    return {
+      fieldId: `El-${this.properties.value}`,
+      fieldLabel: this.label ? this.properties.label : '',
+      fieldValue: this.properties.text,
+      fieldRequired: this.properties.required,
+      fieldRules: {
+        required: value => !!value || 'мин. 1 символ',
+      }
+    }
+  },
+  computed: {
+    fieldMaxLength() { return (this.properties['max_length']) ? this.properties['max_length'] : Infinity; },
+    fieldShowValidation() { return (this.showValidation) ? false : true }
+  },
+  mounted() {
+    // console.log(this.properties);
+    setTimeout(() => {
+      if (this.selectedValue) {
+        document.querySelector(`#${this.fieldId}`).setSelectionRange(0, 0);
+        document.querySelector(`#${this.fieldId}`).select();
+        document.querySelector(`#${this.fieldId}`).focus();
+      }
+    }, 100);
+  },
+  methods: {
+    eventKeyDown(event) {
+      // console.log('input string component');
+      if (event.key == 'Escape') {
+        this.$emit('editing-canceled', {key: 'Escape'});
+        return;
+      }
+      if (event.key == 'Enter' || event.key == 'Tab') {
+        event.preventDefault();
+        if (this.fieldRequired && this.fieldValue.length == 0) return;
+        this.$emit('editing-accepted', {
+          tableName: this.properties.tableName,
+          key: event.key, 
+          value: this.fieldValue,
+          field: this.properties.value,
+          id: this.properties.idRow
+        });
+      }
+    },
+
+    eventBlur() { this.$emit('editing-canceled'); },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.el-field-string {
+  width: 100%;
+  font-size: 14px;
+}
+.v-text-field {
+  margin-top: -3.5px;
+}
+</style>

@@ -14,7 +14,8 @@
     <div class="page-table__body">
       <data-table d-id="Organization" 
                   :table-properties="propsDataTable" 
-                  editable></data-table>
+                  editable
+                  @item-selected="selectedItem"></data-table>
     </div>
   </div>
 </template>

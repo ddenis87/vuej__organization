@@ -6,6 +6,8 @@
          :class="styleRow"
          :style="fieldsTemplate"
          :tabindex="indexRow"
+         @mouseenter="eventMouseEnterRow"
+         @mouseleave="eventMouseLeaveRow"
          @click="(event) => $emit('item-selected', event, itemRow)">
       <div v-for="(itemColumn, indexCol) in listDataHeader"
           :key="`bodyCol-${indexCol}`" 
@@ -13,9 +15,15 @@
           :class="styleCell" 
           :style="itemColumn.position"
           v-bind:tabindex="(editable) ? indexCol : ''"
-          @dblclick.stop="(event) => checkDisplayEdit(event, itemColumn, itemRow)"
+          
           @keydown.stop="(event) => checkDisplayEditForKeydown(event, itemColumn)"
-          @editing-completed="editingCompleted">
+          @editing-completed="editingCompleted"
+
+          @focus="(event) => eventFocusToElement(event)"
+          @blur="(event) => eventBlurToElemet(event)"
+          @dblclick="(event) => eventDblclickToElement(event, itemRow, itemColumn, itemRow[itemColumn.value])"
+          @editing-canceled="editingCanceled"
+          @editing-accepted="editingAccepted">
 
         <!-- slot editing -->
         <div class="box-editing display-none" :data-value="computedDataValueAttribute(itemRow[itemColumn.value])">
@@ -63,6 +71,7 @@ export default {
     Styles,
   ],
   props: {
+    tableName: String,
     listData: Array,
     listDataHeader: Array,
     fieldsTemplate: Object,
@@ -100,18 +109,25 @@ export default {
   &__row {
     display: grid;
     border-bottom: $bodyRowBorder;
+    transition-delay: .05s;
 
     &_fixed { grid-auto-rows: $bodyRowHeight;       }
     &_dense { grid-auto-rows: $bodyDenseRowHeight;  }
     &_auto  { grid-auto-rows: $bodyAutoRowHeight;   }
 
-    &_editable_false { border-top: thin solid white; }
+    // &_selected-hover {
+    //   &:hover { background-color: $bodyRowBackgroundColorHover; }
+    // }
+    &_hover {  background-color: $bodyRowBackgroundColorHover; }
+    &_focus { background-color: $bodyRowBackgroundColorHover; }
 
-    &:focus { outline: none; border-top: $bodyRowBorderFocus; border-bottom: $bodyRowBorderFocus; }
+    // &_editable_false { border-top: thin solid white; }
 
-    &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
-    &_hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
-    &:hover > .table-body__col_focus { background-color: white; }
+    // &:focus { outline: none; border-top: $bodyRowBorderFocus; border-bottom: $bodyRowBorderFocus; }
+
+    // &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
+    // &_hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
+    // &:hover > .table-body__col_focus { background-color: white; }
     // &:hover > .table-body__col-action > .action-box { opacity: 1; }
     
     .table-body__col {
@@ -124,19 +140,19 @@ export default {
       color: $bodyFontColor;
 
       border: thin solid rgba(0, 0, 255, 0);
-      // background-color: $bodyRowBackgroundColor;
-      transition-delay: .1s;
+      // transition-delay: .1s;
       overflow: hidden;
       box-sizing: border-box;
       outline: none;
 
-      &:focus { border: $bodyCellBorderFocus; }
-      &_focus { border: $bodyCellBorderFocus; background-color: $bodyRowBackgroundColor; }
+      // &:focus { border: $bodyCellBorderFocus; }
+      &_focus { border: $bodyCellBorderFocus; }
+      &_editing { background-color: white; }
 
       &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }
       &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
       &_auto  { padding: $bodyAutoPaddingTB $bodyAutoPaddingLR;   }
-
+      
       .box-editing, .box-display {
         width: 100%;
         height: 100%;
@@ -144,7 +160,7 @@ export default {
       .box-display {
         display: inline-flex;
         align-items: $bodyVerticalAlign;
-
+      
         // .box-display-default {
         //   width: inherit;
         //   height: inherit;

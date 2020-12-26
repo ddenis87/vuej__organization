@@ -42,4 +42,10 @@ export default {
 
     state[option.tableName].listData.splice(index, 1, newItem);
   },
+  EDITING_LIST_DATA_FIELD(state, option) {
+    // let newItem = {};
+    // Object.assign(newItem, option.values);
+    let index = state[option.tableName].listData.findIndex(item => item.id == option.id);
+    state[option.tableName].listData[index][option.field] = option.value;
+  },
 }

@@ -26,6 +26,9 @@ export default {
       return (this.dataProps['max_length']) ? this.dataProps['max_length'] : Infinity;
     },
   },
+  mounted() {
+    console.log(this.dataProps);
+  },
   methods: {
     inputEvent(event) {
       // console.log('input string component');

@@ -2,7 +2,7 @@ import axios from 'axios';
 export default {
   GET_LIST_OPTION(state, option) {
     
-    if  (state.getters.GET_DESCRIPTION_TABLE(option.tableName)) { return; };
+    if (state.getters.GET_DESCRIPTION_TABLE(option.tableName)) { return; };
     state.commit('SET_IS_DATA_LOAD', true);
     axios
       .options(state.getters.GET_ADDRESS_API + option.tableName)
@@ -17,7 +17,7 @@ export default {
         state.dispatch('GET_LIST_DATA', {tableName: option.tableName});
       })
       .catch(err => {console.log(err)})
-      .finally(() => state.commit('SET_IS_DATA_LOAD'));
+      // .finally(() => state.commit('SET_IS_DATA_LOAD'));
   },
   
   GET_LIST_DATA(state, option) {

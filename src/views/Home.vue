@@ -25,12 +25,12 @@
         </div>
 
         <div class="body-item__body">
-          <data-table d-id="organization" 
+          <!-- <data-table d-id="organization" 
                      :table-properties="propsTableUno" 
                      v-bind:[heightType]="true" 
                      
                      editable>
-          </data-table>
+          </data-table> -->
         </div>
       </div>
     </div>
