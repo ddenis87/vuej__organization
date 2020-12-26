@@ -23,6 +23,7 @@ export default {
   },
   data() {
     return {
+      isInputEmit: false,
       fieldId: `El-${this.properties.value}`,
       fieldLabel: this.label ? this.properties.label : '',
       fieldValue: this.properties.text,
@@ -48,14 +49,16 @@ export default {
   },
   methods: {
     eventKeyDown(event) {
-      // console.log('input string component');
+      console.log('input string component');
       if (event.key == 'Escape') {
+        this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
         return;
       }
       if (event.key == 'Enter' || event.key == 'Tab') {
         event.preventDefault();
         if (this.fieldRequired && this.fieldValue.length == 0) return;
+        this.isInputEmit = true;
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
           key: event.key, 
@@ -66,7 +69,12 @@ export default {
       }
     },
 
-    eventBlur() { this.$emit('editing-canceled'); },
+    eventBlur() {
+      if (!this.isInputEmit) {
+        console.log('blur string component');
+        this.$emit('editing-canceled');
+      }
+    },
   },
 }
 </script>

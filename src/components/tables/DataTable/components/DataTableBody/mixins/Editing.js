@@ -1,15 +1,15 @@
-import Vue from 'vue';
-import vuetify from '@/plugins/vuetify';
-import store from '@/store';
-import CellEditing from '../components/CellEditing.vue';
+// import Vue from 'vue';
+// import vuetify from '@/plugins/vuetify';
+// import store from '@/store';
+// import CellEditing from '../components/CellEditing.vue';
 
 export const Editing = {
   data() {
     return {
-      cellEditable: null,
-      cellEditProps: Object,
-      cellEditComponent: null,
-      vueCellEdit: Vue.extend(CellEditing),
+      // cellEditable: null,
+      // cellEditProps: Object,
+      // cellEditComponent: null,
+      // vueCellEdit: Vue.extend(CellEditing),
     }
   },
   methods: {

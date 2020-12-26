@@ -16,8 +16,8 @@
           :style="itemColumn.position"
           v-bind:tabindex="(editable) ? indexCol : ''"
           
-          @keydown.stop="(event) => checkDisplayEditForKeydown(event, itemColumn)"
-          @editing-completed="editingCompleted"
+          
+          
 
           @focus="(event) => eventFocusToElement(event)"
           @blur="(event) => eventBlurToElemet(event)"
@@ -56,7 +56,7 @@ import CellDisplay from './components/CellDisplay.vue';
 import CellOverflow from './components/CellOverflow.vue';
 
 import { Events } from './mixins/Events.js'; // 
-import { Editing } from './mixins/Editing.js'; // checkDisplayEdit, checkDisplayEditForKeydown
+// import { Editing } from './mixins/Editing.js'; // checkDisplayEdit, checkDisplayEditForKeydown
 import { Styles } from './mixins/Styles.js'; // styleRow, styleCell
 
 export default {
@@ -67,7 +67,7 @@ export default {
   },
   mixins: [
     Events,
-    Editing,
+    // Editing,
     Styles,
   ],
   props: {
