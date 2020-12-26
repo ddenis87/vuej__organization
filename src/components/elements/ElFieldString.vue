@@ -57,11 +57,13 @@ export default {
       }
       if (event.key == 'Enter' || event.key == 'Tab') {
         event.preventDefault();
+        // console.log(event);
         if (this.fieldRequired && this.fieldValue.length == 0) return;
         this.isInputEmit = true;
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
-          key: event.key, 
+          key: event.key,
+          keyShift: event.shiftKey,
           value: this.fieldValue,
           field: this.properties.value,
           id: this.properties.idRow

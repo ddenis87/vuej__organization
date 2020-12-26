@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import store from '@/store';
 import CellEditing from '../components/CellEditing.vue';
 
 export const Events = {
@@ -19,14 +20,14 @@ export const Events = {
         event.target.classList.remove('table-body__row_hover');
     },
     eventFocusToElement(event) {
-      console.log('focus element col');
+      // console.log('focus element col');
       this.isElementNowFocus = true;
       event.target.parentElement.classList.remove('table-body__row_hover');
       event.target.parentElement.classList.add('table-body__row_focus');
       event.target.classList.add('table-body__col_focus');
     },
     eventBlurToElemet(event) {  // work if not editable
-      console.log('blur element col');
+      // console.log('blur element col');
       if (!this.isElementNowEditing) {
         this.isElementNowFocus = false;
         event.target.parentElement.classList.remove('table-body__row_focus');
@@ -36,7 +37,7 @@ export const Events = {
 
     // events mouse action
     eventDblclickToElement(event, rowProperties, columnProperties, columnValue) {
-      // console.log(event);
+      // console.log(event.target);
       // console.log(rowProperties);
       // console.log(columnProperties);
       // console.log(columnValue);
@@ -52,6 +53,7 @@ export const Events = {
     // function
     mountEditingComponent(target, rowId, columnProperties, columnValue) {
       console.log('mount component');
+      // console.log(target);
       let editingComponentProperties = {
         tableName: this.tableName,
         rowId,
@@ -59,7 +61,7 @@ export const Events = {
         columnValue,
       };
       let editingComponentVue = Vue.extend(CellEditing);
-      let editingComponent = new editingComponentVue({ propsData: { properties: editingComponentProperties }}).$mount();
+      let editingComponent = new editingComponentVue({ store, propsData: { properties: editingComponentProperties }}).$mount();
       target.prepend(editingComponent.$el);
     },
 
@@ -72,7 +74,7 @@ export const Events = {
 
     switchDecorationToDisplay() {
       this.isElementNowEditing = false; // status editing
-      this.isElementNowFocus = false; // status editing
+      this.isElementNowFocus = false; // status focus
       let editableElement = document.querySelector('.table-body__col_editing');
       editableElement.classList.remove('table-body__col_editing');
       editableElement.querySelector('.box-display').classList.remove('display-none');
@@ -93,10 +95,37 @@ export const Events = {
       let editableElement = document.querySelector('.table-body__col_editing');
       editableElement.classList.remove('table-body__col_focus');
       editableElement.parentElement.classList.remove('table-body__row_focus');
-      
       this.switchDecorationToDisplay();
+    },
+    editingAccepted(event) {
+      console.log(event);
+      switch(event.detail.key) {
+        case 'Enter': {
+          this.switchDecorationToDisplay();
+          event.target.focus();
+          break;
+        }
+        case 'Tab': {
+          let nextEditableElement = null;
+          // console.log(event.detail.keyShift);
+          if (event.detail.keyShift) nextEditableElement = event.target.previousElementSibling;
+          else nextEditableElement = event.target.nextElementSibling;
+          
+          // console.log(nextEditableElement);
+
+          this.switchDecorationToDisplay();
+          event.target.classList.remove('table-body__col_focus');
+          setTimeout(() => {
+            let nextEventDblclickToElement = new Event('dblclick', {bubbles: false});
+            nextEditableElement.focus();
+            nextEditableElement.dispatchEvent(nextEventDblclickToElement);
+          }, 10)
+          
+          
+          break;
+        }
+      }
       
     },
-    editingAccepted() { this.switchDecorationToDisplay(); },
   },
 }

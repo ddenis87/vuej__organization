@@ -110,6 +110,7 @@ export default {
     display: grid;
     border-bottom: $bodyRowBorder;
     transition-delay: .05s;
+    outline: none;
 
     &_fixed { grid-auto-rows: $bodyRowHeight;       }
     &_dense { grid-auto-rows: $bodyDenseRowHeight;  }
