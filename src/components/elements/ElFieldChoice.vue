@@ -8,7 +8,7 @@
                   v-model="fieldValue"
                   :label="fieldLabel"
                   :hide-details="fieldShowValidation"
-
+  hide-selected
                   :items="fieldList"
 
                   @keydown.stop="eventKeyDown"
@@ -93,7 +93,7 @@ export default {
 
     eventBlur() {
       if (!this.isInputEmit) {
-        // console.log('input choice component');
+        console.log('blur choice component');
         this.$emit('editing-canceled');
       }
     },

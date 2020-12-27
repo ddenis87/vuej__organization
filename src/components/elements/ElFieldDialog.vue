@@ -7,11 +7,9 @@
                     class="el-field-dialog"
                     dense
                     single-line
-                    
                     append-icon="mdi-dots-horizontal"
                     hide-selected
                     no-data-text="Значение отсутствует"
-                    tabindex="10"
                     
                     v-model="fieldValue" 
                     :label="fieldLabel"
@@ -19,24 +17,23 @@
 
                     :items="fieldList"
 
-                    @input="inputInput"
 
-                    @keydown.stop="eventKeyDown" 
                     @blur="eventBlur"
+                    @change="inputChange"
 
-                    @focus="focusEvent"
-                    @click:append.stop.prevent="dialogOpen"
-                    @click:append-outer.stop.prevent="dialogOpen"
-                    @click.stop.prevent=""></v-autocomplete>
-    <v-dialog v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @keydown.stop="dialogClick">
+
+                    @keydown.stop="eventKeyDown"
+                    @click:append="eventDialogOpen"
+                    @click.stop=""></v-autocomplete>
+    <v-dialog v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @click:outside.prevent="">
       <v-card max-height="700">
         <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
           <span class="dialog__title">{{ displayNameTable }}</span>
           <v-spacer></v-spacer>
-          <v-btn class="system__btn"  color="white" tile icon small @click="dialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
+          <v-btn class="system__btn"  color="white" tile icon small @click="eventDialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
         </v-system-bar>
         <div class="dialog__table" :id="`ElTable-${fieldId}`">
-          <component :is="componentForDialog" v-bind:editable="false" @dblclick-row="dialogSelected"></component>
+          <component :is="componentForDialog" v-bind:editable="false" @dblclick-row="eventDialogSelected"></component>
         </div>
       </v-card>
     </v-dialog>
@@ -58,6 +55,7 @@ export default {
       isInputEmit: false,
       isCloseInDialog: false,
       isInputFirstEnter: false,
+      isElementChange: false,
       fieldId: `El-${this.properties.value}`,
       fieldLabel: this.label ? this.properties.label : '',
       fieldValue: null, //this.properties.text,
@@ -92,7 +90,9 @@ export default {
       return () => import('@/views/Tables/Bk'); /// ?????? необходимо получать по API
     }
   },
-
+  watch: {
+    isShowDialog() { console.log('dialog status: ' + this.isShowDialog); }
+  },
   mounted() {
     console.log(this.properties);
     setTimeout(() => {
@@ -102,47 +102,35 @@ export default {
       }
     }, 10);
   },
-  updated() {
-    // document.querySelector(`#${this.fieldId}`).select();
-    //     document.querySelector(`#${this.fieldId}`).focus();
-  },
   methods: {
-    dialogClick(event) {
-      console.log('dialog click');
-    },
-    dialogOpen(event) {
+    eventDialogOpen(event) { ////////
       console.log('dialog open');
       this.isShowDialog = true;
-      document.querySelector(`#${this.fieldId}`).select();
-      // console.log(event.target.closest('.el-field-dialog').querySelector(`#${this.fieldId}`));
-      // event.target.closest('.el-field-dialog').querySelector(`#${this.fieldId}`).focus();
-      // document.getElementById(`ElDialog-${this.fieldId}`).focus();
+      setTimeout(() => {
+        document.querySelector(`#${this.fieldId}`).focus();
+      },10);
     },
-    dialogClose(event) {
+    eventDialogClose(event) {
       console.log('dialog close');
-      // console.log(document.querySelector(`#${this.fieldId}`));
       setTimeout(() => {
         this.isShowDialog = false;
-        // document.querySelector(`#${this.fieldId}`).select();
-      },10);
-      // this.isCloseInDialog = true;
-      // setTimeout(() => {
-      //   document.getElementById(`ElBox-${this.fieldId}`).querySelector('input').focus();
-      // }, 100);
+      },100);
     },
-    eventKeyDown() {
-      console.log('input choice component');
-      // event.target.focus();
+    eventDialogSelected() {},
+
+    eventKeyDown(event) {
+      console.log('input auto component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
         return;
       }
       if (event.key == 'Enter')
-        if (!this.isInputFirstEnter) { this.isInputFirstEnter = true; return; }
+        if (!this.isInputFirstEnter || !this.isElementChange) { this.isInputFirstEnter = true; return; }
 
       if (event.key == 'Enter' || event.key == 'Tab') {
-        if (this.fieldRequired && this.fieldValue.length == 0) return;
+        event.preventDefault();
+        if (this.fieldRequired && this.fieldValue.length == 0) { return; }
         let newFieldValue = this.$store.getters['DataTable/GET_LIST_DATA_ROW']('budget-classifications', this.fieldValue.toString());
         this.isInputEmit = true;
         this.$emit('editing-accepted', {
@@ -155,31 +143,34 @@ export default {
         });
       }
     },
+
     eventBlur(event) {
-      console.log('blur dialog');
+      console.log('blur dialog component');
+      console.log(this.isShowDialog);
+      console.log(this.isInputEmit);
       event.preventDefault();
-      // console.log(this.isShowDialog);
-      // console.log(event);
-      // if (this.isCloseInDialog) { console.log('break'); this.isCloseInDialog = false; return }
-      // if (!event.target.classList.contains('system__btn_ico')) {
-        if (!this.isShowDialog) {
-          if (!this.isInputEmit) {
-            console.log('blur dialog component');
-            this.$emit('editing-canceled');
-          }
+      if (this.isShowDialog == false) {
+        if (this.isInputEmit == false) {
+          console.log('blur dialog component');
+          this.$emit('editing-canceled');
         }
-      // }
+      }
     },
 
-    dialogSelected() {},
-    inputInput() {},
-    inputEvent(event) {},
-    blurInput(event) {},
-    focusEvent(event) {
-      console.log('focus autocomplite');
-      // setTimeout(() => { 
-      //   event.target.select(); }, 100)
+    
+    // inputInput() {
+    //   console.log('input event');
+    //   // document.querySelector(`#${this.fieldId}`).select();
+    // },
+    inputChange() { /////////////
+      console.log('change event');
+      this.isElementChange= true;
     },
+    // focusEvent(event) {
+    //   console.log('focus autocomplite');
+    //   // setTimeout(() => { 
+    //   //   event.target.select(); }, 100)
+    // },
   },
 }
 </script>

@@ -50,6 +50,7 @@ export default {
       let eventEditingCanceled = new CustomEvent('editing-canceled')
       editableElement.dispatchEvent(eventEditingCanceled);
       document.querySelector('.box-editing-component').remove();
+      if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
       // console.log('cell editing - editing canceled - complete');
     },
     editingAccepted(option) {
@@ -65,6 +66,7 @@ export default {
       let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: newOption.key, keyShift: newOption.keyShift } });
       editableElement.dispatchEvent(eventEditingAccepted);
       document.querySelector('.box-editing-component').remove();
+      if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
     },
   }
 }
