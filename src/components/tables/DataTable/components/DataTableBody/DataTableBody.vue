@@ -6,22 +6,23 @@
          :class="styleRow"
          :style="fieldsTemplate"
          :tabindex="indexRow"
-         @mouseenter="eventMouseEnterRow"
-         @mouseleave="eventMouseLeaveRow"
-         @click="(event) => $emit('item-selected', event, itemRow)">
+         @mouseenter="eventRowMouseEnter"
+         @mouseleave="eventRowMouseLeave"
+         @focus="eventRowFocus"
+         @blur="eventRowBlur"
+         @click="(event) => eventRowClick(event, itemRow)"
+         @dblclick="(event) => eventRowDblclick(event, itemRow)">
       <div v-for="(itemColumn, indexCol) in listDataHeader"
           :key="`bodyCol-${indexCol}`" 
           class="table-body__col"
           :class="styleCell" 
           :style="itemColumn.position"
           v-bind:tabindex="(editable) ? indexCol : ''"
-          
-          
-          
 
-          @focus="(event) => eventFocusToElement(event)"
-          @blur="(event) => eventBlurToElemet(event)"
-          @dblclick="(event) => eventDblclickToElement(event, itemRow, itemColumn, itemRow[itemColumn.value])"
+          @focus="eventElementFocus"
+          @blur="eventElementBlur"
+          @dblclick="(event) => eventElementDblclick(event, itemRow, itemColumn, itemRow[itemColumn.value])"
+          @keydown="eventElementKeydown"
           @editing-canceled="editingCanceled"
           @editing-accepted="editingAccepted">
 
@@ -56,7 +57,7 @@ import CellDisplay from './components/CellDisplay.vue';
 import CellOverflow from './components/CellOverflow.vue';
 
 import { Events } from './mixins/Events.js'; // 
-// import { Editing } from './mixins/Editing.js'; // checkDisplayEdit, checkDisplayEditForKeydown
+import { Editing } from './mixins/Editing.js'; // 
 import { Styles } from './mixins/Styles.js'; // styleRow, styleCell
 
 export default {
@@ -67,7 +68,7 @@ export default {
   },
   mixins: [
     Events,
-    // Editing,
+    Editing,
     Styles,
   ],
   props: {

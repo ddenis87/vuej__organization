@@ -16,8 +16,8 @@
                   :table-properties="propsDataTable" 
                   fixed
                   :editable="isEditable"
-                  @item-selected="selectedItem"
-                  @dblclick-row="(eventTarget, itemColumn, objectValue) => $emit('dblclick-row', eventTarget, itemColumn, objectValue)"></data-table>
+                  @event-row-focused="eventRowFocused"
+                  @event-row-selected="eventRowSelected"></data-table>
     </div>
     
   </div>
@@ -36,7 +36,7 @@ export default {
   props: {
     editable: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   data() {
@@ -61,11 +61,19 @@ export default {
     // console.log('CatalogBk;')
   },
   methods: {
-    selectedItem(event, option) {
+    eventRowFocused(event, option, tableName) {
+      // console.log(event);
       // console.log(option);
-      this.itemSelectedValue = {};
-      Object.assign(this.itemSelectedValue, option);
-    }
+      // console.log(tableName);
+      // this.itemSelectedValue = {};
+      // Object.assign(this.itemSelectedValue, option);
+    },
+    eventRowSelected(event, option, tableName) {
+      // console.log(event);
+      // console.log(option);
+      // console.log(tableName);
+      this.$emit('event-row-selected', option);
+    },
   }
 }
 </script>

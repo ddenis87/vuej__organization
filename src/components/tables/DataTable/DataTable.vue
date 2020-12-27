@@ -17,9 +17,8 @@
                        :parent-id="parentId"
                        :editable="editable"
                        :tableName="tableName"
-                       @item-selected="itemSelected"
-                       @show-tooltip="showTooltip"
-                       @dblclick-row="(event, itemColumn, objectValue) => $emit('dblclick-row', event, itemColumn, objectValue)">
+                       @event-row-focused="eventRowFocused"
+                       @event-row-selected="eventRowSelected">
         <!-- editing slot -->
         <template v-for="item in listHeader" #[`body-editing.${item.value}`]="itemValue">
           <slot :name="`body-editing.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>

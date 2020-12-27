@@ -1,19 +1,72 @@
-// import Vue from 'vue';
-// import vuetify from '@/plugins/vuetify';
-// import store from '@/store';
-// import CellEditing from '../components/CellEditing.vue';
+import Vue from 'vue';
+import vuetify from '@/plugins/vuetify';
+import store from '@/store';
+import CellEditing from '../components/CellEditing.vue';
 
 export const Editing = {
-  data() {
-    return {
-      // cellEditable: null,
-      // cellEditProps: Object,
-      // cellEditComponent: null,
-      // vueCellEdit: Vue.extend(CellEditing),
-    }
-  },
   methods: {
-    checkDisplayEdit(event, itemColumn, objectValue = null) {
+    mountEditingComponent(target, rowId, columnProperties, columnValue) {
+      let editingComponentProperties = {
+        tableName: this.tableName,
+        rowId,
+        columnProperties,
+        columnValue,
+      };
+      let editingComponentVue = Vue.extend(CellEditing);
+      let editingComponent = new editingComponentVue({ vuetify, store, propsData: { properties: editingComponentProperties }}).$mount();
+      target.prepend(editingComponent.$el);
+    },
+    checkForEditable(event, columnProperties) {
+      if (!this.editable) { return false; } // if table properties editable set in false // ??? emit rowProperties
+      if (columnProperties['read_only']) { return false; } // field not can edit
+      if (event.target.closest('.table-body__col').querySelector('.box-display.display-none')) { return false; } // if we are already editing
+      return true;
+    },
+    switchDecorationToDisplay() {
+      this.isElementNowEditing = false; // status editing
+      this.isElementNowFocus = false; // status focus
+      let editableElement = document.querySelector('.table-body__col_editing');
+      editableElement.classList.remove('table-body__col_editing');
+      editableElement.querySelector('.box-display').classList.remove('display-none');
+      editableElement.querySelector('.box-editing').classList.add('display-none');
+    },
+    switchDecorationToEdit(event) {
+      this.isElementNowEditing = true; // status editing
+      let editableElement = event.target.closest('.table-body__col');
+      editableElement.classList.add('table-body__col_editing');
+      editableElement.querySelector('.box-display').classList.add('display-none');
+      editableElement.querySelector('.box-editing').classList.remove('display-none');
+    },
+    editingCanceled() {
+      let editableElement = document.querySelector('.table-body__col_editing');
+      editableElement.classList.remove('table-body__col_focus');
+      editableElement.parentElement.classList.remove('table-body__row_focus');
+      this.switchDecorationToDisplay();
+    },
+    editingAccepted(event) {
+      switch(event.detail.key) {
+        case 'Enter': {
+          this.switchDecorationToDisplay();
+          event.target.focus();
+          break;
+        }
+        case 'Tab': {
+          let nextEditableElement = null;
+          // console.log(event.detail.keyShift);
+          if (event.detail.keyShift) nextEditableElement = event.target.previousElementSibling;
+          else nextEditableElement = event.target.nextElementSibling;
+          this.switchDecorationToDisplay();
+          event.target.classList.remove('table-body__col_focus');
+          setTimeout(() => {
+            let nextEventDblclickToElement = new Event('dblclick', {bubbles: false});
+            nextEditableElement.focus();
+            nextEditableElement.dispatchEvent(nextEventDblclickToElement);
+          }, 10)
+          break;
+        }
+      }
+    },
+    // checkDisplayEdit(event, itemColumn, objectValue = null) {
     //   // console.log('check display edit for dblclick');
     //   console.log(objectValue);
     //   if (!this.editable) {
@@ -38,10 +91,10 @@ export const Editing = {
     //     }
     //   }, 10);
       
-    },
+    // },
 
     // check editing for keydown
-    checkDisplayEditForKeydown(event, itemColumn) {
+    // checkDisplayEditForKeydown(event, itemColumn) {
       // // console.log('check display edit for keydown');
       // if (event.code.includes('Arrow') || event.code == 'Tab') {
       //   event.preventDefault();
@@ -55,9 +108,9 @@ export const Editing = {
       // let parentElement = event.target.closest('.table-body__col');
       // if (parentElement == null || parentElement.querySelector('.box-display.display-none')) return;
       // if (event.code.includes('Key') || event.code.includes('Digit')) this.checkDisplayEdit(event, itemColumn);
-    },
+    // },
 
-    editingStart(itemColumn, parentElement, itemValue = null) {
+    // editingStart(itemColumn, parentElement, itemValue = null) {
       // this.cellEditProps = itemColumn;
       // // 
       // this.cellEditProps.text = parentElement.getAttribute('data-value');
@@ -72,9 +125,9 @@ export const Editing = {
       // } else {
       //   parentElement.querySelector('input').focus();
       // }
-    },
+    // },
 
-    editingCompleted(event) {
+    // editingCompleted(event) {
     //   let parentElement = event.target;
     //   if (parentElement.querySelector('.box-display')) {
     //     if (event.detail.status == true)
@@ -89,7 +142,7 @@ export const Editing = {
     //     if (!document.querySelector('.box-editing-component'))
     //       parentElement.parentElement.classList.remove('table-body__row_hover');
     //   }, 50)
-    },
+    // },
 
     // displayUpdate(event, value) {
     //   let parentElement = event.target;

@@ -15,7 +15,7 @@
       <data-table d-id="Organization" 
                   :table-properties="propsDataTable" 
                   editable
-                  @item-selected="selectedItem"></data-table>
+                  @event-row-focused="eventRowFocused"></data-table>
     </div>
   </div>
 </template>
@@ -53,10 +53,12 @@ export default {
     }
   },
   methods: {
-    selectedItem(event, option) {
+    eventRowFocused(event, option, tableName) {
+      // console.log(event);
       // console.log(option);
-      this.itemSelectedValue = {};
-      Object.assign(this.itemSelectedValue, option);
+      // console.log(tableName);
+      // this.itemSelectedValue = {};
+      // Object.assign(this.itemSelectedValue, option);
     }
   }
 }

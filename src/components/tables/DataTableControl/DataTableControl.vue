@@ -17,7 +17,7 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon small tile :disabled="isItemSelected" v-on="on" @click.stop="isDialogDeleting = !isDialogDeleting"><v-icon>mdi-minus</v-icon></v-btn>
+            <v-btn icon small tile :disabled="isItemSelected" v-on="on" @click.stop="isDialogDeleting = !isDialogDeleting"><v-icon>mdi-delete</v-icon></v-btn>
           </template>
           <span class="tooltip-text">Удалить</span>
         </v-tooltip>

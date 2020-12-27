@@ -27,7 +27,7 @@
           <v-btn class="system__btn" depressed color="rgba(64, 64, 64, 1)" tile fab icon small @click="eventDialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
         </v-system-bar>
         <div class="dialog__table" :id="`ElTable-${fieldId}`">
-          <component :is="componentForDialog" v-bind:editable="false" @dblclick-row="eventDialogSelected"></component>
+          <component :is="componentForDialog" v-bind:editable="false" @event-row-selected="eventDialogSelected"></component>
         </div>
       </v-card>
     </v-dialog>
@@ -105,7 +105,19 @@ export default {
         this.isShowDialog = false;
       },100);
     },
-    eventDialogSelected() {},
+    eventDialogSelected(option) {
+      console.log(option);
+      // this.fieldValue = option.id.toString();
+      this.$emit('editing-accepted', {
+        tableName: this.properties.tableName,
+        key: 'Enter',
+        keyShift: false,
+        value: option,
+        field: this.properties.value,
+        id: this.properties.idRow
+      });
+      this.isShowDialog = false;
+    },
 
     eventKeyDown(event) {
       // console.log('input auto component');
@@ -145,7 +157,7 @@ export default {
     },
     eventChange() { /////////////
       // console.log('change event');
-      this.isElementChange= true;
+      this.isElementChange = true;
     },
   },
 }
