@@ -7,19 +7,19 @@
         formOption.values.head_code = null;
         formOption.values.head_name = null; isDialogCreated = true;}"><v-icon>mdi-plus</v-icon></v-btn>
           </template>
-          <span>Добавить</span>
+          <span class="tooltip-text">Добавить</span>
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn icon small tile :disabled="isItemSelected" v-on="on" @click.stop="isDialogEditing = !isDialogEditing"><v-icon>mdi-pencil</v-icon></v-btn>
             </template>
-          <span>Изменить</span>
+          <span class="tooltip-text">Изменить</span>
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn icon small tile :disabled="isItemSelected" v-on="on" @click.stop="isDialogDeleting = !isDialogDeleting"><v-icon>mdi-minus</v-icon></v-btn>
           </template>
-          <span>Удалить</span>
+          <span class="tooltip-text">Удалить</span>
         </v-tooltip>
         
         <v-spacer></v-spacer>
@@ -168,20 +168,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .dialog {
-    &__title {
-      color: white;
-    }
-    &__text {
-      font-size: 1em;
-      padding: 5px 0px;
+// .data-table-control {
+//   .tooltip-text {
+//     display: block;
+//     width: 100%;
+//     height: 100%;
+//     border: thin solid rgba(255, 0, 0, 1);
+//   }
+// }
+// .tooltip-text {
+//     display: block;
+//     width: 100%;
+//     height: 100%;
+//     border: thin solid rgba(255, 0, 0, 1);
+//   }
+.dialog {
+  &__title {
+    color: white;
+  }
+  &__text {
+    font-size: 1em;
+    padding: 5px 0px;
 
-      &_bold {
-        text-indent: 10px;
-        font-weight: bold;
-      }
+    &_bold {
+      text-indent: 10px;
+      font-weight: bold;
     }
   }
+}
 ::v-deep {
   .v-icon { margin-right: 0px; }
 }

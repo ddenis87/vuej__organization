@@ -65,4 +65,14 @@ html, body {
     width: 100%;
   }
 }
+.tooltip-text {
+  display: block;
+  padding: 2px 6px;
+  width: 100%;
+  height: 100%;
+  border: thin solid rgba(0, 0, 0, .87);
+  border-radius: 4px;
+  font-size: .875rem;
+  color: rgba(0, 0, 0, .87);
+}
 </style>
