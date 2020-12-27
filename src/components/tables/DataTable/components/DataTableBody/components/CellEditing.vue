@@ -40,11 +40,11 @@ export default {
     },
   },
   created() {
-    console.log(this.properties);
+    // console.log(this.properties);
   },
   methods: {
     editingCanceled() {
-      console.log('cell editing - editing canceled');
+      // console.log('cell editing - editing canceled');
       // if (!document.querySelector('.table-body__col_focus')) return;
       let editableElement = document.querySelector('.table-body__col_editing');
       let eventEditingCanceled = new CustomEvent('editing-canceled')
@@ -54,13 +54,13 @@ export default {
       // console.log('cell editing - editing canceled - complete');
     },
     editingAccepted(option) {
-      console.log('cell editing - editing accepted');
+      // console.log('cell editing - editing accepted');
       
       let newOption = {};
       Object.assign(newOption, option);
       newOption.tableName = this.properties.tableName;
       newOption.id = this.properties.rowId;
-      console.log(newOption);
+      // console.log(newOption);
       this.$store.commit('DataTable/EDITING_LIST_DATA_FIELD', newOption);
       let editableElement = document.querySelector('.table-body__col_editing');
       let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: newOption.key, keyShift: newOption.keyShift } });

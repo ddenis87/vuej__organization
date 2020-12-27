@@ -10,27 +10,21 @@
                     append-icon="mdi-dots-horizontal"
                     hide-selected
                     no-data-text="Значение отсутствует"
-                    
                     v-model="fieldValue" 
                     :label="fieldLabel"
                     :hide-details="fieldShowValidation"
-
                     :items="fieldList"
-
-
                     @blur="eventBlur"
-                    @change="inputChange"
-
-
+                    @change="eventChange"
                     @keydown.stop="eventKeyDown"
                     @click:append="eventDialogOpen"
                     @click.stop=""></v-autocomplete>
-    <v-dialog v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @click:outside.prevent="">
+    <v-dialog v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @click:outside.stop.prevent="">
       <v-card max-height="700">
         <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
           <span class="dialog__title">{{ displayNameTable }}</span>
           <v-spacer></v-spacer>
-          <v-btn class="system__btn"  color="white" tile icon small @click="eventDialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
+          <v-btn class="system__btn" depressed color="rgba(64, 64, 64, 1)" tile fab icon small @click="eventDialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
         </v-system-bar>
         <div class="dialog__table" :id="`ElTable-${fieldId}`">
           <component :is="componentForDialog" v-bind:editable="false" @dblclick-row="eventDialogSelected"></component>
@@ -78,8 +72,6 @@ export default {
       fieldListStore.forEach(element => {
         fieldList.push({text: element[this.properties.objectValue], value: `${element.id}`});
       });
-      // console.log(fieldList);
-      // console.log(this.fieldValue);
       return fieldList;
     },
     fieldShowValidation() { return (this.showValidation) ? false : true },
@@ -90,11 +82,8 @@ export default {
       return () => import('@/views/Tables/Bk'); /// ?????? необходимо получать по API
     }
   },
-  watch: {
-    isShowDialog() { console.log('dialog status: ' + this.isShowDialog); }
-  },
   mounted() {
-    console.log(this.properties);
+    // console.log(this.properties);
     setTimeout(() => {
       if (this.selectedValue) {
         document.querySelector(`#${this.fieldId}`).select();
@@ -104,14 +93,14 @@ export default {
   },
   methods: {
     eventDialogOpen(event) { ////////
-      console.log('dialog open');
+      // console.log('dialog open');
       this.isShowDialog = true;
       setTimeout(() => {
         document.querySelector(`#${this.fieldId}`).focus();
       },10);
     },
     eventDialogClose(event) {
-      console.log('dialog close');
+      // console.log('dialog close');
       setTimeout(() => {
         this.isShowDialog = false;
       },100);
@@ -119,7 +108,7 @@ export default {
     eventDialogSelected() {},
 
     eventKeyDown(event) {
-      console.log('input auto component');
+      // console.log('input auto component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
@@ -145,32 +134,19 @@ export default {
     },
 
     eventBlur(event) {
-      console.log('blur dialog component');
-      console.log(this.isShowDialog);
-      console.log(this.isInputEmit);
+      // console.log('blur dialog component');
       event.preventDefault();
       if (this.isShowDialog == false) {
         if (this.isInputEmit == false) {
-          console.log('blur dialog component');
+          // console.log('blur dialog component');
           this.$emit('editing-canceled');
         }
       }
     },
-
-    
-    // inputInput() {
-    //   console.log('input event');
-    //   // document.querySelector(`#${this.fieldId}`).select();
-    // },
-    inputChange() { /////////////
-      console.log('change event');
+    eventChange() { /////////////
+      // console.log('change event');
       this.isElementChange= true;
     },
-    // focusEvent(event) {
-    //   console.log('focus autocomplite');
-    //   // setTimeout(() => { 
-    //   //   event.target.select(); }, 100)
-    // },
   },
 }
 </script>
@@ -187,6 +163,26 @@ export default {
   margin-top: -3.5px;
    input {
     padding: 0px;
+  }
+}
+
+.dialog {
+  background-color: white;
+  &__title {
+    color: white;
+  }
+  &__table {
+    height: calc(100% - 82px);
+    color: white;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      &-thumb {
+        border-radius: 3px;
+        background-color: rgba(0,0,0,0.2);
+      }
+    }
   }
 }
 ::v-deep {

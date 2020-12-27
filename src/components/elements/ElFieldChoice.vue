@@ -29,6 +29,7 @@ export default {
     return {
       isInputEmit: false,
       isInputFirstEnter: false,
+      isElementChange: false,
       fieldId: `El-${this.properties.value}`,
       fieldLabel: this.label ? this.properties.label : '',
       fieldValue: this.properties.text.value.toString(),
@@ -60,6 +61,7 @@ export default {
     eventChangeValue() {
       // console.log('change choice component');
       this.isInputFirstEnter = true;
+      this.isElementChange= true;
     },
     eventKeyDown() {
       // console.log('input choice component');
@@ -69,7 +71,7 @@ export default {
         return;
       }
       if (event.key == 'Enter')
-        if (!this.isInputFirstEnter) { this.isInputFirstEnter = true; return; }
+        if (!this.isInputFirstEnter || !this.isElementChange) { this.isInputFirstEnter = true; return; }
       
       if (event.key == 'Enter' || event.key == 'Tab') {
         event.preventDefault();

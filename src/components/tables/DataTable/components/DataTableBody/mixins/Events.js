@@ -53,7 +53,7 @@ export const Events = {
 
     // function
     mountEditingComponent(target, rowId, columnProperties, columnValue) {
-      console.log('mount component');
+      // console.log('mount component');
       // console.log(target);
       let editingComponentProperties = {
         tableName: this.tableName,
@@ -99,7 +99,7 @@ export const Events = {
       this.switchDecorationToDisplay();
     },
     editingAccepted(event) {
-      console.log(event);
+      // console.log(event);
       switch(event.detail.key) {
         case 'Enter': {
           this.switchDecorationToDisplay();
