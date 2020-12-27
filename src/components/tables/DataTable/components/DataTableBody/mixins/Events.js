@@ -38,6 +38,13 @@ export const Events = {
     eventRowDblclick(event, itemRow) {
       this.$emit('event-row-selected', event, itemRow);
     },
+    eventRowKeydown(event) {
+      if (event.code.includes('Arrow') || event.code == 'Tab') {
+        event.preventDefault();
+        if ((event.code == 'ArrowDown' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return }
+        if ((event.code == 'ArrowUp' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return }
+      }
+    },
 
     // events element
     eventElementFocus(event) {

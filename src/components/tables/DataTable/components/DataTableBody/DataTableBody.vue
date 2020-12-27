@@ -11,7 +11,8 @@
          @focus="eventRowFocus"
          @blur="eventRowBlur"
          @click="(event) => eventRowClick(event, itemRow)"
-         @dblclick="(event) => eventRowDblclick(event, itemRow)">
+         @dblclick="(event) => eventRowDblclick(event, itemRow)"
+         @keydown="eventRowKeydown">
       <div v-for="(itemColumn, indexCol) in listDataHeader"
           :key="`bodyCol-${indexCol}`" 
           class="table-body__col"
@@ -22,7 +23,7 @@
           @focus="eventElementFocus"
           @blur="eventElementBlur"
           @dblclick="(event) => eventElementDblclick(event, itemRow, itemColumn, itemRow[itemColumn.value])"
-          @keydown="eventElementKeydown"
+          @keydown.stop="eventElementKeydown"
           @editing-canceled="editingCanceled"
           @editing-accepted="editingAccepted">
 
