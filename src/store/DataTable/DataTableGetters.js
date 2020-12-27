@@ -8,8 +8,11 @@ export default {
     return state[tableName].listOption; 
   },
   GET_LIST_DATA:(state) => (tableName) => {
-    // console.log(state[tableName]);
+    console.log(state[tableName]);
     return state[tableName].listData;
+  },
+  GET_LIST_DATA_ROW:(state) => (tableName, rowId) => {
+    return state[tableName].listData.find(element => element.id == rowId);
   },
   GET_DESCRIPTION_TABLE:(state) => (tableName) => {
     return state[tableName].description;

@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog" id="boxEditingComponentDialog">
+  <div class="dialog" :id="`ElBox-${fieldId}`">
     <!-- @click.stop - stop slider list -->
     <!-- @click:append-outer - open dialog -->
     <!-- @focus - for selected inner text -->
@@ -7,13 +7,12 @@
                     class="el-field-dialog"
                     dense
                     single-line
-                    auto-select-first
+                    
                     append-icon="mdi-dots-horizontal"
                     hide-selected
                     no-data-text="Значение отсутствует"
                     tabindex="10"
                     
-                    return-object
                     v-model="fieldValue" 
                     :label="fieldLabel"
                     :hide-details="fieldShowValidation"
@@ -23,20 +22,20 @@
                     @input="inputInput"
 
                     @keydown.stop="eventKeyDown" 
-                    @blur.stop="eventBlur"
+                    @blur="eventBlur"
 
                     @focus="focusEvent"
-                    @click:append.stop.prevent="isShowDialog = true"
-                    @click:append-outer.stop.prevent="isShowDialog = true"
+                    @click:append.stop.prevent="dialogOpen"
+                    @click:append-outer.stop.prevent="dialogOpen"
                     @click.stop.prevent=""></v-autocomplete>
-    <v-dialog v-model="isShowDialog" max-width="80%" scrollable class="dialog__box">
+    <v-dialog v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @keydown.stop="dialogClick">
       <v-card max-height="700">
         <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
           <span class="dialog__title">{{ displayNameTable }}</span>
           <v-spacer></v-spacer>
-          <v-btn class="system__btn" color="white" tile icon small @click="dialogClose"><v-icon small color="white">mdi-close</v-icon></v-btn>
+          <v-btn class="system__btn"  color="white" tile icon small @click="dialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
         </v-system-bar>
-        <div class="dialog__table" id="dialog__table">
+        <div class="dialog__table" :id="`ElTable-${fieldId}`">
           <component :is="componentForDialog" v-bind:editable="false" @dblclick-row="dialogSelected"></component>
         </div>
       </v-card>
@@ -57,7 +56,8 @@ export default {
     return {
       isShowDialog: false,
       isInputEmit: false,
-      // isInputFirstEnter: false,
+      isCloseInDialog: false,
+      isInputFirstEnter: false,
       fieldId: `El-${this.properties.value}`,
       fieldLabel: this.label ? this.properties.label : '',
       fieldValue: null, //this.properties.text,
@@ -75,6 +75,7 @@ export default {
         this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: 'budget-classifications'});  /// ?????? необходимо получать имя таблицы из API
       } else {
         this.fieldValue = this.properties.text.id.toString();
+        setTimeout(() => document.querySelector(`#${this.fieldId}`).select(), 10)
       }
       fieldListStore.forEach(element => {
         fieldList.push({text: element[this.properties.objectValue], value: `${element.id}`});
@@ -91,23 +92,47 @@ export default {
       return () => import('@/views/Tables/Bk'); /// ?????? необходимо получать по API
     }
   },
+
   mounted() {
     console.log(this.properties);
     setTimeout(() => {
       if (this.selectedValue) {
         document.querySelector(`#${this.fieldId}`).select();
-        document.querySelector(`#${this.fieldId}`).focus();
+        // document.querySelector(`#${this.fieldId}`).focus();
       }
     }, 10);
   },
+  updated() {
+    // document.querySelector(`#${this.fieldId}`).select();
+    //     document.querySelector(`#${this.fieldId}`).focus();
+  },
   methods: {
+    dialogClick(event) {
+      console.log('dialog click');
+    },
+    dialogOpen(event) {
+      console.log('dialog open');
+      this.isShowDialog = true;
+      document.querySelector(`#${this.fieldId}`).select();
+      // console.log(event.target.closest('.el-field-dialog').querySelector(`#${this.fieldId}`));
+      // event.target.closest('.el-field-dialog').querySelector(`#${this.fieldId}`).focus();
+      // document.getElementById(`ElDialog-${this.fieldId}`).focus();
+    },
     dialogClose(event) {
-      this.isShowDialog = false;
-      // setTimeout(() => { document.querySelector(`#${this.fieldId}`).focus(); }, 10);
+      console.log('dialog close');
+      // console.log(document.querySelector(`#${this.fieldId}`));
+      setTimeout(() => {
+        this.isShowDialog = false;
+        // document.querySelector(`#${this.fieldId}`).select();
+      },10);
+      // this.isCloseInDialog = true;
+      // setTimeout(() => {
+      //   document.getElementById(`ElBox-${this.fieldId}`).querySelector('input').focus();
+      // }, 100);
     },
     eventKeyDown() {
-      // console.log('input choice component');
-      event.target.focus();
+      console.log('input choice component');
+      // event.target.focus();
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
@@ -118,29 +143,31 @@ export default {
 
       if (event.key == 'Enter' || event.key == 'Tab') {
         if (this.fieldRequired && this.fieldValue.length == 0) return;
-        let newFieldValue = (this.isInputFirstEnter) ? {
-          'display_name': this.fieldValue.text,
-          value: this.fieldValue.value
-        } : this.properties.text;
-        console.log(newFieldValue);
+        let newFieldValue = this.$store.getters['DataTable/GET_LIST_DATA_ROW']('budget-classifications', this.fieldValue.toString());
         this.isInputEmit = true;
-        // this.$emit('editing-accepted', {
-        //   tableName: this.properties.tableName,
-        //   key: event.key,
-        //   keyShift: event.shiftKey,
-        //   value: this.fieldValue,
-        //   field: this.properties.value,
-        //   id: this.properties.idRow
-        // });
+        this.$emit('editing-accepted', {
+          tableName: this.properties.tableName,
+          key: event.key,
+          keyShift: event.shiftKey,
+          value: newFieldValue,
+          field: this.properties.value,
+          id: this.properties.idRow
+        });
       }
     },
     eventBlur(event) {
-      console.log(event);
-      // if ((event.relatedTarget && event.relatedTarget.classList.contains('table-body__col')) || event.relatedTarget == null) {
-      //   if (!this.isInputEmit) {
-      //     console.log('blur dialog component');
-      //     this.$emit('editing-canceled');
-      //   }
+      console.log('blur dialog');
+      event.preventDefault();
+      // console.log(this.isShowDialog);
+      // console.log(event);
+      // if (this.isCloseInDialog) { console.log('break'); this.isCloseInDialog = false; return }
+      // if (!event.target.classList.contains('system__btn_ico')) {
+        if (!this.isShowDialog) {
+          if (!this.isInputEmit) {
+            console.log('blur dialog component');
+            this.$emit('editing-canceled');
+          }
+        }
       // }
     },
 
@@ -148,7 +175,11 @@ export default {
     inputInput() {},
     inputEvent(event) {},
     blurInput(event) {},
-    focusEvent(event) {},
+    focusEvent(event) {
+      console.log('focus autocomplite');
+      // setTimeout(() => { 
+      //   event.target.select(); }, 100)
+    },
   },
 }
 </script>
