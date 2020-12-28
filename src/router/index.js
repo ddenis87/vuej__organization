@@ -11,16 +11,16 @@ const routes = [
     component: Home,
   },
   {
-    path: '/Tables/Organisation',
+    path: '/Table/TableOrganisation',
     name: 'Organization',
     meta: { layout: 'Tables' },
-    component: () => import('@/views/Tables/Organisation.vue'),
+    component: () => import('@/views/Table/TableOrganisation.vue'),
   },
   {
-    path: '/Tables/Bk',
-    name: 'Bk',
+    path: '/Table/TableBudgetClassifications',
+    name: 'BudgetClassifications',
     meta: { layout: 'Tables' },
-    component: () => import('@/views/Tables/Bk.vue'),
+    component: () => import('@/views/Table/TableBudgetClassifications.vue'),
   },
 ]
 

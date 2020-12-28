@@ -1,14 +1,7 @@
 <template>
   <div class="page-table">
     <div class="page-table__control">
-      <data-table-control :item-selected="itemSelectedValue" 
-                          :data-properties="propsDataTable"
-                          @click-outside="itemSelectedValue = null"
-                          @adding-accept="itemSelectedValue = null"
-                          @editing-accept="itemSelectedValue = null"
-                          @editing-cancel="itemSelectedValue = null"
-                          @deleting-accept="itemSelectedValue = null"
-                          @deleting-cancel="itemSelectedValue = null"></data-table-control>
+      <data-table-control :properties="propertiesDataTableControl"></data-table-control>
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
@@ -21,11 +14,11 @@
 </template>
 
 <script>
-import DataTableControl from '@/components/tables/DataTableControl/DataTableControl.vue';
-import DataTable from '@/components/tables/DataTable/DataTable.vue';
+import DataTableControl from '@/components/Table/DataTableControl/DataTableControl.vue';
+import DataTable from '@/components/Table/DataTable/DataTable.vue';
 
 export default {
-  name: 'Organisation',
+  name: 'TableOrganisation',
   components: {
     DataTableControl,
     DataTable,
@@ -49,16 +42,25 @@ export default {
         ],
         activeField: 'id',
       },
-      itemSelectedValue: null,
+      propertiesDataTableControl: {
+        tableName: null,
+        propertiesFocusedElement: null,
+      },
     }
   },
   methods: {
     eventRowFocused(event, option, tableName) {
-      // console.log(event);
-      // console.log(option);
-      // console.log(tableName);
-      // this.itemSelectedValue = {};
-      // Object.assign(this.itemSelectedValue, option);
+      this.propertiesDataTableControl = {
+        tableName: tableName,
+        propertiesFocusedElement: option,
+      }
+    },
+    eventRowSelected(event, option, tableName) {
+      this.$emit('event-row-selected', option);
+    },
+    eventTableBlur() {
+      console.log('blur table');
+      this.propertiesDataTableControl = null;
     }
   }
 }

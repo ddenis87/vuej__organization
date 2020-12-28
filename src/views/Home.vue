@@ -39,7 +39,7 @@
 
 <script>
 import ControlUser from '@/components/control/ControlUser.vue';
-import DataTable from '@/components/tables/DataTable/DataTable.vue';
+import DataTable from '@/components/Table/DataTable/DataTable.vue';
 
 export default {
   name: 'Home',

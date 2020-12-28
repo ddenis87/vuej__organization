@@ -29,7 +29,7 @@ export const Events = {
     eventRowBlur(event) {
       this.isRowNowFocus = false;
       event.target.classList.remove('table-body__row_focus');
-      this.$emit('event-row-focused', event, null);  // ?????
+      // this.$emit('event-row-focused', event, null);  // ?????
     },
 
     eventRowClick(event, itemRow) {
@@ -58,6 +58,8 @@ export const Events = {
         this.isElementNowFocus = false;
         event.target.parentElement.classList.remove('table-body__row_focus');
         event.target.classList.remove('table-body__col_focus');
+
+        // this.$emit('event-row-focused', event, null); // ????? может другое имя события? чтоб не путаться
       }
     },
 

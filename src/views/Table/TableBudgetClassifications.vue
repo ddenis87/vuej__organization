@@ -1,19 +1,12 @@
 <template>
   <div class="page-table">
     <div class="page-table__control">
-      <data-table-control :item-selected="itemSelectedValue" 
-                          :data-properties="propsDataTable"
-                          @click-outside="itemSelectedValue = null"
-                          @adding-accept="itemSelectedValue = null"
-                          @editing-accept="itemSelectedValue = null"
-                          @editing-cancel="itemSelectedValue = null"
-                          @deleting-accept="itemSelectedValue = null"
-                          @deleting-cancel="itemSelectedValue = null"></data-table-control>
+      <data-table-control :properties="propertiesDataTableControl"></data-table-control>
     </div>
     <v-divider></v-divider>
-    <div class="page-table__body">
+    <div class="page-table__body" tabindex="20" @blur="eventTableBlur">
       <data-table d-id="Bk" 
-                  :table-properties="propsDataTable" 
+                  :table-properties="propertiesDataTable" 
                   fixed
                   :editable="isEditable"
                   @event-row-focused="eventRowFocused"
@@ -24,11 +17,11 @@
 </template>
 
 <script>
-import DataTableControl from '@/components/tables/DataTableControl/DataTableControl.vue';
-import DataTable from '@/components/tables/DataTable/DataTable.vue';
+import DataTableControl from '@/components/Table/DataTableControl/DataTableControl.vue';
+import DataTable from '@/components/Table/DataTable/DataTable.vue';
 
 export default {
-  name: 'Bk',
+  name: 'TableBudgetClassifications',
   components: {
     DataTableControl,
     DataTable,
@@ -36,44 +29,44 @@ export default {
   props: {
     editable: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   data() {
     return {
-      propsDataTable: {
+      propertiesDataTable: {
         tableName: 'budget-classifications',
         header: [
           {value: 'id', width: [80, 80], },
           {value: 'head_code', align: 'end', width: [200, 200], },
           {value: 'head_name', width: [400,],},
         ],
-        activeField: 'id',
+        // activeField: 'id',
       },
-      itemSelectedValue: null,
+      propertiesDataTableControl: {
+        tableName: 'budget-classifications',
+        propertiesFocusedElement: null,
+      },
       
     }
   },
   computed: {
     isEditable() { return this.editable; }
   },
-  mounted() {
-    // console.log('CatalogBk;')
-  },
   methods: {
     eventRowFocused(event, option, tableName) {
-      // console.log(event);
-      // console.log(option);
-      // console.log(tableName);
-      // this.itemSelectedValue = {};
-      // Object.assign(this.itemSelectedValue, option);
+      this.propertiesDataTableControl = {
+        tableName: tableName,
+        propertiesFocusedElement: option,
+      }
     },
     eventRowSelected(event, option, tableName) {
-      // console.log(event);
-      // console.log(option);
-      // console.log(tableName);
       this.$emit('event-row-selected', option);
     },
+    eventTableBlur() {
+      console.log('blur table');
+      this.propertiesDataTableControl = null;
+    }
   }
 }
 </script>

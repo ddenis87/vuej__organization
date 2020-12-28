@@ -79,7 +79,7 @@ export default {
       return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`]('budget-classifications');  /// ?????? необходимо получать по API
     },
     componentForDialog() {
-      return () => import('@/views/Tables/Bk'); /// ?????? необходимо получать по API
+      return () => import('@/views/Table/TableBudgetClassifications'); /// ?????? необходимо получать по API
     }
   },
   mounted() {
