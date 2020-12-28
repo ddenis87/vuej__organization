@@ -4,7 +4,7 @@
       <data-table-control :properties="propertiesDataTableControl"></data-table-control>
     </div>
     <v-divider></v-divider>
-    <div class="page-table__body" tabindex="20" @blur="eventTableBlur">
+    <div class="page-table__body">
       <data-table d-id="Bk" 
                   :table-properties="propertiesDataTable" 
                   fixed
