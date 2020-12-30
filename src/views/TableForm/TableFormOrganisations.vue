@@ -102,48 +102,37 @@ export default {
   },
   computed: {
     fieldForm() { 
-      // console.log('form computed');
       let fieldForm = this.$store.getters[`DataTable/GET_LIST_OPTION`]('organisations');
       for (let key of Object.keys(fieldForm)) {
-      // //   this.$set(fieldForm[key], 'text', '');
         if (fieldForm[key].type == 'nested object') this.$set(fieldForm[key], 'objectValue', 'head_name'); //костыль, надо получать откуда-то
       }
       if (this.focusedElement != null) {
         for (let key of Object.keys(fieldForm)) {
-          // if (fieldForm[key].type == 'nested object') this.$set(fieldForm[key], 'objectValue', 'head_name');
           this.fieldFormValue[key] = this.focusedElement[key];
-      //     fieldForm[key].text = this.focusedElement[key];
         }
       }
-      // } else {
-      //   console.log('add');
-      // }
-      // console.log(this.fieldFormValue);
-      // console.log(fieldForm);
       return fieldForm;
     },
   },
   watch: {
+    focusedElement() {
+      if (this.focusedElement == null) this.fieldFormValueClear();
+    },
   },
   created() {
     this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: this.tableName});
   },
   methods: {
     eventClickActionCancel() {
-      // console.log(this.fieldFormValue);
-      // console.log(this.properties);
       this.$emit('event-action-cancel');
-      this.$refs.formAction.reset();
+      this.fieldFormValueClear();
     },
     eventClickActionAccept() {
-      // console.log(this.focusedElement);
       let option = {actionName: (this.focusedElement == null) ? 'adding' : 'editing', values: {}};
       Object.assign(option.values, this.fieldFormValue);
-      // console.log(option);
       this.$emit('event-action-accept', option);
-      this.$refs.formAction.reset();
+      this.fieldFormValueClear();
     },
-
     fieldFormValueClear() {
       this.fieldFormValue = {
         title: '',

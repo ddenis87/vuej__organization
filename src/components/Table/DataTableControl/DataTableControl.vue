@@ -28,8 +28,7 @@
     <v-dialog v-model="isShowDialog" max-width="60%" class="dialog" @click:outside="eventClickCloseDialog">
       <v-card>
         <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
-          <span class="dialog__title">{{  }}</span>
-          <!-- <span class="dialog__title" v-if="componentFormProperties.actionName == 'editing'">Редактирование записи</span> -->
+          <span class="dialog__title">{{ idDialogName }}</span>
           <v-spacer></v-spacer>
           <v-btn class="system__btn" color="white" tile icon small @click="eventClickCloseDialog"><v-icon small color="white">mdi-close</v-icon></v-btn>
         </v-system-bar>
@@ -52,7 +51,6 @@ export default {
   },
   data() {
     return {
-      // isFocusedElement: false,
       isShowDialog: false,
       focusedElementForm: null, //(Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null,
     }
@@ -67,7 +65,7 @@ export default {
       return () => import(`@/views/TableForm/TableForm${componentForm}`);
     },
     isFocusedElement() { return (this.focusedElementForm && Object.keys(this.focusedElementForm).length != 0) ? true : false },
-    // focusedElementForm() { console.log(this.focusedElement); return (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null }
+    idDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }
   },
   watch: {
     focusedElement() { this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null }
@@ -83,17 +81,13 @@ export default {
     eventClickCloseDialog() {
       this.isShowDialog = false;
       this.focusedElementForm= null;
-      // this.isFocusedElement = false;
     },
 
     eventActionAccept(option) {
-      // console.log(this.focusedElement);
-      // console.log(option);
       let sendOption = {
         tableName: this.tableName,
       };
       Object.assign(sendOption, option);
-      // console.log(sendOption);
       sendOption.values.id = (sendOption.actionName == 'editing') ? this.focusedElement.id : 'newId';
       console.log(sendOption);
       this.$store.commit(`DataTable/${sendOption.actionName.toUpperCase()}_LIST_DATA`, sendOption)
