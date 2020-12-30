@@ -14,6 +14,7 @@
                     :single-line="singleLine"
                     :label="fieldLabel"
                     :hide-details="fieldShowValidation"
+                    :rules="(fieldRequired) ? [fieldRules.required] : []"
                     :items="fieldList"
                     :item-text="fieldListText"
                     item-value="id"
@@ -63,7 +64,7 @@ export default {
       fieldValue: this.propertiesValue?.id,
       fieldRequired: this.properties?.required,
       fieldRules: {
-        required: value => !!value || 'мин. 1 символ',
+        required: value => !!value || 'не выбран',
       }
     }
   },

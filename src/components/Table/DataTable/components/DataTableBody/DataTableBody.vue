@@ -86,7 +86,7 @@ export default {
       document.querySelector('.box-display #box-overflow').remove();
     },
     computedDataValueAttribute(value) {
-      if (typeof(value) == 'object') {
+      if (typeof(value) == 'object' && value != null) {
         if ('id' in value) { return value.id; }
         return value.value;
       }

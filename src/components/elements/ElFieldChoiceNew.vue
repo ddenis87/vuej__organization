@@ -9,6 +9,7 @@
                   :single-line="singleLine"
                   :label="fieldLabel"
                   :hide-details="fieldShowValidation"
+                  :rules="(fieldRequired) ? [fieldRules.required] : []"
                   :items="fieldList"
                   item-text="display_name"
                   item-value="value"
@@ -41,7 +42,7 @@ export default {
       fieldValue: this.propertiesValue?.value,
       fieldRequired: this.properties?.required,
       fieldRules: {
-        required: value => !!value || 'мин. 1 символ',
+        required: value => !!value || 'не выбран',
       }
     }
   },

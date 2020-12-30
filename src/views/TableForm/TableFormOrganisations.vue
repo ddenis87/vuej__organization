@@ -90,13 +90,13 @@ export default {
         institution_code: '',
         inn: '',
         kpp: '',
-        organisation_type: {},
-        rubpnubp_status: {},
-        egrul_status: {},
-        institution_type: {},
-        industry_typing: {},
-        budget_level: {},
-        bk: {}
+        organisation_type: null,
+        rubpnubp_status: null,
+        egrul_status: null,
+        institution_type: null,
+        industry_typing: null,
+        budget_level: null,
+        bk: null,
       },
     }
   },
@@ -128,6 +128,7 @@ export default {
       this.fieldFormValueClear();
     },
     eventClickActionAccept() {
+      if (!this.fieldFormValueValidation()) return;
       let option = {actionName: (this.focusedElement == null) ? 'adding' : 'editing', values: {}};
       Object.assign(option.values, this.fieldFormValue);
       this.$emit('event-action-accept', option);
@@ -139,14 +140,21 @@ export default {
         institution_code: '',
         inn: '',
         kpp: '',
-        organisation_type: {},
-        rubpnubp_status: {},
-        egrul_status: {},
-        institution_type: {},
-        industry_typing: {},
-        budget_level: {},
-        bk: {}
+        organisation_type: null,
+        rubpnubp_status: null,
+        egrul_status: null,
+        institution_type: null,
+        industry_typing: null,
+        budget_level: null,
+        bk: null,
       };
+    },
+    fieldFormValueValidation() {
+      console.log(this.fieldFormValue);
+      for (let key of Object.keys(this.fieldFormValue)) {
+        if (this.fieldForm[key].required == true && (this.fieldFormValue[key] == '' || this.fieldFormValue[key] == null)) return false;
+      }
+      return true;
     }
   },
 }

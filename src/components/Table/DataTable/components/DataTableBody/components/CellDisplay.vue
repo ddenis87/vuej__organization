@@ -20,7 +20,7 @@ export default {
     displayValue() {
       let newValue = '';
       if (this.dataProps.type == 'string' || this.dataProps.type == 'integer') newValue = this.dataValue;
-      if (this.dataProps.type == 'choice') newValue = this.dataValue['display_name'];
+      if (this.dataProps.type == 'choice') newValue = this.dataValue?.display_name;
       if (this.dataProps.type == 'nested object') newValue = this.dataValue[this.dataProps.objectValue];
       return newValue;
     }
