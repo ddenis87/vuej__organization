@@ -9,21 +9,19 @@
                 :hide-details="fieldShowValidation"
                 :rules="(fieldRequired) ? [fieldRules.required] : []"
                 @keydown.stop="eventKeyDown"
-                @blur.stop="eventBlur"></v-text-field>
+                @blur.stop="eventBlur" @input="eventInput"></v-text-field>
 </template>
 
 <script>
 export default {
   name: 'ElFieldString',
+  // model: {
+  //   prop: 'propertiesValue',
+  //   event: 'input',
+  // },
   props: {
-    properties: {type: Object, default: () => {
-      return {
-        value: '',
-        label: '',
-        text: '',
-        required: false,
-      }
-    }},
+    properties: null,
+    propertiesValue: null,
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
@@ -47,21 +45,31 @@ export default {
     fieldShowValidation() { return (this.showValidation) ? false : true }
   },
   watch: {
-    properties() { this.fieldValue = this.properties.text; }
+    propertiesValue() {
+      // console.log('element watch');
+      this.fieldValue = this.properties.text; 
+      this.$emit('input', this.fieldValue);
+      // console.log(this.fieldValue);
+    }
   },
   mounted() {
     // console.log(this.properties);
     setTimeout(() => {
+      this.$emit('input', this.fieldValue);
       if (this.selectedValue) {
         document.querySelector(`#${this.fieldId}`).setSelectionRange(0, 0);
         document.querySelector(`#${this.fieldId}`).select();
         document.querySelector(`#${this.fieldId}`).focus();
+        
       }
     }, 10);
   },
   methods: {
+    eventInput() {
+      this.$emit('input', this.fieldValue);
+    },
     eventKeyDown(event) {
-      console.log('input string component');
+      // console.log('input string component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
@@ -85,7 +93,7 @@ export default {
 
     eventBlur() {
       if (!this.isInputEmit) {
-        console.log('blur string component');
+        // console.log('blur string component');
         this.$emit('editing-canceled');
       }
     },

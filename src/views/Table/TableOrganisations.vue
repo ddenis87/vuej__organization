@@ -1,7 +1,7 @@
 <template>
   <div class="page-table">
     <div class="page-table__control">
-      <data-table-control :properties="propertiesDataTableControl"></data-table-control>
+      <data-table-control :table-name="'organisations'" :focused-element="focusedElement"></data-table-control>
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
@@ -33,8 +33,8 @@ export default {
           {value: 'title', width: [400,],},
           {value: 'inn', width: [150, 150]},
           {value: 'kpp', width: [115, 115],},
-          {value: 'egrul_status', width: [140, 140]},
           {value: 'rubpnubp_status', width: [140, 140]},
+          {value: 'egrul_status', width: [140, 140]},
           {value: 'industry_typing', width: [120, 120]},
           {value: 'institution_type', width: [130, 130]},
           {value: 'budget_level', width: [180, 180]},
@@ -42,26 +42,13 @@ export default {
         ],
         activeField: 'id',
       },
-      propertiesDataTableControl: {
-        tableName: null,
-        propertiesFocusedElement: null,
-      },
+      focusedElement: {},
     }
   },
   methods: {
     eventRowFocused(event, option, tableName) {
-      this.propertiesDataTableControl = {
-        tableName: tableName,
-        propertiesFocusedElement: option,
-      }
+      this.focusedElement = Object.assign({}, option);
     },
-    eventRowSelected(event, option, tableName) {
-      this.$emit('event-row-selected', option);
-    },
-    eventTableBlur() {
-      console.log('blur table');
-      this.propertiesDataTableControl = null;
-    }
   }
 }
 </script>

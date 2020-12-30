@@ -2,8 +2,20 @@
 <div class="table-form">
   <v-card-text>
     <v-form ref="formAction">
-      <v-text-field dense label="Код главы по БК" v-model="fieldForm.head_code"></v-text-field>
-      <v-text-field dense label="Наименование главы по БК" v-model="fieldForm.head_name"></v-text-field>
+      <v-container>
+        <v-row>
+          <v-col cols="12"><el-field-string :single-line="false" :label="true" 
+                                            :properties="fieldForm.head_name" 
+                                            :properties-value="fieldForm.head_name.text" 
+                                            v-model="fieldFormValue.head_name"></el-field-string></v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12"><el-field-string :single-line="false" :label="true" 
+                                              :properties="fieldForm.head_code" 
+                                              :properties-value="fieldForm.head_code.text" 
+                                              v-model="fieldFormValue.head_code"></el-field-string></v-col>
+        </v-row>
+      </v-container>
     </v-form>
   </v-card-text>
   <v-card-actions>
@@ -16,30 +28,48 @@
 </template>
 
 <script>
+import ElFieldString from '@/components/elements/ElFieldStringMod.vue';
+
 export default {
   name: 'TableFormBudgetClassifications',
+  components: {
+    ElFieldString,
+  },
   props: {
-    properties: Object,
+    actionName: 'adding',
+    focusedElement: Object,
   },
   data() {
     return {
-      actionName: 'adding',
+      tableName: 'budget-classifications',
+      fieldFormValue: {
+        head_name: '',
+        head_code: '',
+      },
     }
   },
   computed: {
-    fieldForm() {
-      // console.log(this.properties);
-      let fieldForm = {}
-      if (this.properties.values == null) {
-        fieldForm.head_code = '';
-        fieldForm.head_name = '';
-        // console.log(fieldForm);
-        return fieldForm;
+    fieldForm() { 
+      console.log('form computed');
+      let fieldForm = this.$store.getters[`DataTable/GET_LIST_OPTION`]('budget-classifications');
+      for (let key of Object.keys(fieldForm)) {
+        this.$set(fieldForm[key], 'text', '');
+        if (fieldForm[key].type == 'nested object') this.$set(fieldForm[key], 'objectValue', 'head_name');
       }
-      Object.assign(fieldForm, this.properties.values);
-      // console.log(fieldForm);
+      if (this.focusedElement != null) {
+        for (let key of Object.keys(fieldForm)) {
+          fieldForm[key].text = this.focusedElement[key];
+        }
+      } else {
+        console.log('add');
+      }
+      console.log(fieldForm);
       return fieldForm;
-    }
+    },
+  },
+  created() {
+    console.log('ceate form');
+    this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: this.tableName});
   },
   methods: {
     eventClickActionCancel() {
@@ -47,9 +77,10 @@ export default {
       this.$refs.formAction.reset();
     },
     eventClickActionAccept() {
-      let option = {actionName: this.properties.actionName, values: {}};
-      Object.assign(option.values, this.fieldForm);
-      // console.log(option);
+      console.log(this.focusedElement);
+      let option = {actionName: (this.focusedElement == null) ? 'adding' : 'editing', values: {}};
+      Object.assign(option.values, this.fieldFormValue);
+      console.log(option);
       this.$emit('event-action-accept', option);
       this.$refs.formAction.reset();
     },

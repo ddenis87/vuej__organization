@@ -3,6 +3,7 @@ export default {
   SET_LIST_OPTION(state, option) {
     state[option.tableName].listOption = option.data;
     state[option.tableName].description = option.description;
+    if (option.tableName == 'organisations') state[option.tableName].listOption.bk.tableName = "budget-classifications";
   },
   SET_LIST_DATA(state, option) { 
     let listOption = state[option.tableName].listOption; //
@@ -19,13 +20,14 @@ export default {
       });
       Object.assign(state[option.tableName], option.data);
       delete state[option.tableName].results;
-      // console.log(state[option.tableName]);
+      console.log(state[option.tableName]);
     }
   },
   ADDING_LIST_DATA(state, option) {
     let newItem = {};
     Object.assign(newItem, option.values);
     state[option.tableName].listData.unshift(newItem);
+    console.log(state[option.tableName].listData);
   },
   DELETING_LIST_DATA(state, option) {
     let index = state[option.tableName].listData.findIndex(item => item.id == option.values.id);

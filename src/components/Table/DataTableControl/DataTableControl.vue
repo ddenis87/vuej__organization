@@ -28,15 +28,16 @@
     <v-dialog v-model="isShowDialog" max-width="60%" class="dialog" @click:outside="eventClickCloseDialog">
       <v-card>
         <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
-          <span class="dialog__title" v-if="componentFormProperties.actionName == 'adding'">Новая запись</span>
-          <span class="dialog__title" v-if="componentFormProperties.actionName == 'editing'">Редактирование записи</span>
+          <span class="dialog__title">{{  }}</span>
+          <!-- <span class="dialog__title" v-if="componentFormProperties.actionName == 'editing'">Редактирование записи</span> -->
           <v-spacer></v-spacer>
           <v-btn class="system__btn" color="white" tile icon small @click="eventClickCloseDialog"><v-icon small color="white">mdi-close</v-icon></v-btn>
         </v-system-bar>
         <component :is="componentForm" 
-                   v-bind:properties="componentFormProperties"
+                   :focused-element="focusedElementForm"
                    @event-action-accept="eventActionAccept"
                    @event-action-cancel="eventActionCancel"></component>
+
       </v-card>
     </v-dialog>
   </div>
@@ -46,57 +47,55 @@
 export default {
   name: 'DataTableControl',
   props: {
-    properties: Object,
+    tableName: String,
+    focusedElement: Object,
   },
   data() {
     return {
-      isFocusedElement: false,
+      // isFocusedElement: false,
       isShowDialog: false,
-      componentFormProperties: {
-        values: null,
-        actionName: 'adding',
-      },
+      focusedElementForm: null, //(Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null,
     }
   },
   computed: {
     componentForm() {
       let componentForm = '';
-      if (!this.properties.tableName) return null;
-      this.properties.tableName.split('-').forEach(item => {
+      if (!this.tableName) return null;
+      this.tableName.split('-').forEach(item => {
         componentForm += item[0].toUpperCase() + item.slice(1);
       })
       return () => import(`@/views/TableForm/TableForm${componentForm}`);
     },
+    isFocusedElement() { return (this.focusedElementForm && Object.keys(this.focusedElementForm).length != 0) ? true : false },
+    // focusedElementForm() { console.log(this.focusedElement); return (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null }
   },
   watch: {
-    properties() {
-      if (this.properties.propertiesFocusedElement != null) this.isFocusedElement = true;
-      else this.isFocusedElement = false;
-    }
+    focusedElement() { this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null }
   },
   methods: {
     eventClickAdding() {
-      this.componentFormProperties.values = null;
-      this.componentFormProperties.actionName = 'adding';
+      this.focusedElementForm = null;
       this.isShowDialog = true;
     },
     eventClickEditing() {
-      this.componentFormProperties.values = this.properties.propertiesFocusedElement;
-      this.componentFormProperties.actionName = 'editing'
       this.isShowDialog = true;
     },
     eventClickCloseDialog() {
       this.isShowDialog = false;
-      this.componentFormProperties.values = null;
-      this.componentFormProperties.actionName = 'adding';
-      this.isFocusedElement = false;
+      this.focusedElementForm= null;
+      // this.isFocusedElement = false;
     },
 
     eventActionAccept(option) {
+      // console.log(this.focusedElement);
+      // console.log(option);
       let sendOption = {
-        tableName: this.properties.tableName,
+        tableName: this.tableName,
       };
       Object.assign(sendOption, option);
+      // console.log(sendOption);
+      sendOption.values.id = (sendOption.actionName == 'editing') ? this.focusedElement.id : 'newId';
+      console.log(sendOption);
       this.$store.commit(`DataTable/${sendOption.actionName.toUpperCase()}_LIST_DATA`, sendOption)
       this.eventClickCloseDialog();
     },
@@ -106,7 +105,7 @@ export default {
     eventActionDeleting() {
       let sendOption = {
         actionName: 'deleting',
-        values: Object.assign({}, this.properties.propertiesFocusedElement),
+        values: Object.assign({}, this.focusedElement),
       }
       this.eventActionAccept(sendOption);
     }

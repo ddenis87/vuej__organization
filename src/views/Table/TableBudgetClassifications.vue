@@ -1,7 +1,7 @@
 <template>
   <div class="page-table">
     <div class="page-table__control">
-      <data-table-control :properties="propertiesDataTableControl"></data-table-control>
+      <data-table-control :table-name="'budget-classifications'" :focused-element="focusedElement"></data-table-control>
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
@@ -43,10 +43,7 @@ export default {
         ],
         // activeField: 'id',
       },
-      propertiesDataTableControl: {
-        tableName: 'budget-classifications',
-        propertiesFocusedElement: null,
-      },
+      focusedElement: {},
       
     }
   },
@@ -55,17 +52,14 @@ export default {
   },
   methods: {
     eventRowFocused(event, option, tableName) {
-      this.propertiesDataTableControl = {
-        tableName: tableName,
-        propertiesFocusedElement: option,
-      }
+      this.focusedElement = Object.assign({}, option);
     },
     eventRowSelected(event, option, tableName) {
       this.$emit('event-row-selected', option);
     },
     eventTableBlur() {
       console.log('blur table');
-      this.propertiesDataTableControl = null;
+      // this.propertiesDataTableControl = null;
     }
   }
 }

@@ -18,7 +18,7 @@
                     @change="eventChange"
                     @keydown.stop="eventKeyDown"
                     @click:append="eventDialogOpen"
-                    @click.stop=""></v-autocomplete>
+                    @click.stop="" @input="eventInput"></v-autocomplete>
     <v-dialog v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @click:outside.stop.prevent="">
       <v-card max-height="700">
         <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
@@ -47,6 +47,7 @@ export default {
         choices: null,
       }
     }},
+    propertiesValue: null,
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
@@ -77,13 +78,16 @@ export default {
       if (fieldListStore.length == 0) {
         this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: this.properties.tableName});
       } else {
-        this.fieldValue = this.properties.text?.id.toString();
+        if (this.fieldValue == null) this.fieldValue = this.properties.text?.id?.toString();
+        this.$emit('input', this.$store.getters[`DataTable/GET_LIST_DATA_ROW`](this.properties.tableName,this.fieldValue));
+
         setTimeout(() => document.querySelector(`#${this.fieldId}`).select(), 10)
       }
+      console.log(fieldListStore);
       fieldListStore.forEach(element => {
         fieldList.push({text: element[this.properties.objectValue], value: `${element.id}`});
       });
-      console.log(this.properties)
+      console.log(this.properties);
       return fieldList;
     },
     fieldShowValidation() { return (this.showValidation) ? false : true },
@@ -98,9 +102,18 @@ export default {
       return () => import(`@/views/Table/Table${componentForm}`);
     }
   },
+  watch: {
+    propertiesValue() { 
+      // console.log('element choice watch'); 
+      this.fieldValue = this.properties.text?.id?.toString();
+      this.$emit('input', this.$store.getters[`DataTable/GET_LIST_DATA_ROW`](this.properties.tableName,this.fieldValue));
+      // console.log(this.fieldValue);
+    }
+  },
   mounted() {
     // console.log(this.properties);
     setTimeout(() => {
+      this.$emit('input', this.$store.getters[`DataTable/GET_LIST_DATA_ROW`](this.properties.tableName,this.fieldValue));
       if (this.selectedValue) {
         document.querySelector(`#${this.fieldId}`).select();
         // document.querySelector(`#${this.fieldId}`).focus();
@@ -123,7 +136,9 @@ export default {
     },
     eventDialogSelected(option) {
       console.log(option);
-      // this.fieldValue = option.id.toString();
+
+      this.fieldValue = option.id.toString();
+      console.log(this.fieldValue);
       this.$emit('editing-accepted', {
         tableName: this.properties.tableName,
         key: 'Enter',
@@ -133,6 +148,7 @@ export default {
         id: this.properties.idRow
       });
       this.isShowDialog = false;
+      this.$emit('input', this.$store.getters[`DataTable/GET_LIST_DATA_ROW`](this.properties.tableName, this.fieldValue));
     },
 
     eventKeyDown(event) {
@@ -174,7 +190,12 @@ export default {
     eventChange() { /////////////
       // console.log('change event');
       this.isElementChange = true;
+      
     },
+    eventInput() {
+      console.log('input event');
+      // this.$emit('input', this.fieldValue);
+    }
   },
 }
 </script>

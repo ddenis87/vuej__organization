@@ -9,21 +9,20 @@
                 :hide-details="fieldShowValidation"
                 :rules="(fieldRequired) ? [fieldRules.required] : []"
                 @keydown.stop="eventKeyDown"
-                @blur.stop="eventBlur"></v-text-field>
+                @blur.stop="eventBlur"
+                @input="eventInput"></v-text-field>
 </template>
 
 <script>
 export default {
   name: 'ElFieldString',
+  model: {
+    prop: 'propertiesValue',
+    event: 'input',
+  },
   props: {
-    properties: {type: Object, default: () => {
-      return {
-        value: '',
-        label: '',
-        text: '',
-        required: false,
-      }
-    }},
+    properties: '',
+    propertiesValue: '',
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
@@ -32,25 +31,25 @@ export default {
   data() {
     return {
       isInputEmit: false,
-      fieldId: `El-${this.properties.value}`,
-      // fieldLabel: this.label ? this.properties.label : '',
-      fieldValue: this.properties.text,
-      fieldRequired: this.properties.required,
+      fieldId: `El-${this.properties?.value}`,
+      fieldValue: this.propertiesValue,
+      fieldRequired: this.properties?.required,
       fieldRules: {
         required: value => !!value || 'мин. 1 символ',
       }
     }
   },
   computed: {
-    fieldLabel() { return (this.label) ? this.properties.label: '' },
-    fieldMaxLength() { return (this.properties['max_length']) ? this.properties['max_length'] : Infinity; },
+    fieldLabel() { return (this.label) ? this.properties?.label: '' },
+    fieldMaxLength() { return (this.properties?.max_length) ? this.properties.max_length : Infinity; },
     fieldShowValidation() { return (this.showValidation) ? false : true }
   },
   watch: {
-    properties() { this.fieldValue = this.properties.text; }
+    propertiesValue() {
+      this.fieldValue = this.propertiesValue; 
+    }
   },
   mounted() {
-    // console.log(this.properties);
     setTimeout(() => {
       if (this.selectedValue) {
         document.querySelector(`#${this.fieldId}`).setSelectionRange(0, 0);
@@ -60,8 +59,11 @@ export default {
     }, 10);
   },
   methods: {
+    eventInput() {
+      this.$emit('input', this.fieldValue);
+    },
     eventKeyDown(event) {
-      console.log('input string component');
+      // console.log('input string component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
@@ -69,7 +71,6 @@ export default {
       }
       if (event.key == 'Enter' || event.key == 'Tab') {
         event.preventDefault();
-        // console.log(event);
         if (this.fieldRequired && this.fieldValue.length == 0) return;
         this.isInputEmit = true;
         this.$emit('editing-accepted', {
@@ -85,7 +86,7 @@ export default {
 
     eventBlur() {
       if (!this.isInputEmit) {
-        console.log('blur string component');
+        // console.log('blur string component');
         this.$emit('editing-canceled');
       }
     },

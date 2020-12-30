@@ -1,29 +1,22 @@
 <template>
   <v-text-field :id="fieldId"
-                class="el-field-string" 
-                dense 
+                class="el-field-number" 
+                dense
                 v-model="fieldValue"
                 :single-line="singleLine"
                 :label="fieldLabel"
-                :maxlength="fieldMaxLength"
                 :hide-details="fieldShowValidation"
                 :rules="(fieldRequired) ? [fieldRules.required] : []"
                 @keydown.stop="eventKeyDown"
-                @blur.stop="eventBlur"></v-text-field>
+                @blur.stop="eventBlur" @input="eventInput"></v-text-field>
 </template>
 
 <script>
 export default {
-  name: 'ElFieldString',
+  name: 'ElFieldNumber',
   props: {
-    properties: {type: Object, default: () => {
-      return {
-        value: '',
-        label: '',
-        text: '',
-        required: false,
-      }
-    }},
+    properties: null,
+    propertiesValue: null,
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
@@ -47,21 +40,29 @@ export default {
     fieldShowValidation() { return (this.showValidation) ? false : true }
   },
   watch: {
-    properties() { this.fieldValue = this.properties.text; }
+    propertiesValue() { 
+      // console.log('element watch'); 
+      this.fieldValue = this.properties.text; 
+      this.$emit('input', this.fieldValue);
+      // console.log(this.fieldValue);
+    }
   },
   mounted() {
-    // console.log(this.properties);
     setTimeout(() => {
+      this.$emit('input', this.fieldValue);
       if (this.selectedValue) {
         document.querySelector(`#${this.fieldId}`).setSelectionRange(0, 0);
         document.querySelector(`#${this.fieldId}`).select();
         document.querySelector(`#${this.fieldId}`).focus();
       }
-    }, 10);
+    }, 100);
   },
   methods: {
+    eventInput() {
+      this.$emit('input', this.fieldValue);
+    },
     eventKeyDown(event) {
-      console.log('input string component');
+      // console.log('input string component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
@@ -69,9 +70,10 @@ export default {
       }
       if (event.key == 'Enter' || event.key == 'Tab') {
         event.preventDefault();
-        // console.log(event);
         if (this.fieldRequired && this.fieldValue.length == 0) return;
         this.isInputEmit = true;
+        // console.log(this.fieldValue);
+        this.fieldValue = this.fieldValue.toString().replace(/\./g, ','); 
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
           key: event.key,
@@ -80,12 +82,27 @@ export default {
           field: this.properties.value,
           id: this.properties.idRow
         });
+        return;
+      }
+      if (event.code.includes('Key') || 
+          event.code == 'BracketLeft' || 
+          event.code == 'BracketRight' ||
+          event.code == 'Backslash' ||
+          event.code == 'Space' ||
+          event.code == 'Semicolon' || 
+          event.code == 'Quote' || 
+          event.code == 'Comma' ||
+          event.code == 'Period' ||
+          event.key == '/') { event.preventDefault(); return; }
+
+      if (event.code == 'NumpadDecimal' || event.code == 'Slash') {
+        if ((this.fieldValue.match(/[\.\,]/g)) && (this.fieldValue.match(/[\.\,]/g).length > 0)) { event.preventDefault(); return; }
       }
     },
 
     eventBlur() {
       if (!this.isInputEmit) {
-        console.log('blur string component');
+        // console.log('blur string component');
         this.$emit('editing-canceled');
       }
     },
@@ -94,11 +111,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-field-string {
+.el-field-number {
   width: 100%;
   font-size: 14px;
 }
 .v-text-field {
   margin-top: -3.5px;
+}
+::v-deep {
+  input { text-align: end; }
 }
 </style>

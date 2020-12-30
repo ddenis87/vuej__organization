@@ -10,6 +10,8 @@
                   :label="fieldLabel"
                   :hide-details="fieldShowValidation"
                   :items="fieldList"
+                  item-text="display_name"
+                  item-value="value"
                   @keydown.stop="eventKeyDown"
                   @change="eventChangeValue"
                   @blur.stop="eventBlur"></v-autocomplete>
@@ -18,16 +20,12 @@
 <script>
 export default {
   name: 'ElFieldChoice',
+  model: {
+    event: 'input'
+  },
   props: {
-    properties: {type: Object, default: () => {
-      return {
-        value: '',
-        label: '',
-        text: null,
-        required: false,
-        choices: null,
-      }
-    }},
+    properties: null,
+    propertiesValue: null,
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
@@ -40,7 +38,7 @@ export default {
       isElementChange: false,
       fieldId: `El-${this.properties.value}`,
       // fieldLabel: this.label ? this.properties.label : '',
-      fieldValue: (this.properties.text) ? this.properties.text.value.toString() : '',
+      fieldValue: (this.properties.text) ? this.properties.text.value : '',
       fieldRequired: this.properties.required,
       fieldRules: {
         required: value => !!value || 'мин. 1 символ',
@@ -49,18 +47,27 @@ export default {
   },
   computed: {
     fieldLabel() { return (this.label) ? this.properties.label: '' },
+    fieldShowValidation() { return (this.showValidation) ? false : true },
     fieldList() {
       let fieldList = [];
       if (this.properties.choices == null) return [];
-      this.properties.choices.forEach(element => {
-        fieldList.push({text: element['display_name'], value: `${element['value']}`})
-      })
-      return fieldList;
+      return this.properties.choices;
     },
-    fieldShowValidation() { return (this.showValidation) ? false : true }
+  },
+  watch: {
+    propertiesValue() {
+      this.fieldValue = this.properties.text?.value;
+      // console.log('watch choice component');
+      console.log(this.fieldList.find(item => item.value == this.fieldValue));
+      this.$emit('input', this.fieldList.find(item => item.value == this.fieldValue));
+    }
   },
   mounted() {
+    console.log('mounted choice component');
+    console.log(this.fieldList.find(item => item.value == this.fieldValue));
+    this.$emit('input', this.fieldList.find(item => item.value == this.fieldValue));
     setTimeout(() => {
+      this.$emit('input', this.fieldValue );
       if (this.selectedValue) {
         document.querySelector(`#${this.fieldId}`).select();
         document.querySelector(`#${this.fieldId}`).focus();
@@ -70,11 +77,12 @@ export default {
   methods: {
     eventChangeValue() {
       // console.log('change choice component');
+      // console.log(this.fieldValue);
       this.isInputFirstEnter = true;
       this.isElementChange= true;
+      this.$emit('input', this.fieldValue);
     },
     eventKeyDown() {
-      // console.log('input choice component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
@@ -102,7 +110,6 @@ export default {
         });
       }
     },
-
     eventBlur() {
       if (!this.isInputEmit) {
         // console.log('blur choice component');

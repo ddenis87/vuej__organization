@@ -1,7 +1,7 @@
 import axios from 'axios';
 export default {
   GET_LIST_OPTION(state, option) {
-    
+    // console.log('activ');
     if (state.getters.GET_DESCRIPTION_TABLE(option.tableName)) { return; };
     state.commit('SET_IS_DATA_LOAD', true);
     axios

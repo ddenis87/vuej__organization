@@ -2,10 +2,9 @@
   <v-text-field :id="fieldId"
                 class="el-field-number" 
                 dense
-                single-line
                 v-model="fieldValue"
+                :single-line="singleLine"
                 :label="fieldLabel"
-
                 :hide-details="fieldShowValidation"
                 :rules="(fieldRequired) ? [fieldRules.required] : []"
                 @keydown.stop="eventKeyDown"
@@ -16,8 +15,16 @@
 export default {
   name: 'ElFieldNumber',
   props: {
-    properties: Object,
+    properties: {type: Object, default: () => {
+      return {
+        value: '',
+        label: '',
+        text: '',
+        required: false,
+      }
+    }},
     label: {type: Boolean, default: false}, // hidden or show label
+    singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
     selectedValue: {type: Boolean, defalt: false} // selected value in text field after mounted
   },
@@ -25,7 +32,7 @@ export default {
     return {
       isInputEmit: false,
       fieldId: `El-${this.properties.value}`,
-      fieldLabel: this.label ? this.properties.label : '',
+      // fieldLabel: this.label ? this.properties.label : '',
       fieldValue: this.properties.text,
       fieldRequired: this.properties.required,
       fieldRules: {
@@ -34,6 +41,7 @@ export default {
     }
   },
   computed: {
+    fieldLabel() { return (this.label) ? this.properties.label: '' },
     fieldMaxLength() { return (this.properties['max_length']) ? this.properties['max_length'] : Infinity; },
     fieldShowValidation() { return (this.showValidation) ? false : true }
   },
@@ -48,7 +56,7 @@ export default {
   },
   methods: {
     eventKeyDown(event) {
-      console.log('input string component');
+      // console.log('input string component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
@@ -88,7 +96,7 @@ export default {
 
     eventBlur() {
       if (!this.isInputEmit) {
-        console.log('blur string component');
+        // console.log('blur string component');
         this.$emit('editing-canceled');
       }
     },
