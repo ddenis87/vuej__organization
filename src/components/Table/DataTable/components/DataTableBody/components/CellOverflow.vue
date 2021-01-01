@@ -23,6 +23,7 @@ export default {
       let fullContainer = document.getElementById(`box-full`);
       if (fullContainer.getBoundingClientRect().height > parentContainer.getBoundingClientRect().height + 10) {
         parentContainer.closest('.table-body__col').setAttribute('data-overflow', true);
+        parentContainer.closest('.table-body__col').setAttribute('data-overflow-text', this.content);
       }
       this.$emit('destroy-self');
     },

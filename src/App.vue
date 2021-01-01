@@ -56,7 +56,7 @@ html, body {
   }
   &-body {
     grid-area: app-body;
-    border: thin solid purple;
+    // border: thin solid purple;
     height: 100%;
     padding: 3px;
   }
@@ -73,6 +73,15 @@ html, body {
   border: thin solid rgba(0, 0, 0, .87);
   border-radius: 4px;
   font-size: .875rem;
-  color: rgba(0, 0, 0, .87);
+  line-height: 1.5;
+  
+  &-control {
+    background-color: rgba(0, 0, 0, .87);
+    color: rgba(255, 255, 255, 1);
+  }
+  &-body {
+    color: rgba(0, 0, 0, .87);
+    background-color: rgba(255, 255, 255, 1);
+  }
 }
 </style>

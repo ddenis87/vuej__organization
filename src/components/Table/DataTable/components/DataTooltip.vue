@@ -1,31 +1,60 @@
 <template>
-  <div class="tooltip" id="tooltip" @click="$emit('hide-tooltip')" @mouseout="$emit('hide-tooltip')"></div>
+  <div id="tooltip"
+       class="tooltip" 
+       :class="{'tooltip_show': isShow}" 
+       :style="position" 
+       @click="$emit('click')" @mousemove="$emit('mousemove')">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'DataTooltip',
+  props: {
+    isShow: {type: Boolean, default: false},
+    tLeft: Number,
+    tTop: Number,
+    tMinWidth: Number,
+  },
+  computed: {
+    position() {
+      return {
+        left: this.tLeft + 'px',
+        top: this.tTop + 'px',
+        'min-width': this.tMinWidth + 'px',
+        'max-width': (this.tMinWidth * 2) + 'px'
+      }
+    }
+  },
+  methods: {
+    
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../DataTable.scss';
+// @import '../DataTable.scss';
 
 .tooltip {
   position: fixed;
   left: 100px;
   top: 100px;
-  min-width: 400px;
+  padding: 2px 6px;
+  padding-bottom: 1px;
 
-  font-size: $tooltipFontSize;
-  color: $tooltipFontColor;
+  font-size: .875rem;
+  color: rgba(0, 0, 0, .87);
+
   border: thin solid rgba(0,0,0,.3);
-  border-radius: 10px;
-  box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);
-  background-color: white;
-  padding: 4px 6px;
-  opacity: 1;
+  border-radius: 4px;
+  // box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);
+  background-color: rgba(255, 255, 255, 1);
+  
   z-index: 100;
   visibility: hidden;
+  &_show {
+    visibility: visible;
+  }
 }
 </style>

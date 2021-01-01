@@ -1,5 +1,15 @@
 <template>
-  <div class="table-body">
+  <div class="table-body" @scroll="eventScroll">
+    <!-- <v-tooltip right fixed v-model="isTooltipShow" :position-x="isTooltipProperties.left" :position-y="isTooltipProperties.top" :min-width="isTooltipProperties.width" :max-width="isTooltipProperties.width * 2"> -->
+      <!-- <span class="tooltip-text tooltip-text-body">{{ isTooltipProperties.text }}</span> -->
+    <!-- </v-tooltip> -->
+    <data-tooltip :is-show="isTooltipShow"
+                  :t-left="isTooltipProperties.left" 
+                  :t-top="isTooltipProperties.top" 
+                  :t-min-width="isTooltipProperties.width"
+                  @click="isTooltipShow = false" @mousemove="isTooltipShow = false">
+      {{ isTooltipProperties.text }}
+    </data-tooltip>
     <div v-for="(itemRow, indexRow) in listData"
          :key="`bodyRow-${indexRow}`"
          class="table-body__row"
@@ -19,6 +29,9 @@
           :class="styleCell" 
           :style="itemColumn.position"
           v-bind:tabindex="(editable) ? indexCol : ''"
+
+          @mouseenter="eventElementMouseEnter"
+          @mouseleave="eventElementMouseLeave"
 
           @focus="eventElementFocus"
           @blur="eventElementBlur"
@@ -57,6 +70,8 @@
 import CellDisplay from './components/CellDisplay.vue';
 import CellOverflow from './components/CellOverflow.vue';
 
+import DataTooltip from '../DataTooltip.vue';
+
 import { Events } from './mixins/Events.js'; // 
 import { Editing } from './mixins/Editing.js'; // 
 import { Styles } from './mixins/Styles.js'; // styleRow, styleCell
@@ -66,6 +81,8 @@ export default {
   components: {
     CellDisplay,
     CellOverflow,
+
+    DataTooltip,
   },
   mixins: [
     Events,
@@ -82,6 +99,7 @@ export default {
     editable: Boolean,
   },
   methods: {
+    eventScroll() { console.log('scroll') },
     destroyOverflow(event) {
       document.querySelector('.box-display #box-overflow').remove();
     },

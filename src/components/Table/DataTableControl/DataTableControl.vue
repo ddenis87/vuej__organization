@@ -5,19 +5,19 @@
         <template v-slot:activator="{ on }">
           <v-btn icon small tile v-on="on" @click="eventClickAdding"><v-icon>mdi-plus</v-icon></v-btn>
         </template>
-        <span class="tooltip-text">Добавить</span>
+        <span class="tooltip-text tooltip-text-control">Добавить</span>
       </v-tooltip>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-btn icon small tile :disabled="!isFocusedElement" v-on="on" @click="eventClickEditing"><v-icon>mdi-pencil</v-icon></v-btn>
           </template>
-        <span class="tooltip-text">Изменить</span>
+        <span class="tooltip-text tooltip-text-control">Изменить</span>
       </v-tooltip>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-btn icon small tile :disabled="!isFocusedElement" v-on="on" @click="eventActionDeleting"><v-icon>mdi-delete</v-icon></v-btn>
         </template>
-        <span class="tooltip-text">Удалить</span>
+        <span class="tooltip-text tooltip-text-control">Удалить</span>
       </v-tooltip>
       
       <v-spacer></v-spacer>
@@ -88,7 +88,7 @@ export default {
         tableName: this.tableName,
       };
       Object.assign(sendOption, option);
-      sendOption.values.id = (sendOption.actionName == 'editing') ? this.focusedElement.id : 'newId';
+      sendOption.values.id = (sendOption.actionName == 'editing' || sendOption.actionName == 'deleting') ? this.focusedElement.id : 'newId';
       console.log(sendOption);
       this.$store.commit(`DataTable/${sendOption.actionName.toUpperCase()}_LIST_DATA`, sendOption)
       this.eventClickCloseDialog();

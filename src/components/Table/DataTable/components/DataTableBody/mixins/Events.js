@@ -5,6 +5,13 @@ export const Events = {
       isRowNowFocus: false,
       isElementNowEditing: false,
       isElementNowFocus: false,
+      isTooltipProperties: {
+        top: 0,
+        left: 0,
+        text: ''
+      },
+      isTooltipTimer: null,
+      isTooltipShow: false,
     }
   },
   mounted() {
@@ -17,7 +24,8 @@ export const Events = {
         event.target.classList.add('table-body__row_hover');
     },
     eventRowMouseLeave(event) { // work if not editable and not focus
-      if (!this.isElementNowEditing && !this.isElementNowFocus && !this.isRowNowFocus) 
+      if (!this.isElementNowEditing && !this.isElementNowFocus && !this.isRowNowFocus)
+        // console.log(event);
         event.target.classList.remove('table-body__row_hover');
     },
     eventRowFocus(event) {
@@ -47,7 +55,36 @@ export const Events = {
     },
 
     // events element
+    eventElementMouseEnter(event) {
+      // console.log(event.target);
+      // console.log(event.target.getBoundingClientRect());
+      if (event.target.hasAttribute('data-overflow-text') && !event.target.classList.contains('table-body__col_focus')) {
+        this.isTooltipTimer = setTimeout(() => {
+          this.isTooltipProperties = {
+            top: event.target.getBoundingClientRect().top + 4,
+            left: event.target.getBoundingClientRect().left + 10,
+            width: event.target.getBoundingClientRect().width,
+            text: event.target.getAttribute('data-overflow-text'),
+          };
+          // console.log(this.isTooltipProperties);
+          this.isTooltipShow = true;
+        }, 1300);
+      }
+      
+    },
+    eventElementMouseLeave() {
+      // console.log('by');
+      // this.isTooltipShow = false;
+      clearTimeout(this.isTooltipTimer);
+
+    },
+
     eventElementFocus(event) {
+      // -- tooltip --------------------
+      this.isTooltipShow = false;
+      clearTimeout(this.isTooltipTimer);
+      // -------------------------------
+
       this.isElementNowFocus = true;
       event.target.parentElement.classList.remove('table-body__row_hover');
       event.target.parentElement.classList.add('table-body__row_focus');
@@ -59,7 +96,7 @@ export const Events = {
         event.target.parentElement.classList.remove('table-body__row_focus');
         event.target.classList.remove('table-body__col_focus');
 
-        // this.$emit('event-row-focused', event, null); // ????? может другое имя события? чтоб не путаться
+        // this.$emit('event-row-focused', event, null) // ????? может другое имя события? чтоб не путаться
       }
     },
 
