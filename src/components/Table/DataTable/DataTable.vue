@@ -1,15 +1,15 @@
 <template>
-  <div class="data-table" :id="parentId" @click="actionMouse" @dblclick="actionMouse" @mouseenter="actionMouse" @mouseleave="actionMouse">
-    <data-tooltip @hide-tooltip="hideTooltip" @mouseout="hideTooltip"></data-tooltip>
+  <div class="data-table" :id="parentId">
     <div class="data-table-head">
-      <data-table-head :style="fieldsTemplate"
-                       :list-data="listHeader" 
+      <data-table-head :list-data="listHeader"
+                       :fields-template="fieldsTemplate"
                        :height-type="heightType"></data-table-head>
       <data-progress-line :is-show="isProgressBar"></data-progress-line>
     </div>
     <!-- table body -->
     <div class="data-table-body">
-      <!-- @dblClick-row - emit event for parent component or page -->
+      <!-- @event-row-focused - one click row - emit event for parent component or page -->
+      <!-- @event-row-selected - dblClick row - emit event for parent component or page -->
       <data-table-body :list-data="listBody"
                        :list-data-header="listHeader"
                        :fields-template="fieldsTemplate"
@@ -48,14 +48,12 @@
 import DataTableHead from './components/DataTableHead/DataTableHead.vue';
 import DataTableBody from './components/DataTableBody/DataTableBody.vue';
 import DataProgressLine from './components/DataProgressLine.vue';
-import DataTooltip from './components/DataTooltip.vue';
 
 import { Events } from './mixins/Events.js'; // 
 import { Styles } from './mixins/Styles.js'; // heightType
 import { LoadData } from './mixins/LoadData.js'; // isProgressBar
 import { GetData } from './mixins/GetData.js'; // listHeader, listBody
 import { BuildingTemplate } from './mixins/BuildingTemplate.js'; // fieldsTemplate
-import { MDataTooltip } from './mixins/DataTooltip.js';
 
 export default {
   name: 'DataTable',
@@ -63,7 +61,6 @@ export default {
     DataTableHead,
     DataTableBody,
     DataProgressLine,
-    DataTooltip,
   },
   mixins: [
     Events,
@@ -71,7 +68,6 @@ export default {
     LoadData,
     GetData,
     BuildingTemplate,
-    MDataTooltip,
   ],
   props: {
     dId: String,
@@ -89,12 +85,6 @@ export default {
   mounted() {
     this.parentElement = document.getElementById(this.parentId);
     this.parentEdge = this.parentElement.getBoundingClientRect().bottom;
-  },
-  methods: {
-    actionMouse(event) {
-      // console.log('actionMouse');
-      // console.log(event);
-    }
   },
 }
 </script>

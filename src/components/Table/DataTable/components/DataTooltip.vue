@@ -27,15 +27,10 @@ export default {
       }
     }
   },
-  methods: {
-    
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-// @import '../DataTable.scss';
-
 .tooltip {
   position: fixed;
   left: 100px;
@@ -48,7 +43,6 @@ export default {
 
   border: thin solid rgba(0,0,0,.3);
   border-radius: 4px;
-  // box-shadow: 2px 2px 4px 0px rgba(0,0,0,.12);
   background-color: rgba(255, 255, 255, 1);
   
   z-index: 100;

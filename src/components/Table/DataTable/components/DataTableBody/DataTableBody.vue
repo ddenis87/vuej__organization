@@ -1,8 +1,9 @@
 <template>
-  <div class="table-body" @scroll="eventScroll">
-    <!-- <v-tooltip right fixed v-model="isTooltipShow" :position-x="isTooltipProperties.left" :position-y="isTooltipProperties.top" :min-width="isTooltipProperties.width" :max-width="isTooltipProperties.width * 2"> -->
-      <!-- <span class="tooltip-text tooltip-text-body">{{ isTooltipProperties.text }}</span> -->
-    <!-- </v-tooltip> -->
+<!-- Body -->
+  <div class="table-body" @mouseover="eventBodyMouseOver"
+                          @mouseout="eventBodyMouseOut">
+
+    <!-- Tooltip -->
     <data-tooltip :is-show="isTooltipShow"
                   :t-left="isTooltipProperties.left" 
                   :t-top="isTooltipProperties.top" 
@@ -10,6 +11,8 @@
                   @click="isTooltipShow = false" @mousemove="isTooltipShow = false">
       {{ isTooltipProperties.text }}
     </data-tooltip>
+
+    <!-- Body row -->
     <div v-for="(itemRow, indexRow) in listData"
          :key="`bodyRow-${indexRow}`"
          class="table-body__row"
@@ -23,15 +26,14 @@
          @click="(event) => eventRowClick(event, itemRow)"
          @dblclick="(event) => eventRowDblclick(event, itemRow)"
          @keydown="eventRowKeydown">
+
+      <!-- Body column -->
       <div v-for="(itemColumn, indexCol) in listDataHeader"
           :key="`bodyCol-${indexCol}`" 
           class="table-body__col"
           :class="styleCell" 
           :style="itemColumn.position"
           v-bind:tabindex="(editable) ? indexCol : ''"
-
-          @mouseenter="eventElementMouseEnter"
-          @mouseleave="eventElementMouseLeave"
 
           @focus="eventElementFocus"
           @blur="eventElementBlur"
@@ -41,7 +43,7 @@
           @editing-accepted="editingAccepted">
 
         <!-- slot editing -->
-        <div class="box-editing display-none" :data-value="computedDataValueAttribute(itemRow[itemColumn.value])">
+        <div class="box-editing display-none" :data-value="computedDataValueAttribute(itemRow[itemColumn.value], itemColumn)">
           <slot :name="`body-editing.${itemColumn.value}`" v-bind:itemValue="itemRow[itemColumn.value]">
             <div class="box-editing-default">
               <!-- includes default component -->
@@ -54,7 +56,7 @@
             <cell-display :data-value="itemRow[itemColumn.value]"
                           :data-props="itemColumn" 
                           :height-type="heightType"></cell-display>
-            <cell-overflow :content="itemRow[itemColumn.value]" @destroy-self="(event) => destroyOverflow(event)"></cell-overflow>
+            <cell-overflow :content="computedDataValueAttribute(itemRow[itemColumn.value], itemColumn)" @destroy-self="(event) => destroyOverflow(event)"></cell-overflow>
           </slot>
         </div>
       </div>
@@ -68,8 +70,7 @@
 
 <script>
 import CellDisplay from './components/CellDisplay.vue';
-import CellOverflow from './components/CellOverflow.vue';
-
+import CellOverflow from '../CellOverflow.vue';
 import DataTooltip from '../DataTooltip.vue';
 
 import { Events } from './mixins/Events.js'; // 
@@ -81,7 +82,6 @@ export default {
   components: {
     CellDisplay,
     CellOverflow,
-
     DataTooltip,
   },
   mixins: [
@@ -99,16 +99,16 @@ export default {
     editable: Boolean,
   },
   methods: {
-    eventScroll() { console.log('scroll') },
     destroyOverflow(event) {
       document.querySelector('.box-display #box-overflow').remove();
     },
-    computedDataValueAttribute(value) {
-      if (typeof(value) == 'object' && value != null) {
-        if ('id' in value) { return value.id; }
-        return value.value;
+    computedDataValueAttribute(value, itemColumn) {
+      switch(itemColumn.type) {
+        case 'string':
+        case 'integer': return value;
+        case 'choice': return value.display_name;
+        case 'nested object': return value[itemColumn.objectValue];
       }
-      return value;
     }
   },
 }
@@ -128,19 +128,9 @@ export default {
     &_dense { grid-auto-rows: $bodyDenseRowHeight;  }
     &_auto  { grid-auto-rows: $bodyAutoRowHeight;   }
 
-    // &_selected-hover {
-    //   &:hover { background-color: $bodyRowBackgroundColorHover; }
-    // }
     &_hover {  background-color: $bodyRowBackgroundColorHover; }
     &_focus { background-color: $bodyRowBackgroundColorHover; }
 
-    // &_editable_false { border-top: thin solid white; }
-
-    // &:focus { outline: none; border-top: $bodyRowBorderFocus; border-bottom: $bodyRowBorderFocus; }
-
-    // &:hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
-    // &_hover > .table-body__col { background-color: $bodyRowBackgroundColorHover;}
-    // &:hover > .table-body__col_focus { background-color: white; }
     // &:hover > .table-body__col-action > .action-box { opacity: 1; }
     
     .table-body__col {
@@ -153,12 +143,10 @@ export default {
       color: $bodyFontColor;
 
       border: thin solid rgba(0, 0, 255, 0);
-      // transition-delay: .1s;
       overflow: hidden;
       box-sizing: border-box;
       outline: none;
 
-      // &:focus { border: $bodyCellBorderFocus; }
       &_focus { border: $bodyCellBorderFocus; }
       &_editing { background-color: white; }
 
@@ -173,11 +161,6 @@ export default {
       .box-display {
         display: inline-flex;
         align-items: $bodyVerticalAlign;
-      
-        // .box-display-default {
-        //   width: inherit;
-        //   height: inherit;
-        // }
       }
       .display-none { display: none; }
       
