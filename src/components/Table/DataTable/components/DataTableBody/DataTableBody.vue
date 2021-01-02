@@ -56,6 +56,7 @@
             <cell-display :data-value="itemRow[itemColumn.value]"
                           :data-props="itemColumn" 
                           :height-type="heightType"></cell-display>
+            <data-overflow-line>{{ computedDataValueAttribute(itemRow[itemColumn.value], itemColumn) }}</data-overflow-line>
             <cell-overflow :content="computedDataValueAttribute(itemRow[itemColumn.value], itemColumn)" @destroy-self="(event) => destroyOverflow(event)"></cell-overflow>
           </slot>
         </div>
@@ -71,6 +72,7 @@
 <script>
 import CellDisplay from './components/CellDisplay.vue';
 import CellOverflow from '../CellOverflow.vue';
+import DataOverflowLine from '../DataOverflowLine.vue';
 import DataTooltip from '../DataTooltip.vue';
 
 import { Events } from './mixins/Events.js'; // 
@@ -82,6 +84,7 @@ export default {
   components: {
     CellDisplay,
     CellOverflow,
+    DataOverflowLine,
     DataTooltip,
   },
   mixins: [
@@ -159,6 +162,7 @@ export default {
         height: 100%;
       }
       .box-display {
+        position: relative;
         display: inline-flex;
         align-items: $bodyVerticalAlign;
       }

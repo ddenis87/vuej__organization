@@ -32,7 +32,7 @@ export default {
           {value: 'institution_code', align: 'end', width: [90, 90], },
           {value: 'title', width: [400,],},
           {value: 'inn', width: [150, 150]},
-          {value: 'kpp', width: [115, 115],},
+          {value: 'kpp', width: [90, 90],},
           {value: 'rubpnubp_status', width: [140, 140]},
           {value: 'egrul_status', width: [140, 140]},
           {value: 'industry_typing', width: [120, 120]},
