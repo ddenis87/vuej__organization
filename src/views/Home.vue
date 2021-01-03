@@ -41,7 +41,6 @@
                      :table-properties="propsTableUno" 
                      v-bind:[heightType]="true"
                      v-bind:[paddingType]="true"
-                     
                      editable>
           </data-table>
         </div>
@@ -63,7 +62,7 @@ export default {
   data() {
     return {
       heightType: 'fixed',
-      paddingType: 'fixed',
+      paddingType: 'padding-fixed',
       listMultiRow: false,
       propsTableUno: {
         tableName: 'organisations',

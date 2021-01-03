@@ -13,17 +13,21 @@ export default {
   name: 'DataTableTooltip',
   props: {
     isShow: {type: Boolean, default: false},
-    tLeft: Number,
-    tTop: Number,
-    tMinWidth: Number,
+    dataProperties: {type: Object, default: () => {
+      return {
+        left: { type: Number, default: -10 },
+        top: { type: Number, default: -10 },
+        width: Number,
+      }
+    }},
   },
   computed: {
     position() {
       return {
-        left: this.tLeft + 'px',
-        top: this.tTop + 'px',
-        'min-width': this.tMinWidth + 'px',
-        'max-width': (this.tMinWidth * 2) + 'px'
+        left: (this.dataProperties.left == 0) ? -20 + 'px' : this.dataProperties.left + 'px',
+        top: this.dataProperties.top + 'px',
+        'min-width': this.dataProperties.width + 'px',
+        'max-width': (this.dataProperties.width * 2) + 'px',
       }
     }
   },

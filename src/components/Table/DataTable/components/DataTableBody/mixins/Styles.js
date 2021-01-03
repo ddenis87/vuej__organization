@@ -10,7 +10,7 @@ export const Styles = {
     },
     styleCell() {
       let styleCell = [];
-      styleCell.push(`table-body__col_${this.heightType}`);
+      styleCell.push(`table-body__col_${this.paddingType}`);
       return styleCell;
     },
   },

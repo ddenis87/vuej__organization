@@ -9,42 +9,56 @@ export const Events = {
         top: 0,
         left: 0,
         width: 0,
+        height: 0,
         text: ''
       },
       isTooltipTimer: null,
       isTooltipShow: false,
+      // isTooltipShift: {
+      //   left: 10,
+      //   top: 4,
+      // }
     }
+  },
+  computed: {
+    calcTooltipShift() {
+      let calcTooltipShift = { left: 10, top: 4 };
+      if (this.heightType == 'fixed' && this.paddingType == 'fixed') { calcTooltipShift.left = 10; calcTooltipShift.top = -2; return calcTooltipShift};
+      if (this.heightType == 'fixed' && this.paddingType == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
+      if (this.heightType == 'dense' && this.paddingType == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
+      // if (this.heightType == 'auto' && this.paddingType == 'fixed') { calcTooltipShift.left = 10; calcTooltipShift.top = 4; return calcTooltipShift};
+      // if (this.heightType == 'fixed' && this.paddingType == 'fixed') { calcTooltipShift.left = 10; calcTooltipShift.top = 4; return calcTooltipShift};
+      return calcTooltipShift;
+    },
   },
   mounted() {
     this.parentElement = document.getElementById(this.parentId);
   },
   methods: {
     // events Body ---------------
-
     eventBodyMouseOver(event) {
       if (event.target.classList.contains('content')) {
         let parent = event.target.closest('.table-body__col');
-        if (parent.classList.contains('table-body__col_focus') || !parent.hasAttribute('data-overflow')) return;
+        if (parent.classList.contains('table-body__col_focus')) return;
           this.isTooltipTimer = setTimeout(() => {
             this.isTooltipProperties = {
-              top: parent.getBoundingClientRect().top + 4,
-              left: parent.getBoundingClientRect().left + 10,
+              top: parent.getBoundingClientRect().top + this.calcTooltipShift.top,
+              left: parent.getBoundingClientRect().left + this.calcTooltipShift.left,
               width: parent.getBoundingClientRect().width,
+              height: parent.getBoundingClientRect().height,
               text: parent.getAttribute('data-overflow-text'),
             };
-            this.isTooltipShow = true;
           }, 1300);
       }
     },
-
-    eventBodyMouseOut() {
+    eventBodyMouseOut(event) {
+      if (event.relatedTarget?.classList?.contains('tooltip')) return;
       this.isTooltipShow = false;
       clearTimeout(this.isTooltipTimer);
     },
     // ---------------------------
 
     // events Row ----------------
-
     eventRowMouseEnter(event) { // work if not editable and not focus
       if (!this.isElementNowEditing && !this.isElementNowFocus && !this.isRowNowFocus)
         event.target.classList.add('table-body__row_hover');
@@ -53,7 +67,6 @@ export const Events = {
       if (!this.isElementNowEditing && !this.isElementNowFocus && !this.isRowNowFocus)
         event.target.classList.remove('table-body__row_hover');
     },
-
     eventRowFocus(event) {
       // check for editable ?????
       this.isRowNowFocus = true;
@@ -65,7 +78,6 @@ export const Events = {
       event.target.classList.remove('table-body__row_focus');
       // this.$emit('event-row-focused', event, null);  // ?????
     },
-
     eventRowClick(event, itemRow) {
       this.$emit('event-row-focused', event, itemRow);
     },
@@ -79,11 +91,9 @@ export const Events = {
         if ((event.code == 'ArrowUp' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return }
       }
     },
-
     // ---------------------------
 
     // events Column ----------------
-
     eventElementFocus(event) {
       // -- hide tooltip ---------------
       this.isTooltipShow = false;
@@ -103,7 +113,7 @@ export const Events = {
       }
     },
 
-    // events transition edit mode
+    // event transition edit mode
     eventElementDblclick(event, rowProperties, columnProperties, columnValue) {
       if (!this.checkForEditable(event, columnProperties)) return;  // checkForEditable - in mixin Editing
       this.switchDecorationToEdit(event);  // switchDecorationToEdit - in mixin Editing

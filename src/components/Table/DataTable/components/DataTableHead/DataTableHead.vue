@@ -4,12 +4,17 @@
 
   <!-- Tooltip -->
   <data-table-tooltip :is-show="isTooltipShow"
-                      :t-left="isTooltipProperties.left" 
-                      :t-top="isTooltipProperties.top" 
-                      :t-min-width="isTooltipProperties.width"
-                      @click="isTooltipShow = false" @mousemove="isTooltipShow = false">
+                      :data-properties="isTooltipProperties"
+                      @click="isTooltipShow = false"
+                      @mousemove="isTooltipShow = false">
     {{ isTooltipProperties.text }}
   </data-table-tooltip>
+
+  <!-- Overflow -->
+  <data-table-overflow d-id="head"
+                       :data-properties="isTooltipProperties"
+                       @is-show="isTooltipShow = true" 
+                       @is-hide="isTooltipShow = false"></data-table-overflow>
 
   <!-- Head row -->
   <div class="table-head__row" 
@@ -18,12 +23,11 @@
     
     <!-- Head column -->
     <div class="table-head__col"
-         :class="`table-head__col_${heightType}`"
+         :class="`table-head__col_${paddingType}`"
          v-for="(item, index) in listData" 
          :key="index"
          :style="item.position"
          :data-overflow-text="item.label">
-      <data-table-overflow :content="item.label"></data-table-overflow>
       <span class="content" :class="`content_${heightType}`">
         <slot :name="`${item.value}`" v-bind:itemValue="item.value">
           {{ item.label }}
@@ -54,6 +58,7 @@ export default {
     listData: Array,
     fieldsTemplate: Object,
     heightType: {type: String, default: 'fixed'},
+    paddingType: {type: String, default: 'fixed'},
   },
   methods: {
     destroyOverflow(event) {
@@ -96,9 +101,12 @@ export default {
       
       background-color: $headRowBackgroundColor;
 
-      &_fixed { padding: $headPaddingTB $headPaddingLR; }
-      &_dense { padding: $headDensePaddingTB $headDensePaddingLR; }
-      &_auto { padding: $headAutoPaddingTB $headAutoPaddingLR; }
+      // &_fixed { padding: $headPaddingTB $headPaddingLR; }
+      // &_dense { padding: $headDensePaddingTB $headDensePaddingLR; }
+      // &_auto { padding: $headAutoPaddingTB $headAutoPaddingLR; }
+      &_fixed { padding-left: $headPaddingLR; padding-right: $headPaddingLR;}
+      &_dense { padding-left: $headDensePaddingLR; padding-right: $headDensePaddingLR;}
+      // &_auto { padding-left: $headAutoPaddingLR; padding-right: $headAutoPaddingLR; }
 
       .content {
         &_fixed {

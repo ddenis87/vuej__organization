@@ -3,7 +3,8 @@
     <div class="data-table-head">
       <data-table-head :list-data="listHeader"
                        :fields-template="fieldsTemplate"
-                       :height-type="heightType"></data-table-head>
+                       :height-type="heightType"
+                       :padding-type="paddingType"></data-table-head>
       <data-table-progress-line :is-show="isProgressBar"></data-table-progress-line>
     </div>
     <!-- table body -->
@@ -14,6 +15,7 @@
                        :list-data-header="listHeader"
                        :fields-template="fieldsTemplate"
                        :height-type="heightType"
+                       :padding-type="paddingType"
                        :parent-id="parentId"
                        :editable="editable"
                        :tableName="tableName"

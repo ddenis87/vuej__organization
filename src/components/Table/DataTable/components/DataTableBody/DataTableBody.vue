@@ -5,12 +5,17 @@
 
     <!-- Tooltip -->
     <data-table-tooltip :is-show="isTooltipShow"
-                        :t-left="isTooltipProperties.left" 
-                        :t-top="isTooltipProperties.top" 
-                        :t-min-width="isTooltipProperties.width"
-                        @click="isTooltipShow = false" @mousemove="isTooltipShow = false">
+                        :data-properties="isTooltipProperties"
+                        @click="isTooltipShow = false" 
+                        @mousemove="isTooltipShow = false">
       {{ isTooltipProperties.text }}
     </data-table-tooltip>
+
+    <!-- Overflow -->
+    <data-table-overflow d-id="body"
+                         :data-properties="isTooltipProperties"
+                         @is-show="isTooltipShow = true" 
+                         @is-hide="isTooltipShow = false"></data-table-overflow>
 
     <!-- Body row -->
     <div v-for="(itemRow, indexRow) in listData"
@@ -56,7 +61,6 @@
             <cell-display :data-value="itemRow[itemColumn.value]"
                           :data-props="itemColumn" 
                           :height-type="heightType"></cell-display>
-            <data-table-overflow :content="computedDataValueAttribute(itemRow[itemColumn.value], itemColumn)"></data-table-overflow>
           </slot>
         </div>
       </div>
@@ -95,6 +99,7 @@ export default {
     listDataHeader: Array,
     fieldsTemplate: Object,
     heightType: {type: String, default: 'fixed'},
+    paddingType: {type: String, default: 'fixed'},
     parentId: String,
     editable: Boolean,
   },
@@ -147,9 +152,12 @@ export default {
       &_focus { border: $bodyCellBorderFocus; }
       &_editing { background-color: white; }
 
-      &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }
-      &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
-      &_auto  { padding: $bodyAutoPaddingTB $bodyAutoPaddingLR;   }
+      // &_fixed { padding: $bodyPaddingTB $bodyPaddingLR;           }
+      // &_dense { padding: $bodyDensePaddingTB $bodyDensePaddingLR; }
+      // &_auto  { padding: $bodyAutoPaddingTB $bodyAutoPaddingLR;   }
+      &_fixed { padding-left: $bodyPaddingLR;      padding-right: $bodyPaddingLR;      }
+      &_dense { padding-left: $bodyDensePaddingLR; padding-right: $bodyDensePaddingLR; }
+      // &_auto  { padding: $bodyAutoPaddingTB $bodyAutoPaddingLR;   }
       
       .box-editing, .box-display {
         width: 100%;

@@ -1,7 +1,7 @@
 <template>
-  <div class="data-overflow">
-    <div class="data-overflow-block">{{ content }}</div>
-    <div class="data-overflow-line">{{ content }}</div>
+  <div :class="`data-overflow ${dId}-data-overflow`" :style="styleParent">
+    <div :class="`data-overflow-block ${dId}-data-overflow-block`">{{ content }}</div>
+    <div :class="`data-overflow-line ${dId}-data-overflow-line`">{{ content }}</div>
   </div>
 </template>
 
@@ -9,42 +9,59 @@
 export default {
   name: 'DataTableOverflow',
   props: {
-    content: '',
+    dId: '',
+    dataProperties: Object,
   },
-  mounted() { this.computedOverflow(); },
+  data() {
+    return {
+      isTimer: null,
+    }
+  },
+  computed: {
+    styleParent() {
+      this.$emit('is-hide');
+      setTimeout(() => this.computedOverflow(), 50);
+      return {
+        width: this.dataProperties.width - 24 + 'px',
+        height: this.dataProperties.height + 'px',
+      }
+    },
+    content() {
+      this.$emit('is-hide');
+      return this.dataProperties.text;
+    },
+  },
   methods: {
     computedOverflow() {
-      let overflow = document.querySelector('.data-overflow');
-      let overflowBlock = document.querySelector('.data-overflow-block');
-      
+      let overflow = document.querySelector(`.${this.dId}-data-overflow`);
+      let overflowBlock = document.querySelector(`.${this.dId}-data-overflow-block`);
       if (overflow.getBoundingClientRect().height + 10 < overflowBlock.getBoundingClientRect().height) {
-        if (overflow.closest('.table-body__col')) overflow.closest('.table-body__col').setAttribute('data-overflow', true);
-        if (overflow.closest('.table-head__col')) overflow.closest('.table-head__col').setAttribute('data-overflow', true);
-        overflow.remove();
+        this.$emit('is-show');
         return;
       }
-      let overflowLine = document.querySelector('.data-overflow-line');
-      if (overflow.getBoundingClientRect().width - 10 < overflowLine.getBoundingClientRect().width) {
-        if (overflow.closest('.table-body__col')) overflow.closest('.table-body__col').setAttribute('data-overflow', true);
-        if (overflow.closest('.table-head__col')) overflow.closest('.table-head__col').setAttribute('data-overflow', true);
-        overflow.remove();
+      let overflowLine = document.querySelector(`.${this.dId}-data-overflow-line`);
+      if (overflow.getBoundingClientRect().width - 5 < overflowLine.getBoundingClientRect().width) {
+        this.$emit('is-show');
         return;
       }
-      overflow.remove();
+      this.$emit('is-hide');
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../DataTable.scss';
+
 .data-overflow {
   position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%; //inherit;
-  height: inherit;
+  left: 100px;
+  top: 100px;
   border: thin solid purple;
-
+  visibility: hidden;
+  font-size: $bodyFontSize;
+  font-weight: $bodyFontWeight;
+  line-height: $bodyFontLineHeight;
   &-block {
     width: 100%;
     border: thin solid red;
