@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'DataTooltip',
+  name: 'DataTableTooltip',
   props: {
     isShow: {type: Boolean, default: false},
     tLeft: Number,

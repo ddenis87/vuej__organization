@@ -4,13 +4,13 @@
                           @mouseout="eventBodyMouseOut">
 
     <!-- Tooltip -->
-    <data-tooltip :is-show="isTooltipShow"
-                  :t-left="isTooltipProperties.left" 
-                  :t-top="isTooltipProperties.top" 
-                  :t-min-width="isTooltipProperties.width"
-                  @click="isTooltipShow = false" @mousemove="isTooltipShow = false">
+    <data-table-tooltip :is-show="isTooltipShow"
+                        :t-left="isTooltipProperties.left" 
+                        :t-top="isTooltipProperties.top" 
+                        :t-min-width="isTooltipProperties.width"
+                        @click="isTooltipShow = false" @mousemove="isTooltipShow = false">
       {{ isTooltipProperties.text }}
-    </data-tooltip>
+    </data-table-tooltip>
 
     <!-- Body row -->
     <div v-for="(itemRow, indexRow) in listData"
@@ -34,7 +34,7 @@
           :class="styleCell" 
           :style="itemColumn.position"
           v-bind:tabindex="(editable) ? indexCol : ''"
-
+          :data-overflow-text="computedDataValueAttribute(itemRow[itemColumn.value], itemColumn)"
           @focus="eventElementFocus"
           @blur="eventElementBlur"
           @dblclick="(event) => eventElementDblclick(event, itemRow, itemColumn, itemRow[itemColumn.value])"
@@ -56,8 +56,7 @@
             <cell-display :data-value="itemRow[itemColumn.value]"
                           :data-props="itemColumn" 
                           :height-type="heightType"></cell-display>
-            <data-overflow-line>{{ computedDataValueAttribute(itemRow[itemColumn.value], itemColumn) }}</data-overflow-line>
-            <cell-overflow :content="computedDataValueAttribute(itemRow[itemColumn.value], itemColumn)" @destroy-self="(event) => destroyOverflow(event)"></cell-overflow>
+            <data-table-overflow :content="computedDataValueAttribute(itemRow[itemColumn.value], itemColumn)"></data-table-overflow>
           </slot>
         </div>
       </div>
@@ -71,9 +70,8 @@
 
 <script>
 import CellDisplay from './components/CellDisplay.vue';
-import CellOverflow from '../CellOverflow.vue';
-import DataOverflowLine from '../DataOverflowLine.vue';
-import DataTooltip from '../DataTooltip.vue';
+import DataTableOverflow from '../DataTableOverflow.vue';
+import DataTableTooltip from '../DataTableTooltip.vue';
 
 import { Events } from './mixins/Events.js'; // 
 import { Editing } from './mixins/Editing.js'; // 
@@ -83,9 +81,8 @@ export default {
   name: 'DataTableBody',
   components: {
     CellDisplay,
-    CellOverflow,
-    DataOverflowLine,
-    DataTooltip,
+    DataTableOverflow,
+    DataTableTooltip,
   },
   mixins: [
     Events,
@@ -102,9 +99,6 @@ export default {
     editable: Boolean,
   },
   methods: {
-    destroyOverflow(event) {
-      document.querySelector('.box-display #box-overflow').remove();
-    },
     computedDataValueAttribute(value, itemColumn) {
       switch(itemColumn.type) {
         case 'string':

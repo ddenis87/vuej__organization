@@ -16,7 +16,7 @@ export const Events = {
     eventHeadMouseOver(event) {
       if (event.target.classList.contains('content')) {
         let parent = event.target.closest('.table-head__col');
-        if (!parent.hasAttribute('data-overflow-text')) return;
+        if (!parent.hasAttribute('data-overflow')) return;
           this.isTooltipTimer = setTimeout(() => {
             this.isTooltipProperties = {
               top: parent.getBoundingClientRect().top + 4,

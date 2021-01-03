@@ -10,16 +10,10 @@
 </template>
 
 <script>
-// import ElFieldString from '@/components/elements/ElFieldString.vue';
 export default {
   name: 'CellEditing',
   props: {
     properties: Object,
-  },
-  data() {
-    return {
-      // editingComponent: null,
-    }
   },
   computed: {
     editingComponent() {
@@ -38,9 +32,6 @@ export default {
       propertiesComponent.text = this.properties.columnValue;
       return propertiesComponent;
     },
-  },
-  created() {
-    // console.log(this.properties);
   },
   methods: {
     editingCanceled() {

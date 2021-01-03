@@ -3,13 +3,13 @@
                         @mouseout="eventHeadMouseOut">
 
   <!-- Tooltip -->
-  <data-tooltip :is-show="isTooltipShow"
-                :t-left="isTooltipProperties.left" 
-                :t-top="isTooltipProperties.top" 
-                :t-min-width="isTooltipProperties.width"
-                @click="isTooltipShow = false" @mousemove="isTooltipShow = false">
+  <data-table-tooltip :is-show="isTooltipShow"
+                      :t-left="isTooltipProperties.left" 
+                      :t-top="isTooltipProperties.top" 
+                      :t-min-width="isTooltipProperties.width"
+                      @click="isTooltipShow = false" @mousemove="isTooltipShow = false">
     {{ isTooltipProperties.text }}
-  </data-tooltip>
+  </data-table-tooltip>
 
   <!-- Head row -->
   <div class="table-head__row" 
@@ -21,15 +21,14 @@
          :class="`table-head__col_${heightType}`"
          v-for="(item, index) in listData" 
          :key="index"
-         :style="item.position">
-
+         :style="item.position"
+         :data-overflow-text="item.label">
+      <data-table-overflow :content="item.label"></data-table-overflow>
       <span class="content" :class="`content_${heightType}`">
         <slot :name="`${item.value}`" v-bind:itemValue="item.value">
           {{ item.label }}
-          <cell-overflow :content="item.label" @destroy-self="(event) => destroyOverflow(event)"></cell-overflow>
         </slot>
       </span>
-      
     </div>
   </div>
 </div>
@@ -37,16 +36,16 @@
 </template>
 
 <script>
-import CellOverflow from '../CellOverflow.vue';
-import DataTooltip from '../DataTooltip.vue';
+import DataTableOverflow from '../DataTableOverflow.vue';
+import DataTableTooltip from '../DataTableTooltip.vue';
 
 import { Events } from './mixins/Events.js';
 
 export default {
   name: 'DataTableHead',
   components: {
-    CellOverflow,
-    DataTooltip,
+    DataTableOverflow,
+    DataTableTooltip,
   },
   mixins: [
     Events,
@@ -85,6 +84,7 @@ export default {
     &_auto { grid-auto-rows: $headAutoRowHeight; }
 
     .table-head__col {
+      position: relative;
       display: inline-flex;
       justify-content: $headHorizontalAlign;
       align-items: $headVerticalAlign;

@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'DataProgressLine',
+  name: 'DataTableProgressLine',
   props: {
     isShow: {
       type: Boolean,

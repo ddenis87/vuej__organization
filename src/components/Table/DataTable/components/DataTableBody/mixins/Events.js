@@ -8,6 +8,7 @@ export const Events = {
       isTooltipProperties: {
         top: 0,
         left: 0,
+        width: 0,
         text: ''
       },
       isTooltipTimer: null,
@@ -23,11 +24,8 @@ export const Events = {
     eventBodyMouseOver(event) {
       if (event.target.classList.contains('content')) {
         let parent = event.target.closest('.table-body__col');
-        if (parent.classList.contains('table-body__col_focus') || !parent.hasAttribute('data-overflow-text')) return;
+        if (parent.classList.contains('table-body__col_focus') || !parent.hasAttribute('data-overflow')) return;
           this.isTooltipTimer = setTimeout(() => {
-            // let tooltipShiftLeft = 0;
-            // (document.documentElement.getBoundingClientRect().width - parent.getBoundingClientRect().left) < (parent.getBoundingClientRect().width) ?
-            //   tooltipShiftLeft = parent.getBoundingClientRect().width : tooltipShiftLeft = 0;
             this.isTooltipProperties = {
               top: parent.getBoundingClientRect().top + 4,
               left: parent.getBoundingClientRect().left + 10,

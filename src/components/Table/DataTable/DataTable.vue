@@ -4,7 +4,7 @@
       <data-table-head :list-data="listHeader"
                        :fields-template="fieldsTemplate"
                        :height-type="heightType"></data-table-head>
-      <data-progress-line :is-show="isProgressBar"></data-progress-line>
+      <data-table-progress-line :is-show="isProgressBar"></data-table-progress-line>
     </div>
     <!-- table body -->
     <div class="data-table-body">
@@ -45,9 +45,9 @@
 </template>
 
 <script>
+import DataTableProgressLine from './components/DataTableProgressLine.vue';
 import DataTableHead from './components/DataTableHead/DataTableHead.vue';
 import DataTableBody from './components/DataTableBody/DataTableBody.vue';
-import DataProgressLine from './components/DataProgressLine.vue';
 
 import { Events } from './mixins/Events.js'; // 
 import { Styles } from './mixins/Styles.js'; // heightType
@@ -57,10 +57,10 @@ import { BuildingTemplate } from './mixins/BuildingTemplate.js'; // fieldsTempla
 
 export default {
   name: 'DataTable',
-  components: { 
+  components: {
+    DataTableProgressLine,
     DataTableHead,
     DataTableBody,
-    DataProgressLine,
   },
   mixins: [
     Events,

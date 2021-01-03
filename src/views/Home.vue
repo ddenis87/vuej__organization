@@ -16,21 +16,34 @@
     <div class="organization-body">
       <div class="body-item">
         <div class="body-item__title">
-          <v-radio-group v-model="heightType" row dense>
-            <h4>Height row type:</h4>
-            <v-radio label="fixed" value="fixed"></v-radio>
-            <v-radio label="dense" value="dense"></v-radio>
-            <v-radio label="auto" value="auto"></v-radio>
-          </v-radio-group>
+          <v-toolbar dense flat>
+            <v-toolbar-items>
+              <v-radio-group v-model="heightType" row dense>
+                <h4>Height row type:</h4>
+                <v-radio label="fixed" value="fixed"></v-radio>
+                <v-radio label="dense" value="dense"></v-radio>
+                <v-radio label="auto" value="auto"></v-radio>
+              </v-radio-group>
+            </v-toolbar-items>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-radio-group v-model="paddingType" row dense>
+                <h4>Padding column type:</h4>
+                <v-radio label="fixed" value="padding-fixed"></v-radio>
+                <v-radio label="dense" value="padding-dense"></v-radio>
+              </v-radio-group>
+            </v-toolbar-items>
+          </v-toolbar>
         </div>
 
         <div class="body-item__body">
-          <!-- <data-table d-id="organization" 
+          <data-table d-id="organization" 
                      :table-properties="propsTableUno" 
-                     v-bind:[heightType]="true" 
+                     v-bind:[heightType]="true"
+                     v-bind:[paddingType]="true"
                      
                      editable>
-          </data-table> -->
+          </data-table>
         </div>
       </div>
     </div>
@@ -50,6 +63,7 @@ export default {
   data() {
     return {
       heightType: 'fixed',
+      paddingType: 'fixed',
       listMultiRow: false,
       propsTableUno: {
         tableName: 'organisations',
@@ -57,7 +71,7 @@ export default {
           {value: 'id', width: [50, 50], },
           {value: 'institution_code', align: 'end', width: [90, 90], },
           {value: 'title', width: [400,],},
-          {value: 'inn', width: [150, 150]},
+          {value: 'inn', width: [115, 115]},
           {value: 'kpp', width: [115, 115],},
           {value: 'egrul_status', width: [140, 140]},
           {value: 'rubpnubp_status', width: [140, 140]},
@@ -124,6 +138,25 @@ export default {
         // border: thin solid purple;
       }
     }
+  }
+}
+::v-deep {
+  .container {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  .row {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+  .col {
+    width: 100%;
+  }
+  .v-input--selection-controls {
+    margin-top: 15px;
+  }
+  .v-input__control {
+    height: 22px;
   }
 }
 </style>
