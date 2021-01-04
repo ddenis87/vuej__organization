@@ -28,7 +28,7 @@ export default {
       propsDataTable: {
         tableName: 'organisations',
         header: [
-          {value: 'id', width: [50, 50], fixed: 'true'},
+          {value: 'id', width: [50, 50],},
           {value: 'institution_code', align: 'end', width: [90, 90], },
           {value: 'title', width: [400,],},
           {value: 'inn', width: [115, 115]},
@@ -40,7 +40,6 @@ export default {
           {value: 'budget_level', width: [180, 180]},
           {value: 'bk', width: [180, 180], objectValue: 'head_name'},
         ],
-        activeField: 'id',
       },
       focusedElement: {},
     }

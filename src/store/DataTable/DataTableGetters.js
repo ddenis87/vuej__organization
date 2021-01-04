@@ -11,6 +11,10 @@ export default {
     // console.log(state[tableName]);
     return (state[tableName].listData.length != 0) ? state[tableName].listData : [];
   },
+  GET_LIST_DATA_COUNT:(state) => (tableName) => {
+    // return (state[tableName]?.count) ? state[tableName].count : 'вычисляю...';
+    return state[tableName]?.count;
+  },
   GET_LIST_DATA_ROW:(state) => (tableName, rowId) => {
     return state[tableName].listData.find(element => element.id == rowId);
   },

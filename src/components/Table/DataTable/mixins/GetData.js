@@ -28,5 +28,11 @@ export const GetData = {
       // console.log(this.$store.getters[`DataTable/GET_LIST_DATA`](this.tableName));
       return this.$store.getters[`DataTable/GET_LIST_DATA`](this.tableName);
     },
+    countRowInBase() {
+      return this.$store.getters[`DataTable/GET_LIST_DATA_COUNT`](this.tableName);
+    },
+    countRowLoad() {
+      return this.$store.getters[`DataTable/GET_LIST_DATA`](this.tableName).length;
+    }
   }
 }

@@ -20,7 +20,7 @@ export default {
       });
       Object.assign(state[option.tableName], option.data);
       delete state[option.tableName].results;
-      console.log(state[option.tableName]);
+      // console.log(state[option.tableName]);
     }
   },
   ADDING_LIST_DATA(state, option) {

@@ -40,8 +40,10 @@
     <div class="data-table-boot-anchor" id="boot-anchor"></div>
 
     <!-- component footer -->
-    <div class="data-table-footer">
-      <slot name="component-footer"></slot>
+    <div class="data-table-footer" :class="`data-table-footer_${paddingType}`" v-show="footer">
+      <slot name="component-footer">
+        <div class="table-footer">Всего записей в базе по таблице: {{ countRowInBase }}, загружено и показано: {{ countRowLoad }}</div>
+      </slot>
     </div>
   </div>
 </template>
@@ -74,6 +76,7 @@ export default {
   props: {
     dId: String,
     tableProperties: Object,
+    footer: {type: Boolean, default: false},
     editable: {type: Boolean, default: false},
   },
   data() {
@@ -115,6 +118,30 @@ export default {
   &-head, &-body, &-footer { display: inline-flex; }
   &-head { top: 0px; z-index: 40; }
   &-body { position: relative; z-index: 20; }
-  &-footer { bottom: 0px; z-index: 30; }
+  &-footer { 
+    width: 100%; 
+    bottom: 0px; 
+    left: 0px; 
+    z-index: 30; 
+    background-color: white;
+    border-top: thin solid rgba(0,0,0,.12);
+
+    font-size: $headFontSize;
+    font-weight: $headFontWeight;
+    line-height: $headFontLineHeight;
+    color: $headFontColor;
+    &_fixed { padding-left: $headPaddingLR; padding-right: $headPaddingLR;}
+    &_dense { padding-left: $headDensePaddingLR; padding-right: $headDensePaddingLR;}
+
+    .table-footer {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      // border-top: thin solid rgba(0,0,0,.12);
+      width: 100%;
+      height: 40px;
+      // background-color: white;
+    }
+  }
 }
 </style>
