@@ -15,7 +15,11 @@
                   item-value="value"
                   @keydown.stop="eventKeyDown"
                   @change="eventChangeValue"
-                  @blur.stop="eventBlur"></v-autocomplete>
+                  @blur.stop="eventBlur">
+    <template v-slot:append-outer v-if="btClear">
+      <v-btn tile small icon :disabled="isValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+    </template>
+  </v-autocomplete>
 </template>
 
 <script>
@@ -31,7 +35,8 @@ export default {
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
-    selectedValue: {type: Boolean, defalt: false} // selected value in text field after mounted
+    selectedValue: {type: Boolean, defalt: false}, // selected value in text field after mounted
+    btClear: {type: Boolean, defalt: false},
   },
   data() {
     return {
@@ -47,6 +52,7 @@ export default {
     }
   },
   computed: {
+    isValue() { return (this.fieldValue == undefined) ? true : false },
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
     fieldShowValidation() { return (this.showValidation) ? false : true },
     fieldList() {
@@ -107,6 +113,10 @@ export default {
         // console.log('blur choice component');
         this.$emit('editing-canceled');
       }
+    },
+    clearValue() {
+      this.fieldValue = undefined;
+      this.$emit('clear');
     },
   }
 }

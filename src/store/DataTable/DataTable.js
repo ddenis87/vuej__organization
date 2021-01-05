@@ -6,6 +6,7 @@ export default {
   namespaced: true,
   state: {
     addressApi: 'https://an67.pythonanywhere.com/api/',
+    filterString: '',
     isDataLoad: false,
 
     "budget-classifications": {

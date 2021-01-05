@@ -2,13 +2,17 @@
   <div class="organization" id="organization">
     <div class="organization-control">
       <div class="control-view">
-        <v-btn title="Переключить вид"
-               dark
-               fab
-               x-small
-               @click="() => {listMultiRow = !listMultiRow}">
-          <v-icon small> {{ (listMultiRow) ? 'mdi-format-list-bulleted' : 'mdi-view-stream'}}</v-icon>
-        </v-btn>
+        <v-toolbar dense>
+            <v-toolbar-title>Demo</v-toolbar-title>
+            <v-spacer></v-spacer>
+          <v-toolbar-title>
+            <v-btn title="Фильтр" id="filter__btn" icon small tile @click="isOpenFilter = !isOpenFilter"><v-icon>mdi-filter-outline</v-icon></v-btn>
+            <v-btn title="Переключить вид" disabled icon small tile @click="() => {listMultiRow = !listMultiRow}"><v-icon> {{ (listMultiRow) ? 'mdi-format-list-bulleted' : 'mdi-view-stream'}}</v-icon></v-btn>
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-navigation-drawer v-model="isOpenFilter" temporary fixed hide-overlay right width="400">
+          <data-filter table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter>
+        </v-navigation-drawer>
       </div>
     </div>
 
@@ -46,11 +50,6 @@
                      v-bind:[paddingType]="true"
                      :footer="isFooter"
                      editable>
-            <!-- <template v-slot:component-footer>
-              <div class="table-footer">
-                Всего записей в базе: {{ countRowInBase }}
-              </div>
-            </template> -->
           </data-table>
         </div>
       </div>
@@ -59,15 +58,18 @@
 </template>
 
 <script>
+import DataFilter from '@/components/DataFilter/DataFilter.vue';
 import DataTable from '@/components/Table/DataTable/DataTable.vue';
 
 export default {
   name: 'Home',
   components: {
+    DataFilter,
     DataTable,
   },
   data() {
     return {
+      isOpenFilter: false,
       heightType: 'fixed',
       paddingType: 'padding-fixed',
       isFooter: false,
@@ -99,16 +101,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .table-footer {
-//   display: flex;
-//   justify-content: flex-start;
-//   align-items: center;
-//   // border-top: thin solid rgba(0,0,0,.12);
-//   width: 100%;
-//   height: 40px;
-//   // background-color: white;
-// }
-
 .organization {
   min-height: 100%;
   display: grid;
@@ -118,19 +110,25 @@ export default {
   width: 100%;
   box-sizing: border-box;
   &-control {
+    position: relative;
+    z-index: 20;
     grid-area: organization-control;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     box-sizing: border-box;
+    
     .control-view {
-      margin: 0px 10px;
+      margin: 0px 3px;
+      width: 100%;
     }
   }
 
   &-body {
-    max-height: calc(100% - 130px);
+    position: relative;
+    z-index: 10;
+    max-height: calc(100% - 150px);
     grid-area: organization-body;
     padding: 3px;
     
@@ -153,7 +151,7 @@ export default {
         // border: thin solid red;
       }
       &__body {
-        max-height: calc(100% - 66px);
+        max-height: calc(100% - 55px);
         padding: 10px;
         grid-area: body-item__body;
         // border: thin solid purple;

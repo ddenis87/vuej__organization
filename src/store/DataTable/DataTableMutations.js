@@ -1,11 +1,24 @@
 export default {
   SET_IS_DATA_LOAD(state, status = false) { state.isDataLoad = status; },
+  SET_FILTER_STRING(state, option = null) {
+    if (option == null) { state.filterString = ''; return; }
+    let filterString = '?';
+    for(let item of Object.entries(option)) {
+      filterString += `${item[0]}=${item[1].value}&`;
+    }
+    console.log(filterString);
+    state.filterString = filterString;
+  },
   SET_LIST_OPTION(state, option) {
     state[option.tableName].listOption = option.data;
     state[option.tableName].description = option.description;
     if (option.tableName == 'organisations') state[option.tableName].listOption.bk.tableName = "budget-classifications";
   },
-  SET_LIST_DATA(state, option) { 
+
+  SET_LIST_DATA(state, option) {
+    if (option.clear == true) {
+      state[option.tableName].listData.length = 0;
+    }
     let listOption = state[option.tableName].listOption; //
     if (Array.isArray(option.data)) {
       state[option.tableName].listData = option.data;
@@ -23,6 +36,7 @@ export default {
       // console.log(state[option.tableName]);
     }
   },
+
   ADDING_LIST_DATA(state, option) {
     let newItem = {};
     Object.assign(newItem, option.values);
