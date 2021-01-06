@@ -43,7 +43,7 @@
           @focus="eventElementFocus"
           @blur="eventElementBlur"
           @dblclick="(event) => eventElementDblclick(event, itemRow, itemColumn, itemRow[itemColumn.value])"
-          @keydown.stop="eventElementKeydown"
+          @keydown.stop="(event) => eventElementKeydown(event, itemRow, itemColumn, itemRow[itemColumn.value])"
           @editing-canceled="editingCanceled"
           @editing-accepted="editingAccepted">
 

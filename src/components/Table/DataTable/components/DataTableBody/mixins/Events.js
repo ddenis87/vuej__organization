@@ -124,7 +124,7 @@ export const Events = {
     },
 
     // event navigation for table
-    eventElementKeydown(event) {
+    eventElementKeydown(event, rowProperties, columnProperties, columnValue) {
       if (event.code.includes('Arrow') || event.code == 'Tab') {
         event.preventDefault();
         if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return }
@@ -132,6 +132,7 @@ export const Events = {
         if (event.code == 'ArrowDown' && event.target.parentElement.nextElementSibling) { event.target.parentElement.nextElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
         if (event.code == 'ArrowUp' && event.target.parentElement.previousElementSibling) { event.target.parentElement.previousElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
       }
+      if (event.code.includes('Key') || event.code.includes('Digit')) this.checkDisplayEdit(event, rowProperties, columnProperties, columnValue);
     }
   },
 }

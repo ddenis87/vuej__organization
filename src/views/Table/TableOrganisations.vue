@@ -1,7 +1,7 @@
 <template>
   <div class="page-table">
     <div class="page-table__control">
-      <data-table-control :table-name="'organisations'" :focused-element="focusedElement"></data-table-control>
+      <data-table-control :form-properties="formProperties" :table-name="'organisations'" :focused-element="focusedElement"></data-table-control>
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
@@ -42,6 +42,12 @@ export default {
         ],
       },
       focusedElement: {},
+      formProperties: {
+        tableName: 'organisations',
+        header: [
+          {value: 'bk', objectValue: 'head_name'}
+        ],
+      }
     }
   },
   methods: {
