@@ -48,6 +48,7 @@ export default {
   props: {
     tableName: String,
     focusedElement: Object,
+    formProperties: Object,
   },
   data() {
     return {
