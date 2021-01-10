@@ -10,6 +10,7 @@ export default {
     state.filterString = filterString;
   },
   SET_LIST_OPTION(state, option) {
+    console.log(option);
     state[option.tableName].listOption = option.data;
     state[option.tableName].description = option.description;
     if (option.tableName == 'organisations') state[option.tableName].listOption.bk.tableName = "budget-classifications";

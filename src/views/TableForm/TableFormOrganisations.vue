@@ -65,23 +65,13 @@
 </template>
 
 <script>
-import ElFieldNumber from '@/components/elements/ElFieldNumberNew.vue';
-import ElFieldString from '@/components/elements/ElFieldStringNew.vue';
-import ElFieldChoice from '@/components/elements/ElFieldChoiceNew.vue';
-import ElFieldDialog from '@/components/elements/ElFieldDialogNew.vue';
+import { TableForm } from './TableForm.js';
 
 export default {
   name: 'TableFormOrganisations',
-  components: {
-    ElFieldNumber,
-    ElFieldString,
-    ElFieldChoice,
-    ElFieldDialog,
-  },
-  props: {
-    actionName: 'adding',
-    focusedElement: Object,
-  },
+  mixins: [
+    TableForm,
+  ],
   data() {
     return {
       tableName: 'organisations',
@@ -100,40 +90,7 @@ export default {
       },
     }
   },
-  computed: {
-    fieldForm() { 
-      let fieldForm = this.$store.getters[`DataTable/GET_LIST_OPTION`]('organisations');
-      for (let key of Object.keys(fieldForm)) {
-        if (fieldForm[key].type == 'nested object') this.$set(fieldForm[key], 'objectValue', 'head_name'); //костыль, надо получать откуда-то
-      }
-      if (this.focusedElement != null) {
-        for (let key of Object.keys(fieldForm)) {
-          this.fieldFormValue[key] = this.focusedElement[key];
-        }
-      }
-      return fieldForm;
-    },
-  },
-  watch: {
-    focusedElement() {
-      if (this.focusedElement == null) this.fieldFormValueClear();
-    },
-  },
-  created() {
-    this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: this.tableName});
-  },
   methods: {
-    eventClickActionCancel() {
-      this.$emit('event-action-cancel');
-      this.fieldFormValueClear();
-    },
-    eventClickActionAccept() {
-      if (!this.fieldFormValueValidation()) return;
-      let option = {actionName: (this.focusedElement == null) ? 'adding' : 'editing', values: {}};
-      Object.assign(option.values, this.fieldFormValue);
-      this.$emit('event-action-accept', option);
-      this.fieldFormValueClear();
-    },
     fieldFormValueClear() {
       this.fieldFormValue = {
         title: '',
@@ -149,13 +106,6 @@ export default {
         bk: null,
       };
     },
-    fieldFormValueValidation() {
-      console.log(this.fieldFormValue);
-      for (let key of Object.keys(this.fieldFormValue)) {
-        if (this.fieldForm[key].required == true && (this.fieldFormValue[key] == '' || this.fieldFormValue[key] == null)) return false;
-      }
-      return true;
-    }
   },
 }
 </script>

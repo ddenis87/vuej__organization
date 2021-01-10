@@ -11,7 +11,8 @@ export default {
   },
   GET_LIST_DATA:(state) => (tableName) => {
     // console.log(state[tableName]);
-    return (state[tableName].listData.length != 0) ? state[tableName].listData : [];
+    console.log(tableName);
+    return (state[tableName]?.listData?.length != 0) ? state[tableName].listData : [];
   },
   GET_LIST_DATA_COUNT:(state) => (tableName) => {
     // return (state[tableName]?.count) ? state[tableName].count : 'вычисляю...';

@@ -133,12 +133,19 @@ export default {
     &_hover {  background-color: $bodyRowBackgroundColorHover; }
     &_focus { background-color: $bodyRowBackgroundColorHover; }
 
+&_max {
+  background-image: url('~@/assets/images/resize.png');
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  background-position-y: bottom;
+}
+
     // &:hover > .table-body__col-action > .action-box { opacity: 1; }
     
     .table-body__col {
       position: relative;
       display: inline-flex;
-
+// background-color: white;
       font-size: $bodyFontSize;
       font-weight: $bodyFontWeight;
       line-height: $bodyFontLineHeight;

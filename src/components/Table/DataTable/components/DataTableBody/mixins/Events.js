@@ -62,6 +62,7 @@ export const Events = {
     eventRowMouseEnter(event) { // work if not editable and not focus
       if (!this.isElementNowEditing && !this.isElementNowFocus && !this.isRowNowFocus)
         event.target.classList.add('table-body__row_hover');
+        event.target.classList.add('table-body__row_max');
     },
     eventRowMouseLeave(event) { // work if not editable and not focus
       if (!this.isElementNowEditing && !this.isElementNowFocus && !this.isRowNowFocus)
@@ -132,7 +133,7 @@ export const Events = {
         if (event.code == 'ArrowDown' && event.target.parentElement.nextElementSibling) { event.target.parentElement.nextElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
         if (event.code == 'ArrowUp' && event.target.parentElement.previousElementSibling) { event.target.parentElement.previousElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
       }
-      if (event.code.includes('Key') || event.code.includes('Digit')) this.checkDisplayEdit(event, rowProperties, columnProperties, columnValue);
+      if (event.code.includes('Key') || event.code.includes('Digit')) this.eventElementDblclick(event, rowProperties, columnProperties, columnValue);
     }
   },
 }

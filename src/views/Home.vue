@@ -36,10 +36,10 @@
                 <v-radio label="dense" value="padding-dense"></v-radio>
               </v-radio-group>
             </v-toolbar-items>
-            <v-spacer></v-spacer>
+            <!-- <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-checkbox dense v-model="isFooter" label="Default footer"></v-checkbox>
-            </v-toolbar-items>
+            </v-toolbar-items> -->
           </v-toolbar>
         </div>
 
@@ -81,13 +81,13 @@ export default {
           {value: 'institution_code', align: 'end', width: [90, 90], },
           {value: 'title', width: [400,],},
           {value: 'inn', width: [115, 115]},
-          // {value: 'kpp', width: [115, 115],},
+          {value: 'kpp', width: [115, 115],},
           {value: 'egrul_status', width: [140, 140]},
-          // {value: 'rubpnubp_status', width: [140, 140]},
-          // {value: 'industry_typing', width: [120, 120]},
-          // {value: 'institution_type', width: [130, 130]},
-          // {value: 'budget_level', width: [180, 180]},
-          // {value: 'bk', width: [180, 180], objectValue: 'head_name'},
+          {value: 'rubpnubp_status', width: [140, 140]},
+          {value: 'industry_typing', width: [120, 120]},
+          {value: 'institution_type', width: [130, 130]},
+          {value: 'budget_level', width: [180, 180]},
+          {value: 'bk', width: [180, 180], objectValue: 'head_name'},
         ],
       },
     }

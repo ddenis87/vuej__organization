@@ -16,7 +16,7 @@ export const GetData = {
               position: 'sticky',
               left: `${shiftLeft}px`,
               'background-color': 'rgba(242, 242, 242, 1)',
-              'z-index': 50
+              
             }
           }
         });
