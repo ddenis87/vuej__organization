@@ -1,7 +1,9 @@
 <template>
   <div class="data-filter">
     <v-card flat tile>
-      <v-card-title><v-btn icon tile small color="blue" class="data-filter__btn" @click="$emit('close')"><v-icon small>mdi-close</v-icon></v-btn><v-spacer></v-spacer>Фильтр</v-card-title>
+      <v-card-title>
+        <v-btn icon tile small color="blue" class="data-filter__btn" @click="$emit('close')"><v-icon small>mdi-close</v-icon></v-btn>
+        <v-spacer></v-spacer><span class="data-filter__title">Фильтр</span></v-card-title>
       <v-list flat>
         <v-list-item v-for="(item, index) in listField" :key="index">
           <el-field-choice-new label 
@@ -11,7 +13,7 @@
                                v-model="dataFilterValue[item.key]" @clear="() => clearValue(item.key)"></el-field-choice-new>
         </v-list-item>
       </v-list>
-      <v-card-actions><v-spacer></v-spacer><v-btn x-small @click="acceptFilter">Применить</v-btn></v-card-actions>
+      <v-card-actions><v-spacer></v-spacer><v-btn class="data-filter__btn-accept" color="blue darken-1" depressed small @click="acceptFilter">Применить</v-btn></v-card-actions>
     </v-card>
   </div>
 </template>
@@ -63,9 +65,15 @@ export default {
 .data-filter {
   padding: 0px 10px;
   z-index: 9999;
-
+  &__title {
+    margin-right: 8px;
+  }
   &__btn {
     margin-left: -10px;
+  }
+  &__btn-accept {
+    margin-right: 14px;
+    color: white;
   }
 }
 </style>

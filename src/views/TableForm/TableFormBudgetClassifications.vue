@@ -18,8 +18,8 @@
   </v-card-text>
   <v-card-actions>
     <v-spacer></v-spacer>
-    <v-btn x-small tile @click="eventClickActionCancel">Отменить</v-btn>
-    <v-btn x-small tile @click="eventClickActionAccept">Записать</v-btn>
+    <v-btn class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionCancel">Отменить</v-btn>
+    <v-btn class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionAccept">Записать</v-btn>
   </v-card-actions>
 </div>
 
@@ -54,5 +54,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.table-form {
+  &__btn-accept {
+    color: white;
+  }
+}
 </style>
