@@ -9,55 +9,62 @@
                   :single-line="singleLine"
                   :label="fieldLabel"
                   :hide-details="fieldShowValidation"
+                  :rules="(fieldRequired) ? [fieldRules.required] : []"
                   :items="fieldList"
+                  item-text="display_name"
+                  item-value="value"
                   @keydown.stop="eventKeyDown"
                   @change="eventChangeValue"
-                  @blur.stop="eventBlur"></v-autocomplete>
+                  @blur.stop="eventBlur">
+    <template v-slot:append-outer v-if="btClear">
+      <v-btn tile small icon :disabled="isValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+    </template>
+  </v-autocomplete>
 </template>
 
 <script>
 export default {
   name: 'ElFieldChoice',
+  model: {
+    prop: 'propertiesValue',
+    event: 'input'
+  },
   props: {
-    properties: {type: Object, default: () => {
-      return {
-        value: '',
-        label: '',
-        text: null,
-        required: false,
-        choices: null,
-      }
-    }},
+    properties: '',
+    propertiesValue: '',
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
-    selectedValue: {type: Boolean, defalt: false} // selected value in text field after mounted
+    selectedValue: {type: Boolean, defalt: false}, // selected value in text field after mounted
+    btClear: {type: Boolean, defalt: false},
   },
   data() {
     return {
       isInputEmit: false,
       isInputFirstEnter: false,
       isElementChange: false,
-      fieldId: `El-${this.properties.value}`,
-      // fieldLabel: this.label ? this.properties.label : '',
-      fieldValue: (this.properties.text) ? this.properties.text.value.toString() : '',
-      fieldRequired: this.properties.required,
+      fieldId: `El-${this.properties?.value}`,
+      fieldValue: this.propertiesValue?.value,
+      fieldRequired: this.properties?.required,
       fieldRules: {
-        required: value => !!value || 'мин. 1 символ',
+        required: value => !!value || 'не выбран',
       }
     }
   },
   computed: {
-    fieldLabel() { return (this.label) ? this.properties.label: '' },
+    isValue() { return (this.fieldValue == undefined) ? true : false },
+    fieldLabel() { return (this.label) ? this.properties?.label: '' },
+    fieldShowValidation() { return (this.showValidation) ? false : true },
     fieldList() {
       let fieldList = [];
-      if (this.properties.choices == null) return [];
-      this.properties.choices.forEach(element => {
-        fieldList.push({text: element['display_name'], value: `${element['value']}`})
-      })
-      return fieldList;
+      if (!this.properties?.choices) return [];
+      return this.properties.choices;
     },
-    fieldShowValidation() { return (this.showValidation) ? false : true }
+  },
+  watch: {
+    propertiesValue() {
+      this.fieldValue = this.propertiesValue?.value;
+    }
   },
   mounted() {
     setTimeout(() => {
@@ -69,12 +76,11 @@ export default {
   },
   methods: {
     eventChangeValue() {
-      // console.log('change choice component');
       this.isInputFirstEnter = true;
       this.isElementChange= true;
+      this.$emit('input', this.fieldValue);
     },
     eventKeyDown() {
-      // console.log('input choice component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
@@ -87,11 +93,13 @@ export default {
         event.preventDefault();
 
         if (this.fieldRequired && this.fieldValue.length == 0) return;
+        console.log(this.fieldValue);
         let newFieldValue = (this.isInputFirstEnter) ? {
-          'display_name': this.fieldValue.text,
+          'display_name': this.fieldValue['display_name'],
           value: this.fieldValue.value
-        } : this.properties.text;
+        } : this.properties['display_name'];
         this.isInputEmit = true;
+        
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
           key: event.key,
@@ -102,12 +110,15 @@ export default {
         });
       }
     },
-
     eventBlur() {
       if (!this.isInputEmit) {
         // console.log('blur choice component');
         this.$emit('editing-canceled');
       }
+    },
+    clearValue() {
+      this.fieldValue = undefined;
+      this.$emit('clear');
     },
   }
 }

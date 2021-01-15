@@ -11,7 +11,7 @@
           </v-toolbar-title>
         </v-toolbar>
         <v-navigation-drawer v-model="isOpenFilter" temporary fixed hide-overlay right width="400">
-          <data-filter table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter>
+          <data-filter-and-sorting table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter-and-sorting>
         </v-navigation-drawer>
       </div>
     </div>
@@ -58,13 +58,13 @@
 </template>
 
 <script>
-import DataFilter from '@/components/DataFilter/DataFilter.vue';
+import DataFilterAndSorting from '@/components/DataFilterAndSorting/DataFilterAndSorting.vue';
 import DataTable from '@/components/Table/DataTable/DataTable.vue';
 
 export default {
   name: 'Home',
   components: {
-    DataFilter,
+    DataFilterAndSorting,
     DataTable,
   },
   data() {

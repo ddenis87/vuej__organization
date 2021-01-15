@@ -2,6 +2,7 @@
   <div class="box-editing-component">
     <component :is="editingComponent"
                v-bind:properties="propertiesComponent"
+               v-bind:propertiesValue="propertiesComponent.text"
                v-bind:selectedValue="true"
                @editing-canceled="editingCanceled"
                @editing-accepted="editingAccepted"
@@ -51,7 +52,7 @@ export default {
       Object.assign(newOption, option);
       newOption.tableName = this.properties.tableName;
       newOption.id = this.properties.rowId;
-      // console.log(newOption);
+      console.log(newOption);
       this.$store.commit('DataTable/EDITING_LIST_DATA_FIELD', newOption);
       let editableElement = document.querySelector('.table-body__col_editing');
       let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: newOption.key, keyShift: newOption.keyShift } });

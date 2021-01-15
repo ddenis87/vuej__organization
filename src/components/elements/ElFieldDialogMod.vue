@@ -19,12 +19,13 @@
                     @keydown.stop="eventKeyDown"
                     @click:append="eventDialogOpen"
                     @click.stop="" @input="eventInput"></v-autocomplete>
-    <v-dialog v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @click:outside.stop.prevent="">
+    <v-dialog fullscreen transition="dialog-bottom-transition" v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @click:outside.stop.prevent="">
       <v-card max-height="700">
-        <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
+        <v-system-bar color="indigo" height="65">
+          <v-btn class="system__btn" depressed color="white" tile fab icon small @click="eventDialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
           <span class="dialog__title">{{ displayNameTable }}</span>
           <v-spacer></v-spacer>
-          <v-btn class="system__btn" depressed color="rgba(64, 64, 64, 1)" tile fab icon small @click="eventDialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
+          
         </v-system-bar>
         <div class="dialog__table" :id="`ElTable-${fieldId}`">
           <component :is="componentForm" v-bind:editable="false" @event-row-selected="eventDialogSelected"></component>

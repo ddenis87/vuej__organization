@@ -22,29 +22,37 @@
       
       <v-spacer></v-spacer>
       <v-btn icon small tile><v-icon>mdi-sort-variant</v-icon></v-btn>
-      <v-btn icon small tile><v-icon>mdi-filter-outline</v-icon></v-btn>
+      <v-btn icon small tile @click="isOpenFilter = !isOpenFilter"><v-icon>mdi-filter-outline</v-icon></v-btn>
     </v-toolbar>
+    <v-navigation-drawer v-model="isOpenFilter" temporary fixed hide-overlay right width="400">
+      <data-filter-and-sorting table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter-and-sorting>
+    </v-navigation-drawer>
 
-    <v-dialog v-model="isShowDialog" max-width="60%" class="dialog" @click:outside="eventClickCloseDialog">
+    <v-dialog fullscreen transition="dialog-bottom-transition" v-model="isShowDialog" max-width="60%" class="dialog" @click:outside="eventClickCloseDialog">
       <v-card>
-        <v-system-bar color="rgba(64, 64, 64, 1)" height="40">
+        <v-system-bar color="indigo" height="65">
+          <v-btn class="system__btn" color="white" tile icon small @click="eventClickCloseDialog"><v-icon small color="white">mdi-close</v-icon></v-btn>
           <span class="dialog__title">{{ idDialogName }}</span>
           <v-spacer></v-spacer>
-          <v-btn class="system__btn" color="white" tile icon small @click="eventClickCloseDialog"><v-icon small color="white">mdi-close</v-icon></v-btn>
+          
         </v-system-bar>
         <component :is="componentForm" 
                    :focused-element="focusedElementForm"
                    @event-action-accept="eventActionAccept"
                    @event-action-cancel="eventActionCancel"></component>
-
       </v-card>
     </v-dialog>
   </div>
 </template>
 
 <script>
+import DataFilterAndSorting from '@/components/DataFilterAndSorting/DataFilterAndSorting.vue';
+
 export default {
   name: 'DataTableControl',
+  components: {
+    DataFilterAndSorting,
+  },
   props: {
     tableName: String,
     focusedElement: Object,
@@ -54,6 +62,7 @@ export default {
     return {
       isShowDialog: false,
       focusedElementForm: null, //(Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null,
+      isOpenFilter: false,
     }
   },
   computed: {
@@ -125,5 +134,8 @@ export default {
 }
 ::v-deep {
   .v-icon { margin-right: 0px; }
+  .v-navigation-drawer--temporary {
+    z-index: 9998;
+  }
 }
 </style>

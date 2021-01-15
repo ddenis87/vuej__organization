@@ -1,7 +1,7 @@
 <template>
-  <v-toolbar color="teal">
+  <v-toolbar color="indigo" height="65">
     <v-toolbar-items>
-      <v-list dense color="teal">
+      <v-list dense color="indigo">
         <v-list-item class="list" to="/" tag="router-link" dense color="white">Demo</v-list-item>
         <v-list-item class="list" to="/Table/TableOrganisations" tag="router-link" dense color="white">Организации</v-list-item>
         <v-list-item class="list" to="/Table/TableBudgetClassifications" tag="router-link" dense color="white">БК</v-list-item>
@@ -20,5 +20,11 @@ export default {
 .list {
   display: inline-flex;
   align-items: center;
+  color: white !important;
+}
+::v-deep {
+  .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+    color: white !important;
+  }
 }
 </style>
