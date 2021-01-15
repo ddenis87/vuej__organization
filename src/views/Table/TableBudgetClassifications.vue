@@ -1,39 +1,40 @@
 <template>
   <div class="page-table">
     <div class="page-table__control">
-      <data-table-control :table-name="'budget-classifications'" :focused-element="focusedElement"></data-table-control>
+      <data-table-control :form-properties="propertiesDataTable" 
+                          :table-name="'budget-classifications'" 
+                          :focused-element="focusedElement"
+                          :height-type="heightType"
+                          :paddingType="paddingType"
+                          @event-change-row="eventChangeRow"
+                          @event-change-column="eventChangeColumn"></data-table-control>
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
       <data-table d-id="Bk" 
                   :table-properties="propertiesDataTable" 
-                  fixed
                   :editable="isEditable"
+                  v-bind:[heightType]="true"
+                  v-bind:[paddingType]="true"
                   @event-row-focused="eventRowFocused"
                   @event-row-selected="eventRowSelected"></data-table>
     </div>
-    
   </div>
 </template>
 
 <script>
-import DataTableControl from '@/components/Table/DataTableControl/DataTableControl.vue';
-import DataTable from '@/components/Table/DataTable/DataTable.vue';
+import { Table } from './Table.js';
 
 export default {
   name: 'TableBudgetClassifications',
-  components: {
-    DataTableControl,
-    DataTable,
-  },
-  props: {
-    editable: {
-      type: Boolean,
-      default: true,
-    },
-  },
+  mixins: [
+    Table,
+  ],
   data() {
     return {
+      heightType: 'fixed',
+      paddingType: 'padding-fixed',
+      focusedElement: {},
       propertiesDataTable: {
         tableName: 'budget-classifications',
         header: [
@@ -41,27 +42,9 @@ export default {
           {value: 'head_code', align: 'end', width: [200, 200], },
           {value: 'head_name', width: [400,],},
         ],
-        // activeField: 'id',
       },
-      focusedElement: {},
-      
     }
   },
-  computed: {
-    isEditable() { return this.editable; }
-  },
-  methods: {
-    eventRowFocused(event, option, tableName) {
-      this.focusedElement = Object.assign({}, option);
-    },
-    eventRowSelected(event, option, tableName) {
-      this.$emit('event-row-selected', option);
-    },
-    eventTableBlur() {
-      console.log('blur table');
-      // this.propertiesDataTableControl = null;
-    }
-  }
 }
 </script>
 

@@ -3,26 +3,41 @@
     <v-toolbar height="40" flat>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon small tile v-on="on" @click="eventClickAdding"><v-icon>mdi-plus</v-icon></v-btn>
+          <v-btn icon fab small v-on="on" @click="eventClickAdding"><v-icon>mdi-plus</v-icon></v-btn>
         </template>
         <span class="tooltip-text tooltip-text-control">Добавить</span>
       </v-tooltip>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon small tile :disabled="!isFocusedElement" v-on="on" @click="eventClickEditing"><v-icon>mdi-pencil</v-icon></v-btn>
+          <v-btn icon fab small :disabled="!isFocusedElement" v-on="on" @click="eventClickEditing"><v-icon>mdi-pencil</v-icon></v-btn>
           </template>
         <span class="tooltip-text tooltip-text-control">Изменить</span>
       </v-tooltip>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon small tile :disabled="!isFocusedElement" v-on="on" @click="eventActionDeleting"><v-icon>mdi-delete</v-icon></v-btn>
+          <v-btn icon fab small :disabled="!isFocusedElement" v-on="on" @click="eventActionDeleting"><v-icon>mdi-delete</v-icon></v-btn>
         </template>
         <span class="tooltip-text tooltip-text-control">Удалить</span>
       </v-tooltip>
-      
+
+        <v-divider vertical></v-divider>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon fab small v-on="on" @click="$emit('event-change-row')"><v-icon>{{ (heightType == 'fixed') ? 'mdi-view-sequential' : 'mdi-view-sequential-outline' }}</v-icon></v-btn>
+        </template>
+        <span class="tooltip-text tooltip-text-control">{{ (heightType == 'fixed') ? 'Строки сжато' : 'Строки свободно' }}</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon fab small v-on="on" @click="$emit('event-change-column')"><v-icon>{{ (paddingType == 'padding-fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel' }}</v-icon></v-btn>
+        </template>
+        <span class="tooltip-text tooltip-text-control">{{ (paddingType == 'padding-fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</span>
+      </v-tooltip>
+      <v-btn icon fab small disabled><v-icon>mdi-view-quilt</v-icon></v-btn>
+
       <v-spacer></v-spacer>
-      <v-btn icon small tile><v-icon>mdi-sort-variant</v-icon></v-btn>
-      <v-btn icon small tile @click="isOpenFilter = !isOpenFilter"><v-icon>mdi-filter-outline</v-icon></v-btn>
+      <!-- <v-btn icon fab small><v-icon>mdi-sort-variant</v-icon></v-btn> -->
+      <v-btn icon fab small @click="isOpenFilter = !isOpenFilter"><v-icon>mdi-filter-outline</v-icon></v-btn>
     </v-toolbar>
     <v-navigation-drawer v-model="isOpenFilter" temporary fixed hide-overlay right width="400">
       <data-filter-and-sorting table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter-and-sorting>
@@ -57,6 +72,8 @@ export default {
     tableName: String,
     focusedElement: Object,
     formProperties: Object,
+    heightType: {type: String, default: 'fixed'},
+    paddingType: {type: String, default: 'padding-fixed'},
   },
   data() {
     return {
@@ -91,6 +108,9 @@ export default {
     eventClickCloseDialog() {
       this.isShowDialog = false;
       this.focusedElementForm= null;
+    },
+    eventChangeRow(value) {
+      this.$emit('event-change-row', value);
     },
 
     eventActionAccept(option) {

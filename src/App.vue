@@ -15,14 +15,14 @@
 import AppHeader from '@/components/app/AppHeader';
 
 import LayoutMain from '@/layout/LayoutMain.vue';
-import LayoutTables from '@/layout/LayoutTables.vue';
+import LayoutTable from '@/layout/LayoutTable.vue';
 
 export default {
   name: 'App',
   components: {
     AppHeader,
     LayoutMain,
-    LayoutTables,
+    LayoutTable,
   },
   computed: {
     layout() { return 'Layout' + (this.$route.meta.layout || 'Main') },

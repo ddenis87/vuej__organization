@@ -1,31 +1,41 @@
 <template>
   <div class="page-table">
     <div class="page-table__control">
-      <data-table-control :form-properties="formProperties" :table-name="'organisations'" :focused-element="focusedElement"></data-table-control>
+      <data-table-control :form-properties="propertiesDataTable" 
+                          :table-name="'organisations'" 
+                          :focused-element="focusedElement"
+                          :height-type="heightType"
+                          :paddingType="paddingType"
+                          @event-change-row="eventChangeRow"
+                          @event-change-column="eventChangeColumn"></data-table-control>
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
-      <data-table d-id="Organization" 
-                  :table-properties="propsDataTable" 
+      <data-table d-id="Organisations" 
+                  :table-properties="propertiesDataTable" 
                   editable
-                  @event-row-focused="eventRowFocused"></data-table>
+                  v-bind:[heightType]="true"
+                  v-bind:[paddingType]="true"
+                  @event-row-focused="eventRowFocused"
+                  @event-row-selected="eventRowSelected"></data-table>
     </div>
   </div>
 </template>
 
 <script>
-import DataTableControl from '@/components/Table/DataTableControl/DataTableControl.vue';
-import DataTable from '@/components/Table/DataTable/DataTable.vue';
+import { Table } from './Table.js';
 
 export default {
   name: 'TableOrganisation',
-  components: {
-    DataTableControl,
-    DataTable,
-  },
+  mixins: [
+    Table,
+  ],
   data() {
     return {
-      propsDataTable: {
+      heightType: 'fixed',
+      paddingType: 'padding-fixed',
+      focusedElement: {},
+      propertiesDataTable: {
         tableName: 'organisations',
         header: [
           {value: 'id', width: [50, 50],},
@@ -41,20 +51,8 @@ export default {
           {value: 'bk', width: [180, 180], objectValue: 'head_name'},
         ],
       },
-      focusedElement: {},
-      formProperties: {
-        tableName: 'organisations',
-        header: [
-          {value: 'bk', objectValue: 'head_name'}
-        ],
-      }
     }
   },
-  methods: {
-    eventRowFocused(event, option, tableName) {
-      this.focusedElement = Object.assign({}, option);
-    },
-  }
 }
 </script>
 

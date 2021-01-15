@@ -13,19 +13,19 @@ const routes = [
   {
     path: '/Table/TableOrganisations',
     name: 'Organizations',
-    meta: { layout: 'Tables' },
+    meta: { layout: 'Table' },
     component: () => import('@/views/Table/TableOrganisations.vue'),
   },
   {
     path: '/TableForm/TableFormOrganisations',
     name: 'TableFormOrganizations',
-    meta: { layout: 'Tables' },
+    meta: { layout: 'Table' },
     component: () => import('@/views/TableForm/TableFormOrganisations.vue'),
   },
   {
     path: '/Table/TableBudgetClassifications',
     name: 'BudgetClassifications',
-    meta: { layout: 'Tables' },
+    meta: { layout: 'Table' },
     component: () => import('@/views/Table/TableBudgetClassifications.vue'),
   },
 ]
