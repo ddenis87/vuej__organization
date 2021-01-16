@@ -1,7 +1,7 @@
 import ElFieldNumber from '@/components/elements/ElFieldNumber.vue';
 import ElFieldString from '@/components/elements/ElFieldString.vue';
 import ElFieldChoice from '@/components/elements/ElFieldChoice.vue';
-import ElFieldDialog from '@/components/elements/ElFieldDialogNew.vue';
+import ElFieldDialog from '@/components/elements/ElFieldDialog.vue';
 
 export const TableForm = {
   components: {

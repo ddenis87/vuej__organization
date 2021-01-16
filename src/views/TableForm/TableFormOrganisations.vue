@@ -55,11 +55,11 @@
         </v-container>
       </v-form>
     </v-card-text>
-    <v-card-actions>
+    <!-- <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionCancel">Отменить</v-btn>
       <v-btn class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionAccept">Записать</v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </div>
 
 </template>

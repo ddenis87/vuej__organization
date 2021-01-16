@@ -6,7 +6,6 @@
     <v-autocomplete :id="fieldId"
                     class="el-field-dialog"
                     dense
-                    return-object
                     append-icon="mdi-dots-horizontal"
                     hide-selected
                     no-data-text="Значение отсутствует"
@@ -14,22 +13,18 @@
                     :single-line="singleLine"
                     :label="fieldLabel"
                     :hide-details="fieldShowValidation"
-                    :rules="(fieldRequired) ? [fieldRules.required] : []"
                     :items="fieldList"
-                    :item-text="fieldListText"
-                    item-value="id"
                     @blur="eventBlur"
                     @change="eventChange"
                     @keydown.stop="eventKeyDown"
                     @click:append="eventDialogOpen"
-                    @click.stop="" @input="eventInput"></v-autocomplete>
-    <v-dialog fullscreen v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @click:outside.stop.prevent="">
+                    @click.stop=""></v-autocomplete>
+    <v-dialog fullscreen transition="dialog-bottom-transition" v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @click:outside.stop.prevent="">
       <v-card max-height="700">
         <v-system-bar color="indigo" height="65">
           <v-btn class="system__btn" depressed color="white" tile fab icon small @click="eventDialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
           <span class="dialog__title">{{ displayNameTable }}</span>
           <v-spacer></v-spacer>
-          
         </v-system-bar>
         <div class="dialog__table" :id="`ElTable-${fieldId}`">
           <component :is="componentForm" v-bind:editable="false" @event-row-selected="eventDialogSelected"></component>
@@ -42,13 +37,16 @@
 <script>
 export default {
   name: 'ElFieldDialog',
-  model: {
-    prop: 'propertiesValue',
-    event: 'input'
-  },
   props: {
-    properties: '',
-    propertiesValue: '',
+    properties: {type: Object, default: () => {
+      return {
+        value: '',
+        label: '',
+        text: null,
+        required: false,
+        choices: null,
+      }
+    }},
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
@@ -61,47 +59,47 @@ export default {
       isCloseInDialog: false,
       isInputFirstEnter: false,
       isElementChange: false,
-      fieldId: `El-${this.properties?.value}`,
-      fieldValue: this.propertiesValue?.id,
-      fieldRequired: this.properties?.required,
+      fieldId: `El-${this.properties.value}`,
+      // fieldLabel: this.label ? this.properties.label : '',
+      fieldValue: null, //this.properties.text?.id.toString(),
+      fieldRequired: this.properties.required,
       fieldRules: {
-        required: value => !!value || 'не выбран',
+        required: value => !!value || 'мин. 1 символ',
       }
     }
   },
   computed: {
-    fieldLabel() { return (this.label) ? this.properties?.label: '' },
-    fieldListText() { return (this.properties?.objectValue) ? this.properties.objectValue : ''; },
+    fieldLabel() { return (this.label) ? this.properties.label: '' },
+
     fieldList() {
-      if (!this.properties?.tableName) return [];
       let fieldList = [];
       let fieldListStore = this.$store.getters[`DataTable/GET_LIST_DATA`](this.properties.tableName);
       if (fieldListStore.length == 0) {
-        this.$store.dispatch(`DataTable/GET_LIST_OPTION`, { tableName: this.properties.tableName });
-        return [];
+        this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: this.properties.tableName});
+      } else {
+        this.fieldValue = this.properties.text?.id.toString();
+        setTimeout(() => document.querySelector(`#${this.fieldId}`).select(), 10)
       }
-      // console.log(this.propertiesValue);
-      return fieldListStore;
+      fieldListStore.forEach(element => {
+        fieldList.push({text: element[this.properties.objectValue], value: `${element.id}`});
+      });
+      console.log(this.properties)
+      return fieldList;
     },
     fieldShowValidation() { return (this.showValidation) ? false : true },
     displayNameTable() {
-      return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`](this.properties?.tableName);
+      return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`](this.properties.tableName);
     },
     componentForm() {
       let componentForm = '';
-      if (!this.properties?.tableName) return undefined;
       this.properties.tableName.split('-').forEach(item => {
         componentForm += item[0].toUpperCase() + item.slice(1);
       })
       return () => import(`@/views/Table/Table${componentForm}`);
     }
   },
-  watch: {
-    propertiesValue() { 
-      this.fieldValue = this.propertiesValue?.id;
-    }
-  },
   mounted() {
+    // console.log(this.properties);
     setTimeout(() => {
       if (this.selectedValue) {
         document.querySelector(`#${this.fieldId}`).select();
@@ -124,9 +122,8 @@ export default {
       },100);
     },
     eventDialogSelected(option) {
-      this.fieldValue = option.id;
-      this.$emit('input', option);
-
+      console.log(option);
+      // this.fieldValue = option.id.toString();
       this.$emit('editing-accepted', {
         tableName: this.properties.tableName,
         key: 'Enter',
@@ -178,10 +175,6 @@ export default {
       // console.log('change event');
       this.isElementChange = true;
     },
-    eventInput() {
-      // console.log('input event');
-      this.$emit('input', this.fieldValue);
-    }
   },
 }
 </script>

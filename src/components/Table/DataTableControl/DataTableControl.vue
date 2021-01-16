@@ -19,8 +19,7 @@
         </template>
         <span class="tooltip-text tooltip-text-control">Удалить</span>
       </v-tooltip>
-
-        <v-divider vertical></v-divider>
+      <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-btn icon fab small v-on="on" @click="$emit('event-change-row')"><v-icon>{{ (heightType == 'fixed') ? 'mdi-view-sequential' : 'mdi-view-sequential-outline' }}</v-icon></v-btn>
@@ -34,38 +33,33 @@
         <span class="tooltip-text tooltip-text-control">{{ (paddingType == 'padding-fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</span>
       </v-tooltip>
       <v-btn icon fab small disabled><v-icon>mdi-view-quilt</v-icon></v-btn>
-
-      <v-spacer></v-spacer>
-      <!-- <v-btn icon fab small><v-icon>mdi-sort-variant</v-icon></v-btn> -->
+      <v-divider vertical></v-divider>
       <v-btn icon fab small @click="isOpenFilter = !isOpenFilter"><v-icon>mdi-filter-outline</v-icon></v-btn>
     </v-toolbar>
+    
     <v-navigation-drawer v-model="isOpenFilter" temporary fixed hide-overlay right width="400">
       <data-filter-and-sorting table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter-and-sorting>
     </v-navigation-drawer>
 
-    <v-dialog fullscreen transition="dialog-bottom-transition" v-model="isShowDialog" max-width="60%" class="dialog" @click:outside="eventClickCloseDialog">
-      <v-card>
-        <v-system-bar color="indigo" height="65">
-          <v-btn class="system__btn" color="white" tile icon small @click="eventClickCloseDialog"><v-icon small color="white">mdi-close</v-icon></v-btn>
-          <span class="dialog__title">{{ idDialogName }}</span>
-          <v-spacer></v-spacer>
-          
-        </v-system-bar>
-        <component :is="componentForm" 
-                   :focused-element="focusedElementForm"
-                   @event-action-accept="eventActionAccept"
-                   @event-action-cancel="eventActionCancel"></component>
-      </v-card>
-    </v-dialog>
+    <dialog-full-page :is-dialog-name="isDialogName" 
+                      :is-dialog-show="isShowDialog" 
+                      @event-close-dialog="eventCloseDialog">
+      <component :is="componentForm" 
+                 :focused-element="focusedElementForm"
+                 @event-action-accept="eventActionAccept"
+                 @event-action-cancel="eventActionCancel"></component>
+    </dialog-full-page>
   </div>
 </template>
 
 <script>
+import DialogFullPage from '@/components/Dialog/DialogFullPage/DialogFullPage.vue';
 import DataFilterAndSorting from '@/components/DataFilterAndSorting/DataFilterAndSorting.vue';
 
 export default {
   name: 'DataTableControl',
   components: {
+    DialogFullPage,
     DataFilterAndSorting,
   },
   props: {
@@ -92,7 +86,7 @@ export default {
       return () => import(`@/views/TableForm/TableForm${componentForm}`);
     },
     isFocusedElement() { return (this.focusedElementForm && Object.keys(this.focusedElementForm).length != 0) ? true : false },
-    idDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }
+    isDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }
   },
   watch: {
     focusedElement() { this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null }
@@ -105,7 +99,7 @@ export default {
     eventClickEditing() {
       this.isShowDialog = true;
     },
-    eventClickCloseDialog() {
+    eventCloseDialog() {
       this.isShowDialog = false;
       this.focusedElementForm= null;
     },
@@ -121,10 +115,10 @@ export default {
       sendOption.values.id = (sendOption.actionName == 'editing' || sendOption.actionName == 'deleting') ? this.focusedElement.id : 'newId';
       console.log(sendOption);
       this.$store.commit(`DataTable/${sendOption.actionName.toUpperCase()}_LIST_DATA`, sendOption)
-      this.eventClickCloseDialog();
+      this.eventCloseDialog();
     },
     eventActionCancel() {
-      this.eventClickCloseDialog();
+      this.eventCloseDialog();
     },
     eventActionDeleting() {
       let sendOption = {

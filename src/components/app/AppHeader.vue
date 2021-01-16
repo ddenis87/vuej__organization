@@ -1,30 +1,39 @@
 <template>
-  <v-toolbar color="indigo" height="65">
-    <v-toolbar-items>
-      <v-list dense color="indigo">
-        <v-list-item class="list" to="/" tag="router-link" dense color="white">Demo</v-list-item>
-        <v-list-item class="list" to="/Table/TableOrganisations" tag="router-link" dense color="white">Организации</v-list-item>
-        <v-list-item class="list" to="/Table/TableBudgetClassifications" tag="router-link" dense color="white">БК</v-list-item>
+  <v-card>
+    <v-toolbar dark flat tile 
+               color="blue darken-3">
+      <v-list dense
+              class="menu-main"
+              color="blue darken-3">
+        <v-list-item class="menu-main__item"
+                     tag="router-link"
+                     v-for="item in menuMain"
+                     :key="item.link"
+                     :to="item.link">{{ item.value }}</v-list-item>
       </v-list>
-    </v-toolbar-items>
-  </v-toolbar>
+    </v-toolbar>
+  </v-card>
 </template>
 
 <script>
 export default {
   name: 'AppHeader',
+  data() {
+    return {
+      menuMain: [
+        {value: 'Домой', link: '/'},
+        {value: 'Организации', link: '/Table/TableOrganisations'},
+        {value: 'БК', link: '/Table/TableBudgetClassifications'},
+      ],
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.list {
-  display: inline-flex;
-  align-items: center;
-  color: white !important;
-}
-::v-deep {
-  .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
-    color: white !important;
+.menu-main {
+  &__item {
+    display: inline-flex;
   }
 }
 </style>

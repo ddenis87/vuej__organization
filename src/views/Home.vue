@@ -1,6 +1,6 @@
 <template>
   <div class="organization" id="organization">
-    <div class="organization-control">
+    <!-- <div class="organization-control">
       <div class="control-view">
         <v-toolbar dense>
             <v-toolbar-title>Demo</v-toolbar-title>
@@ -14,9 +14,9 @@
           <data-filter-and-sorting table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter-and-sorting>
         </v-navigation-drawer>
       </div>
-    </div>
+    </div> -->
 
-    <div class="organization-body">
+    <!-- <div class="organization-body">
       <div class="body-item">
         <div class="body-item__title">
           <v-toolbar dense flat>
@@ -35,15 +35,15 @@
                 <v-radio label="fixed" value="padding-fixed"></v-radio>
                 <v-radio label="dense" value="padding-dense"></v-radio>
               </v-radio-group>
-            </v-toolbar-items>
+            </v-toolbar-items> -->
             <!-- <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-checkbox dense v-model="isFooter" label="Default footer"></v-checkbox>
             </v-toolbar-items> -->
-          </v-toolbar>
-        </div>
+          <!-- </v-toolbar>
+        </div> -->
 
-        <div class="body-item__body">
+        <!-- <div class="body-item__body">
           <data-table d-id="organization" 
                      :table-properties="propsTableUno" 
                      v-bind:[heightType]="true"
@@ -51,9 +51,9 @@
                      :footer="isFooter"
                      editable>
           </data-table>
-        </div>
-      </div>
-    </div>
+        </div> -->
+      <!-- </div>
+    </div> -->
   </div>
 </template>
 
