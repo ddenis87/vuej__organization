@@ -39,5 +39,8 @@ export const Table = {
       //   case 'dense': this.paddingType = 'padding-dense'; break;
       // }
     },
+    toggleFooter() {
+      this.isFooter = !this.isFooter;
+    },
   }
 }

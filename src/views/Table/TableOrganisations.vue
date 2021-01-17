@@ -7,7 +7,8 @@
                           :height-type="heightType[heightTypeCount]"
                           :paddingType="paddingType"
                           @event-change-row="eventChangeRow"
-                          @event-change-column="eventChangeColumn"></data-table-control>
+                          @event-change-column="eventChangeColumn"
+                          @toggle-footer="toggleFooter"></data-table-control>
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
@@ -16,6 +17,7 @@
                   editable
                   v-bind:[heightType[heightTypeCount]]="true"
                   v-bind:[paddingType]="true"
+                  :footer="isFooter"
                   @event-row-focused="eventRowFocused"
                   @event-row-selected="eventRowSelected"></data-table>
     </div>
@@ -35,11 +37,12 @@ export default {
       heightTypeCount: 0,
       heightType: ['fixed', 'dense', 'auto'],
       paddingType: 'padding-fixed',
+      isFooter: false,
       focusedElement: {},
       propertiesDataTable: {
         tableName: 'organisations',
         header: [
-          {value: 'id', width: [50, 50],},
+          {value: 'id', width: [60, 60],},
           {value: 'institution_code', align: 'end', width: [90, 90], },
           {value: 'title', width: [400,],},
           {value: 'inn', width: [115, 115]},
@@ -62,7 +65,7 @@ export default {
   height: 100%;
   padding: 0px 0px;
   &__control {
-    z-index: 20;
+    z-index: 40;
   }
   &__body {
     height: 100%;

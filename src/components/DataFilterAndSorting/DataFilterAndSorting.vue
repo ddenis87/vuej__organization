@@ -1,19 +1,20 @@
 <template>
   <div class="data-filter-and-sorting">
-    <v-toolbar dense flat>
-      <v-toolbar-title>
-        <v-btn icon tile small color="blue" class="data-filter-and-sorting__btn" @click="$emit('close')"><v-icon small>mdi-close</v-icon></v-btn>
-      </v-toolbar-title>
+    <v-toolbar dense flat >
+      <!-- <v-toolbar-title> -->
+        <v-btn icon height="30" width="30" small color="blue" class="data-filter-and-sorting__btn" @click="$emit('close')"><v-icon small>mdi-close</v-icon></v-btn>
+      <!-- </v-toolbar-title> -->
       <v-spacer></v-spacer>
-      <v-toolbar-title>
+      <!-- <v-toolbar-title> -->
         <!-- <v-tabs>
           <v-tab :to="'tab-filter'">Фильтр</v-tab>
           <v-tab :href="'tab-sorting'">Сортировка</v-tab>
         </v-tabs> -->
-        <v-btn depressed tile color="white" @click="currentTab = 'Filter'">Фильтры</v-btn>
-        <v-btn depressed tile color="white" @click="currentTab = 'Sorted'">Сортировка</v-btn>
-      </v-toolbar-title>
+        <v-btn depressed height="30" small tile color="white" @click="currentTab = 'Filter'">Фильтры</v-btn>
+        <v-btn depressed height="30" small tile color="white" @click="currentTab = 'Sorted'">Сортировка</v-btn>
+      <!-- </v-toolbar-title> -->
     </v-toolbar>
+    <v-divider></v-divider>
     <component :is="currentTabComponent" v-bind:table-name="tableName"></component>
     <!-- <v-card flat tile>
       <v-list flat>

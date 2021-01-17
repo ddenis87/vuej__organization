@@ -27,7 +27,7 @@ export default {
         left: (this.dataProperties.left == 0) ? -20 + 'px' : this.dataProperties.left + 'px',
         top: this.dataProperties.top + 'px',
         'min-width': this.dataProperties.width + 'px',
-        'max-width': (this.dataProperties.width * 2) + 'px',
+        'max-width': (this.dataProperties.width * 1.3) + 'px',
       }
     }
   },

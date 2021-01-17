@@ -11,7 +11,7 @@
                            @clear="() => clearValue(item.key)"></el-field-choice>
         </v-list-item>
       </v-list>
-      <v-card-actions><v-spacer></v-spacer><v-btn class="data-filter__btn-accept" color="blue darken-1" depressed small @click="acceptFilter">Применить</v-btn></v-card-actions>
+      <v-card-actions><v-spacer></v-spacer><v-btn height="30" small  class="data-filter__btn-accept" color="blue darken-1" depressed @click="acceptFilter">Применить</v-btn></v-card-actions>
     </v-card>
   </div>
 </template>
@@ -61,7 +61,7 @@ export default {
 
 <style lang="scss" scoped>
 .data-filter {
-  padding: 0px 10px;
+  padding: 0px 0px;
   z-index: 9999;
   &__title {
     margin-right: 8px;
@@ -70,7 +70,7 @@ export default {
     margin-left: -10px;
   }
   &__btn-accept {
-    margin-right: 14px;
+    margin-right: 20px;
     color: white;
   }
 }

@@ -34,9 +34,16 @@
         </template>
         <span class="tooltip-text tooltip-text-control">{{ (paddingType == 'padding-fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</span>
       </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon small v-on="on" @click="$emit('toggle-footer')"><v-icon>mdi-page-layout-footer</v-icon></v-btn>
+        </template>
+        <span class="tooltip-text tooltip-text-control">Итоги</span>
+      </v-tooltip>
       <v-btn icon small disabled><v-icon>mdi-view-quilt</v-icon></v-btn>
       <v-divider vertical></v-divider>
       <v-btn icon small @click="isOpenFilter = !isOpenFilter"><v-icon>mdi-filter-outline</v-icon></v-btn>
+      
     </v-toolbar>
     
     <v-navigation-drawer v-model="isOpenFilter" temporary fixed hide-overlay right width="400">

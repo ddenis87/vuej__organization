@@ -4,18 +4,20 @@
       <data-table-control :form-properties="propertiesDataTable" 
                           :table-name="'budget-classifications'" 
                           :focused-element="focusedElement"
-                          :height-type="heightType"
+                          :height-type="heightType[heightTypeCount]"
                           :paddingType="paddingType"
                           @event-change-row="eventChangeRow"
-                          @event-change-column="eventChangeColumn"></data-table-control>
+                          @event-change-column="eventChangeColumn"
+                          @toggle-footer="toggleFooter"></data-table-control>
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
       <data-table d-id="Bk" 
                   :table-properties="propertiesDataTable" 
                   :editable="isEditable"
-                  v-bind:[heightType]="true"
+                  v-bind:[heightType[heightTypeCount]]="true"
                   v-bind:[paddingType]="true"
+                  :footer="isFooter"
                   @event-row-focused="eventRowFocused"
                   @event-row-selected="eventRowSelected"></data-table>
     </div>
@@ -32,13 +34,15 @@ export default {
   ],
   data() {
     return {
-      heightType: 'fixed',
+      heightTypeCount: 0,
+      heightType: ['fixed', 'dense', 'auto'],
       paddingType: 'padding-fixed',
+      isFooter: false,
       focusedElement: {},
       propertiesDataTable: {
         tableName: 'budget-classifications',
         header: [
-          {value: 'id', width: [80, 80], },
+          {value: 'id', width: [50, 50], },
           {value: 'head_code', align: 'end', width: [200, 200], },
           {value: 'head_name', width: [400,],},
         ],

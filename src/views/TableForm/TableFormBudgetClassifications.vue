@@ -2,7 +2,7 @@
 <div class="table-form">
   <v-card-text>
     <v-form ref="formAction">
-      <v-container>
+      <v-container fluid>
         <v-row>
           <v-col cols="12"><el-field-string :single-line="false" :label="true" 
                                             :properties="fieldForm.head_name" 
@@ -16,11 +16,11 @@
       </v-container>
     </v-form>
   </v-card-text>
-  <!-- <v-card-actions>
+  <v-card-actions>
     <v-spacer></v-spacer>
-    <v-btn class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionCancel">Отменить</v-btn>
-    <v-btn class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionAccept">Записать</v-btn>
-  </v-card-actions> -->
+    <v-btn height="30" class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionCancel">Отменить</v-btn>
+    <v-btn height="30" class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionAccept">Записать</v-btn>
+  </v-card-actions>
 </div>
 
 </template>
@@ -57,6 +57,11 @@ export default {
 .table-form {
   &__btn-accept {
     color: white;
+  }
+}
+::v-deep {
+  .container {
+    padding: 0px ;
   }
 }
 </style>
