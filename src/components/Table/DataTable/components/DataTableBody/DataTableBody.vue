@@ -33,6 +33,14 @@
          @keydown="eventRowKeydown">
 
       <!-- Body column -->
+      <!-- column action max -->
+      <div class="table-body__col table-body__col_action-max" v-if="heightType != 'auto'">
+        <v-btn x-small icon class="action-btn" @click="toggleMax">
+          <v-icon small color="blue">mdi-chevron-right</v-icon>
+        </v-btn>
+        
+      </div>
+      <!-- column table -->
       <div v-for="(itemColumn, indexCol) in listDataHeader"
           :key="`bodyCol-${indexCol}`" 
           class="table-body__col"
@@ -111,7 +119,18 @@ export default {
         case 'choice': return value.display_name;
         case 'nested object': return value[itemColumn.objectValue];
       }
-    }
+    },
+    toggleMax(event) {
+      event.target.closest('.action-btn').classList.toggle('action-btn_action');
+      event.target.closest('.table-body__row').classList.toggle('table-body__row_auto');
+      let celsDisplay = event.target.closest('.table-body__row').querySelectorAll('.content');
+      // console.log(celsDisplay);
+      celsDisplay.forEach(element => {
+        element.classList.toggle('content_auto');
+      });
+      // event.target.closest('.table-body__row').querySelector('.content').classList.toggle('content_auto');
+      // console.log(event.target.closest('.table-body__row'));
+    },
   },
 }
 </script>
@@ -133,12 +152,12 @@ export default {
     &_hover {  background-color: $bodyRowBackgroundColorHover; }
     &_focus { background-color: $bodyRowBackgroundColorHover; }
 
-&_max {
-  background-image: url('~@/assets/images/resize.png');
-  background-repeat: no-repeat;
-  background-size: 16px 16px;
-  background-position-y: bottom;
-}
+// &_ {
+//   background-image: url('~@/assets/images/resize.png');
+//   background-repeat: no-repeat;
+//   background-size: 16px 16px;
+//   background-position-y: bottom;
+// }
 
     // &:hover > .table-body__col-action > .action-box { opacity: 1; }
     
@@ -176,7 +195,17 @@ export default {
         align-items: $bodyVerticalAlign;
       }
       .display-none { display: none; }
-      
+
+      &_action-max {
+        justify-content: center;
+        align-items: flex-start;
+        .action-btn {
+          &_action {
+            transform: rotate(90deg);
+          }
+        }
+      }
+
       &-action {
         position: sticky;
         right: 0px;

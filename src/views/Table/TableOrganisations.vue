@@ -4,7 +4,7 @@
       <data-table-control :form-properties="propertiesDataTable" 
                           :table-name="'organisations'" 
                           :focused-element="focusedElement"
-                          :height-type="heightType"
+                          :height-type="heightType[heightTypeCount]"
                           :paddingType="paddingType"
                           @event-change-row="eventChangeRow"
                           @event-change-column="eventChangeColumn"></data-table-control>
@@ -14,7 +14,7 @@
       <data-table d-id="Organisations" 
                   :table-properties="propertiesDataTable" 
                   editable
-                  v-bind:[heightType]="true"
+                  v-bind:[heightType[heightTypeCount]]="true"
                   v-bind:[paddingType]="true"
                   @event-row-focused="eventRowFocused"
                   @event-row-selected="eventRowSelected"></data-table>
@@ -32,7 +32,8 @@ export default {
   ],
   data() {
     return {
-      heightType: 'fixed',
+      heightTypeCount: 0,
+      heightType: ['fixed', 'dense', 'auto'],
       paddingType: 'padding-fixed',
       focusedElement: {},
       propertiesDataTable: {
@@ -61,7 +62,7 @@ export default {
   height: 100%;
   padding: 0px 0px;
   &__control {
-    z-index: 40;
+    z-index: 20;
   }
   &__body {
     height: 100%;
@@ -73,7 +74,7 @@ export default {
     color: white;
   }
 }
-::v-deep {
-  .v-icon { margin-right: 0px; }
-}
+// ::v-deep {
+//   .v-icon { margin-right: 0px; }
+// }
 </style>

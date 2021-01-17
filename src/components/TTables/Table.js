@@ -1,10 +1,15 @@
-import DataTableControl from '@/components/Table/DataTableControl/DataTableControl.vue';
 import DataTable from '@/components/Table/DataTable/DataTable.vue';
 
 export const Table = {
   components: {
-    DataTableControl,
     DataTable,
+  },
+  data() {
+    return {
+      heightType: 'fixed',
+      paddingType: 'padding-fixed',
+      focusedElement: {},
+    }
   },
   props: {
     editable: {
@@ -27,17 +32,10 @@ export const Table = {
       // this.propertiesDataTableControl = null;
     },
     eventChangeRow() {
-      if (this.heightTypeCount == this.heightType.length - 1) { this.heightTypeCount = 0; return; }
-      this.heightTypeCount = this.heightTypeCount + 1;
-
-      // (this.heightType == 'fixed') ? this.heightType = 'dense' : this.heightType = 'fixed';
+      (this.heightType == 'fixed') ? this.heightType = 'dense' : this.heightType = 'fixed';
     },
     eventChangeColumn() {
       (this.paddingType == 'padding-fixed') ? this.paddingType = 'padding-dense' : this.paddingType = 'padding-fixed';
-      // switch(value) {
-      //   case 'fixed': this.paddingType = 'padding-fixed'; break;
-      //   case 'dense': this.paddingType = 'padding-dense'; break;
-      // }
     },
   }
 }

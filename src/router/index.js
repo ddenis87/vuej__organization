@@ -17,10 +17,10 @@ const routes = [
     component: () => import('@/views/Table/TableOrganisations.vue'),
   },
   {
-    path: '/TableForm/TableFormOrganisations',
-    name: 'TableFormOrganizations',
+    path: '/Organisations',
+    name: 'Organizations',
     meta: { layout: 'Table' },
-    component: () => import('@/views/TableForm/TableFormOrganisations.vue'),
+    component: () => import('@/components/TTables/TableOrganisations.vue'),
   },
   {
     path: '/Table/TableBudgetClassifications',

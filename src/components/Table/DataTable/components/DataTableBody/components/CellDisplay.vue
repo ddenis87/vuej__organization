@@ -40,6 +40,10 @@ export default {
       -webkit-line-clamp: 2;
     }
     &_dense { white-space: nowrap; }
-    // &_auto {  }
+    &_auto { 
+      display: block;
+      -webkit-box-orient: unset;
+      white-space: unset;
+    }
   }
 </style>

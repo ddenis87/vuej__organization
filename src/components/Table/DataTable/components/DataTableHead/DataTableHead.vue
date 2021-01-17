@@ -24,6 +24,12 @@
     <!-- Head column -->
     <div class="table-head__col"
          :class="`table-head__col_${paddingType}`"
+         v-if="heightType != 'auto'">
+      <span class="content" style="visibility: hidden" :class="`content_${heightType}`">1</span>
+    </div>
+
+    <div class="table-head__col"
+         :class="`table-head__col_${paddingType}`"
          v-for="(item, index) in listData" 
          :key="index"
          :style="item.position"
