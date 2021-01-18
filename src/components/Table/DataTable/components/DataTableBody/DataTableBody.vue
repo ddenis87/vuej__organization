@@ -36,7 +36,7 @@
       <!-- column action max -->
       <div class="table-body__col table-body__col_action-max" v-if="heightType != 'auto'">
         <v-btn x-small icon class="action-btn" @click="toggleMax">
-          <v-icon small color="blue">mdi-chevron-right</v-icon>
+          <v-icon small color="blue">mdi-chevron-down</v-icon>
         </v-btn>
         
       </div>
@@ -145,8 +145,8 @@ export default {
     transition-delay: .05s;
     outline: none;
 
-    &_fixed { grid-auto-rows: $bodyRowHeight;       }
-    &_dense { grid-auto-rows: $bodyDenseRowHeight;  }
+    &_fixed { grid-auto-rows: $bodyRowHeight;      min-height: $bodyRowHeight; }
+    &_dense { grid-auto-rows: $bodyDenseRowHeight; min-height: $bodyDenseRowHeight; }
     &_auto  { grid-auto-rows: $bodyAutoRowHeight;   }
 
     &_hover {  background-color: $bodyRowBackgroundColorHover; }
@@ -200,8 +200,9 @@ export default {
         justify-content: center;
         align-items: flex-start;
         .action-btn {
+          margin-left: 0px;
           &_action {
-            transform: rotate(90deg);
+            transform: rotate(-180deg);
           }
         }
       }

@@ -23,14 +23,14 @@
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon small v-on="on" @click="$emit('event-change-row')"><v-icon>{{ (heightType == 'fixed') ? 'mdi-view-sequential' : (heightType == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda' }}</v-icon></v-btn>
+          <v-btn icon small v-on="on" @click="$emit('toggle-type-row')"><v-icon>{{ (heightType == 'fixed') ? 'mdi-view-sequential' : (heightType == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda' }}</v-icon></v-btn>
         </template>
         <span class="tooltip-text tooltip-text-control">{{ (heightType == 'fixed') ? 'Строки сжато' : (heightType == 'dense') ? 'Строки свободно' : 'Строки авто' }}</span>
       </v-tooltip>
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon small v-on="on" @click="$emit('event-change-column')"><v-icon>{{ (paddingType == 'padding-fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel' }}</v-icon></v-btn>
+          <v-btn icon small v-on="on" @click="$emit('toggle-type-column')"><v-icon>{{ (paddingType == 'padding-fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel' }}</v-icon></v-btn>
         </template>
         <span class="tooltip-text tooltip-text-control">{{ (paddingType == 'padding-fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</span>
       </v-tooltip>
@@ -42,7 +42,7 @@
       </v-tooltip>
       <v-btn icon small disabled><v-icon>mdi-view-quilt</v-icon></v-btn>
       <v-divider vertical></v-divider>
-      <v-btn icon small @click="isOpenFilter = !isOpenFilter"><v-icon>mdi-filter-outline</v-icon></v-btn>
+      <v-btn icon small @click="isOpenFilter = !isOpenFilter"><v-icon color="blue">mdi-filter-outline</v-icon></v-btn>
       
     </v-toolbar>
     
@@ -88,8 +88,8 @@ export default {
   computed: {
     componentForm() {
       let componentForm = '';
-      if (!this.tableName) return null;
-      this.tableName.split('-').forEach(item => {
+      if (!this.formProperties?.tableName) return null;
+      this.formProperties.tableName.split('-').forEach(item => {
         componentForm += item[0].toUpperCase() + item.slice(1);
       })
       return () => import(`@/views/TableForm/TableForm${componentForm}`);
@@ -112,13 +112,13 @@ export default {
       this.isShowDialog = false;
       this.focusedElementForm= null;
     },
-    eventChangeRow(value) {
-      this.$emit('event-change-row', value);
-    },
+    // eventChangeRow(value) {
+    //   this.$emit('event-change-row', value);
+    // },
 
     eventActionAccept(option) {
       let sendOption = {
-        tableName: this.tableName,
+        tableName: this.formProperties.tableName,
       };
       Object.assign(sendOption, option);
       sendOption.values.id = (sendOption.actionName == 'editing' || sendOption.actionName == 'deleting') ? this.focusedElement.id : 'newId';

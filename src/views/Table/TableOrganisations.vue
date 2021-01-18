@@ -6,8 +6,8 @@
                           :focused-element="focusedElement"
                           :height-type="heightType[heightTypeCount]"
                           :paddingType="paddingType"
-                          @event-change-row="eventChangeRow"
-                          @event-change-column="eventChangeColumn"
+                          @toggle-type-row="eventChangeRow"
+                          @toggle-type-column="eventChangeColumn"
                           @toggle-footer="toggleFooter"></data-table-control>
     </div>
     <v-divider></v-divider>
@@ -42,7 +42,7 @@ export default {
       propertiesDataTable: {
         tableName: 'organisations',
         header: [
-          {value: 'id', width: [60, 60],},
+          {value: 'id', width: [50, 50],},
           {value: 'institution_code', align: 'end', width: [90, 90], },
           {value: 'title', width: [400,],},
           {value: 'inn', width: [115, 115]},

@@ -35,7 +35,7 @@ $headFontWeight: bold;
 $headFontLineHeight: $fontLineHeight;
 $headFontColor: rgba(0, 0, 0, .6);
 $headPaddingTB: 6px;
-$headPaddingLR: 16px;
+$headPaddingLR: 10px;
 
 $headHorizontalAlign: flex-start;
 $headVerticalAlign: center;
@@ -48,7 +48,7 @@ $headDensePaddingLR: 6px;
 // -- head auto --
 $headAutoRowHeight: auto;
 $headAutoPaddingTB: 6px;
-$headAutoPaddingLR: 16px;
+$headAutoPaddingLR: 10px;
 
 
 //  -- body --
@@ -65,7 +65,7 @@ $bodyFontWeight: normal;
 $bodyFontLineHeight: $fontLineHeight;
 $bodyFontColor: rgba(0, 0, 0, .87);
 $bodyPaddingTB: 6px;
-$bodyPaddingLR: 16px;
+$bodyPaddingLR: 10px;
 
 $bodyHorizontalAlign: flex-start;
 $bodyVerticalAlign: flex-start;
@@ -78,4 +78,4 @@ $bodyDensePaddingLR: 6px;
 // -- body auto --
 $bodyAutoRowHeight: auto;
 $bodyAutoPaddingTB: 0px;
-$bodyAutoPaddingLR: 16px;
+$bodyAutoPaddingLR: 10px;

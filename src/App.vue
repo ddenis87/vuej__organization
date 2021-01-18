@@ -15,6 +15,7 @@
 import AppHeader from '@/components/app/AppHeader';
 
 import LayoutMain from '@/layout/LayoutMain.vue';
+import LayoutTableold from '@/layout/LayoutTableold.vue';
 import LayoutTable from '@/layout/LayoutTable.vue';
 
 export default {
@@ -22,6 +23,7 @@ export default {
   components: {
     AppHeader,
     LayoutMain,
+    LayoutTableold,
     LayoutTable,
   },
   computed: {

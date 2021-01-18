@@ -41,7 +41,7 @@ export default {
           if (item[1].type == 'choice') listFieldFilter.push({key: item[0], label: item[1].label, choices: item[1].choices, type: item[1].type});
         }
       }
-      console.log(listFieldFilter);
+      // console.log(listFieldFilter);
       return listFieldFilter;
     }
   },

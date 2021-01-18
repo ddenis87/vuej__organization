@@ -4,38 +4,34 @@ export const Table = {
   components: {
     DataTable,
   },
+  props: {
+    editable: { type: Boolean, default: true },
+    typeRowNumber: { type: Number, default: 0 },
+    typeColumn: { type: String, default: 'padding-fixed' },
+    isFooter: { type: Boolean, default: false },
+  },
   data() {
     return {
-      heightType: 'fixed',
-      paddingType: 'padding-fixed',
+      
+      typeRow: ['fixed', 'dense', 'auto'],
+      // paddingType: 'padding-fixed',
       focusedElement: {},
+      
     }
   },
-  props: {
-    editable: {
-      type: Boolean,
-      default: true,
-    },
-  },
+  
   computed: {
     isEditable() { return this.editable; }
   },
+  mounted() {
+    this.$emit('table-mount', this.$data);
+  },
   methods: {
-    eventRowFocused(event, option, tableName) {
-      this.focusedElement = Object.assign({}, option);
+    eventRowFocused(option) {
+      this.$emit('row-focused', option);
     },
-    eventRowSelected(event, option, tableName) {
-      this.$emit('event-row-selected', option);
-    },
-    eventTableBlur() {
-      console.log('blur table');
-      // this.propertiesDataTableControl = null;
-    },
-    eventChangeRow() {
-      (this.heightType == 'fixed') ? this.heightType = 'dense' : this.heightType = 'fixed';
-    },
-    eventChangeColumn() {
-      (this.paddingType == 'padding-fixed') ? this.paddingType = 'padding-dense' : this.paddingType = 'padding-fixed';
+    eventRowSelected(option) {
+      this.$emit('row-selected', option);
     },
   }
 }

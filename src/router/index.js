@@ -13,20 +13,20 @@ const routes = [
   {
     path: '/Table/TableOrganisations',
     name: 'Organizations',
-    meta: { layout: 'Table' },
+    meta: { layout: 'Tableold' },
     component: () => import('@/views/Table/TableOrganisations.vue'),
-  },
-  {
-    path: '/Organisations',
-    name: 'Organizations',
-    meta: { layout: 'Table' },
-    component: () => import('@/components/TTables/TableOrganisations.vue'),
   },
   {
     path: '/Table/TableBudgetClassifications',
     name: 'BudgetClassifications',
-    meta: { layout: 'Table' },
+    meta: { layout: 'Tableold' },
     component: () => import('@/views/Table/TableBudgetClassifications.vue'),
+  },
+  {
+    path: '/Table/PageTable',
+    name: 'PageTable',
+    meta: { layout: 'Table' },
+    component: () => import('@/views/Table/PageTable.vue'),
   },
 ]
 

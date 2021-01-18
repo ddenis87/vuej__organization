@@ -6,8 +6,8 @@
                           :focused-element="focusedElement"
                           :height-type="heightType[heightTypeCount]"
                           :paddingType="paddingType"
-                          @event-change-row="eventChangeRow"
-                          @event-change-column="eventChangeColumn"
+                          @toggle-type-row="eventChangeRow"
+                          @toggle-type-column="eventChangeColumn"
                           @toggle-footer="toggleFooter"></data-table-control>
     </div>
     <v-divider></v-divider>
@@ -43,7 +43,7 @@ export default {
         tableName: 'budget-classifications',
         header: [
           {value: 'id', width: [50, 50], },
-          {value: 'head_code', align: 'end', width: [200, 200], },
+          {value: 'head_code', align: 'end', width: [150, 150], },
           {value: 'head_name', width: [400,],},
         ],
       },

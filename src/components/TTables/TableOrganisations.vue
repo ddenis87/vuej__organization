@@ -2,8 +2,9 @@
   <data-table d-id="Organisations" 
               :table-properties="tableProperties" 
               editable
-              v-bind:[heightType]="true"
-              v-bind:[paddingType]="true"
+              v-bind:[typeRow[typeRowNumber]]="true"
+              v-bind:[typeColumn]="true"
+              :footer="isFooter"
               @event-row-focused="eventRowFocused"
               @event-row-selected="eventRowSelected"></data-table>
 </template>
@@ -21,7 +22,7 @@ export default {
       tableProperties: {
         tableName: 'organisations',
         header: [
-          {value: 'id', width: [100, 100],},
+          {value: 'id', width: [60, 60],},
           {value: 'institution_code', align: 'end', width: [90, 90], },
           {value: 'title', width: [400,],},
           {value: 'inn', width: [115, 115]},

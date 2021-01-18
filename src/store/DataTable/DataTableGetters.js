@@ -6,12 +6,12 @@ export default {
   GET_FILTER_STRING(state) { return state.filterString; },
 
   GET_LIST_OPTION:(state) => (tableName) => {
-    console.log(state[tableName].listOption);
+    // console.log(state[tableName].listOption);
     return state[tableName].listOption; 
   },
   GET_LIST_DATA:(state) => (tableName) => {
     // console.log(state[tableName]);
-    console.log(tableName);
+    // console.log(tableName);
     return (state[tableName]?.listData?.length != 0) ? state[tableName].listData : [];
   },
   GET_LIST_DATA_COUNT:(state) => (tableName) => {

@@ -5,7 +5,7 @@ export const BuildingTemplate = {
       let minWidth = 100;
       if (this.auto == false) {
         fieldsTemplate['grid-template-areas'] += 'action_max ';
-        fieldsTemplate['grid-template-columns'] += 'minmax(30px, 30px) ';
+        fieldsTemplate['grid-template-columns'] += 'minmax(22px, 22px) ';
       }
       this.tableProperties.header.forEach(item => {
         fieldsTemplate['grid-template-areas'] += `${item.value} `;

@@ -20,12 +20,12 @@ export const GetData = {
             }
           }
         });
-        console.log(listHeaderBase);
+        // console.log(listHeaderBase);
         return listHeaderBase;
       }
     },
     listBody() {
-      console.log(this.$store.getters[`DataTable/GET_LIST_DATA`](this.tableName));
+      // console.log(this.$store.getters[`DataTable/GET_LIST_DATA`](this.tableName));
       return this.$store.getters[`DataTable/GET_LIST_DATA`](this.tableName);
     },
     countRowInBase() {

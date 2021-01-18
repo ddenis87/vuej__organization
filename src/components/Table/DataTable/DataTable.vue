@@ -135,7 +135,7 @@ export default {
 
     .table-footer {
       display: flex;
-      justify-content: flex-start;
+      justify-content: flex-end;
       align-items: center;
       // border-top: thin solid rgba(0,0,0,.12);
       width: 100%;
