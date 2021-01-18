@@ -24,7 +24,7 @@ export default {
         {value: 'Домой', link: '/'},
         {value: 'Организации', link: '/Table/TableOrganisations'},
         {value: 'БК', link: '/Table/TableBudgetClassifications'},
-        // {value: 'Таблицы', link: '/Table/PageTable'},
+        {value: 'Таблицы', link: '/Table/PageTable'},
       ],
     }
   },
