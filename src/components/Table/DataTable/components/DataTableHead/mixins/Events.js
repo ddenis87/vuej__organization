@@ -35,7 +35,7 @@ export const Events = {
               text: parent.getAttribute('data-overflow-text'),
             };
             this.isTooltipShow = true;
-          }, 1300);
+          }, 1100);
       }
     },
     eventHeadMouseOut(event) {

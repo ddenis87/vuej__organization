@@ -23,7 +23,7 @@ export const Events = {
   computed: {
     calcTooltipShift() {
       let calcTooltipShift = { left: 10, top: 4 };
-      if (this.heightType == 'fixed' && this.paddingType == 'fixed') { calcTooltipShift.left = 10; calcTooltipShift.top = -2; return calcTooltipShift};
+      if (this.heightType == 'fixed' && this.paddingType == 'fixed') { calcTooltipShift.left = 4; calcTooltipShift.top = -2; return calcTooltipShift};
       if (this.heightType == 'fixed' && this.paddingType == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
       if (this.heightType == 'dense' && this.paddingType == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
       // if (this.heightType == 'auto' && this.paddingType == 'fixed') { calcTooltipShift.left = 10; calcTooltipShift.top = 4; return calcTooltipShift};
@@ -48,7 +48,7 @@ export const Events = {
               height: parent.getBoundingClientRect().height,
               text: parent.getAttribute('data-overflow-text'),
             };
-          }, 1300);
+          }, 1100);
       }
     },
     eventBodyMouseOut(event) {
