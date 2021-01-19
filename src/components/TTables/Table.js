@@ -1,4 +1,4 @@
-import DataTable from '@/components/Table/DataTable/DataTable.vue';
+import DataTable from '@/components/DataTable/DataTable/DataTable.vue';
 
 export const Table = {
   components: {

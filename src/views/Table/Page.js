@@ -1,4 +1,4 @@
-import DataTableControl from '@/components/Table/DataTableControl/DataTableControl.vue';
+import DataTableControl from '@/components/DataTable/DataTableControl/DataTableControl.vue';
 
 export const Page = {
   components: {

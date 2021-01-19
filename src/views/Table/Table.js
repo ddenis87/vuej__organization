@@ -1,5 +1,5 @@
-import DataTableControl from '@/components/Table/DataTableControl/DataTableControl.vue';
-import DataTable from '@/components/Table/DataTable/DataTable.vue';
+import DataTableControl from '@/components/DataTable/DataTableControl/DataTableControl.vue';
+import DataTable from '@/components/DataTable/DataTable/DataTable.vue';
 
 export const Table = {
   components: {
