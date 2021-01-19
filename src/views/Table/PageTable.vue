@@ -73,6 +73,11 @@ export default {
   watch: {
     activeMenu() {
       this.isMenu = false;
+      this.formProperties = null;
+      this.focusedElement = null;
+      this.typeRowNumber = 0;
+      this.typeColumn = 'padding-fixed';
+      this.isFooter = false;
     },
   },
   methods: {
@@ -81,6 +86,7 @@ export default {
       console.log(data);
     },
     rowFocused(option) {
+      console.log(option);
       this.focusedElement = Object.assign({}, option);
     },
     rowSelected(option) {
