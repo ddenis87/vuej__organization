@@ -3,7 +3,8 @@ export default {
   GET_ADDRESS_API(state) { return state.addressApi; },
   GET_ADDRESS_API_NEXT:(state) => (tableName) => { return state[tableName].next; },
 
-  GET_FILTER_STRING(state) { return state.filterString; },
+  // GET_FILTER_STRING(state) { return state.filterString; },
+  GET_FILTER_STRING:(state) => (tableName) => { return state[tableName].filterString; },
 
   GET_LIST_OPTION:(state) => (tableName) => {
     // console.log(state[tableName].listOption);

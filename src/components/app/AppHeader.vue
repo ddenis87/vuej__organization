@@ -9,7 +9,7 @@
                      tag="router-link"
                      v-for="item in menuMain"
                      :key="item.link"
-                     :to="item.link">{{ item.value }}</v-list-item>
+                     :to="item.link" :disabled="item.disabled">{{ item.value }}</v-list-item>
       </v-list>
     </v-toolbar>
   </v-card>
@@ -21,10 +21,11 @@ export default {
   data() {
     return {
       menuMain: [
-        {value: 'Домой', link: '/'},
-        {value: 'Организации', link: '/Table/TableOrganisations'},
-        {value: 'БК', link: '/Table/TableBudgetClassifications'},
-        {value: 'Таблицы', link: '/Table/PageTable'},
+        {value: 'Домой', link: '/', disabled: false},
+        {value: 'Организации', link: '/Table/TableOrganisations', disabled: false},
+        {value: 'БК', link: '/Table/TableBudgetClassifications', disabled: false},
+        {value: 'Таблицы', link: '/Table/PageTable', disabled: false},
+        {value: 'Документы', link: '/Document/PageDocument', disabled: true},
       ],
     }
   },

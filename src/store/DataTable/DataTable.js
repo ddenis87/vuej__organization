@@ -6,17 +6,18 @@ export default {
   namespaced: true,
   state: {
     addressApi: 'https://an67.pythonanywhere.com/api/',
-    filterString: '',
     isDataLoad: false,
 
     "budget-classifications": {
       description: null,
+      filterString: '',
       count: 0,
       listOption: [],
       listData: [],
     },
     "organisations" : {
       description: null,
+      filterString: '',
       count: 0,
       listOption: [],
       listData: [],

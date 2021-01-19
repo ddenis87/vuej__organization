@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import AppHeader from '@/components/app/AppHeader';
+import AppHeader from '@/components/App/AppHeader';
 
 import LayoutMain from '@/layout/LayoutMain.vue';
 import LayoutTableold from '@/layout/LayoutTableold.vue';
