@@ -6,28 +6,17 @@
       <el-button-icon icon="mdi-delete" :disabled="!isFocusedElement" @click="eventActionDeleting">Удалить</el-button-icon>
       <v-spacer></v-spacer>
 
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn icon small v-on="on" @click="$emit('toggle-type-row')"><v-icon>{{ (heightType == 'fixed') ? 'mdi-view-sequential' : (heightType == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda' }}</v-icon></v-btn>
-        </template>
-        <span class="tooltip-text tooltip-text-control">{{ (heightType == 'fixed') ? 'Строки сжато' : (heightType == 'dense') ? 'Строки свободно' : 'Строки авто' }}</span>
-      </v-tooltip>
+      <el-button-icon :icon="(this.heightType == 'fixed') ? 'mdi-view-sequential' : (this.heightType == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
+                      @click="$emit('toggle-type-row')">{{ (heightType == 'fixed') ? 'Строки сжато' : (heightType == 'dense') ? 'Строки свободно' : 'Строки авто' }}</el-button-icon>
+      <el-button-icon :icon="(paddingType == 'padding-fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel'" 
+                      @click="$emit('toggle-type-column')">{{ (paddingType == 'padding-fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</el-button-icon>
+      <el-button-icon icon="mdi-page-layout-footer" 
+                      @click="$emit('toggle-footer')">Итоги</el-button-icon>
 
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn icon small v-on="on" @click="$emit('toggle-type-column')"><v-icon>{{ (paddingType == 'padding-fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel' }}</v-icon></v-btn>
-        </template>
-        <span class="tooltip-text tooltip-text-control">{{ (paddingType == 'padding-fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</span>
-      </v-tooltip>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn icon small v-on="on" @click="$emit('toggle-footer')"><v-icon>mdi-page-layout-footer</v-icon></v-btn>
-        </template>
-        <span class="tooltip-text tooltip-text-control">Итоги</span>
-      </v-tooltip>
-      <v-btn icon small disabled><v-icon>mdi-view-quilt</v-icon></v-btn>
+      <el-button-icon icon="mdi-view-quilt" disabled @click="$emit('toggle-multiline')">Многострочность</el-button-icon>
       <v-divider vertical></v-divider>
-      <v-btn icon small @click="isOpenFilter = !isOpenFilter"><v-icon :color="(isFilterActive) ? 'blue' : ''">mdi-filter-outline</v-icon></v-btn>
+      
+      <el-button-icon icon="mdi-filter-outline" :icon-color="(isFilterActive) ? 'blue' : ''" @click="isOpenFilter = !isOpenFilter">Фильтр</el-button-icon>
     </v-toolbar>
     
     <v-navigation-drawer v-model="isOpenFilter" temporary fixed hide-overlay right width="400">
