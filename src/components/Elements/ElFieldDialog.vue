@@ -23,29 +23,17 @@
                     @keydown.stop="eventKeyDown"
                     @click:append="eventDialogOpen"
                     @click.stop="" @input="eventInput"></v-autocomplete>
-    <!-- <v-dialog fullscreen v-model="isShowDialog" max-width="80%" scrollable class="dialog__box" :id="`ElDialog-${fieldId}`" @click:outside.stop.prevent="">
-      <v-card max-height="700">
-        <v-system-bar color="indigo" height="65">
-          <v-btn class="system__btn" depressed color="white" tile fab icon small @click="eventDialogClose"><v-icon class="system__btn_ico" small color="white">mdi-close</v-icon></v-btn>
-          <span class="dialog__title">{{ displayNameTable }}</span>
-          <v-spacer></v-spacer>
-          
-        </v-system-bar> -->
-      <dialog-full-page :is-dialog-name="displayNameTable" 
-                        :is-dialog-show="isShowDialog" 
-                        @event-close-dialog="eventDialogClose">
-        <!-- <div class="dialog__table" :id="`ElTable-${fieldId}`"> -->
-          <component :is="componentForm" v-bind:editable="false" @event-row-selected="eventDialogSelected"></component>
-        <!-- </div> -->
-      </dialog-full-page>
-        
-      <!-- </v-card>
-    </v-dialog> -->
+
+    <dialog-full-page :is-dialog-name="displayNameTable" 
+                      :is-dialog-show="isShowDialog" 
+                      @event-close-dialog="eventDialogClose">
+        <component :is="componentForm" v-bind:editable="false" @event-row-selected="eventDialogSelected"></component>
+    </dialog-full-page>
   </div>
 </template>
 
 <script>
-import DialogFullPage from '@/components/Dialog/DialogFullPage/DialogFullPage.vue';
+import DialogFullPage from '@/components/Dialogs/DialogFullPage.vue';
 
 export default {
   name: 'ElFieldDialog',

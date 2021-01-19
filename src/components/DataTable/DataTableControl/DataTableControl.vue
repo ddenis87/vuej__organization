@@ -1,24 +1,9 @@
 <template>
   <div class="data-table-control">
     <v-toolbar height="40" flat>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn icon small v-on="on" @click="eventClickAdding"><v-icon>mdi-plus</v-icon></v-btn>
-        </template>
-        <span class="tooltip-text tooltip-text-control">Добавить</span>
-      </v-tooltip>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn icon small :disabled="!isFocusedElement" v-on="on" @click="eventClickEditing"><v-icon>mdi-pencil</v-icon></v-btn>
-          </template>
-        <span class="tooltip-text tooltip-text-control">Изменить</span>
-      </v-tooltip>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn icon small :disabled="!isFocusedElement" v-on="on" @click="eventActionDeleting"><v-icon>mdi-delete</v-icon></v-btn>
-        </template>
-        <span class="tooltip-text tooltip-text-control">Удалить</span>
-      </v-tooltip>
+      <el-button-icon icon="mdi-plus" @click="eventClickAdding">Добавить</el-button-icon>
+      <el-button-icon icon="mdi-pencil" :disabled="!isFocusedElement" @click="eventClickEditing">Изменить</el-button-icon>
+      <el-button-icon icon="mdi-delete" :disabled="!isFocusedElement" @click="eventActionDeleting">Удалить</el-button-icon>
       <v-spacer></v-spacer>
 
       <v-tooltip bottom>
@@ -43,11 +28,10 @@
       <v-btn icon small disabled><v-icon>mdi-view-quilt</v-icon></v-btn>
       <v-divider vertical></v-divider>
       <v-btn icon small @click="isOpenFilter = !isOpenFilter"><v-icon :color="(isFilterActive) ? 'blue' : ''">mdi-filter-outline</v-icon></v-btn>
-      
     </v-toolbar>
     
     <v-navigation-drawer v-model="isOpenFilter" temporary fixed hide-overlay right width="400">
-      <data-filter-and-sorting table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter-and-sorting>
+      <data-filter table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter>
     </v-navigation-drawer>
 
     <dialog-full-page :is-dialog-name="isDialogName" 
@@ -62,14 +46,17 @@
 </template>
 
 <script>
-import DialogFullPage from '@/components/Dialog/DialogFullPage/DialogFullPage.vue';
-import DataFilterAndSorting from '@/components/DataFilterAndSorting/DataFilterAndSorting.vue';
+import DialogFullPage from '@/components/Dialogs/DialogFullPage.vue';
+import DataFilter from '@/components/DataFilter/DataFilter.vue';
+
+import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
 
 export default {
   name: 'DataTableControl',
   components: {
     DialogFullPage,
-    DataFilterAndSorting,
+    DataFilter,
+    ElButtonIcon,
   },
   props: {
     tableName: String,
