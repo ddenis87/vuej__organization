@@ -10,7 +10,15 @@
                 :rules="(fieldRequired) ? [fieldRules.required] : []"
                 @keydown.stop="eventKeyDown"
                 @blur.stop="eventBlur"
-                @input="eventInput"></v-text-field>
+                @input="eventInput">
+      <template v-slot:prepend-inner v-if="preIcon">
+        <v-icon>{{ preIcon }}</v-icon>
+      </template>
+      <template v-slot:append-outer v-if="btClear">
+        <v-btn icon small :disabled="isValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+      </template>
+    </v-text-field>
+    
 </template>
 
 <script>
@@ -26,7 +34,9 @@ export default {
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
-    selectedValue: {type: Boolean, defalt: false} // selected value in text field after mounted
+    selectedValue: {type: Boolean, defalt: false}, // selected value in text field after mounted
+    btClear: {type: Boolean, default: false},
+    preIcon: null,
   },
   data() {
     return {
@@ -40,6 +50,7 @@ export default {
     }
   },
   computed: {
+    isValue() { return (this.fieldValue == '') ? true : false },
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
     fieldMaxLength() { return (this.properties?.max_length) ? this.properties.max_length : Infinity; },
     fieldShowValidation() { return (this.showValidation) ? false : true }
@@ -90,6 +101,10 @@ export default {
         this.$emit('editing-canceled');
       }
     },
+    clearValue() {
+      this.fieldValue = '';
+      this.$emit('clear');
+    },
   },
 }
 </script>
@@ -98,8 +113,14 @@ export default {
 .el-field-string {
   width: 100%;
   font-size: 14px;
+  
 }
 .v-text-field {
   margin-top: -3.5px;
+}
+::v-deep {
+  .v-input__append-outer {
+    margin-top: -8px;
+  }
 }
 </style>

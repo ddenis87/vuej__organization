@@ -1,13 +1,14 @@
 export default {
   SET_IS_DATA_LOAD(state, status = false) { state.isDataLoad = status; },
   SET_FILTER_STRING(state, option = null) {
-    if (option == null) { state.filterString = ''; return; }
+    if (option.filters == null) { state[option.tableName].filterString = ''; return; }
     let filterString = '?';
-    for(let item of Object.entries(option)) {
+    for(let item of Object.entries(option.filters)) {
       filterString += `${item[0]}=${item[1].value}&`;
     }
-    console.log(filterString);
-    state.filterString = filterString;
+    // console.log(filterString);
+
+    state[option.tableName].filterString = filterString;
   },
   SET_LIST_OPTION(state, option) {
     // console.log(option);

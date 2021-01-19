@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import ElFieldChoice from '@/components/elements/ElFieldChoice.vue';
+import ElFieldChoice from '@/components/Elements/ElFieldChoice.vue';
 
 export default {
   name: 'DataFilter',
@@ -47,8 +47,14 @@ export default {
   },
   methods: {
     acceptFilter() {
-      console.log(this.dataFilterValue);
-      this.$store.commit('DataTable/SET_FILTER_STRING', (Object.keys(this.dataFilterValue).length != 0) ? this.dataFilterValue : null);
+      // console.log(this.dataFilterValue);
+      this.$store.commit('DataTable/SET_FILTER_STRING', (Object.keys(this.dataFilterValue).length != 0) ? {
+        tableName: this.tableName,
+        filters: this.dataFilterValue
+      } : {
+            tableName: this.tableName,
+            filters: null
+          });
       this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.tableName});
       this.$emit('close');
     },

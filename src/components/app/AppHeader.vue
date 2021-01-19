@@ -22,8 +22,8 @@ export default {
     return {
       menuMain: [
         {value: 'Домой', link: '/', disabled: false},
-        {value: 'Организации', link: '/Table/TableOrganisations', disabled: false},
-        {value: 'БК', link: '/Table/TableBudgetClassifications', disabled: false},
+        // {value: 'Организации', link: '/Table/TableOrganisations', disabled: false},
+        // {value: 'БК', link: '/Table/TableBudgetClassifications', disabled: false},
         {value: 'Таблицы', link: '/Table/PageTable', disabled: false},
         {value: 'Документы', link: '/Document/PageDocument', disabled: true},
       ],

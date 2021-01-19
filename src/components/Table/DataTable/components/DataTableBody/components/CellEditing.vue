@@ -20,10 +20,10 @@ export default {
     editingComponent() {
       if (this.properties.columnProperties) {
         switch(this.properties.columnProperties.type) {
-          case 'string': return () => import('@/components/elements/ElFieldString.vue');
-          case 'integer': return () => import('@/components/elements/ElFieldNumber.vue');
-          case 'choice': return () => import('@/components/elements/ElFieldChoice.vue');
-          case 'nested object': return () => import('@/components/elements/ElFieldDialog.vue');
+          case 'string': return () => import('@/components/Elements/ElFieldString.vue');
+          case 'integer': return () => import('@/components/Elements/ElFieldNumber.vue');
+          case 'choice': return () => import('@/components/Elements/ElFieldChoice.vue');
+          case 'nested object': return () => import('@/components/Elements/ElFieldDialog.vue');
         }
       }
     },

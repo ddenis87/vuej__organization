@@ -42,7 +42,7 @@
       </v-tooltip>
       <v-btn icon small disabled><v-icon>mdi-view-quilt</v-icon></v-btn>
       <v-divider vertical></v-divider>
-      <v-btn icon small @click="isOpenFilter = !isOpenFilter"><v-icon color="blue">mdi-filter-outline</v-icon></v-btn>
+      <v-btn icon small @click="isOpenFilter = !isOpenFilter"><v-icon :color="(isFilterActive) ? 'blue' : ''">mdi-filter-outline</v-icon></v-btn>
       
     </v-toolbar>
     
@@ -81,11 +81,14 @@ export default {
   data() {
     return {
       isShowDialog: false,
-      focusedElementForm: null, //(Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null,
+      focusedElementForm: null,
       isOpenFilter: false,
     }
   },
   computed: {
+    isFilterActive() {
+      return (this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties?.tableName) == '') ? false : true;
+    },
     componentForm() {
       let componentForm = '';
       if (!this.formProperties?.tableName) return null;

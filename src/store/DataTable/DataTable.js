@@ -17,7 +17,7 @@ export default {
     },
     "organisations" : {
       description: null,
-      filterString: '',
+      filterString: '?bk__head_code=54',
       count: 0,
       listOption: [],
       listData: [],

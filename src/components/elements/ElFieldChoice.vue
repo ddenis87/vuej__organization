@@ -17,7 +17,7 @@
                   @change="eventChangeValue"
                   @blur.stop="eventBlur">
     <template v-slot:append-outer v-if="btClear">
-      <v-btn tile small icon :disabled="isValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+      <v-btn icon small :disabled="isValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
     </template>
   </v-autocomplete>
 </template>
@@ -36,7 +36,7 @@ export default {
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
     selectedValue: {type: Boolean, defalt: false}, // selected value in text field after mounted
-    btClear: {type: Boolean, defalt: false},
+    btClear: {type: Boolean, default: false},
   },
   data() {
     return {
@@ -141,6 +141,9 @@ export default {
 ::v-deep {
   .v-input__append-inner {
     cursor: pointer;
+  }
+  .v-input__append-outer {
+    margin-top: -8px;
   }
 }
 </style>

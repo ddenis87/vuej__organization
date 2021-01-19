@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+//  -- primary --
+$fontFamily: Roboto, sans-serif;
+$fontSize: 16px;
+$fontColor: rgba(0, 0, 0, .87);
+$fontLineHeight: 1.5;
+
+$borderRadius: 4px;
+
+$boxShadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+
+//  --------------
+
+
+// -- head --
+$headRowHeight: 56px;
+$headRowBorder: thin solid rgba(0,0,0,.12);
+$headRowBackgroundColor: rgba(255, 255, 255);
+
+$headFontSize: .875rem;
+$headFontWeight: bold;
+$headFontLineHeight: $fontLineHeight;
+$headFontColor: rgba(0, 0, 0, .6);
+$headPaddingTB: 6px;
+$headPaddingLR: 16px;
+
+$headHorizontalAlign: flex-start;
+$headVerticalAlign: center;
+
+//  -- body --
+$bodyRowHeight: 52px;
+$bodyRowBorder: thin solid rgba(0,0,0,.12);
+$bodyRowBackgroundColor: rgba(255, 255, 255);
+$bodyRowBackgroundColorHover: rgba(240, 240, 240);
+
+$bodyFontSize: .875rem;
+$bodyFontWeight: normal;
+$bodyFontLineHeight: $fontLineHeight;
+$bodyFontColor: rgba(0, 0, 0, .87);
+$bodyPaddingTB: 6px;
+$bodyPaddingLR: 16px;
+
+$bodyHorizontalAlign: flex-start;
+$bodyVerticalAlign: center;

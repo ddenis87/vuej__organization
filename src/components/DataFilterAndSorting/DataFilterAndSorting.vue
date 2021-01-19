@@ -1,52 +1,48 @@
 <template>
   <div class="data-filter-and-sorting">
     <v-toolbar dense flat >
-      <!-- <v-toolbar-title> -->
         <v-btn icon height="30" width="30" small color="blue" class="data-filter-and-sorting__btn" @click="$emit('close')"><v-icon small>mdi-close</v-icon></v-btn>
-      <!-- </v-toolbar-title> -->
       <v-spacer></v-spacer>
-      <!-- <v-toolbar-title> -->
-        <!-- <v-tabs>
-          <v-tab :to="'tab-filter'">Фильтр</v-tab>
-          <v-tab :href="'tab-sorting'">Сортировка</v-tab>
-        </v-tabs> -->
-        <v-btn depressed height="30" small tile color="white" @click="currentTab = 'Filter'">Фильтры</v-btn>
-        <v-btn depressed height="30" small tile color="white" @click="currentTab = 'Sorted'">Сортировка</v-btn>
-      <!-- </v-toolbar-title> -->
     </v-toolbar>
     <v-divider></v-divider>
-    <component :is="currentTabComponent" v-bind:table-name="tableName"></component>
-    <!-- <v-card flat tile>
+    <v-card flat tile>
       <v-list flat>
+        <v-list-item>
+          <el-field-string label :bt-clear="true" pre-icon='mdi-magnify' :properties="{key: 'searchString', label: 'Произвольный поиск', type: 'String'}"></el-field-string>
+        </v-list-item>
         <v-list-item v-for="(item, index) in listField" :key="index">
-          <el-field-choice-new label 
-                               :bt-clear="true"
-                               :properties="item"
-                               :single-line="false"
-                               v-model="dataFilterValue[item.key]" @clear="() => clearValue(item.key)"></el-field-choice-new>
+          
+          <el-field-choice label 
+                           :bt-clear="true"
+                           :properties="item"
+                           :single-line="false"
+                           v-model="dataFilterValue[item.key]" @clear="() => clearValue(item.key)"></el-field-choice>
         </v-list-item>
       </v-list>
-      <v-card-actions><v-spacer></v-spacer><v-btn class="data-filter__btn-accept" color="blue darken-1" depressed small @click="acceptFilter">Применить</v-btn></v-card-actions>
-    </v-card> -->
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn class="data-filter-and-sorting__btn-accept" color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn>
+      </v-card-actions>
+    </v-card>
   </div>
 </template>
 
 <script>
-import DataFilter from './DataFilter.vue';
-import DataSorted from './DataSorted.vue';
+import ElFieldString from '@/components/Elements/ElFieldString.vue';
+import ElFieldChoice from '@/components/Elements/ElFieldChoice.vue';
 
 export default {
   name: 'DataFilterAndSorting',
   components: {
-    DataFilter,
-    DataSorted,
+    ElFieldString,
+    ElFieldChoice,
   },
   props: {
     tableName: String,
   },
   data() {
     return {
-      // dataFilterValue: {},
+      dataFilterValue: {},
       currentTab: 'Filter'
     }
   },
@@ -69,7 +65,13 @@ export default {
   methods: {
     acceptFilter() {
       console.log(this.dataFilterValue);
-      this.$store.commit('DataTable/SET_FILTER_STRING', (Object.keys(this.dataFilterValue).length != 0) ? this.dataFilterValue : null);
+      this.$store.commit('DataTable/SET_FILTER_STRING', (Object.keys(this.dataFilterValue).length != 0) ? {
+        tableName: this.tableName,
+        filters: this.dataFilterValue
+      } : {
+            tableName: this.tableName,
+            filters: null
+          });
       this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.tableName});
       this.$emit('close');
     },
@@ -91,7 +93,7 @@ export default {
     margin-left: 0px;
   }
   &__btn-accept {
-    margin-right: 14px;
+    margin-right: 20px;
     color: white;
   }
 }
