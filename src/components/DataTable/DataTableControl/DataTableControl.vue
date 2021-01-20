@@ -25,13 +25,13 @@
                       @click="isOpenFilter = !isOpenFilter">Фильтр</el-button-icon>
     </v-toolbar>
     
-    <dialog-right-bar is-dialog-name="Фильтры" 
+    <dialog-bar-right is-dialog-name="Фильтры" 
                       :is-dialog-show="isOpenFilter" 
                       @close-dialog="isOpenFilter = false">
       <data-filter :table-name="tableName" 
                    @accept="isOpenFilter = false"
                    @close="isOpenFilter = false"></data-filter>
-    </dialog-right-bar>
+    </dialog-bar-right>
       
     <dialog-full-page :is-dialog-name="isDialogName" 
                       :is-dialog-show="isOpenDialog" 
@@ -46,7 +46,7 @@
 
 <script>
 import DialogFullPage from '@/components/Dialogs/DialogFullPage.vue';
-import DialogRightBar from '@/components/Dialogs/DialogRightBar.vue';
+import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
 import DataFilter from '@/components/DataFilter/DataFilter.vue';
 
 import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
@@ -55,7 +55,7 @@ export default {
   name: 'DataTableControl',
   components: {
     DialogFullPage,
-    DialogRightBar,
+    DialogBarRight,
     DataFilter,
     ElButtonIcon,
   },
@@ -91,7 +91,7 @@ export default {
     isDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }
   },
   watch: {
-    focusedElement() { this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null },
+    focusedElement() { this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : {} },
   },
   methods: {
     eventClickAdding() {

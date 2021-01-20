@@ -10,18 +10,20 @@
         </v-card>
       </v-toolbar>
 
-      <v-navigation-drawer absolute left temporary v-model="isMenu">
-        <v-toolbar dark flat color="blue darken-3">
-          <v-toolbar-title>Таблицы</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon small @click="isMenu = !isMenu"><v-icon>mdi-close</v-icon></v-btn>
-        </v-toolbar>
+      <dialog-bar-left is-dialog-name="Таблицы" 
+                       :is-dialog-show="isMenu" 
+                       @close-dialog="isMenu = false">
         <v-list nav dense>
           <v-list-item-group v-model="activeMenu">
-            <v-list-item link v-for="item in listMenu" :key="item.path" :value="item"><v-list-item-title>{{ item.value }}</v-list-item-title></v-list-item>
+            <v-list-item link
+                         v-for="item in listMenu" 
+                         :key="item.path" 
+                         :value="item">
+              <v-list-item-title>{{ item.value }}</v-list-item-title>
+            </v-list-item>
           </v-list-item-group>
         </v-list>
-      </v-navigation-drawer>
+      </dialog-bar-left>
       
     </div>
     <div class="page-table__body">
@@ -48,12 +50,14 @@
 
 <script>
 import ElFieldSearch from '@/components/Elements/ElFieldSearch.vue';
+import DialogBarLeft from '@/components/Dialogs/DialogBarLeft.vue';
 import DataTableControl from '@/components/DataTable/DataTableControl/DataTableControl.vue';
 
 export default {
   name: 'PageTable',
   components: {
     ElFieldSearch,
+    DialogBarLeft,
     DataTableControl,
   },
   data() {

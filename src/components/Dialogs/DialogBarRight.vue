@@ -2,22 +2,18 @@
   <v-navigation-drawer temporary fixed hide-overlay right 
                        :width="width"
                        v-model="isOpen">
-    <v-toolbar dark flat tile 
-               color="blue darken-3">
-        <el-button-icon icon="mdi-close" no-tooltip @click="$emit('close-dialog')"></el-button-icon>
-      <v-spacer></v-spacer>
-      <v-toolbar-title >{{ isDialogName }}</v-toolbar-title>
-    </v-toolbar>
+    <dialog-toolbar :is-dialog-name="isDialogName"
+                    @close-dialog="$emit('close-dialog')"></dialog-toolbar>
     <slot></slot>
   </v-navigation-drawer>
 </template>
 
 <script>
-import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
+import DialogToolbar from './DialogToolbar.vue';
 export default {
-  name: 'DialogRightBar',
+  name: 'DialogBarRight',
   components: {
-    ElButtonIcon,
+    DialogToolbar,
   },
   props: {
     isDialogName: { type: String, default: '' },
