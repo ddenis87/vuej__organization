@@ -17,9 +17,9 @@ export const TableForm = {
   computed: {
     fieldForm() { 
       let fieldForm = this.$store.getters[`DataTable/GET_LIST_OPTION`](this.tableName);
-      for (let key of Object.keys(fieldForm)) {
-        if (fieldForm[key].type == 'nested object') this.$set(fieldForm[key], 'objectValue', 'head_name'); //костыль, надо получать откуда-то
-      }
+      // for (let key of Object.keys(fieldForm)) {
+      //   if (fieldForm[key].type == 'nested object') this.$set(fieldForm[key], 'objectValue', 'head_name'); //костыль, надо получать откуда-то
+      // }
       if (this.focusedElement != null) {
         for (let key of Object.keys(fieldForm)) {
           this.fieldFormValue[key] = this.focusedElement[key];

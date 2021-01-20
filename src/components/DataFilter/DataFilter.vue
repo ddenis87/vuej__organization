@@ -2,35 +2,50 @@
   <div class="data-filter">
     <v-card flat tile>
       <v-list flat>
-        <v-subheader class="data-filter__title">Имя Таблицы</v-subheader>
-        <v-list-item v-for="(item, index) in listField" :key="index">
+        <v-subheader class="data-filter__title">{{ nameTable }}</v-subheader>
+        <v-list-item v-for="item in listFieldChoice" :key="item.key">
           <el-field-choice label 
                            :bt-clear="true"
                            :properties="item"
                            :single-line="false"
                            v-model="dataFilterValue[item.key]" @clear="() => clearValue(item.key)"></el-field-choice>
         </v-list-item>
+        <v-list-item v-for="item in listFieldNestedObject" :key="item.key">
+          <el-field-dialog label
+                           :required="false"
+                           :bt-clear="true"
+                           :properties="item"
+                           :single-line="false"
+                           v-model="dataFilterValue[item.key]" @clear="() => clearValue(item.key)"></el-field-dialog>
+        </v-list-item>
       </v-list>
-      <v-card-actions>
+      <v-card-actions v-if="emptyFilter">
         <v-spacer></v-spacer>
         <v-btn class="data-filter__btn-accept" color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn>
       </v-card-actions>
+      <template v-else>
+        <v-card-text>Для данной таблицы отсутствуют фильтры выбора. Воспользуйтесь произвольным поиском по таблице</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="data-filter__btn-accept" color="blue darken-1" dark height="30" @click="$emit('close')">Закрыть</v-btn>
+        </v-card-actions>
+      </template>
+      
     </v-card>
   </div>
 </template>
 
 <script>
-import ElFieldString from '@/components/Elements/ElFieldString.vue';
 import ElFieldChoice from '@/components/Elements/ElFieldChoice.vue';
-
+import ElFieldDialog from '@/components/Elements/ElFieldDialog.vue';
 export default {
   name: 'DataFilter',
   components: {
-    ElFieldString,
     ElFieldChoice,
+    ElFieldDialog,
   },
   props: {
-    tableName: String,
+    tableName: {type: String, default: null},
   },
   data() {
     return {
@@ -39,20 +54,34 @@ export default {
     }
   },
   computed: {
-    currentTabComponent() {
-      return 'Data' + this.currentTab;
+    nameTable() { return (!this.tableName) ? '' : this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`](this.tableName); },
+    emptyFilter() {
+      return (this.listFieldChoice == 0 && this.listFieldNestedObject == 0) ? false : true;
     },
-    listField() {
+    listFieldChoice() {
+      if (!this.tableName) return 0;
       let listField = this.$store.getters[`DataTable/GET_LIST_OPTION`](this.tableName);
-      let listFieldFilter = [];
+      let listFieldChoice = [];
       if (listField) {
         for (let item of Object.entries(listField)) {
-          if (item[1].type == 'choice') listFieldFilter.push({key: item[0], label: item[1].label, choices: item[1].choices, type: item[1].type});
+          if (item[1].type == 'choice') listFieldChoice.push(Object.assign({key: item[0]}, item[1]));
         }
       }
-      console.log(listFieldFilter);
-      return listFieldFilter;
-    }
+      console.log(listFieldChoice);
+      return listFieldChoice;
+    },
+    listFieldNestedObject() {
+      if (!this.tableName) return 0;
+      let listField = this.$store.getters[`DataTable/GET_LIST_OPTION`](this.tableName);
+      let listFieldNestedObject = [];
+      if (listField) {
+        for (let item of Object.entries(listField)) {
+          if (item[1].type == 'nested object') listFieldNestedObject.push(Object.assign({key: item[0]}, item[1]));
+        }
+      }
+      console.log(listFieldNestedObject);
+      return listFieldNestedObject;
+    },
   },
   methods: {
     acceptFilter() {

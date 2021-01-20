@@ -1,29 +1,36 @@
 <template>
   <div class="data-table-control">
     <v-toolbar height="40" flat>
-      <el-button-icon icon="mdi-plus" @click="eventClickAdding">Добавить</el-button-icon>
+      <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="eventClickAdding">Добавить</el-button-icon>
       <el-button-icon icon="mdi-pencil" :disabled="!isFocusedElement" @click="eventClickEditing">Изменить</el-button-icon>
       <el-button-icon icon="mdi-delete" :disabled="!isFocusedElement" @click="eventActionDeleting">Удалить</el-button-icon>
       <v-spacer></v-spacer>
 
       <el-button-icon :icon="(this.heightType == 'fixed') ? 'mdi-view-sequential' : (this.heightType == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
+                      :disabled="!isMountTable"
                       @click="$emit('toggle-type-row')">{{ (heightType == 'fixed') ? 'Строки сжато' : (heightType == 'dense') ? 'Строки свободно' : 'Строки авто' }}</el-button-icon>
       <el-button-icon :icon="(paddingType == 'padding-fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel'" 
+                      :disabled="!isMountTable"
                       @click="$emit('toggle-type-column')">{{ (paddingType == 'padding-fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</el-button-icon>
       <el-button-icon icon="mdi-page-layout-footer" 
+                      :disabled="!isMountTable"
                       @click="$emit('toggle-footer')">Итоги</el-button-icon>
 
       <el-button-icon icon="mdi-view-quilt" disabled @click="$emit('toggle-multiline')">Многострочность</el-button-icon>
       <v-divider vertical></v-divider>
       
-      <el-button-icon icon="mdi-filter-outline" :icon-color="(isFilterActive) ? 'blue' : ''" @click="isOpenFilter = !isOpenFilter">Фильтр</el-button-icon>
+      <el-button-icon icon="mdi-filter-outline" 
+                      :icon-color="(isFilterActive) ? 'blue' : ''" 
+                      :disabled="!isMountTable"
+                      @click="isOpenFilter = !isOpenFilter">Фильтр</el-button-icon>
     </v-toolbar>
     
     <dialog-right-bar is-dialog-name="Фильтры" 
                       :is-dialog-show="isOpenFilter" 
                       @close-dialog="isOpenFilter = false">
-      <data-filter table-name="organisations" 
-                   @accept="isOpenFilter = false"></data-filter>
+      <data-filter :table-name="tableName" 
+                   @accept="isOpenFilter = false"
+                   @close="isOpenFilter = false"></data-filter>
     </dialog-right-bar>
       
     <dialog-full-page :is-dialog-name="isDialogName" 
@@ -53,7 +60,6 @@ export default {
     ElButtonIcon,
   },
   props: {
-    tableName: String,
     focusedElement: Object,
     formProperties: Object,
     heightType: {type: String, default: 'fixed'},
@@ -67,9 +73,8 @@ export default {
     }
   },
   computed: {
-    isFilterActive() {
-      return (this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties?.tableName) == '') ? false : true;
-    },
+    isMountTable() { return (this.formProperties) ? true : false },
+    tableName() { return (this.formProperties) ? this.formProperties.tableName : null },
     componentForm() {
       let componentForm = '';
       if (!this.formProperties?.tableName) return null;
@@ -78,11 +83,15 @@ export default {
       })
       return () => import(`@/views/TableForm/TableForm${componentForm}`);
     },
+    isFilterActive() {
+      let filterString = this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties?.tableName);
+      return (filterString == '' || filterString == undefined) ? false : true;
+    },
     isFocusedElement() { return (this.focusedElementForm && Object.keys(this.focusedElementForm).length != 0) ? true : false },
     isDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }
   },
   watch: {
-    focusedElement() { this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null }
+    focusedElement() { this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null },
   },
   methods: {
     eventClickAdding() {
@@ -96,10 +105,6 @@ export default {
       this.isOpenDialog = false;
       this.focusedElementForm= null;
     },
-    // eventChangeRow(value) {
-    //   this.$emit('event-change-row', value);
-    // },
-
     eventActionAccept(option) {
       let sendOption = {
         tableName: this.formProperties.tableName,

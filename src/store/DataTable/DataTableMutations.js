@@ -3,8 +3,10 @@ export default {
   SET_FILTER_STRING(state, option = null) {
     if (option.filters == null) { state[option.tableName].filterString = ''; return; }
     let filterString = '?';
+    console.log()
     for(let item of Object.entries(option.filters)) {
-      filterString += `${item[0]}=${item[1].value}&`;
+      if ('id' in item[1]) filterString += `${item[0]}=${item[1].id}&`;
+      else filterString += `${item[0]}=${item[1].value}&`;
     }
     // console.log(filterString);
 
@@ -14,7 +16,11 @@ export default {
     // console.log(option);
     state[option.tableName].listOption = option.data;
     state[option.tableName].description = option.description;
-    if (option.tableName == 'organisations') state[option.tableName].listOption.bk.tableName = "budget-classifications";
+    if (option.tableName == 'organisations') {
+      state[option.tableName].listOption.bk.tableName = "budget-classifications";
+      state[option.tableName].listOption.bk.objectValue = "head_name";
+    }
+    console.log(state[option.tableName]);
   },
 
   SET_LIST_DATA(state, option) {

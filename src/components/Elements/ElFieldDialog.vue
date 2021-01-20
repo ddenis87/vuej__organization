@@ -14,7 +14,7 @@
                     :single-line="singleLine"
                     :label="fieldLabel"
                     :hide-details="fieldShowValidation"
-                    :rules="(fieldRequired) ? [fieldRules.required] : []"
+                    :rules="(fieldRequired && required) ? [fieldRules.required] : []"
                     :items="fieldList"
                     :item-text="fieldListText"
                     item-value="id"
@@ -22,7 +22,11 @@
                     @change="eventChange"
                     @keydown.stop="eventKeyDown"
                     @click:append="eventDialogOpen"
-                    @click.stop="" @input="eventInput"></v-autocomplete>
+                    @click.stop="" @input="eventInput">
+      <template v-slot:append-outer v-if="btClear">
+        <v-btn icon small :disabled="isValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+      </template>
+    </v-autocomplete>
 
     <dialog-full-page :is-dialog-name="displayNameTable" 
                       :is-dialog-show="isShowDialog" 
@@ -50,7 +54,9 @@ export default {
     label: {type: Boolean, default: false}, // hidden or show label
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
-    selectedValue: {type: Boolean, defalt: false} // selected value in text field after mounted
+    selectedValue: {type: Boolean, defalt: false}, // selected value in text field after mounted
+    btClear: {type: Boolean, default: false},
+    required: { type: Boolean, default: true },
   },
   data() {
     return {
@@ -68,6 +74,7 @@ export default {
     }
   },
   computed: {
+    isValue() { console.log(this.fieldValue); return (this.fieldValue == undefined) ? true : false },
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
     fieldListText() { return (this.properties?.objectValue) ? this.properties.objectValue : ''; },
     fieldList() {
@@ -181,7 +188,11 @@ export default {
     eventInput() {
       // console.log('input event');
       this.$emit('input', this.fieldValue);
-    }
+    },
+    clearValue() {
+      this.fieldValue = undefined;
+      this.$emit('clear');
+    },
   },
 }
 </script>
@@ -202,6 +213,7 @@ export default {
 }
 
 .dialog {
+  width: 100%;
   background-color: white;
   &__title {
     color: white;

@@ -4,7 +4,12 @@
       <v-toolbar dense flat>
         <v-app-bar-nav-icon @click.stop="isMenu = !isMenu"></v-app-bar-nav-icon>
         <v-toolbar-title>{{ nameTable || 'Выберите таблицу' }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-card min-width="380" max-height="34" flat v-if="isTableMount">
+          <el-field-search label-text="Произвольный поиск по таблице"></el-field-search>
+        </v-card>
       </v-toolbar>
+
       <v-navigation-drawer absolute left temporary v-model="isMenu">
         <v-toolbar dark flat color="blue darken-3">
           <v-toolbar-title>Таблицы</v-toolbar-title>
@@ -17,6 +22,7 @@
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
+      
     </div>
     <div class="page-table__body">
       <div class="table-control">
@@ -41,11 +47,13 @@
 </template>
 
 <script>
+import ElFieldSearch from '@/components/Elements/ElFieldSearch.vue';
 import DataTableControl from '@/components/DataTable/DataTableControl/DataTableControl.vue';
 
 export default {
   name: 'PageTable',
   components: {
+    ElFieldSearch,
     DataTableControl,
   },
   data() {
@@ -67,7 +75,8 @@ export default {
     }
   },
   computed: {
-    componentTable() { if (this.activeMenu) return () => import(`@/components/TTables/${this.activeMenu?.path}`); },
+    componentTable() { if (this.activeMenu) return () => import(`@/components/TTables/${this.activeMenu?.path}`); else return null; },
+    isTableMount() { return (this.formProperties == null) ? false : true },
     nameTable() { return this.activeMenu?.value; },
   },
   watch: {
