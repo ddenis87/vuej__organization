@@ -1,9 +1,17 @@
 <template>
   <v-toolbar dark flat tile 
               color="blue darken-3">
-    <el-button-icon icon="mdi-close" no-tooltip @click="$emit('close-dialog')"></el-button-icon>
-    <v-spacer></v-spacer>
-    <v-toolbar-title >{{ isDialogName }}</v-toolbar-title>
+    <template v-if="orientation == 'left'">
+      <v-toolbar-title >{{ isDialogName }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <el-button-icon icon="mdi-close" no-tooltip @click="$emit('close-dialog')"></el-button-icon>
+    </template>
+    <template v-else>
+      <el-button-icon icon="mdi-close" no-tooltip @click="$emit('close-dialog')"></el-button-icon>
+      <v-spacer></v-spacer>
+      <v-toolbar-title >{{ isDialogName }}</v-toolbar-title>
+    </template>
+    
   </v-toolbar>
 </template>
 
@@ -16,6 +24,7 @@ export default {
   },
   props: {
     isDialogName: { type: String, default: '' },
+    orientation: { type: String, default: 'left' },
   }
 }
 </script>

@@ -3,6 +3,7 @@
                        :width="width"
                        v-model="isOpen">
     <dialog-toolbar :is-dialog-name="isDialogName"
+                    orientation="right"
                     @close-dialog="$emit('close-dialog')"></dialog-toolbar>
     <slot></slot>
   </v-navigation-drawer>

@@ -5,24 +5,20 @@
             v-model="isDialogShow" 
             @click:outside="$emit('close-dialog')">
     <v-card>
-      <v-toolbar dark flat tile 
-                 color="blue darken-3">
-        <span class="dialog__title">{{ isDialogName }}</span>
-        <v-spacer></v-spacer>
-        <v-btn fab icon small 
-               @click="$emit('close-dialog')">
-          <v-icon small 
-                  color="white">mdi-close</v-icon>
-        </v-btn>
-      </v-toolbar>
+      <dialog-toolbar :is-dialog-name="isDialogName"
+                      @close-dialog="$emit('close-dialog')"></dialog-toolbar>
       <slot></slot>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import DialogToolbar from './DialogToolbar.vue';
 export default {
   name: 'DialogFullPage',
+  components: {
+    DialogToolbar,
+  },
   props: {
     isDialogShow: {type: Boolean, default: false},
     isDialogName: {type: String, default: ''},
