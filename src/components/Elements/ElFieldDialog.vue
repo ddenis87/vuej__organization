@@ -74,7 +74,7 @@ export default {
     }
   },
   computed: {
-    isValue() { console.log(this.fieldValue); return (this.fieldValue == undefined) ? true : false },
+    isValue() { return (this.fieldValue == undefined) ? true : false },
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
     fieldListText() { return (this.properties?.objectValue) ? this.properties.objectValue : ''; },
     fieldList() {
@@ -156,7 +156,7 @@ export default {
       if (event.key == 'Enter' || event.key == 'Tab') {
         event.preventDefault();
         if (this.fieldRequired && this.fieldValue.length == 0) { return; }
-        console.log(this.fieldValue);
+        // console.log(this.fieldValue);
         let newFieldValue = this.$store.getters['DataTable/GET_LIST_DATA_ROW'](this.properties.tableName, this.fieldValue.toString());
         this.isInputEmit = true;
         this.$emit('editing-accepted', {

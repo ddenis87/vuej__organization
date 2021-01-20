@@ -93,7 +93,7 @@ export default {
         event.preventDefault();
 
         if (this.fieldRequired && this.fieldValue.length == 0) return;
-        console.log(this.fieldValue);
+        // console.log(this.fieldValue);
         let newFieldValue = (this.isInputFirstEnter) ? {
           'display_name': this.fieldValue['display_name'],
           value: this.fieldValue.value

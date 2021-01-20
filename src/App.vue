@@ -1,7 +1,7 @@
 <template>
   <v-app class="app">
     <div class="app-header maxWidth">
-      <app-header></app-header>
+      <!-- <app-header></app-header> -->
     </div>
     <div class="app-body maxWidth">
       <component :is="layout">

@@ -39,7 +39,7 @@ export const Events = {
     eventBodyMouseOver(event) {
       if (event.target.classList.contains('content')) {
         let parent = event.target.closest('.table-body__col');
-        if (parent.classList.contains('table-body__col_focus')) return;
+        // if (parent.classList.contains('table-body__col_focus')) return;
           this.isTooltipTimer = setTimeout(() => {
             this.isTooltipProperties = {
               top: parent.getBoundingClientRect().top + this.calcTooltipShift.top,
@@ -60,12 +60,12 @@ export const Events = {
 
     // events Row ----------------
     eventRowMouseEnter(event) { // work if not editable and not focus
-      if (!this.isElementNowEditing && !this.isElementNowFocus && !this.isRowNowFocus)
+      if (!this.isElementNowEditing && !this.isRowNowFocus) // && !this.isElementNowFocus)
         event.target.classList.add('table-body__row_hover');
         event.target.classList.add('table-body__row_max');
     },
     eventRowMouseLeave(event) { // work if not editable and not focus
-      if (!this.isElementNowEditing && !this.isElementNowFocus && !this.isRowNowFocus)
+      if (!this.isElementNowEditing && !this.isRowNowFocus) // && !this.isElementNowFocus)
         event.target.classList.remove('table-body__row_hover');
     },
     eventRowFocus(event) {
@@ -98,7 +98,7 @@ export const Events = {
     eventElementFocus(event) {
       // -- hide tooltip ---------------
       this.isTooltipShow = false;
-      clearTimeout(this.isTooltipTimer);
+      // clearTimeout(this.isTooltipTimer); 
       // -------------------------------
       this.isElementNowFocus = true;
       event.target.parentElement.classList.remove('table-body__row_hover');

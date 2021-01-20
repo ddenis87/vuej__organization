@@ -1,8 +1,23 @@
 <template>
   <div class="page-table">
+    <v-toolbar 
+               class="menu-main"
+               color="blue darken-3">
+      <v-list nav dark dense color="blue darken-3">
+        <v-list-item-group v-model="activeMenu">
+          <v-list-item link class="menu-main__item" 
+                        v-for="item in listMenu" 
+                        :key="item.path" 
+                        :value="item">
+            <v-list-item-title>{{ item.value }}</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+      
+    </v-toolbar>
     <div class="page-table__control">
       <v-toolbar dense flat>
-        <v-app-bar-nav-icon @click.stop="isMenu = !isMenu"></v-app-bar-nav-icon>
+        <!-- <v-app-bar-nav-icon @click.stop="isMenu = !isMenu"></v-app-bar-nav-icon> -->
         <v-toolbar-title>{{ nameTable || 'Выберите таблицу' }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-card min-width="380" max-height="34" flat v-if="isTableMount">
@@ -10,7 +25,7 @@
         </v-card>
       </v-toolbar>
 
-      <dialog-bar-left is-dialog-name="Таблицы" 
+      <!-- <dialog-bar-left is-dialog-name="Таблицы" 
                        :is-dialog-show="isMenu" 
                        @close-dialog="isMenu = false">
         <v-list nav dense>
@@ -23,7 +38,7 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
-      </dialog-bar-left>
+      </dialog-bar-left> -->
       
     </div>
     <div class="page-table__body">
@@ -63,7 +78,7 @@ export default {
   data() {
     return {
       isMenu: false,
-      activeMenu: null,
+      activeMenu: {value: 'Организации', path: 'TableOrganisations'},
       listMenu: [
         {value: 'Организации', path: 'TableOrganisations'},
         {value: 'БК', path: 'TableBudgetClassifications'},
@@ -96,10 +111,10 @@ export default {
   methods: {
     tableMount(data) {
       this.formProperties = data.tableProperties;
-      console.log(data);
+      // console.log(data);
     },
     rowFocused(option) {
-      console.log(option);
+      // console.log(option);
       this.focusedElement = Object.assign({}, option);
     },
     rowSelected(option) {
@@ -122,6 +137,12 @@ export default {
 <style lang="scss" scoped>
 .page-table {
   height: 100%;
+  .menu-main {
+    &__item {
+      display: inline-flex;
+    }
+  }
+
   &__control {
     z-index: 20;
   }
