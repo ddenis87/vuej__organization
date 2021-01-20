@@ -1,17 +1,9 @@
 <template>
   <div class="data-filter">
-    <v-toolbar dense flat >
-        <v-btn icon height="30" width="30" small color="blue" class="data-filter__btn" @click="$emit('close')"><v-icon small>mdi-close</v-icon></v-btn>
-      <v-spacer></v-spacer>
-    </v-toolbar>
-    <v-divider></v-divider>
     <v-card flat tile>
       <v-list flat>
-        <v-list-item>
-          <el-field-string label :bt-clear="true" pre-icon='mdi-magnify' :properties="{key: 'searchString', label: 'Произвольный поиск', type: 'String'}"></el-field-string>
-        </v-list-item>
+        <v-subheader class="data-filter__title">Имя Таблицы</v-subheader>
         <v-list-item v-for="(item, index) in listField" :key="index">
-          
           <el-field-choice label 
                            :bt-clear="true"
                            :properties="item"
@@ -73,7 +65,7 @@ export default {
             filters: null
           });
       this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.tableName});
-      this.$emit('close');
+      this.$emit('accept');
     },
     clearValue(key) {
       delete this.dataFilterValue[key];
@@ -87,14 +79,10 @@ export default {
   padding: 0px 10px;
   z-index: 9999;
   &__title {
-    margin-right: 8px;
+    text-transform: uppercase;
   }
-  &__btn {
-    margin-left: 0px;
-  }
-  &__btn-accept {
-    margin-right: 20px;
-    color: white;
-  }
+}
+.v-list-item {
+  padding: 0px 5px;
 }
 </style>

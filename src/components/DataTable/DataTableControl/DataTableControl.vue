@@ -19,13 +19,16 @@
       <el-button-icon icon="mdi-filter-outline" :icon-color="(isFilterActive) ? 'blue' : ''" @click="isOpenFilter = !isOpenFilter">Фильтр</el-button-icon>
     </v-toolbar>
     
-    <v-navigation-drawer v-model="isOpenFilter" temporary fixed hide-overlay right width="400">
-      <data-filter table-name="organisations" @close="isOpenFilter = !isOpenFilter"></data-filter>
-    </v-navigation-drawer>
-
+    <dialog-right-bar is-dialog-name="Фильтры" 
+                      :is-dialog-show="isOpenFilter" 
+                      @close-dialog="isOpenFilter = false">
+      <data-filter table-name="organisations" 
+                   @accept="isOpenFilter = false"></data-filter>
+    </dialog-right-bar>
+      
     <dialog-full-page :is-dialog-name="isDialogName" 
-                      :is-dialog-show="isShowDialog" 
-                      @event-close-dialog="eventCloseDialog">
+                      :is-dialog-show="isOpenDialog" 
+                      @close-dialog="eventCloseDialog">
       <component :is="componentForm" 
                  :focused-element="focusedElementForm"
                  @event-action-accept="eventActionAccept"
@@ -36,6 +39,7 @@
 
 <script>
 import DialogFullPage from '@/components/Dialogs/DialogFullPage.vue';
+import DialogRightBar from '@/components/Dialogs/DialogRightBar.vue';
 import DataFilter from '@/components/DataFilter/DataFilter.vue';
 
 import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
@@ -44,6 +48,7 @@ export default {
   name: 'DataTableControl',
   components: {
     DialogFullPage,
+    DialogRightBar,
     DataFilter,
     ElButtonIcon,
   },
@@ -56,7 +61,7 @@ export default {
   },
   data() {
     return {
-      isShowDialog: false,
+      isOpenDialog: false,
       focusedElementForm: null,
       isOpenFilter: false,
     }
@@ -82,13 +87,13 @@ export default {
   methods: {
     eventClickAdding() {
       this.focusedElementForm = null;
-      this.isShowDialog = true;
+      this.isOpenDialog = true;
     },
     eventClickEditing() {
-      this.isShowDialog = true;
+      this.isOpenDialog = true;
     },
     eventCloseDialog() {
-      this.isShowDialog = false;
+      this.isOpenDialog = false;
       this.focusedElementForm= null;
     },
     // eventChangeRow(value) {

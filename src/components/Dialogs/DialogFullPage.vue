@@ -3,14 +3,14 @@
             fullscreen 
             transition="dialog-bottom-transition" 
             v-model="isDialogShow" 
-            @click:outside="$emit('event-close-dialog')">
+            @click:outside="$emit('close-dialog')">
     <v-card>
       <v-toolbar dark flat tile 
                  color="blue darken-3">
         <span class="dialog__title">{{ isDialogName }}</span>
         <v-spacer></v-spacer>
         <v-btn fab icon small 
-               @click="$emit('event-close-dialog')">
+               @click="$emit('close-dialog')">
           <v-icon small 
                   color="white">mdi-close</v-icon>
         </v-btn>

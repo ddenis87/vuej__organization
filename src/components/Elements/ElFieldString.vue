@@ -11,12 +11,6 @@
                 @keydown.stop="eventKeyDown"
                 @blur.stop="eventBlur"
                 @input="eventInput">
-      <template v-slot:prepend-inner v-if="preIcon">
-        <v-icon>{{ preIcon }}</v-icon>
-      </template>
-      <template v-slot:append-outer v-if="btClear">
-        <v-btn icon small :disabled="isValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
-      </template>
     </v-text-field>
     
 </template>
@@ -35,8 +29,6 @@ export default {
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
     selectedValue: {type: Boolean, defalt: false}, // selected value in text field after mounted
-    btClear: {type: Boolean, default: false},
-    preIcon: null,
   },
   data() {
     return {
@@ -50,7 +42,6 @@ export default {
     }
   },
   computed: {
-    isValue() { return (this.fieldValue == '') ? true : false },
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
     fieldMaxLength() { return (this.properties?.max_length) ? this.properties.max_length : Infinity; },
     fieldShowValidation() { return (this.showValidation) ? false : true }
@@ -100,10 +91,6 @@ export default {
         // console.log('blur string component');
         this.$emit('editing-canceled');
       }
-    },
-    clearValue() {
-      this.fieldValue = '';
-      this.$emit('clear');
     },
   },
 }

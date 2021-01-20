@@ -143,7 +143,7 @@ export default {
     cursor: pointer;
   }
   .v-input__append-outer {
-    margin-top: -8px;
+    margin-top: -0px;
   }
 }
 </style>
