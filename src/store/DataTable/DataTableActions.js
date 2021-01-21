@@ -3,11 +3,17 @@ export default {
   GET_LIST_OPTION(state, option) {
     // console.log('activ');
     if (state.getters.GET_DESCRIPTION_TABLE(option.tableName)) { return; };
-    state.commit('SET_IS_DATA_LOAD', true);
+    // state.commit('SET_IS_DATA_LOAD', true);
+    let config = {
+      headers: {
+        'Authorization': '6165d946a55d0d146ac66d4f913f2ecc82d4f5fe',
+      }
+    }
     axios
+      // .post(state.getters.GET_ADDRESS_API + option.tableName, {}, config)
       .options(state.getters.GET_ADDRESS_API + option.tableName)
       .then(response => {
-        // console.log(response);
+        console.log(response);
         let mutationOption = {
           tableName: option.tableName,
           description: response.data.description,

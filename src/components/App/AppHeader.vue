@@ -11,7 +11,7 @@
                      :key="item.link"
                      :to="item.link" :disabled="item.disabled">{{ item.value }}</v-list-item>
       </v-list>
-      
+      <v-toolbar-title>I'm work!</v-toolbar-title>
     </v-toolbar>
   </v-card>
 </template>

@@ -16,7 +16,7 @@ export default {
     // console.log(option);
     state[option.tableName].listOption = option.data;
     state[option.tableName].description = option.description;
-    if (option.tableName == 'organisations') {
+    if (option.tableName == 'organizations') {
       state[option.tableName].listOption.bk.tableName = "budget-classifications";
       state[option.tableName].listOption.bk.objectValue = "head_name";
     }
