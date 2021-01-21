@@ -5,8 +5,12 @@ import actions from './DataTableActions.js';
 export default {
   namespaced: true,
   state: {
-    // addressApi: 'https://an67.pythonanywhere.com/api/',
-    addressApi: 'http://an67.pythonanywhere.com/api/drf/',
+    // addressApi: 'https://an67.pythonanywhere.com/',
+    // addressApi: 'https://httpbin.org/basic-auth/foo/bar',
+    // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/drf/organization/',
+    // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/v1/organization/',
+    addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api-token-auth/',
+    // addressApi: 'http://an67.pythonanywhere.com/api/v1/organization/',
     isDataLoad: false,
 
     "budget-classifications": {
@@ -16,7 +20,7 @@ export default {
       listOption: [],
       listData: [],
     },
-    "organisations" : {
+    "organizations" : {
       description: null,
       filterString: '',
       count: 0,

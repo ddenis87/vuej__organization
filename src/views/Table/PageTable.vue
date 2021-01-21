@@ -78,9 +78,9 @@ export default {
   data() {
     return {
       isMenu: false,
-      activeMenu: {value: 'Организации', path: 'TableOrganisations'},
+      activeMenu: {value: 'Организации', path: 'TableOrganizations'},
       listMenu: [
-        {value: 'Организации', path: 'TableOrganisations'},
+        {value: 'Организации', path: 'TableOrganizations'},
         {value: 'БК', path: 'TableBudgetClassifications'},
       ],
 

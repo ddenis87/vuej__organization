@@ -2,7 +2,7 @@
   <div class="page-table">
     <div class="page-table__control">
       <data-table-control :form-properties="propertiesDataTable" 
-                          :table-name="'organisations'" 
+                          :table-name="'organizations'" 
                           :focused-element="focusedElement"
                           :height-type="heightType[heightTypeCount]"
                           :paddingType="paddingType"
@@ -12,7 +12,7 @@
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
-      <data-table d-id="Organisations" 
+      <data-table d-id="Organizations" 
                   :table-properties="propertiesDataTable" 
                   editable
                   v-bind:[heightType[heightTypeCount]]="true"
@@ -28,7 +28,7 @@
 import { Table } from './Table.js';
 
 export default {
-  name: 'TableOrganisation',
+  name: 'TableOrganization',
   mixins: [
     Table,
   ],
@@ -40,7 +40,7 @@ export default {
       isFooter: false,
       focusedElement: {},
       propertiesDataTable: {
-        tableName: 'organisations',
+        tableName: 'organizations',
         header: [
           {value: 'id', width: [50, 50],},
           {value: 'institution_code', align: 'end', width: [90, 90], },

@@ -1,5 +1,5 @@
 <template>
-  <data-table d-id="Organisations" 
+  <data-table d-id="Organizations" 
               :table-properties="tableProperties" 
               editable
               v-bind:[typeRow[typeRowNumber]]="true"
@@ -13,7 +13,7 @@
 import { Table } from './Table.js';
 
 export default {
-  name: 'TableOrganisations',
+  name: 'TableOrganizations',
   mixins: [
     Table,
   ],
@@ -36,7 +36,7 @@ export default {
       //   ],
       // },
       tableProperties: {
-        tableName: 'organisations',
+        tableName: 'organizations',
         header: [
           [
             {value: 'id', width: [60, 60],},
