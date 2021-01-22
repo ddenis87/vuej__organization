@@ -3,12 +3,25 @@ export const GetData = {
     listHeader() {
       let listHeaderBase = this.tableProperties.header;
       let listHeaderState = this.$store.getters[`DataTable/GET_LIST_OPTION`](this.tableName);
-      // console.log(listHeaderState);
+      console.log(listHeaderState);
       let shiftLeft = 0;
       if (listHeaderState.length != 0) {
+        let newListHeaderBase = [];
+        for (let i = 0; i < listHeaderBase.length; i++) {
+          newListHeaderBase.push(...listHeaderBase[i]);
+        }
+        listHeaderBase = [];
+        for (let i = 0; i < newListHeaderBase.length; i++) {
+          for (let key in newListHeaderBase[i]) {
+            listHeaderBase.push(newListHeaderBase[i]);
+            break;
+          }
+        }
+        console.log(newListHeaderBase);
         listHeaderBase.forEach((element, index, array) => {
           if (element.value in listHeaderState) {
             Object.assign(element, listHeaderState[element.value])
+            element.position = `grid-area: ${element.value}`;
           }
           if ('fixed' in element) {
             shiftLeft = (array[index - 1]) ? (array[index - 1].width) ? +array[index - 1].width[0] + +shiftLeft : +100 : +0;
@@ -20,7 +33,7 @@ export const GetData = {
             }
           }
         });
-        // console.log(listHeaderBase);
+        console.log(listHeaderBase);
         return listHeaderBase;
       }
     },

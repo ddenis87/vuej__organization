@@ -7,7 +7,8 @@ export default {
   GET_FILTER_STRING:(state) => (tableName) => { return state[tableName]?.filterString; },
 
   GET_LIST_OPTION:(state) => (tableName) => {
-    // console.log(state[tableName].listOption);
+
+    console.log(tableName);
     return state[tableName].listOption; 
   },
   GET_LIST_DATA:(state) => (tableName) => {

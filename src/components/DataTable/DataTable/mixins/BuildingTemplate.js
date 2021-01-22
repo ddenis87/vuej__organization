@@ -25,11 +25,11 @@ export const BuildingTemplate = {
       });
       fieldsTemplate['grid-template-areas'] += ' action_box"';
       fieldsTemplate['grid-template-columns'] += ' minmax(0px, 0px)';
-      // console.log(fieldsTemplate);
+      console.log(fieldsTemplate);
       return fieldsTemplate;
     },
     fieldsTemplate() {
-      let fieldsTemplate = { 'grid-template-areas': '"', 'grid-template-columns': '100% 100% 100% 100% 100% 100% 100%' };
+      let fieldsTemplate = { 'grid-template-areas': '"', 'grid-template-columns': 'repeat(auto-fill, 100px)' };
       
       if (Array.isArray(this.tableProperties.header[0])) {
         let countRow = this.tableProperties.header.length;

@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 // axios.defaults.withCredentials = true;
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 // axios.defaults.xsrfCookieName = 'csrftoken';
@@ -9,34 +10,21 @@ export default {
     // console.log('activ');
     if (state.getters.GET_DESCRIPTION_TABLE(option.tableName)) { return; };
     // state.commit('SET_IS_DATA_LOAD', true);
-    //  config = {
-    let dat = {
-      // withCredentials: true,
-      username: 'frontender_1',
-      password: 'fr01Nt3n63R',
-      returnSecureToken: true,
-    };
-    var username = 'frontender_1';
-    var password = 'fr01Nt3n63R';
-    var basicAuth = 'Basic ' + btoa(username + ':' + password);
-    let head = {
-      // withCredentials: true,
-      'Authorization': + basicAuth,
-    }
-    // }
     
     // axios.defaults.headers.common = {'Authorization': `Token ${'46e92c2f2eadaee08d0161613d6f35173d48aeaa'}`};
-    // console.log(basicAuth)
+    // console.log(basicAuth);
+    // axios.defaults.headers.common = {'Authorization': `Token ${'46e92c2f2eadaee08d0161613d6f35173d48aeaa'}`};
     axios
-      .post(state.getters.GET_ADDRESS_API,{
-        username: 'frontender_1',
-      password: 'fr01Nt3n63R',
-      }, {
-        headers: {
-          username: 'frontender_1',
-          password: 'fr01Nt3n63R',
-        }
-      })
+      .get(state.getters.GET_ADDRESS_API + option.tableName + '/')
+      // .post(state.getters.GET_ADDRESS_API,{
+      //   username: 'frontender_1',
+      // password: 'fr01Nt3n63R',
+      // }, {
+      //   headers: {
+      //     username: 'frontender_1',
+      //     password: 'fr01Nt3n63R',
+      //   }
+      // })
 
       .then(response => {
         console.log(response);

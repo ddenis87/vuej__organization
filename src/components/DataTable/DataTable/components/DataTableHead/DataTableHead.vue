@@ -22,11 +22,11 @@
        :style="fieldsTemplate">
     
     <!-- Head column -->
-    <div class="table-head__col"
+    <!-- <div class="table-head__col"
          :class="`table-head__col_${paddingType}`"
          v-if="heightType != 'auto'">
       <span class="content" style="visibility: hidden" :class="`content_${heightType}`">1</span>
-    </div>
+    </div> -->
 
     <div class="table-head__col"
          :class="`table-head__col_${paddingType}`"
@@ -94,6 +94,7 @@ export default {
     &_dense { grid-auto-rows: $headDenseRowHeight; }
     &_auto { grid-auto-rows: $headAutoRowHeight; }
 
+    border: thin solid red;
     .table-head__col {
       position: relative;
       display: inline-flex;
@@ -113,6 +114,8 @@ export default {
       &_fixed { padding-left: $headPaddingLR; padding-right: $headPaddingLR;}
       &_dense { padding-left: $headDensePaddingLR; padding-right: $headDensePaddingLR;}
       // &_auto { padding-left: $headAutoPaddingLR; padding-right: $headAutoPaddingLR; }
+
+      border: thin solid green;
 
       .content {
         &_fixed {

@@ -2,7 +2,7 @@
   <div class="page-table">
     <div class="page-table__control">
       <data-table-control :form-properties="propertiesDataTable" 
-                          :table-name="'organizations'" 
+                          :table-name="'organization'" 
                           :focused-element="focusedElement"
                           :height-type="heightType[heightTypeCount]"
                           :paddingType="paddingType"
@@ -12,7 +12,7 @@
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
-      <data-table d-id="Organizations" 
+      <data-table d-id="Organization" 
                   :table-properties="propertiesDataTable" 
                   editable
                   v-bind:[heightType[heightTypeCount]]="true"

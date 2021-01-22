@@ -14,6 +14,7 @@
 <script>
 import AppHeader from '@/components/App/AppHeader';
 
+import LayoutEmpty from '@/layout/LayoutEmpty.vue';
 import LayoutMain from '@/layout/LayoutMain.vue';
 import LayoutTableold from '@/layout/LayoutTableold.vue';
 import LayoutTable from '@/layout/LayoutTable.vue';
@@ -22,6 +23,7 @@ export default {
   name: 'App',
   components: {
     AppHeader,
+    LayoutEmpty,
     LayoutMain,
     LayoutTableold,
     LayoutTable,
@@ -29,6 +31,9 @@ export default {
   computed: {
     layout() { return 'Layout' + (this.$route.meta.layout || 'Main') },
   },
+  mounted() {
+    this.$router.push('/');
+  }
 };
 </script>
 

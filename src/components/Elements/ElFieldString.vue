@@ -1,7 +1,7 @@
 <template>
   <v-text-field :id="fieldId"
                 class="el-field-string" 
-                dense 
+                :dense="dense"
                 v-model="fieldValue"
                 :single-line="singleLine"
                 :label="fieldLabel"
@@ -26,6 +26,7 @@ export default {
     properties: '',
     propertiesValue: '',
     label: {type: Boolean, default: false}, // hidden or show label
+    dense: {type: Boolean, default: true},
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
     selectedValue: {type: Boolean, defalt: false}, // selected value in text field after mounted
