@@ -13,7 +13,8 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-      
+      <v-spacer></v-spacer>
+      <profile-user-bar></profile-user-bar>
     </v-toolbar>
     <div class="page-table__control">
       <v-toolbar dense flat>
@@ -65,13 +66,16 @@
 
 <script>
 import ElFieldSearch from '@/components/Elements/ElFieldSearch.vue';
+import ProfileUserBar from '@/components/Profile/ProfileUserBar.vue';
 import DialogBarLeft from '@/components/Dialogs/DialogBarLeft.vue';
+
 import DataTableControl from '@/components/DataTable/DataTableControl/DataTableControl.vue';
 
 export default {
   name: 'PageTable',
   components: {
     ElFieldSearch,
+    ProfileUserBar,
     DialogBarLeft,
     DataTableControl,
   },
@@ -89,7 +93,7 @@ export default {
 
       typeRowNumber: 0,
       typeRow: ['fixed', 'dense', 'auto'],
-      typeColumn: 'padding-fixed',
+      typeColumn: 'fixed',
       isFooter: false,
     }
   },
@@ -104,7 +108,7 @@ export default {
       this.formProperties = null;
       this.focusedElement = null;
       this.typeRowNumber = 0;
-      this.typeColumn = 'padding-fixed';
+      this.typeColumn = 'fixed';
       this.isFooter = false;
     },
   },
@@ -125,7 +129,7 @@ export default {
       this.typeRowNumber = this.typeRowNumber + 1;
     },
     toggleTypeColumn() {
-      (this.typeColumn == 'padding-fixed') ? this.typeColumn = 'padding-dense' : this.typeColumn = 'padding-fixed';
+      (this.typeColumn == 'fixed') ? this.typeColumn = 'dense' : this.typeColumn = 'fixed';
     },
     toggleFooter() {
       this.isFooter = !this.isFooter;

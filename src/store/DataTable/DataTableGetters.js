@@ -6,9 +6,10 @@ export default {
   // GET_FILTER_STRING(state) { return state.filterString; },
   GET_FILTER_STRING:(state) => (tableName) => { return state[tableName]?.filterString; },
 
-  GET_LIST_OPTION:(state) => (tableName) => {
+  // GET_TABLE_NAME:(state) => (tableName) => { return state[tableName].tableName; },
 
-    console.log(tableName);
+  GET_LIST_OPTION:(state) => (tableName) => {
+    // console.log(tableName);
     return state[tableName].listOption; 
   },
   GET_LIST_DATA:(state) => (tableName) => {

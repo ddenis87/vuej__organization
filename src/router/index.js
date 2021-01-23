@@ -11,12 +11,12 @@ const routes = [
     meta: { layout: 'Empty' },
     component: Login,
   },
-  // {
-  //   path: '/Table/TableOrganizations',
-  //   name: 'Organizations',
-  //   meta: { layout: 'Tableold' },
-  //   component: () => import('@/views/Table/TableOrganizations.vue'),
-  // },
+  {
+    path: '/Table/TableOrganization',
+    name: 'Organization',
+    meta: { layout: 'Tableold' },
+    component: () => import('@/views/Table/TableOrganization.vue'),
+  },
   // {
   //   path: '/Table/TableBudgetClassifications',
   //   name: 'BudgetClassifications',

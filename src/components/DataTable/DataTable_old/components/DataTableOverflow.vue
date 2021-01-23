@@ -59,9 +59,9 @@ export default {
   top: 100px;
   border: thin solid purple;
   visibility: hidden;
-  font-size: .875rem;
-  font-weight: normal;
-  line-height: 1.5;
+  font-size: $bodyFontSize;
+  font-weight: $bodyFontWeight;
+  line-height: $bodyFontLineHeight;
   &-block {
     width: 100%;
     border: thin solid red;

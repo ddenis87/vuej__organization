@@ -1,14 +1,14 @@
 <template>
   <div class="page-table">
     <div class="page-table__control">
-      <data-table-control :form-properties="propertiesDataTable" 
+      <!-- <data-table-control :form-properties="propertiesDataTable" 
                           :table-name="'organization'" 
                           :focused-element="focusedElement"
                           :height-type="heightType[heightTypeCount]"
                           :paddingType="paddingType"
                           @toggle-type-row="eventChangeRow"
                           @toggle-type-column="eventChangeColumn"
-                          @toggle-footer="toggleFooter"></data-table-control>
+                          @toggle-footer="toggleFooter"></data-table-control> -->
     </div>
     <v-divider></v-divider>
     <div class="page-table__body">
@@ -40,7 +40,7 @@ export default {
       isFooter: false,
       focusedElement: {},
       propertiesDataTable: {
-        tableName: 'organizations',
+        tableName: 'organization',
         header: [
           {value: 'id', width: [50, 50],},
           {value: 'institution_code', align: 'end', width: [90, 90], },

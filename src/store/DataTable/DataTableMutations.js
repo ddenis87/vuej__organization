@@ -12,6 +12,8 @@ export default {
 
     state[option.tableName].filterString = filterString;
   },
+  // SET_TABLE_NAME(state, option) { state[option.tableName].tableName = option.tableName; },
+  
   SET_LIST_OPTION(state, option) {
     // console.log(option);
     state[option.tableName].listOption = option.data;
@@ -20,7 +22,7 @@ export default {
       state[option.tableName].listOption.bk.tableName = "budget-classifications";
       state[option.tableName].listOption.bk.objectValue = "head_name";
     }
-    console.log(state[option.tableName]);
+    // console.log(state[option.tableName]);
   },
 
   SET_LIST_DATA(state, option) {

@@ -7,7 +7,7 @@ export const Table = {
   props: {
     editable: { type: Boolean, default: true },
     typeRowNumber: { type: Number, default: 0 },
-    typeColumn: { type: String, default: 'padding-fixed' },
+    typeColumn: { type: String, default: 'fixed' },
     isFooter: { type: Boolean, default: false },
   },
   data() {

@@ -1,0 +1,46 @@
+<template>
+  <div class="footer" :class="`data-table__footer_${typeColumn}`">
+    Всего записей в базе по таблице: {{ gettingCountRowInBase }}, загружено и показано: {{ gettingCountRowLoad }}
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'DataTableFooter',
+  props: {
+    tableName: { type: String, default: '' },
+    typeColumn: { type: String, default: 'fixed' },
+  },
+  computed: {
+    gettingCountRowInBase() {
+      return this.$store.getters[`DataTable/GET_LIST_DATA_COUNT`](this.tableName);
+    },
+    gettingCountRowLoad() {
+      return this.$store.getters[`DataTable/GET_LIST_DATA`](this.tableName).length;
+    }
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+@import './DataTableFooter.scss';
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  border-top: $border;
+  background-color: $background;
+
+  font-size: $fontSize;
+  font-weight: $fontWeight;
+  line-height: $fontLineHeight;
+  color: $fontColor;
+
+  &_fixed { padding-left: $columnPaddingLRFixed; padding-right: $columnPaddingLRFixed;}
+  &_dense { padding-left: $columnPaddingLRDense; padding-right: $columnPaddingLRDense;}
+  &_auto  { padding-left: $columnPaddingLRAuto;  padding-right: $columnPaddingLRAuto;  }
+}
+</style>

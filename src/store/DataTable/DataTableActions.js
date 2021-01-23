@@ -7,15 +7,20 @@ import axios from 'axios';
 // axios.defaults.baseURL = 'http://an67.pythonanywhere.com/api/v1/organization/';
 export default {
   GET_LIST_OPTION(state, option) {
-    // console.log('activ');
+    // console.log(state.rootGetters['Login/GET_USER_TOKEN_ACCESS']);
     if (state.getters.GET_DESCRIPTION_TABLE(option.tableName)) { return; };
     // state.commit('SET_IS_DATA_LOAD', true);
+    // state.commit('SET_TABLE_NAME', { tableName: option.tableName });
     
-    // axios.defaults.headers.common = {'Authorization': `Token ${'46e92c2f2eadaee08d0161613d6f35173d48aeaa'}`};
+    let tokenAccess = state.rootGetters['Login/GET_USER_TOKEN_ACCESS'];
+    // console.log(tokenAccess);
+    axios.defaults.headers.common = {'Authorization': tokenAccess};
+    // axios.defaults.headers.common = {'Content-Type': 'application/x-www-form-urlencoded'};
     // console.log(basicAuth);
     // axios.defaults.headers.common = {'Authorization': `Token ${'46e92c2f2eadaee08d0161613d6f35173d48aeaa'}`};
     axios
-      .get(state.getters.GET_ADDRESS_API + option.tableName + '/')
+      .options(state.getters.GET_ADDRESS_API + option.tableName + '/')
+      // .get(state.getters.GET_ADDRESS_API + option.tableName + '/')
       // .post(state.getters.GET_ADDRESS_API,{
       //   username: 'frontender_1',
       // password: 'fr01Nt3n63R',

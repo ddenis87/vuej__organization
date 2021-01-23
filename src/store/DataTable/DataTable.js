@@ -7,14 +7,15 @@ export default {
   state: {
     // addressApi: 'https://an67.pythonanywhere.com/',
     // addressApi: 'https://httpbin.org/basic-auth/foo/bar',
-    addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/v1/',
+    addressApi: 'http://an67.pythonanywhere.com/api/v1/',
     // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/v1/',
     // addressApi: 'http://an67.pythonanywhere.com/api/v1/',
     // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api-token-auth/',
     // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/',
     isDataLoad: false,
 
-    "budget-classifications": {
+    "budgetclassification": {
+      // tableName: null,
       description: null,
       filterString: '',
       count: 0,
@@ -22,8 +23,9 @@ export default {
       listData: [],
     },
     "organization" : {
+      // tableName: null,
       description: null,
-      filterString: '',
+      filterString: '?page_size=30',
       count: 0,
       listOption: {
         id: {value: 'id', label: 'ID', type: 'string'},

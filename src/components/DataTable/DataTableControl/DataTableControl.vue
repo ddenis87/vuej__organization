@@ -9,13 +9,18 @@
       <el-button-icon :icon="(this.heightType == 'fixed') ? 'mdi-view-sequential' : (this.heightType == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
                       :disabled="!isMountTable"
                       @click="$emit('toggle-type-row')">{{ (heightType == 'fixed') ? 'Строки сжато' : (heightType == 'dense') ? 'Строки свободно' : 'Строки авто' }}</el-button-icon>
-      <el-button-icon :icon="(paddingType == 'padding-fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel'" 
+      <el-button-icon icon="mdi-view-split-horizontal"
                       :disabled="!isMountTable"
-                      @click="$emit('toggle-type-column')">{{ (paddingType == 'padding-fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</el-button-icon>
+                      >Раскрытие строк</el-button-icon>
+      <v-divider vertical></v-divider>
+      <el-button-icon :icon="(paddingType == 'fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel'" 
+                      :disabled="!isMountTable"
+                      @click="$emit('toggle-type-column')">{{ (paddingType == 'fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</el-button-icon>
+      <v-divider vertical></v-divider>
       <el-button-icon icon="mdi-page-layout-footer" 
                       :disabled="!isMountTable"
                       @click="$emit('toggle-footer')">Итоги</el-button-icon>
-
+      <v-divider vertical></v-divider>
       <el-button-icon icon="mdi-view-quilt" disabled @click="$emit('toggle-multiline')">Многострочность</el-button-icon>
       <v-divider vertical></v-divider>
       
@@ -63,7 +68,7 @@ export default {
     focusedElement: Object,
     formProperties: Object,
     heightType: {type: String, default: 'fixed'},
-    paddingType: {type: String, default: 'padding-fixed'},
+    paddingType: {type: String, default: 'fixed'},
   },
   data() {
     return {

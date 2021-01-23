@@ -1,95 +1,59 @@
 <template>
-  <div class="data-table" :id="parentId">
-    <div class="data-table-head">
-      <data-table-head :list-data="listHeader"
-                       :fields-template="fieldsTemplate"
-                       :height-type="heightType"
-                       :padding-type="paddingType"></data-table-head>
-      <data-table-progress-line :is-show="isProgressBar"></data-table-progress-line>
-    </div>
-    <!-- table body -->
-    <div class="data-table-body">
-      <!-- @event-row-focused - one click row - emit event for parent component or page -->
-      <!-- @event-row-selected - dblClick row - emit event for parent component or page -->
-      <data-table-body :list-data="listBody"
-                       :list-data-header="listHeader"
-                       :fields-template="fieldsTemplate"
-                       :height-type="heightType"
-                       :padding-type="paddingType"
-                       :parent-id="parentId"
-                       :editable="editable"
-                       :tableName="tableName"
-                       @event-row-focused="eventRowFocused"
-                       @event-row-selected="eventRowSelected">
-        <!-- editing slot -->
-        <template v-for="item in listHeader" #[`body-editing.${item.value}`]="itemValue">
-          <slot :name="`body-editing.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-        </template>
-        <!-- display slot -->
-        <template v-for="item in listHeader" #[`body-display.${item.value}`]="itemValue">
-          <slot :name="`body-display.${(item) ? item.value : ''}`" v-bind:itemValue="itemValue.itemValue"></slot>
-        </template>
-        <!-- action slot -->
-        <template v-slot:action="activeValue">
-          <slot name="action" v-bind:activeValue="activeValue.activeValue"></slot>
-        </template>
-      </data-table-body> 
+  <div class="data-table" :id="id">
+    <div class="data-table__header">
+      <data-table-header :template="computedTemplateTable"
+                         :type-height="typeHeight"
+                         :type-column="typeColumn"
+                         :items="gettingDataHeader"></data-table-header>
     </div>
 
-    <!-- anchor for lazy load data -->
-    <div class="data-table-boot-anchor" id="boot-anchor"></div>
+    <div class="data-table__body">
+      <data-table-body :table-name="properties.tableName"
+                       :template="computedTemplateTable"
+                       :type-height="typeHeight"
+                       :type-column="typeColumn"
+                       :items="gettingDataBody"
+                       :items-header="gettingDataHeader"
+                       :is-editable="isEditable"></data-table-body>
+    </div>
 
-    <!-- component footer -->
-    <div class="data-table-footer" :class="`data-table-footer_${paddingType}`" v-show="footer">
+    <div class="data-table__footer" v-show="isFooter">
       <slot name="component-footer">
-        <div class="table-footer">Всего записей в базе по таблице: {{ countRowInBase }}, загружено и показано: {{ countRowLoad }}</div>
+        <data-table-footer :tableName="properties.tableName" 
+                           :type-column="typeColumn"></data-table-footer>
       </slot>
     </div>
   </div>
 </template>
 
 <script>
-import DataTableProgressLine from './components/DataTableProgressLine.vue';
-import DataTableHead from './components/DataTableHead/DataTableHead.vue';
+import DataTableHeader from './components/DataTableHeader/DataTableHeader.vue';
 import DataTableBody from './components/DataTableBody/DataTableBody.vue';
+import DataTableFooter from './components/DataTableFooter/DataTableFooter.vue';
 
-import { Events } from './mixins/Events.js'; // 
-import { Styles } from './mixins/Styles.js'; // heightType
-import { LoadData } from './mixins/LoadData.js'; // isProgressBar
-import { GetData } from './mixins/GetData.js'; // listHeader, listBody
-import { BuildingTemplate } from './mixins/BuildingTemplate.js'; // fieldsTemplate
+import { LoadingComponent } from './mixins/LoadingComponent.js';
+import { GettingData } from './mixins/GettingData.js';
+import { ComputedTemplate } from './mixins/ComputedTemplate.js'; // computedTemplateTable
 
 export default {
   name: 'DataTable',
   components: {
-    DataTableProgressLine,
-    DataTableHead,
+    DataTableHeader,
     DataTableBody,
+    DataTableFooter,
   },
   mixins: [
-    Events,
-    Styles,
-    LoadData,
-    GetData,
-    BuildingTemplate,
+    LoadingComponent,
+    GettingData,
+    ComputedTemplate,
   ],
   props: {
-    dId: String,
-    tableProperties: Object,
-    footer: {type: Boolean, default: false},
-    editable: {type: Boolean, default: false},
-  },
-  data() {
-    return {
-      tableName: this.tableProperties.tableName,
-      parentId: (this.dId) ? `data-table-${this.dId}` : 'data-table',
-      parentElement: '',
-      parentEdge: Number,
-    }
-  },
-  mounted() {
-    this.parentElement = document.getElementById(this.parentId);
-    this.parentEdge = this.parentElement.getBoundingClientRect().bottom;
+    id: { type: String, default: 'dataTable' },
+    properties: Object,
+    typeHeight: { type: String, default: 'fixed' },
+    typeColumn: { type: String, default: 'fixed' },
+    isEditable: {type: Boolean, default: false},
+    isFooter: {type: Boolean, default: false},
   },
 }
 </script>
@@ -100,10 +64,12 @@ export default {
 .data-table {
   position: relative;
   height: 100%;
-  font-family: $fontFamily;
+  
+  font-family: $dtFontFamily;
   border-radius: $borderRadius;
   box-shadow: $boxShadow;
   overflow: auto;
+  box-sizing: border-box;
   &::-webkit-scrollbar {
     width: $scrollWidth;
     height: $scrollHeight;
@@ -114,34 +80,22 @@ export default {
     }
   }
 
-  &-head, &-footer { position: sticky; }
-  &-head, &-body, &-footer { display: inline-flex; }
-  &-head { top: 0px; z-index: 40; }
-  &-body { position: relative; z-index: 20; }
-  &-footer { 
-    width: 100%; 
-    bottom: 0px; 
-    left: 0px; 
-    z-index: 30; 
-    background-color: white;
-    border-top: thin solid rgba(0,0,0,.12);
-
-    font-size: $headFontSize;
-    font-weight: $headFontWeight;
-    line-height: $headFontLineHeight;
-    color: $headFontColor;
-    &_fixed { padding-left: $headPaddingLR; padding-right: $headPaddingLR;}
-    &_dense { padding-left: $headDensePaddingLR; padding-right: $headDensePaddingLR;}
-
-    .table-footer {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      // border-top: thin solid rgba(0,0,0,.12);
-      width: 100%;
-      height: 40px;
-      // background-color: white;
-    }
+  &__header {
+    position: sticky;
+    top: 0px;
+    display: flex;
+    z-index: 300;
+  }
+  &__body {
+    position: relative;
+    display: flex;
+    z-index: 100;
+  }
+  &__footer {
+    position: sticky;
+    bottom: 0px;
+    display: flex;
+    z-index: 200;
   }
 }
 </style>

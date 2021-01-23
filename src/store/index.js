@@ -10,8 +10,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   namespaced: true,
   state: {
-    addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/',
-    // addressApi: 'https://an67.pythonanywhere.com/api/',
+    addressApi: 'http://an67.pythonanywhere.com/',
   },
   getters: {
 

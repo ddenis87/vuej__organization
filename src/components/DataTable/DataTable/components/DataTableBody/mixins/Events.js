@@ -1,90 +1,76 @@
 export const Events = {
   data() {
     return {
-      parentElement: null, // element table component
-      isRowNowFocus: false,
-      isElementNowEditing: false,
-      isElementNowFocus: false,
-      isTooltipProperties: {
-        top: 0,
-        left: 0,
-        width: 0,
-        height: 0,
-        text: ''
-      },
-      isTooltipTimer: null,
+      isRowFocus: false,
+      isColumnEditing: false,
+      isColumnFocus: false,
+
       isTooltipShow: false,
-      // isTooltipShift: {
-      //   left: 10,
-      //   top: 4,
-      // }
+      isTooltipTimer: null,
+      isTooltipProperties: { top: 0, left: 0, width: 0, height: 0, text: '' },
     }
   },
   computed: {
-    calcTooltipShift() {
+    computedTooltipShift() {
       let calcTooltipShift = { left: 10, top: 4 };
-      if (this.heightType == 'fixed' && this.paddingType == 'fixed') { calcTooltipShift.left = 4; calcTooltipShift.top = -2; return calcTooltipShift};
-      if (this.heightType == 'fixed' && this.paddingType == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
-      if (this.heightType == 'dense' && this.paddingType == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
-      // if (this.heightType == 'auto' && this.paddingType == 'fixed') { calcTooltipShift.left = 10; calcTooltipShift.top = 4; return calcTooltipShift};
-      // if (this.heightType == 'fixed' && this.paddingType == 'fixed') { calcTooltipShift.left = 10; calcTooltipShift.top = 4; return calcTooltipShift};
+      if (this.typeHeight == 'fixed' && this.typeColumn == 'fixed') { calcTooltipShift.left = 4; calcTooltipShift.top = -2; return calcTooltipShift};
+      if (this.typeHeight == 'fixed' && this.typeColumn == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
+      if (this.typeHeight == 'dense' && this.typeColumn == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
       return calcTooltipShift;
     },
   },
-  mounted() {
-    this.parentElement = document.getElementById(this.parentId);
-  },
   methods: {
-    // events Body ---------------
-    eventBodyMouseOver(event) {
-      if (event.target.classList.contains('content')) {
-        let parent = event.target.closest('.table-body__col');
-        // if (parent.classList.contains('table-body__col_focus')) return;
-          this.isTooltipTimer = setTimeout(() => {
-            this.isTooltipProperties = {
-              top: parent.getBoundingClientRect().top + this.calcTooltipShift.top,
-              left: parent.getBoundingClientRect().left + this.calcTooltipShift.left,
-              width: parent.getBoundingClientRect().width,
-              height: parent.getBoundingClientRect().height,
-              text: parent.getAttribute('data-overflow-text'),
-            };
-          }, 1100);
-      }
+    // EVENT HOVER BODY TABLE (HOVER ROW, TOOLTIP)
+    eventMouseOver(event) {
+      if (!this.isColumnEditing && !this.isRowFocus)
+        event.target.closest('.body-row')?.classList.add('body-row_hover');
+      this.tooltipShow(event);
     },
-    eventBodyMouseOut(event) {
+    eventMouseOut(event) {
       if (event.relatedTarget?.classList?.contains('tooltip')) return;
-      this.isTooltipShow = false;
-      clearTimeout(this.isTooltipTimer);
+      if (!this.isColumnEditing && !this.isRowFocus)
+        event.target.closest('.body-row')?.classList.remove('body-row_hover');
+      this.tooltipHide(event);
     },
-    // ---------------------------
-
-    // events Row ----------------
-    eventRowMouseEnter(event) { // work if not editable and not focus
-      if (!this.isElementNowEditing && !this.isRowNowFocus) // && !this.isElementNowFocus)
-        event.target.classList.add('table-body__row_hover');
-        event.target.classList.add('table-body__row_max');
-    },
-    eventRowMouseLeave(event) { // work if not editable and not focus
-      if (!this.isElementNowEditing && !this.isRowNowFocus) // && !this.isElementNowFocus)
-        event.target.classList.remove('table-body__row_hover');
-    },
+    
+    // EVENT FOCUS/BLUR ROW
     eventRowFocus(event) {
-      // check for editable ?????
-      this.isRowNowFocus = true;
-      event.target.classList.remove('table-body__row_hover');
-      event.target.classList.add('table-body__row_focus');
+      this.isRowFocus = true;
+      event.target.classList.remove('body-row_hover');
+      event.target.classList.add('body-row_focus');
     },
     eventRowBlur(event) {
-      this.isRowNowFocus = false;
-      event.target.classList.remove('table-body__row_focus');
-      // this.$emit('event-row-focused', event, null);  // ?????
+      this.isRowFocus = false;
+      event.target.classList.remove('body-row_focus');
     },
-    eventRowClick(event, itemRow) {
-      this.$emit('event-row-focused', event, itemRow);
+
+    // EVENT FOCUS/BLUR COLUMN
+    eventColumnFocus(event) {
+      this.isTooltipShow = false; // hide tooltip
+      this.isColumnFocus = true;
+      event.target.parentElement.classList.remove('body-row_hover');
+      event.target.parentElement.classList.add('body-row_focus');
+      event.target.classList.add('body-column_focus');
     },
-    eventRowDblclick(event, itemRow) {
-      this.$emit('event-row-selected', event, itemRow);
+    eventColumnBlur(event) {  // work if not editable
+      if (!this.isColumnEditing) {
+        this.isColumnFocus = false;
+        event.target.parentElement.classList.remove('body-row_focus');
+        event.target.classList.remove('body-column_focus');
+      }
     },
+
+    // EVENT TOGGLE EDITING COLUMN
+    eventColumnDblclick(event, rowProperties, columnProperties, columnValue) {
+      if (!this.checkForEditable(event, columnProperties)) return;  // checkForEditable - in mixin Editing
+      this.switchDecorationToEdit(event);  // switchDecorationToEdit - in mixin Editing
+      if (event.target.closest('.body-column').querySelector('.box-editing-default')) {
+        let target = event.target.closest('.body-column').querySelector('.box-editing-default');
+        this.mountEditingComponent(target, rowProperties.id, columnProperties, columnValue);  // mountEditingComponent - in mixin Editing
+      }
+    },
+
+    // EVENT NAVIGATION FOR TABLE
     eventRowKeydown(event) {
       if (event.code.includes('Arrow') || event.code == 'Tab') {
         event.preventDefault();
@@ -92,40 +78,7 @@ export const Events = {
         if ((event.code == 'ArrowUp' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return }
       }
     },
-    // ---------------------------
-
-    // events Column ----------------
-    eventElementFocus(event) {
-      // -- hide tooltip ---------------
-      this.isTooltipShow = false;
-      // clearTimeout(this.isTooltipTimer); 
-      // -------------------------------
-      this.isElementNowFocus = true;
-      event.target.parentElement.classList.remove('table-body__row_hover');
-      event.target.parentElement.classList.add('table-body__row_focus');
-      event.target.classList.add('table-body__col_focus');
-    },
-    eventElementBlur(event) {  // work if not editable
-      if (!this.isElementNowEditing) {
-        this.isElementNowFocus = false;
-        event.target.parentElement.classList.remove('table-body__row_focus');
-        event.target.classList.remove('table-body__col_focus');
-        // this.$emit('event-row-focused', event, null) // ????? может другое имя события? чтоб не путаться
-      }
-    },
-
-    // event transition edit mode
-    eventElementDblclick(event, rowProperties, columnProperties, columnValue) {
-      if (!this.checkForEditable(event, columnProperties)) return;  // checkForEditable - in mixin Editing
-      this.switchDecorationToEdit(event);  // switchDecorationToEdit - in mixin Editing
-      if (event.target.closest('.table-body__col').querySelector('.box-editing-default')) {
-        let target = event.target.closest('.table-body__col').querySelector('.box-editing-default');
-        this.mountEditingComponent(target, rowProperties.id, columnProperties, columnValue);  // mountEditingComponent - in mixin Editing
-      }
-    },
-
-    // event navigation for table
-    eventElementKeydown(event, rowProperties, columnProperties, columnValue) {
+    eventColumnKeydown(event, rowProperties, columnProperties, columnValue) {
       if (event.code.includes('Arrow') || event.code == 'Tab') {
         event.preventDefault();
         if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return }
@@ -133,7 +86,28 @@ export const Events = {
         if (event.code == 'ArrowDown' && event.target.parentElement.nextElementSibling) { event.target.parentElement.nextElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
         if (event.code == 'ArrowUp' && event.target.parentElement.previousElementSibling) { event.target.parentElement.previousElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
       }
-      if (event.code.includes('Key') || event.code.includes('Digit')) this.eventElementDblclick(event, rowProperties, columnProperties, columnValue);
-    }
-  },
+      if (event.code.includes('Key') || event.code.includes('Digit')) this.eventColumnDblclick(event, rowProperties, columnProperties, columnValue);
+    },
+
+    // FUNCTION TOOLTIP
+    tooltipShow(event) {
+      if (event.target.classList.contains('content-display')) {
+        let parent = event.target.closest('.body-column');
+          this.isTooltipTimer = setTimeout(() => {
+            this.isTooltipProperties = {
+              top: parent.getBoundingClientRect().top + this.computedTooltipShift.top,
+              left: parent.getBoundingClientRect().left + this.computedTooltipShift.left,
+              width: parent.getBoundingClientRect().width,
+              height: parent.getBoundingClientRect().height,
+              text: parent.getAttribute('data-overflow-text'),
+            };
+          }, 1100);
+      }
+    },
+    tooltipHide(event) {
+      if (event.relatedTarget?.classList?.contains('tooltip')) return;
+      this.isTooltipShow = false;
+      clearTimeout(this.isTooltipTimer);
+    },
+  }
 }

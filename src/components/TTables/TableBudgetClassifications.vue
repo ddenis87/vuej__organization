@@ -1,10 +1,10 @@
 <template>
-  <data-table d-id="Bk" 
-              :table-properties="tableProperties" 
-              editable
-              v-bind:[typeRow[typeRowNumber]]="true"
-              v-bind:[typeColumn]="true"
-              :footer="isFooter"
+  <data-table id="budgetclassification" 
+              :properties="tableProperties"
+              :type-height="typeRow[typeRowNumber]"
+              :type-column="typeColumn"
+              
+              :is-footer="isFooter"
               @event-row-focused="eventRowFocused"
               @event-row-selected="eventRowSelected"></data-table>
 </template>
@@ -20,8 +20,8 @@ export default {
   data() {
     return {
       tableProperties: {
-        tableName: 'budget-classifications',
-        header: [
+        tableName: 'budgetclassification',
+        headers: [
           {value: 'id', width: [60, 60], },
           {value: 'head_code', align: 'end', width: [200, 200], },
           {value: 'head_name', width: [400,],},

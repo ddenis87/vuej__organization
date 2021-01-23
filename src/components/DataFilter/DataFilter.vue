@@ -67,7 +67,7 @@ export default {
           if (item[1].type == 'choice') listFieldChoice.push(Object.assign({key: item[0]}, item[1]));
         }
       }
-      console.log(listFieldChoice);
+      // console.log(listFieldChoice);
       return listFieldChoice;
     },
     listFieldNestedObject() {
@@ -79,13 +79,13 @@ export default {
           if (item[1].type == 'nested object') listFieldNestedObject.push(Object.assign({key: item[0]}, item[1]));
         }
       }
-      console.log(listFieldNestedObject);
+      // console.log(listFieldNestedObject);
       return listFieldNestedObject;
     },
   },
   methods: {
     acceptFilter() {
-      console.log(this.dataFilterValue);
+      // console.log(this.dataFilterValue);
       this.$store.commit('DataTable/SET_FILTER_STRING', (Object.keys(this.dataFilterValue).length != 0) ? {
         tableName: this.tableName,
         filters: this.dataFilterValue
