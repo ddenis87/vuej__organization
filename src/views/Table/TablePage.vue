@@ -109,7 +109,7 @@ export default {
     }
   },
   computed: {
-    componentTable() { if (this.activeMenu) return () => import(`@/components/TTables/${this.activeMenu?.path}`); else return null; },
+    componentTable() { if (this.activeMenu) return () => import(`@/components/TheTable/The${this.activeMenu?.path}`); else return null; },
     isTableMount() { return (this.formProperties == null) ? false : true },
     nameTable() { return this.activeMenu?.value; },
   },

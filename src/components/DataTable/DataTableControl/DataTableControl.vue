@@ -96,7 +96,7 @@ export default {
         componentForm += item[0].toUpperCase() + item.slice(1);
       })
       console.log(componentForm);
-      return () => import(`@/views/TableForm/TableForm${componentForm}`);
+      return () => import(`@/components/TheTableForm/TheTableForm${componentForm}`);
     },
     isFilterActive() {
       let filterString = this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties?.tableName);

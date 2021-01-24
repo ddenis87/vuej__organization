@@ -1,6 +1,6 @@
 <template>
 <div class="table-form">
-  <v-card-text>
+  <v-card flat>
     <v-form ref="formAction">
       <v-container fluid>
         <v-row>
@@ -15,18 +15,18 @@
         </v-row>
       </v-container>
     </v-form>
-  </v-card-text>
-  <v-card-actions>
-    <v-spacer></v-spacer>
-    <v-btn height="30" class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionCancel">Отменить</v-btn>
-    <v-btn height="30" class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionAccept">Записать</v-btn>
-  </v-card-actions>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn dark height="30" class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionCancel">Отменить</v-btn>
+      <v-btn dark height="30" class="table-form__btn-accept" color="blue darken-1" depressed small @click="eventClickActionAccept">Записать</v-btn>
+    </v-card-actions>
+  </v-card>
 </div>
 
 </template>
 
 <script>
-import { TableForm } from './TableForm.js';
+import { TheTableForm } from './TheTableForm.js';
 
 export default {
   name: 'TableFormBudgetClassifications',
@@ -52,16 +52,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.table-form {
-  &__btn-accept {
-    color: white;
-  }
-}
-::v-deep {
-  .container {
-    padding: 0px ;
-  }
-}
-</style>

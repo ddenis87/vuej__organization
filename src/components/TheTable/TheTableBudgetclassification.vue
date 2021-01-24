@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import { Table } from './Table.js';
+import { TheTable } from './TheTable.js';
 
 export default {
   name: 'TableBudgetclassification',
   mixins: [
-    Table,
+    TheTable,
   ],
   data() {
     return {

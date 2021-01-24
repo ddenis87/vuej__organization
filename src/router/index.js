@@ -17,10 +17,10 @@ const routes = [
     component: () => import('@/views/Login.vue'),
   },
   {
-    path: '/Table/PageTable',
-    name: 'PageTable',
+    path: '/Table/TablePage',
+    name: 'TablePage',
     meta: { layout: 'Table' },
-    component: () => import('@/views/Table/PageTable.vue'),
+    component: () => import('@/views/Table/TablePage.vue'),
   },
 ]
 

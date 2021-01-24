@@ -63,7 +63,7 @@ html, body {
     grid-area: app-body;
     // border: thin solid purple;
     height: 100%;
-    padding: 3px;
+    // padding: 3px;
   }
 
   .maxWidth {

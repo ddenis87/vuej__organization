@@ -1,11 +1,10 @@
 import DataTable from '@/components/DataTable/DataTable/DataTable.vue';
 
-export const Table = {
+export const TheTable = {
   components: {
     DataTable,
   },
   props: {
-    // editable: { type: Boolean, default: true },
     typeRowNumber: { type: Number, default: 0 },
     typeColumn: { type: String, default: 'fixed' },
     isFooter: { type: Boolean, default: false },
@@ -17,12 +16,9 @@ export const Table = {
     return {
       typeRow: ['fixed', 'dense', 'auto'],
       focusedElement: {},
-      // tableProperties: this.tablePropertiesUno,
     }
   },
-  
   computed: {
-    // isEditable() { return this.editable; },
     tableProperties() {
       return (this.isMultiline) ? (this.tablePropertiesMultiline) ? this.tablePropertiesMultiline : this.tablePropertiesUno : this.tablePropertiesUno;
     },

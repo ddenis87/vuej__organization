@@ -59,13 +59,16 @@ export default {
   computed: {
     isProccessRequest() { return this.$store.getters['Login/GET_PROCCESS_REQUEST']; },
   },
+  mounted() {
+    if (localStorage.getItem('Token') != null) this.$router.push('/Table/TablePage');
+  },
   methods: {
     async sendLogin() {
       if (!this.$refs.FormLogin.validate()) return;
       console.log('valid');
       this.$store.commit('Login/SET_USER_NAME_PASSWORD', this.userData);
       await this.$store.dispatch(`Login/GET_USER_TOKEN_ACCESS`, this.userData)
-        .then(res => this.$router.push('/Table/PageTable'))
+        .then(res => this.$router.push('/Table/TablePage'))
         .catch(err => {
           this.isError = true;
           this.$refs.FormLogin.reset();
