@@ -128,6 +128,7 @@ export default {
     .body-column {
       border: thin solid rgba(0, 0, 255, 0);
       outline: none;
+      overflow: hidden;
 
       &_fixed { padding-left: $columnPaddingLRFixed; padding-right: $columnPaddingLRFixed; }
       &_dense { padding-left: $columnPaddingLRDense; padding-right: $columnPaddingLRDense; }

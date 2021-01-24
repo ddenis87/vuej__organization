@@ -31,6 +31,7 @@ export default {
       let propertiesComponent = {};
       Object.assign(propertiesComponent, this.properties.columnProperties);
       propertiesComponent.text = this.properties.columnValue;
+      console.log(propertiesComponent);
       return propertiesComponent;
     },
   },

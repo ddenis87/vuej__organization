@@ -29,7 +29,7 @@ export default {
           {value: 'inn', width: [, 115]},
           {value: 'kpp', width: [115, 115],},
           {value: 'rubpnubp_status', width: [140, 140]},
-          {value: 'egrul_status', width: [140, 140]},
+          {value: 'egrul_status', width: [145, 145]},
           {value: 'industry_typing', width: [120, 120]},
           {value: 'institution_type', width: [130, 130]},
           {value: 'budget_level', width: [180, 180]},

@@ -16,6 +16,7 @@ export default {
   mutations: {
     SET_PROCCESS_REQUEST(state, status = false) { state.isProccessRequest = status },
     SET_USER_TOKEN_ACCESS(state, option) {
+      console.log(option);
       state.userTokenAccess = option;
       localStorage.setItem('Token', option);
       localStorage.setItem('userName', state.userName);
@@ -44,7 +45,7 @@ export default {
             resolve(response);
           })
           .catch(error => {
-            console.log(error.status);
+            console.log(error);
             console.log('error: ' + error);
             reject(error);
           })

@@ -43,7 +43,7 @@ export default {
       isInputEmit: false,
       isInputFirstEnter: false,
       isElementChange: false,
-      fieldId: `El-${this.properties?.value}`,
+      fieldId: `El-${this.properties.value}`,
       fieldValue: this.propertiesValue?.value,
       fieldRequired: this.properties?.required,
       fieldRules: {
@@ -63,24 +63,27 @@ export default {
   },
   watch: {
     propertiesValue() {
+      console.log(this.propertiesValue);
       this.fieldValue = this.propertiesValue?.value;
     }
   },
   mounted() {
     setTimeout(() => {
       if (this.selectedValue) {
+        console.log(document.querySelector(`#${this.fieldId}`));
         document.querySelector(`#${this.fieldId}`).select();
         document.querySelector(`#${this.fieldId}`).focus();
       }
-    }, 10);
+    }, 50);
   },
   methods: {
     eventChangeValue() {
       this.isInputFirstEnter = true;
       this.isElementChange= true;
+      console.log(this.fieldValue);
       this.$emit('input', this.fieldValue);
     },
-    eventKeyDown() {
+    eventKeyDown(event) {
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});

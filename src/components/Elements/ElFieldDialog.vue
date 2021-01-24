@@ -76,8 +76,25 @@ export default {
   computed: {
     isValue() { return (this.fieldValue == undefined) ? true : false },
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
-    fieldListText() { return (this.properties?.objectValue) ? this.properties.objectValue : ''; },
+    fieldListText() {
+      // let objectValue = this.properties.related_model_view;
+      // if (Array.isArray(objectValue.field)) {
+      //   let newValue = '';
+      //   objectValue.field.forEach((element, index) => {
+      //     newValue += this.properties.text[element];
+      //     if (index != objectValue.field.length - 1) newValue += objectValue.delimiter;
+      //   });
+      //   console.log(newValue);
+      //   return newValue;
+      // } else {
+      //   console.log(this.properties.text[objectValue.field]);
+      //   return this.properties.text[objectValue.field];
+      // }
+      // console.log(this.properties);
+      return (this.properties?.objectValue) ? this.properties.objectValue : '';
+    },
     fieldList() {
+      console.log(this.properties);
       if (!this.properties?.tableName) return [];
       let fieldList = [];
       let fieldListStore = this.$store.getters[`DataTable/GET_LIST_DATA`](this.properties.tableName);
@@ -85,7 +102,7 @@ export default {
         this.$store.dispatch(`DataTable/GET_LIST_OPTION`, { tableName: this.properties.tableName });
         return [];
       }
-      // console.log(this.propertiesValue);
+      console.log(fieldListStore);
       return fieldListStore;
     },
     fieldShowValidation() { return (this.showValidation) ? false : true },

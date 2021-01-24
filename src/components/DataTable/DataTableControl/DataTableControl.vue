@@ -37,9 +37,9 @@
     <dialog-bar-right is-dialog-name="Фильтры" 
                       :is-dialog-show="isOpenFilter" 
                       @close-dialog="isOpenFilter = false">
-      <data-filter :table-name="tableName" 
+      <!-- <data-filter :table-name="tableName" 
                    @accept="isOpenFilter = false"
-                   @close="isOpenFilter = false"></data-filter>
+                   @close="isOpenFilter = false"></data-filter> -->
     </dialog-bar-right>
       
     <dialog-full-page :is-dialog-name="isDialogName" 
