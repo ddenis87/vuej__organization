@@ -25,6 +25,8 @@
          :tabindex="indexRow"
          @focus="eventRowFocus"
          @blur="eventRowBlur"
+         @click="(event) => eventRowClick(event, itemRow)"
+         @dblclick="(event) => eventRowDblclick(event, itemRow)"
          @keydown="eventRowKeydown">
       
       <div class="body-column__action-max"

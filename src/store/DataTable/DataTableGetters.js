@@ -5,6 +5,7 @@ export default {
 
   // GET_FILTER_STRING(state) { return state.filterString; },
   GET_FILTER_STRING:(state) => (tableName) => { return state[tableName]?.filterString; },
+  GET_COUNT_RECORD_LOAD:(state) => (tableName) => { return state[tableName]?.countRecordLoad; },
 
   // GET_TABLE_NAME:(state) => (tableName) => { return state[tableName].tableName; },
 

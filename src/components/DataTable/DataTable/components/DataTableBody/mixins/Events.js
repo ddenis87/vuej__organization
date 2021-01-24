@@ -46,7 +46,7 @@ export const Events = {
       }
     },
     
-    // EVENT FOCUS/BLUR ROW
+    // EVENT FOCUS/SELECT/BLUR ROW
     eventRowFocus(event) {
       this.isRowFocus = true;
       event.target.classList.remove('body-row_hover');
@@ -55,6 +55,12 @@ export const Events = {
     eventRowBlur(event) {
       this.isRowFocus = false;
       event.target.classList.remove('body-row_focus');
+    },
+    eventRowClick(event, itemRow) {
+      this.$emit('event-row-focused', event, itemRow);
+    },
+    eventRowDblclick(event, itemRow) {
+      this.$emit('event-row-selected', event, itemRow);
     },
 
     // EVENT FOCUS/BLUR COLUMN

@@ -14,7 +14,7 @@
 import { Table } from './Table.js';
 
 export default {
-  name: 'TableBudgetClassifications',
+  name: 'TableBudgetclassification',
   mixins: [
     Table,
   ],

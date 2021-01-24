@@ -14,7 +14,7 @@
 import { Table } from './Table.js';
 
 export default {
-  name: 'TableOrganizations',
+  name: 'TableOrganization',
   mixins: [
     Table,
   ],

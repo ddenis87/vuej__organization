@@ -24,7 +24,7 @@ export const Table = {
   computed: {
     // isEditable() { return this.editable; },
     tableProperties() {
-      return (this.isMultiline) ? this.tablePropertiesMultiline : this.tablePropertiesUno;
+      return (this.isMultiline) ? (this.tablePropertiesMultiline) ? this.tablePropertiesMultiline : this.tablePropertiesUno : this.tablePropertiesUno;
     },
   },
   mounted() {

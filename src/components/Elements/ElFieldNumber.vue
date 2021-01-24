@@ -1,5 +1,5 @@
 <template>
-  <v-text-field :id="fieldId"
+  <v-text-field 
                 class="el-field-number" 
                 dense
                 v-model="fieldValue"
@@ -20,6 +20,7 @@ export default {
     event: 'input',
   },
   props: {
+    isUse: { type: String, default: '' },
     properties: '',
     propertiesValue: '',
     label: {type: Boolean, default: false}, // hidden or show label
@@ -30,7 +31,7 @@ export default {
   data() {
     return {
       isInputEmit: false,
-      fieldId: `El-${this.properties?.value}`,
+      fieldId: `El-${(this.properties) ? `${this.isUse}-` + this.properties.value : ''}`,
       fieldValue: this.propertiesValue,
       fieldRequired: this.properties?.required,
       fieldRules: {
@@ -51,9 +52,12 @@ export default {
   mounted() {
     setTimeout(() => {
       if (this.selectedValue) {
-        document.querySelector(`#${this.fieldId}`).setSelectionRange(0, 0);
-        document.querySelector(`#${this.fieldId}`).select();
-        document.querySelector(`#${this.fieldId}`).focus();
+        document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
+        document.querySelector(`.content-editing .v-text-field__slot input`).select();
+        document.querySelector(`.content-editing .v-text-field__slot input`).focus();
+        // document.querySelector(`#${this.fieldId}`).setSelectionRange(0, 0);
+        // document.querySelector(`#${this.fieldId}`).select();
+        // document.querySelector(`#${this.fieldId}`).focus();
       }
     }, 10);
   },

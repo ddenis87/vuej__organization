@@ -16,7 +16,9 @@
                        :items="gettingDataBody"
                        :items-header="gettingDataHeader"
                        :is-editable="isEditable"
-                       :is-expansion="isExpansion"></data-table-body>
+                       :is-expansion="isExpansion"
+                       @event-row-focused="eventRowFocused"
+                       @event-row-selected="eventRowSelected"></data-table-body>
     </div>
 
     <div class="data-table__footer" v-show="isFooter">
@@ -36,6 +38,7 @@ import DataTableFooter from './components/DataTableFooter/DataTableFooter.vue';
 import { LoadingComponent } from './mixins/LoadingComponent.js';
 import { GettingData } from './mixins/GettingData.js';
 import { ComputedTemplate } from './mixins/ComputedTemplate.js'; // computedTemplateTable
+import { EventsComponent } from './mixins/EventsComponent.js';
 
 export default {
   name: 'DataTable',
@@ -48,6 +51,7 @@ export default {
     LoadingComponent,
     GettingData,
     ComputedTemplate,
+    EventsComponent,
   ],
   props: {
     id: { type: String, default: 'dataTable' },

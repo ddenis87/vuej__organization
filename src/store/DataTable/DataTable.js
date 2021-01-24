@@ -7,7 +7,7 @@ export default {
   state: {
     // addressApi: 'https://an67.pythonanywhere.com/',
     // addressApi: 'https://httpbin.org/basic-auth/foo/bar',
-    addressApi: 'http://an67.pythonanywhere.com/api/v1/',
+    addressApi: 'https://an67.pythonanywhere.com/api/v1/',
     // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/v1/',
     // addressApi: 'http://an67.pythonanywhere.com/api/v1/',
     // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api-token-auth/',
@@ -17,6 +17,7 @@ export default {
     "budgetclassification": {
       // tableName: null,
       description: null,
+      countRecordLoad: '?page_size=30',
       filterString: '',
       count: 0,
       listOption: [],
@@ -25,7 +26,8 @@ export default {
     "organization" : {
       // tableName: null,
       description: null,
-      filterString: '?page_size=30',
+      countRecordLoad: '?page_size=30',
+      filterString: '',
       count: 0,
       listOption: {
         id: {value: 'id', label: 'ID', type: 'string'},

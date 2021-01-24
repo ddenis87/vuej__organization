@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete :id="fieldId"
+  <v-autocomplete 
                   class="el-field-choice"
                   dense
                   auto-select-first
@@ -30,6 +30,7 @@ export default {
     event: 'input'
   },
   props: {
+    isUse: { type: String, default: '' },
     properties: '',
     propertiesValue: '',
     label: {type: Boolean, default: false}, // hidden or show label
@@ -43,9 +44,9 @@ export default {
       isInputEmit: false,
       isInputFirstEnter: false,
       isElementChange: false,
-      fieldId: `El-${this.properties.value}`,
+      fieldId: `El-${(this.properties) ? `${this.isUse}-` + this.properties.value : ''}`,
       fieldValue: this.propertiesValue?.value,
-      fieldRequired: this.properties?.required,
+      fieldRequired: (this.properties) ? this.properties.required : false,
       fieldRules: {
         required: value => !!value || 'не выбран',
       }
@@ -56,6 +57,7 @@ export default {
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
     fieldShowValidation() { return (this.showValidation) ? false : true },
     fieldList() {
+      console.log(this.properties);
       let fieldList = [];
       if (!this.properties?.choices) return [];
       return this.properties.choices;
@@ -63,16 +65,14 @@ export default {
   },
   watch: {
     propertiesValue() {
-      console.log(this.propertiesValue);
       this.fieldValue = this.propertiesValue?.value;
     }
   },
   mounted() {
     setTimeout(() => {
       if (this.selectedValue) {
-        console.log(document.querySelector(`#${this.fieldId}`));
-        document.querySelector(`#${this.fieldId}`).select();
-        document.querySelector(`#${this.fieldId}`).focus();
+        document.querySelector(`.content-editing .v-select__slot input`).select();
+        document.querySelector(`.content-editing .v-select__slot input`).focus();
       }
     }, 50);
   },

@@ -35,7 +35,7 @@ export default {
   ],
   data() {
     return {
-      tableName: 'budget-classifications',
+      tableName: 'budgetclassification',
       fieldFormValue: {
         head_name: '',
         head_code: '',

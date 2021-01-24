@@ -10,7 +10,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   namespaced: true,
   state: {
-    addressApi: 'http://an67.pythonanywhere.com/',
+    addressApi: 'https://an67.pythonanywhere.com/',
   },
   getters: {
 

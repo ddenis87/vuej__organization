@@ -1,6 +1,6 @@
 <template>
   <div class="page-table">
-    <v-toolbar 
+    <v-toolbar dark flat tile
                class="menu-main"
                color="blue darken-3">
       <v-list nav dark dense color="blue darken-3">
@@ -94,7 +94,7 @@ export default {
       activeMenu: {value: 'Организации', path: 'TableOrganization'},
       listMenu: [
         {value: 'Организации', path: 'TableOrganization'},
-        {value: 'БК', path: 'TableBudgetClassifications'},
+        {value: 'БК', path: 'TableBudgetclassification'},
       ],
 
       formProperties: null,
