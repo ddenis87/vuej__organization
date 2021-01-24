@@ -1,28 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/views/Login.vue'
+import Home from '@/views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Login',
-    meta: { layout: 'Empty' },
-    component: Login,
+    name: 'Home',
+    component: Home,
   },
   {
-    path: '/Table/TableOrganization',
-    name: 'Organization',
-    meta: { layout: 'Tableold' },
-    component: () => import('@/views/Table/TableOrganization.vue'),
+    path: '/Login',
+    name: 'Login',
+    meta: { layout: 'Empty' },
+    component: () => import('@/views/Login.vue'),
   },
-  // {
-  //   path: '/Table/TableBudgetClassifications',
-  //   name: 'BudgetClassifications',
-  //   meta: { layout: 'Tableold' },
-  //   component: () => import('@/views/Table/TableBudgetClassifications.vue'),
-  // },
   {
     path: '/Table/PageTable',
     name: 'PageTable',

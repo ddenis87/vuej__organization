@@ -5,11 +5,14 @@
         <dialog-toolbar is-dialog-name="Авторизация" :is-close="false"></dialog-toolbar>
         <v-form class="form-login" ref="FormLogin">
           <el-progress-bar :isShow="isProccessRequest"></el-progress-bar>
-          <v-text-field :rules="[rules.required]" v-model="userData.userName" label="Логин"></v-text-field>
-          <v-text-field :type="isPasswordShow ? 'text' : 'password'"
+          <div class="form-login__label"><v-subheader>Логин</v-subheader></div>
+          <v-text-field dense single-line :rules="[rules.required]" v-model="userData.userName"></v-text-field>
+          <div class="form-login__label"><v-subheader>Пароль</v-subheader></div>
+          <v-text-field dense single-line 
+                        :type="isPasswordShow ? 'text' : 'password'"
                         :rules="[rules.required]" 
                         :append-icon="isPasswordShow ? 'mdi-eye' : 'mdi-eye-off'"
-                        v-model="userData.password" label="Пароль"
+                        v-model="userData.password"
                         @click:append="isPasswordShow = !isPasswordShow"></v-text-field>
           <v-card-actions class="form-login__action">
             <span class="form-login__error" v-show="isError">Предоставлены не верные данные для входа</span>
@@ -58,7 +61,6 @@ export default {
   },
   methods: {
     async sendLogin() {
-      
       if (!this.$refs.FormLogin.validate()) return;
       console.log('valid');
       this.$store.commit('Login/SET_USER_NAME_PASSWORD', this.userData);
@@ -69,7 +71,6 @@ export default {
           this.$refs.FormLogin.reset();
           setTimeout(() => this.isError = false, 3000);
         });
-      // this.$router.push('/Table/PageTable');
     }
   },
 }
@@ -78,6 +79,16 @@ export default {
 <style lang="scss" scoped>
 .form-login {
   padding: 15px 15px;
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    margin-left: -15px;
+    overflow: hidden;
+  }
+  .v-text-field {
+    margin-top: -5px;
+  }
   &__action {
     padding: 0px;
     // padding-top: 25px;

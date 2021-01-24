@@ -32,8 +32,7 @@ export default {
     layout() { return 'Layout' + (this.$route.meta.layout || 'Main') },
   },
   mounted() {
-    if (localStorage.getItem('Token') == null) this.$router.push('/');
-    // this.$router.push('/');
+    if (localStorage.getItem('Token') == null) this.$router.push('/Login');
   }
 };
 </script>
