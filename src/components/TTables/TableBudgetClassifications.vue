@@ -3,8 +3,9 @@
               :properties="tableProperties"
               :type-height="typeRow[typeRowNumber]"
               :type-column="typeColumn"
-              
+              :is-editable="isEditable"
               :is-footer="isFooter"
+              :is-expansion="isExpansion"
               @event-row-focused="eventRowFocused"
               @event-row-selected="eventRowSelected"></data-table>
 </template>
@@ -19,7 +20,7 @@ export default {
   ],
   data() {
     return {
-      tableProperties: {
+      tablePropertiesUno: {
         tableName: 'budgetclassification',
         headers: [
           {value: 'id', width: [60, 60], },

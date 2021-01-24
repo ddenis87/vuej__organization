@@ -1,5 +1,5 @@
 <template>
-  <div class="footer" :class="`data-table__footer_${typeColumn}`">
+  <div class="footer" :class="`footer_${typeColumn}`">
     Всего записей в базе по таблице: {{ gettingCountRowInBase }}, загружено и показано: {{ gettingCountRowLoad }}
   </div>
 </template>

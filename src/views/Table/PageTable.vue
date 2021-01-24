@@ -46,16 +46,25 @@
       <div class="table-control">
         <data-table-control :form-properties="formProperties"
                             :focused-element="focusedElement"
+                            :type-height-number="typeHeightNumber"
+                            :type-column="typeColumn"
+                            :is-footer="isFooter"
+                            :is-expansion="isExpansion"
+                            :is-multiline="isMultiline"
                             @toggle-type-row="toggleTypeRow"
                             @toggle-type-column="toggleTypeColumn"
-                            @toggle-footer="toggleFooter" ></data-table-control>
+                            @toggle-footer="toggleFooter"
+                            @toggle-expansion="toggleExpansion"
+                            @toggle-multiline="toggleMultiline" ></data-table-control>
       </div>
       <div class="table-body">
         <component class="table" 
                    :is="componentTable"
-                   :type-row-number="typeRowNumber"
+                   :type-row-number="typeHeightNumber"
                    :type-column="typeColumn"
                    :is-footer="isFooter"
+                   :is-expansion="isExpansion"
+                   :is-multiline="isMultiline"
                    @table-mount="tableMount"
                    @row-focused="rowFocused"
                    @row-selected="rowSelected"></component>
@@ -91,10 +100,12 @@ export default {
       formProperties: null,
       focusedElement: null,
 
-      typeRowNumber: 0,
-      typeRow: ['fixed', 'dense', 'auto'],
+      typeHeightNumber: 0,
+      typeHeight: ['fixed', 'dense', 'auto'],
       typeColumn: 'fixed',
       isFooter: false,
+      isExpansion: false,
+      isMultiline: false,
     }
   },
   computed: {
@@ -107,14 +118,14 @@ export default {
       this.isMenu = false;
       this.formProperties = null;
       this.focusedElement = null;
-      this.typeRowNumber = 0;
+      this.typeHeightNumber = 0;
       this.typeColumn = 'fixed';
       this.isFooter = false;
     },
   },
   methods: {
-    tableMount(data) {
-      this.formProperties = data.tableProperties;
+    tableMount(data, tableProperties) {
+      this.formProperties = tableProperties;
       // console.log(data);
     },
     rowFocused(option) {
@@ -125,14 +136,20 @@ export default {
       this.$emit('event-row-selected', option); // поменять имя события здесь и в диалоге который его слушает (EL-element-dialog)
     },
     toggleTypeRow() {
-      if (this.typeRowNumber == this.typeRow.length - 1) { this.typeRowNumber = 0; return; }
-      this.typeRowNumber = this.typeRowNumber + 1;
+      if (this.typeHeightNumber == this.typeHeight.length - 1) { this.typeHeightNumber = 0; return; }
+      this.typeHeightNumber = this.typeHeightNumber + 1;
     },
     toggleTypeColumn() {
       (this.typeColumn == 'fixed') ? this.typeColumn = 'dense' : this.typeColumn = 'fixed';
     },
     toggleFooter() {
       this.isFooter = !this.isFooter;
+    },
+    toggleExpansion() {
+      this.isExpansion = !this.isExpansion;
+    },
+    toggleMultiline() {
+      this.isMultiline = !this.isMultiline;
     },
   },
 }

@@ -26,6 +26,14 @@
          @focus="eventRowFocus"
          @blur="eventRowBlur"
          @keydown="eventRowKeydown">
+      
+      <div class="body-column__action-max"
+           :class="`body-column_${typeColumn}`"
+           v-if="computedActionMax">
+        <v-btn x-small icon class="action-btn" @click="eventExpansionRow">
+          <v-icon small color="blue">mdi-chevron-down</v-icon>
+        </v-btn>
+      </div>
 
       <div v-for="(itemColumn, indexColumn) in itemsHeader"
            class="body-column"
@@ -33,7 +41,7 @@
            :key="`body-column-${indexColumn}`"
            :style="itemColumn.position_in_template"
            :tabindex="(isEditable) ? indexColumn : ''"
-           :data-overflow-text="itemRow[itemColumn.value]"
+           :data-overflow-text="gettingValueForType(itemColumn, itemRow[itemColumn.value])"
            @focus="eventColumnFocus"
            @blur="eventColumnBlur"
            @dblclick="(event) => eventColumnDblclick(event, itemRow, itemColumn, itemRow[itemColumn.value])"
@@ -48,9 +56,9 @@
         </div>
 
         <div class="box-display">
-          <content-display :value="itemRow[itemColumn.value]"
-                          :properties="itemColumn"
-                          :type-height="typeHeight"></content-display>
+          <data-table-content-display :value="itemRow[itemColumn.value]"
+                                      :properties="itemColumn"
+                                      :type-height="typeHeight"></data-table-content-display>
         </div>
 
       </div>
@@ -63,8 +71,9 @@
 <script>
 import DataTableOverflow from '../DataTableOverflow.vue';
 import DataTableTooltip from '../DataTableTooltip.vue'; 
-import ContentDisplay from '../ContentDisplay.vue';
+import DataTableContentDisplay from '../DataTableContentDisplay.vue';
 
+import { DataTable } from '../DataTable.js';
 import { Events } from './mixins/Events.js';
 import { Editing } from './mixins/Editing.js';
 
@@ -73,9 +82,10 @@ export default {
   components: {
     DataTableOverflow,
     DataTableTooltip,
-    ContentDisplay,
+    DataTableContentDisplay,
   },
   mixins: [
+    DataTable, // gettingValueForType, computedActionMax
     Events,
     Editing,
   ],
@@ -87,6 +97,7 @@ export default {
     items: { type: Array, default: () => [] },
     itemsHeader: { type: Array, default: () => [] },
     isEditable: {type: Boolean, default: false},
+    isExpansion: {type: Boolean, default: false},
   },
 }
 </script>
@@ -109,7 +120,7 @@ export default {
 
     &_fixed { grid-template-rows: repeat(auto-fit, $rowHeightFixed); }
     &_dense { grid-template-rows: repeat(auto-fit, $rowHeightDense); }
-    &_auto  { grid-template-rows: repeat(auto-fit, $rowHeightAuto);  }
+    &_auto  { grid-template-rows: $rowHeightAuto; /* repeat(auto-fill, $rowHeightAuto); */ }
 
     &_hover { background-color: $rowBackgroundHover; }
     &_focus { background-color: $rowBackgroundFocus; }
@@ -124,6 +135,18 @@ export default {
 
       &_focus { border: $columnBorderFocus; }
       &_editing { background-color: white; }
+
+      &__action-max {
+        grid-area: action_max;
+        justify-content: center;
+        align-items: flex-start;
+        .action-btn {
+          margin-left: 0px;
+          &_action {
+            transform: rotate(-180deg);
+          }
+        }
+      }
 
       .box-editing, .box-display {
         width: 100%;

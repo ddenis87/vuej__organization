@@ -58,6 +58,7 @@ export default {
   left: 100px;
   top: 100px;
   border: thin solid purple;
+  background-color: white;
   visibility: hidden;
   font-size: .875rem;
   font-weight: normal;
@@ -65,11 +66,13 @@ export default {
   &-block {
     width: 100%;
     border: thin solid red;
+    background-color: white;
   }
   &-line {
     display: inline;
     width: auto;
     border: thin solid blue;
+    background-color: white;
   }
 }
 </style>

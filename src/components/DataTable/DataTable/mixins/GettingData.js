@@ -16,6 +16,7 @@ export const GettingData = {
           headerReturn.push(Object.assign(element, headerStore[element.value], {'position_in_template': `grid-area: ${element.value}`}));
         }
       });
+      console.log(headerReturn);
       return headerReturn;
     },
     gettingDataBody() {

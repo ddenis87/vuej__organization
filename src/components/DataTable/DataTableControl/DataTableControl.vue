@@ -6,22 +6,26 @@
       <el-button-icon icon="mdi-delete" :disabled="!isFocusedElement" @click="eventActionDeleting">Удалить</el-button-icon>
       <v-spacer></v-spacer>
 
-      <el-button-icon :icon="(this.heightType == 'fixed') ? 'mdi-view-sequential' : (this.heightType == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
+      <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
                       :disabled="!isMountTable"
-                      @click="$emit('toggle-type-row')">{{ (heightType == 'fixed') ? 'Строки сжато' : (heightType == 'dense') ? 'Строки свободно' : 'Строки авто' }}</el-button-icon>
+                      @click="$emit('toggle-type-row')">{{ (typeHeight[typeHeightNumber] == 'fixed') ? 'Строки сжато' : (typeHeight[typeHeightNumber] == 'dense') ? 'Строки свободно' : 'Строки авто' }}</el-button-icon>
       <el-button-icon icon="mdi-view-split-horizontal"
+                      :icon-color="(isExpansion) ? 'blue' : ''"
                       :disabled="!isMountTable"
-                      >Раскрытие строк</el-button-icon>
+                      @click="$emit('toggle-expansion')">Раскрытие строк</el-button-icon>
       <v-divider vertical></v-divider>
-      <el-button-icon :icon="(paddingType == 'fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel'" 
+      <el-button-icon :icon="(typeColumn == 'fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel'" 
                       :disabled="!isMountTable"
-                      @click="$emit('toggle-type-column')">{{ (paddingType == 'fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</el-button-icon>
+                      @click="$emit('toggle-type-column')">{{ (typeColumn == 'fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</el-button-icon>
       <v-divider vertical></v-divider>
-      <el-button-icon icon="mdi-page-layout-footer" 
+      <el-button-icon icon="mdi-page-layout-footer"
+                      :icon-color="(isFooter) ? 'blue' : ''"
                       :disabled="!isMountTable"
                       @click="$emit('toggle-footer')">Итоги</el-button-icon>
       <v-divider vertical></v-divider>
-      <el-button-icon icon="mdi-view-quilt" disabled @click="$emit('toggle-multiline')">Многострочность</el-button-icon>
+      <el-button-icon icon="mdi-view-quilt"
+                      :icon-color="(isMultiline) ? 'blue' : ''"
+                      @click="$emit('toggle-multiline')">Многострочность</el-button-icon>
       <v-divider vertical></v-divider>
       
       <el-button-icon icon="mdi-filter-outline" 
@@ -67,14 +71,19 @@ export default {
   props: {
     focusedElement: Object,
     formProperties: Object,
-    heightType: {type: String, default: 'fixed'},
-    paddingType: {type: String, default: 'fixed'},
+
+    typeHeightNumber: { type: Number, default: 0 },
+    typeColumn: { type: String, default: 'fixed' },
+    isFooter: { type: Boolean, default: false },
+    isExpansion: { type: Boolean, default: false },
+    isMultiline: { type: Boolean, default: false },
   },
   data() {
     return {
       isOpenDialog: false,
       focusedElementForm: null,
       isOpenFilter: false,
+      typeHeight: ['fixed', 'dense', 'auto'],
     }
   },
   computed: {

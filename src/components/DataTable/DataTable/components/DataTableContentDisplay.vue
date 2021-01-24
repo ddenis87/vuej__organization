@@ -7,8 +7,13 @@
 </template>
 
 <script>
+import { DataTable } from './DataTable.js';
+
 export default {
-  name: 'ContentDisplay',
+  name: 'DataTableContentDisplay',
+  mixins: [
+    DataTable,
+  ],
   props: {
     value: null,
     properties: { type: Object, default: () => {} },
@@ -16,26 +21,7 @@ export default {
   },
   computed: {
     displayValue() {
-      switch(this.properties.type) {
-        case 'string':
-        case 'integer':
-          return this.value;
-        case 'choice':
-          return this.value['display_name'];
-        case 'field': {
-          let objectValue = this.properties.related_model_view;
-          if (Array.isArray(objectValue.field)) {
-            let newValue = '';
-            objectValue.field.forEach((element, index) => {
-              newValue += this.value[element];
-              if (index != objectValue.field.length - 1) newValue += objectValue.delimiter;
-            });
-            return newValue;
-          } else {
-            return this.value[objectValue.field];
-          }
-        }
-      }
+      return this.gettingValueForType(this.properties, this.value);
     },
   },
 }

@@ -4,7 +4,8 @@
       <data-table-header :template="computedTemplateTable"
                          :type-height="typeHeight"
                          :type-column="typeColumn"
-                         :items="gettingDataHeader"></data-table-header>
+                         :items="gettingDataHeader"
+                         :is-expansion="isExpansion"></data-table-header>
     </div>
 
     <div class="data-table__body">
@@ -14,7 +15,8 @@
                        :type-column="typeColumn"
                        :items="gettingDataBody"
                        :items-header="gettingDataHeader"
-                       :is-editable="isEditable"></data-table-body>
+                       :is-editable="isEditable"
+                       :is-expansion="isExpansion"></data-table-body>
     </div>
 
     <div class="data-table__footer" v-show="isFooter">
@@ -54,6 +56,7 @@ export default {
     typeColumn: { type: String, default: 'fixed' },
     isEditable: {type: Boolean, default: false},
     isFooter: {type: Boolean, default: false},
+    isExpansion: {type: Boolean, default: false},
   },
 }
 </script>
@@ -94,6 +97,7 @@ export default {
   &__footer {
     position: sticky;
     bottom: 0px;
+    left: 0px;
     display: flex;
     z-index: 200;
   }

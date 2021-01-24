@@ -3,33 +3,45 @@
     <div class="header-row" 
          :class="`header-row_${typeHeight}`"
          :style="template">
+      
+      <div class="header-column header-column__action-max"
+           :class="`header-column_${typeColumn}`"
+           v-if="computedActionMax">
+        <span>1</span>
+      </div>
+
       <div v-for="(item, index) in items"
            class="header-column"
            :class="`header-column_${typeColumn}`"
            :key="`header-${index}`"
            :style="item.position_in_template"
-           :data-overflow="item.label">
-        <content-display :value="item.label"
-                         :properties="{type: 'string'}"
-                         :type-height="typeHeight"></content-display>
+           :data-overflow-text="item.label">
+        <data-table-content-display :value="item.label"
+                                    :properties="{type: 'string'}"
+                                    :type-height="typeHeight"></data-table-content-display>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ContentDisplay from '../ContentDisplay.vue';
+import { DataTable } from '../DataTable.js';
+import DataTableContentDisplay from '../DataTableContentDisplay.vue';
 
 export default {
   name: 'DataTableHeader',
   components: {
-    ContentDisplay,
+    DataTableContentDisplay,
   },
+  mixins: [
+    DataTable,
+  ],
   props: {
     template: Object,
     typeHeight: { type: String, default: 'fixed' },
     typeColumn: { type: String, default: 'fixed' },
     items: { type: Array, default: () => [] },
+    isExpansion: {type: Boolean, default: false},
   },
 }
 </script>
@@ -53,6 +65,10 @@ export default {
     &_auto  { grid-template-rows: repeat(auto-fit, $rowHeightAuto);  }
     .header-column {
       
+      &__action-max {
+        grid-area: action_max;
+        visibility: hidden;
+      }
       &_fixed {
         padding-left: $columnPaddingLRFixed; 
         padding-right: $columnPaddingLRFixed;

@@ -15,11 +15,22 @@ export const Events = {
       let calcTooltipShift = { left: 10, top: 4 };
       if (this.typeHeight == 'fixed' && this.typeColumn == 'fixed') { calcTooltipShift.left = 4; calcTooltipShift.top = -2; return calcTooltipShift};
       if (this.typeHeight == 'fixed' && this.typeColumn == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
+      if (this.typeHeight == 'dense' && this.typeColumn == 'fixed') { calcTooltipShift.left = 4; calcTooltipShift.top = -2; return calcTooltipShift};
       if (this.typeHeight == 'dense' && this.typeColumn == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
       return calcTooltipShift;
     },
   },
   methods: {
+    // EVENT EXPANSION ROW
+    eventExpansionRow(event) {
+      event.target.closest('.action-btn').classList.toggle('action-btn_action');
+      event.target.closest('.body-row').classList.toggle('body-row_auto');
+      let celsDisplay = event.target.closest('.body-row').querySelectorAll('.content-display');
+      celsDisplay.forEach(element => {
+        element.classList.toggle('content-display_auto');
+      });
+    },
+
     // EVENT HOVER BODY TABLE (HOVER ROW, TOOLTIP)
     eventMouseOver(event) {
       if (!this.isColumnEditing && !this.isRowFocus)

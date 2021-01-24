@@ -12,14 +12,17 @@ export const ComputedTemplate = {
       } else {
         template['grid-template-areas'] = this.computedAreaMultiLine(headers);
         template['grid-template-columns'] = this.computedWidthMultiLine(headers);
+        template['grid-template-rows'] = `repeat(${headers.length}, 22px)`;
       }
-      // console.log(template);
+      console.log(template);
       return template;
     },
+    computedActionMax() { return (this.typeHeight != 'auto' && this.isExpansion == true) ? true : false; },
   },
   methods: {
     computedAreaUnoLine(array) {
       let area = '"';
+      if (this.computedActionMax) area += 'action_max ';
       array.forEach(element => area += `${element.value} `);
       area = area.trim();
       area += `"`;
@@ -57,6 +60,7 @@ export const ComputedTemplate = {
 
     computedWidthUnoLine(array) {
       let columnWidth = '';
+      if (this.computedActionMax) columnWidth += 'minmax(22px, 22px) ';
       array.forEach(element => {
         if (element.width) {
           if (Array.isArray(element.width)) {
