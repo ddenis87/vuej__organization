@@ -26,7 +26,7 @@ export default {
           {value: 'id', width: 60,},
           {value: 'institution_code', align: 'end', width: 90, },
           {value: 'title', align: 'start', width: [400,],},
-          {value: 'inn', width: [, 115]},
+          {value: 'inn', width: [115, 120]},
           {value: 'kpp', width: [115, 115],},
           {value: 'rubpnubp_status', width: [140, 140]},
           {value: 'egrul_status', width: [145, 145]},

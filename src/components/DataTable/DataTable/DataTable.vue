@@ -6,6 +6,7 @@
                          :type-column="typeColumn"
                          :items="gettingDataHeader"
                          :is-expansion="isExpansion"></data-table-header>
+      <data-table-progress-line :is-show="isLoadingData"></data-table-progress-line>
     </div>
 
     <div class="data-table__body">
@@ -21,6 +22,9 @@
                        @event-row-selected="eventRowSelected"></data-table-body>
     </div>
 
+    <!-- ANCHOR FOR LAZY LOAD DATA -->
+    <div class="data-table__boot-anchor" :id="`${id}-boot-anchor`"></div>
+
     <div class="data-table__footer" v-show="isFooter">
       <slot name="component-footer">
         <data-table-footer :tableName="properties.tableName" 
@@ -31,11 +35,12 @@
 </template>
 
 <script>
+import DataTableProgressLine from './components/DataTableProgressLine.vue';
 import DataTableHeader from './components/DataTableHeader/DataTableHeader.vue';
 import DataTableBody from './components/DataTableBody/DataTableBody.vue';
 import DataTableFooter from './components/DataTableFooter/DataTableFooter.vue';
 
-import { LoadingComponent } from './mixins/LoadingComponent.js';
+import { LoadingData } from './mixins/LoadingData.js';
 import { GettingData } from './mixins/GettingData.js';
 import { ComputedTemplate } from './mixins/ComputedTemplate.js'; // computedTemplateTable
 import { EventsComponent } from './mixins/EventsComponent.js';
@@ -43,12 +48,13 @@ import { EventsComponent } from './mixins/EventsComponent.js';
 export default {
   name: 'DataTable',
   components: {
+    DataTableProgressLine,
     DataTableHeader,
     DataTableBody,
     DataTableFooter,
   },
   mixins: [
-    LoadingComponent,
+    LoadingData,
     GettingData,
     ComputedTemplate,
     EventsComponent,

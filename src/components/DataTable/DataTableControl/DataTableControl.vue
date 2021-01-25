@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
 
       <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
-                      :disabled="(!isMountTable || isMultiline)"
+                      :disabled="(!isMountTable)"
                       @click="$emit('toggle-type-row')">{{ (typeHeight[typeHeightNumber] == 'fixed') ? 'Строки сжато' : (typeHeight[typeHeightNumber] == 'dense') ? 'Строки свободно' : 'Строки авто' }}</el-button-icon>
       <el-button-icon icon="mdi-view-split-horizontal"
                       :icon-color="(isExpansion) ? 'blue' : ''"
@@ -95,7 +95,6 @@ export default {
       this.formProperties.tableName.split('-').forEach(item => {
         componentForm += item[0].toUpperCase() + item.slice(1);
       })
-      console.log(componentForm);
       return () => import(`@/components/TheTableForm/TheTableForm${componentForm}`);
     },
     isFilterActive() {

@@ -20,10 +20,8 @@
             <v-btn :dark="!isProccessRequest"
                     color="blue darken-3" 
                     height="30" 
-                    
                     :disabled="isProccessRequest"
                     @click="sendLogin">Войти
-
             </v-btn>
           </v-card-actions>
         </v-form>
@@ -86,11 +84,11 @@ export default {
     display: inline-flex;
     align-items: center;
     height: 22px;
-    margin-left: -15px;
+    margin-left: -17px;
     overflow: hidden;
   }
   .v-text-field {
-    margin-top: -5px;
+    margin-top: -3.5px;
   }
   &__action {
     padding: 0px;

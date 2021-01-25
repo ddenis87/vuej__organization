@@ -9,7 +9,7 @@ export default {
   GET_LIST_OPTION(state, option) {
     // console.log(state.rootGetters['Login/GET_USER_TOKEN_ACCESS']);
     if (state.getters.GET_DESCRIPTION_TABLE(option.tableName)) { return; };
-    // state.commit('SET_IS_DATA_LOAD', true);
+    state.commit('SET_IS_DATA_LOAD', true);
     // state.commit('SET_TABLE_NAME', { tableName: option.tableName });
     
     let tokenAccess = state.rootGetters['Login/GET_USER_TOKEN_ACCESS'];
@@ -32,7 +32,7 @@ export default {
       // })
 
       .then(response => {
-        console.log(response);
+        // console.log(response);
         let mutationOption = {
           tableName: option.tableName,
           description: response.data.description,

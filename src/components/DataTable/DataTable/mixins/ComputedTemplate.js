@@ -12,9 +12,9 @@ export const ComputedTemplate = {
       } else {
         template['grid-template-areas'] = this.computedAreaMultiLine(headers);
         template['grid-template-columns'] = this.computedWidthMultiLine(headers);
-        template['grid-template-rows'] = `repeat(${headers.length}, 22px)`;
+        template['grid-template-rows'] = `repeat(${headers.length}, ${(this.typeHeight == 'fixed') ? '43px' : (this.typeHeight == 'dense') ? '22px' : 'auto'})`;
       }
-      console.log(template);
+      // console.log(template);
       return template;
     },
     computedActionMax() { return (this.typeHeight != 'auto' && this.isExpansion == true) ? true : false; },
