@@ -31,7 +31,7 @@
       
       <div class="body-column__action-max"
            :class="`body-column_${typeColumn}`"
-           v-if="computedActionMax">
+           v-if="computedActionMax && !isMultiline">
         <v-btn x-small icon class="action-btn" @click="eventExpansionRow">
           <v-icon small color="blue">mdi-chevron-down</v-icon>
         </v-btn>
@@ -100,6 +100,7 @@ export default {
     itemsHeader: { type: Array, default: () => [] },
     isEditable: {type: Boolean, default: false},
     isExpansion: {type: Boolean, default: false},
+    isMultiline: {type: Boolean, default: false},
   },
 }
 </script>

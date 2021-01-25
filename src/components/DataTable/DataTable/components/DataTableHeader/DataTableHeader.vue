@@ -23,7 +23,7 @@
       
       <div class="header-column header-column__action-max"
            :class="`header-column_${typeColumn}`"
-           v-if="computedActionMax">
+           v-if="computedActionMax && !isMultiline">
         <span style="visibility: hidden">1</span>
       </div>
 
@@ -66,6 +66,7 @@ export default {
     typeColumn: { type: String, default: 'fixed' },
     items: { type: Array, default: () => [] },
     isExpansion: {type: Boolean, default: false},
+    isMultiline: {type: Boolean, default: false},
   },
 }
 </script>

@@ -6,6 +6,7 @@
               :is-editable="isEditable"
               :is-footer="isFooter"
               :is-expansion="isExpansion"
+              :is-multiline="isMultiline"
               @event-row-focused="eventRowFocused"
               @event-row-selected="eventRowSelected"></data-table>
 </template>

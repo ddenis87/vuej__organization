@@ -1,33 +1,39 @@
 <template>
-  <v-row justify="start">
-    <v-dialog persistent v-model="isDialog" width="500" >
-      <v-card>
-        <dialog-toolbar is-dialog-name="Авторизация" :is-close="false"></dialog-toolbar>
-        <v-form class="form-login" ref="FormLogin">
-          <el-progress-bar :isShow="isProccessRequest"></el-progress-bar>
-          <div class="form-login__label"><v-subheader>Логин</v-subheader></div>
-          <v-text-field dense single-line :rules="[rules.required]" v-model="userData.userName"></v-text-field>
-          <div class="form-login__label"><v-subheader>Пароль</v-subheader></div>
-          <v-text-field dense single-line 
-                        :type="isPasswordShow ? 'text' : 'password'"
-                        :rules="[rules.required]" 
-                        :append-icon="isPasswordShow ? 'mdi-eye' : 'mdi-eye-off'"
-                        v-model="userData.password"
-                        @click:append="isPasswordShow = !isPasswordShow"></v-text-field>
-          <v-card-actions class="form-login__action">
-            <span class="form-login__error" v-show="isError">Предоставлены не верные данные для входа</span>
-            <v-spacer></v-spacer>
-            <v-btn :dark="!isProccessRequest"
-                    color="blue darken-3" 
-                    height="30" 
-                    :disabled="isProccessRequest"
-                    @click="sendLogin">Войти
-            </v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
-  </v-row>
+  <!-- <v-row justify="center" style="height: 100vh;" >
+    <v-col align-self="center">
+      <v-card width="500"> -->
+        <div class="login">
+          <v-card width="500"  flat class="login__window">
+            <dialog-toolbar is-dialog-name="Авторизация" :is-close="false"></dialog-toolbar>
+            <v-form class="form-login" ref="FormLogin">
+              <el-progress-bar :isShow="isProccessRequest"></el-progress-bar>
+              <div class="form-login__label"><v-subheader>Логин</v-subheader></div>
+              <v-text-field dense single-line :rules="[rules.required]" v-model="userData.userName"></v-text-field>
+              <div class="form-login__label"><v-subheader>Пароль</v-subheader></div>
+              <v-text-field dense single-line 
+                            :type="isPasswordShow ? 'text' : 'password'"
+                            :rules="[rules.required]" 
+                            :append-icon="isPasswordShow ? 'mdi-eye' : 'mdi-eye-off'"
+                            v-model="userData.password"
+                            @click:append="isPasswordShow = !isPasswordShow"></v-text-field>
+              <v-card-actions class="form-login__action">
+                <span class="form-login__error" v-show="isError">Предоставлены неверные данные для входа</span>
+                <v-spacer></v-spacer>
+                <v-btn :dark="!isProccessRequest"
+                        color="blue darken-3" 
+                        height="30" 
+                        :disabled="isProccessRequest"
+                        @click="sendLogin">Войти
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </div>
+        
+      <!-- </v-card>
+    </v-col>
+    
+  </v-row> -->
 </template>
 
 <script>
@@ -78,25 +84,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.form-login {
-  padding: 15px 15px;
-  &__label {
-    display: inline-flex;
-    align-items: center;
-    height: 22px;
-    margin-left: -17px;
-    overflow: hidden;
+.login {
+  display: flex;
+  height: 50vh;
+  justify-content: center;
+  align-items: center;
+  &__window {
+    border: thin solid rgba(0, 0, 0, .12);
+    border-radius: 4px;
   }
-  .v-text-field {
-    margin-top: -3.5px;
-  }
-  &__action {
-    padding: 0px;
-    // padding-top: 25px;
-  }
-  &__error {
-    font-size: 0.75rem;
-    color: red;
+  .form-login {
+    padding: 15px 15px;
+    &__label {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      margin-left: -17px;
+      overflow: hidden;
+    }
+    .v-text-field {
+      margin-top: -3.5px;
+    }
+    &__action {
+      padding: 0px;
+      // padding-top: 25px;
+    }
+    &__error {
+      font-size: 0.75rem;
+      color: red;
+    }
   }
 }
 </style>
