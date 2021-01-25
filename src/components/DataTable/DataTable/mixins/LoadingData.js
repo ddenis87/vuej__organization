@@ -25,11 +25,10 @@ export const LoadingData = {
     this.$store.dispatch('DataTable/GET_LIST_OPTION', { tableName: this.properties.tableName });
   },
   mounted() {
-    // console.log('mount');
     this.parentElement = document.getElementById(this.id)
     this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;
   },
-  updated() { console.log('update'); this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;},
+  updated() { this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;},
   methods: {
     eventScrollPagination() {
       let bootAnchorEdge = document.querySelector(`#${this.id}-boot-anchor`).getBoundingClientRect().bottom - 500;

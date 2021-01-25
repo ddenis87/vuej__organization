@@ -11,17 +11,12 @@ export const DataTable = {
         case 'choice':
           return value['display_name'];
         case 'field': {
-          let objectValue = properties.related_model_view;
-          if (Array.isArray(objectValue.field)) {
-            let newValue = '';
-            objectValue.field.forEach((element, index) => {
-              newValue += value[element];
-              if (index != objectValue.field.length - 1) newValue += objectValue.delimiter;
-            });
-            return newValue;
-          } else {
-            return this.value[objectValue.field];
-          }
+          let newValue = properties.related_model_view;
+          let templateValue = properties.related_model_view.match(/[{\w}]/gi).join(',').replace(/,/g, '').slice(1, -1).split('}{')
+          templateValue.forEach(element => {
+            newValue = newValue.replace(`{${element}}`, value[element]);
+          });
+          return newValue
         }
       }
     },

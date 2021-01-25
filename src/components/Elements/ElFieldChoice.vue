@@ -58,8 +58,7 @@ export default {
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
     fieldShowValidation() { return (this.showValidation) ? false : true },
     fieldList() {
-      console.log(this.properties);
-      let fieldList = [];
+      // let fieldList = [];
       if (!this.properties?.choices) return [];
       return this.properties.choices;
     },

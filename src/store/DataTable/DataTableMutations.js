@@ -3,9 +3,9 @@ export default {
   SET_FILTER_STRING(state, option = null) {
     if (option.filters == null) { state[option.tableName].filterString = ''; return; }
     let filterString = '&';
-    console.log()
+    // console.log(option);
     for(let item of Object.entries(option.filters)) {
-      if ('id' in item[1]) filterString += `${item[0]}=${item[1].id}&`;
+      if ('id' in item[1]) filterString += `${item[0]}__id=${item[1].id}&`;
       else filterString += `${item[0]}=${item[1].value}&`;
     }
     // console.log(filterString);

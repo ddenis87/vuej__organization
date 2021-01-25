@@ -35,7 +35,7 @@ export default {
           {value: 'industry_typing', width: [120, 120]},
           {value: 'institution_type', width: [130, 130]},
           {value: 'budget_level', width: [180, 180]},
-          {value: 'bk', width: [180, ], related_model_view: { delimiter: ' - ', field: ['head_code','head_name'] }, related_model_vi: `(${'[head_code]'}) ${'head_name'}`},
+          {value: 'bk', width: [180, ], related_model_view: '{head_code} - {head_name}'},
         ],
       },
       tablePropertiesMultiline: {

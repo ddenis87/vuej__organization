@@ -6,6 +6,7 @@
               :is-editable="isEditable"
               :is-footer="isFooter"
               :is-expansion="isExpansion"
+              :is-multiline="isMultiline"
               @event-row-focused="eventRowFocused"
               @event-row-selected="eventRowSelected"></data-table>
 </template>
@@ -18,6 +19,9 @@ export default {
   mixins: [
     TheTable,
   ],
+  props: {
+    typeRowNumber: { type: Number, default: 1 },
+  },
   data() {
     return {
       tablePropertiesUno: {

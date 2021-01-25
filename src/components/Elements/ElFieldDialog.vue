@@ -1,9 +1,9 @@
 <template>
-  <div class="dialog" :id="`ElBox-${fieldId}`">
+  <div class="dialog" >
     <!-- @click.stop - stop slider list -->
     <!-- @click:append-outer - open dialog -->
     <!-- @focus - for selected inner text -->
-    <v-autocomplete :id="fieldId"
+    <v-autocomplete 
                     class="el-field-dialog"
                     dense
                     return-object
@@ -113,6 +113,7 @@ export default {
       return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`](this.properties['related_model_name']);
     },
     componentForm() {
+      if (!this.properties['related_model_name']) return null;
       let componentForm = '';
       componentForm = this.properties['related_model_name'][0].toUpperCase() + this.properties['related_model_name'].slice(1);
       return () => import(`@/components/TheTable/TheTable${componentForm}`);
