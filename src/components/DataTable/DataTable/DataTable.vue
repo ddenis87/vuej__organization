@@ -104,6 +104,10 @@ export default {
     display: flex;
     z-index: 100;
   }
+  &__boot-anchor {
+    height: 5px;
+    width: 5px;
+  }
   &__footer {
     position: sticky;
     bottom: 0px;

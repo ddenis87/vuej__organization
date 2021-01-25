@@ -76,7 +76,7 @@ export default {
       let listFieldNestedObject = [];
       if (listField) {
         for (let item of Object.entries(listField)) {
-          if (item[1].type == 'nested object') listFieldNestedObject.push(Object.assign({key: item[0]}, item[1]));
+          if (item[1].type == 'field') listFieldNestedObject.push(Object.assign({key: item[0]}, item[1]));
         }
       }
       // console.log(listFieldNestedObject);

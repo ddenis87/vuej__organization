@@ -1,0 +1,42 @@
+export const Events = {
+  data() {
+    return {
+      isTooltipShow: false,
+      isTooltipTimer: null,
+      isTooltipProperties: { top: 0, left: 0, width: 0, height: 0, text: '' },
+    }
+  },
+  computed: {
+    computedTooltipShift() {
+      let calcTooltipShift = { left: 3, top: -3, };
+      // if (this.typeHeight == 'fixed' && this.typeColumn == 'fixed') { calcTooltipShift.left = 4; calcTooltipShift.top = -2; return calcTooltipShift};
+      if (this.typeHeight == 'fixed' && this.typeColumn == 'dense') { calcTooltipShift.left = -1; calcTooltipShift.top = -3; return calcTooltipShift};
+      if (this.typeHeight == 'auto' && this.typeColumn == 'fixed') { calcTooltipShift.left = 3; calcTooltipShift.top = -3; return calcTooltipShift};
+      if (this.typeHeight == 'dense' && this.typeColumn == 'dense') { calcTooltipShift.left = -1; calcTooltipShift.top = -3; return calcTooltipShift};
+      if (this.typeHeight == 'auto' && this.typeColumn == 'dense') { calcTooltipShift.left = -1; calcTooltipShift.top = -3; return calcTooltipShift};
+      return calcTooltipShift;
+    },
+  },
+  methods: {
+    eventMouseOver() {
+      if (event.target.classList.contains('content-display')) {
+        let parent = event.target.closest('.header-column');
+        this.isTooltipTimer = setTimeout(() => {
+          this.isTooltipProperties = {
+            top: parent.getBoundingClientRect().top + this.computedTooltipShift.top,
+            left: parent.getBoundingClientRect().left + this.computedTooltipShift.left,
+            width: parent.getBoundingClientRect().width,
+            height: parent.getBoundingClientRect().height,
+            text: parent.getAttribute('data-overflow-text'),
+          };
+        }, 1100);
+      }
+    },
+
+    eventMouseOut(event) {
+      if (event.relatedTarget?.classList?.contains('tooltip')) return;
+      this.isTooltipShow = false;
+      clearTimeout(this.isTooltipTimer);
+    },
+  },
+}

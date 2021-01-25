@@ -5,7 +5,7 @@ export const EventsComponent = {
       this.$emit('event-row-focused', option);
     },
     eventRowSelected(event, option) {
-      this.$emit('event-row-selected', event, option, this.properties.tableName);
+      this.$emit('event-row-selected', option, this.properties.tableName);
     },
 
   },

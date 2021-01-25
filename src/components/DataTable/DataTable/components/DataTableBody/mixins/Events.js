@@ -112,15 +112,15 @@ export const Events = {
     tooltipShow(event) {
       if (event.target.classList.contains('content-display')) {
         let parent = event.target.closest('.body-column');
-          this.isTooltipTimer = setTimeout(() => {
-            this.isTooltipProperties = {
-              top: parent.getBoundingClientRect().top + this.computedTooltipShift.top,
-              left: parent.getBoundingClientRect().left + this.computedTooltipShift.left,
-              width: parent.getBoundingClientRect().width,
-              height: parent.getBoundingClientRect().height,
-              text: parent.getAttribute('data-overflow-text'),
-            };
-          }, 1100);
+        this.isTooltipTimer = setTimeout(() => {
+          this.isTooltipProperties = {
+            top: parent.getBoundingClientRect().top + this.computedTooltipShift.top,
+            left: parent.getBoundingClientRect().left + this.computedTooltipShift.left,
+            width: parent.getBoundingClientRect().width,
+            height: parent.getBoundingClientRect().height,
+            text: parent.getAttribute('data-overflow-text'),
+          };
+        }, 1100);
       }
     },
     tooltipHide(event) {

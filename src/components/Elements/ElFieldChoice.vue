@@ -6,6 +6,7 @@
                   return-object
                   v-model="fieldValue"
                   hide-selected
+                  no-data-text="Значение отсутствует"
                   :single-line="singleLine"
                   :label="fieldLabel"
                   :hide-details="fieldShowValidation"

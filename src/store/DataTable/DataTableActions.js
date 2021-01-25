@@ -32,7 +32,7 @@ export default {
       // })
 
       .then(response => {
-        // console.log(response);
+        console.log(response);
         let mutationOption = {
           tableName: option.tableName,
           description: response.data.description,
@@ -69,7 +69,7 @@ export default {
     state.commit('SET_IS_DATA_LOAD', true);
     let filterString = state.getters.GET_FILTER_STRING(option.tableName);
     let countRecordLoad = state.getters.GET_COUNT_RECORD_LOAD(option.tableName);
-
+    console.log(state.getters.GET_ADDRESS_API + option.tableName + countRecordLoad + filterString);
     axios
       .get(state.getters.GET_ADDRESS_API + option.tableName + countRecordLoad + filterString)
       .then(response => {
@@ -98,6 +98,7 @@ export default {
   GET_LIST_DATA_NEXT(state, option) {
     state.commit('SET_IS_DATA_LOAD', true);
     let filterString = state.getters.GET_FILTER_STRING(option.tableName);
+    console.log(state.getters.GET_ADDRESS_API_NEXT(option.tableName) + filterString);
     axios
       .get(state.getters.GET_ADDRESS_API_NEXT(option.tableName) + filterString)
       .then(response => {

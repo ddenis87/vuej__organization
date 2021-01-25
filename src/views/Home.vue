@@ -7,7 +7,9 @@
 <script>
 export default {
   name: 'Home',
-
+  mounted() {
+    if (localStorage.getItem('Token') != null) this.$router.push('/Table/TablePage');
+  },
 }
 </script>
 

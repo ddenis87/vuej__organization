@@ -30,8 +30,8 @@
 
     <dialog-full-page :is-dialog-name="displayNameTable" 
                       :is-dialog-show="isShowDialog" 
-                      @event-close-dialog="eventDialogClose">
-        <component :is="componentForm" v-bind:editable="false" @event-row-selected="eventDialogSelected"></component>
+                      @close-dialog="eventDialogClose">
+        <component :is="componentForm" :isEditable="false" @row-selected="eventDialogSelected"></component>
     </dialog-full-page>
   </div>
 </template>
@@ -91,31 +91,31 @@ export default {
       //   return this.properties.text[objectValue.field];
       // }
       // console.log(this.properties);
-      return (this.properties?.objectValue) ? this.properties.objectValue : '';
+      return 'head_name';
+      return (this.properties?.objectValue) ? this.properties.objectValue : 'head_name';
     },
     fieldList() {
-      console.log(this.properties);
-      if (!this.properties?.tableName) return [];
+      // if (!this.properties?.tableName) return [];
       let fieldList = [];
-      let fieldListStore = this.$store.getters[`DataTable/GET_LIST_DATA`](this.properties.tableName);
+      let fieldListStore = this.$store.getters[`DataTable/GET_LIST_DATA`](this.properties['related_model_name']);
+      // console.log(fieldListStore);
       if (fieldListStore.length == 0) {
-        this.$store.dispatch(`DataTable/GET_LIST_OPTION`, { tableName: this.properties.tableName });
+        this.$store.dispatch(`DataTable/GET_LIST_OPTION`, { tableName: this.properties['related_model_name'] });
         return [];
       }
-      console.log(fieldListStore);
+      // let searchRegular = /[qw]/gi
+      // console.log(fieldListStore);
       return fieldListStore;
     },
     fieldShowValidation() { return (this.showValidation) ? false : true },
     displayNameTable() {
-      return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`](this.properties?.tableName);
+      // console.log(this.properties);
+      return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`](this.properties['related_model_name']);
     },
     componentForm() {
       let componentForm = '';
-      if (!this.properties?.tableName) return undefined;
-      this.properties.tableName.split('-').forEach(item => {
-        componentForm += item[0].toUpperCase() + item.slice(1);
-      })
-      return () => import(`@/views/Table/Table${componentForm}`);
+      componentForm = this.properties['related_model_name'][0].toUpperCase() + this.properties['related_model_name'].slice(1);
+      return () => import(`@/components/TheTable/TheTable${componentForm}`);
     }
   },
   watch: {
@@ -126,7 +126,9 @@ export default {
   mounted() {
     setTimeout(() => {
       if (this.selectedValue) {
-        document.querySelector(`#${this.fieldId}`).select();
+        // document.querySelector(`#${this.fieldId}`).select();
+        document.querySelector(`.content-editing .v-select__slot input`).select();
+        document.querySelector(`.content-editing .v-select__slot input`).focus();
         // document.querySelector(`#${this.fieldId}`).focus();
       }
     }, 10);
@@ -136,7 +138,9 @@ export default {
       // console.log('dialog open');
       this.isShowDialog = true;
       setTimeout(() => {
-        document.querySelector(`#${this.fieldId}`).focus();
+        // document.querySelector(`#${this.fieldId}`).focus();
+        document.querySelector(`.content-editing .v-select__slot input`).select();
+        document.querySelector(`.content-editing .v-select__slot input`).focus();
       },10);
     },
     eventDialogClose(event) {
@@ -146,6 +150,7 @@ export default {
       },100);
     },
     eventDialogSelected(option) {
+      // console.log(option);
       this.fieldValue = option.id;
       this.$emit('input', option);
 

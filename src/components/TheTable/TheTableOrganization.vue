@@ -25,6 +25,7 @@ export default {
         headers: [
           {value: 'id', width: 60,},
           {value: 'institution_code', align: 'end', width: 90, },
+          {value: 'organization_type', align: 'start', width: 115, },
           {value: 'title', align: 'start', width: [400,],},
           {value: 'inn', width: [115, 120]},
           {value: 'kpp', width: [115, 115],},
@@ -33,7 +34,7 @@ export default {
           {value: 'industry_typing', width: [120, 120]},
           {value: 'institution_type', width: [130, 130]},
           {value: 'budget_level', width: [180, 180]},
-          {value: 'bk', width: [180, ], related_model_view: { delimiter: ' - ', field: ['head_code','head_name'] }},
+          {value: 'bk', width: [180, ], related_model_view: { delimiter: ' - ', field: ['head_code','head_name'] }, related_model_vi: `(${'[head_code]'}) ${'head_name'}`},
         ],
       },
       tablePropertiesMultiline: {
@@ -41,7 +42,6 @@ export default {
         headers: [
           [
             {value: 'id', width: [140, 140],},
-            
             {value: 'title', align: 'start', column: 3, width: [400,],},
           ], [
             {value: 'institution_code', align: 'end', width: 140},
@@ -54,7 +54,8 @@ export default {
             {value: 'rubpnubp_status', width: [140, 140]},
             {value: 'industry_typing', width: [120,]},
           ], [
-            {value: 'bk', column: 4, width: [180, ], related_model_view: { delimiter: ' - ', field: ['head_code','head_name'] }},
+            {value: 'organization_type', align: 'start', width: 115, },
+            {value: 'bk', column: 3, width: [180, ], related_model_view: { delimiter: ' - ', field: ['head_code','head_name'] }},
           ]
         ],
       },

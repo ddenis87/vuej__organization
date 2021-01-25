@@ -12,12 +12,18 @@ export const LoadingData = {
       parentElementEdge: 0,
     }
   },
+  watch: {
+    typeHeight() {
+      if (this.typeHeight == 'dense')
+      setTimeout(() => this.eventScrollPagination(), 800);
+    }
+  },
   created() {
     this.$store.dispatch('DataTable/GET_LIST_OPTION', { tableName: this.properties.tableName });
   },
   mounted() { 
     this.parentElement = document.getElementById(this.id)
-    this.parentElementEdge = this.parentElement.getBoundingClientRect.bottom;
+    this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;
   },
   updated() { this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom; },
   methods: {

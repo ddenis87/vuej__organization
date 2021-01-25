@@ -1,5 +1,22 @@
 <template>
-  <div class="header">
+  <div class="header"
+       @mouseover="eventMouseOver"
+       @mouseout="eventMouseOut">
+
+    <!-- TOOLTIP -->
+    <data-table-tooltip :is-show="isTooltipShow"
+                        :data-properties="isTooltipProperties"
+                        @click="isTooltipShow = false" 
+                        @mousemove="isTooltipShow = false">
+      {{ isTooltipProperties.text }}
+    </data-table-tooltip>
+
+    <!-- OVERFLOW TEXT -->
+    <data-table-overflow d-id="body"
+                         :data-properties="isTooltipProperties"
+                         @is-show="isTooltipShow = true" 
+                         @is-hide="isTooltipShow = false"></data-table-overflow>
+
     <div class="header-row" 
          :class="`header-row_${typeHeight}`"
          :style="template">
@@ -7,7 +24,7 @@
       <div class="header-column header-column__action-max"
            :class="`header-column_${typeColumn}`"
            v-if="computedActionMax">
-        <span>1</span>
+        <span style="visibility: hidden">1</span>
       </div>
 
       <div v-for="(item, index) in items"
@@ -25,16 +42,23 @@
 </template>
 
 <script>
-import { DataTable } from '../DataTable.js';
+import DataTableOverflow from '../DataTableOverflow.vue';
+import DataTableTooltip from '../DataTableTooltip.vue'; 
 import DataTableContentDisplay from '../DataTableContentDisplay.vue';
+
+import { DataTable } from '../DataTable.js';
+import { Events } from './mixins/Events.js';
 
 export default {
   name: 'DataTableHeader',
   components: {
+    DataTableOverflow,
+    DataTableTooltip,
     DataTableContentDisplay,
   },
   mixins: [
     DataTable,
+    Events,
   ],
   props: {
     template: Object,

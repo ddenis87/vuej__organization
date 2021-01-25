@@ -8,7 +8,7 @@
 
       <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
                       :disabled="(!isMountTable)"
-                      @click="$emit('toggle-type-row')">{{ (typeHeight[typeHeightNumber] == 'fixed') ? 'Строки сжато' : (typeHeight[typeHeightNumber] == 'dense') ? 'Строки свободно' : 'Строки авто' }}</el-button-icon>
+                      @click="$emit('toggle-type-row')">{{ (typeHeight[typeHeightNumber] == 'fixed') ? 'Строки сжато' : (typeHeight[typeHeightNumber] == 'dense') ? 'Строки свободно' : 'Строки фиксировано' }}</el-button-icon>
       <el-button-icon icon="mdi-view-split-horizontal"
                       :icon-color="(isExpansion) ? 'blue' : ''"
                       :disabled="(!isMountTable || isMultiline)"
@@ -16,7 +16,7 @@
       <v-divider vertical></v-divider>
       <el-button-icon :icon="(typeColumn == 'fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel'" 
                       :disabled="!isMountTable"
-                      @click="$emit('toggle-type-column')">{{ (typeColumn == 'fixed') ? 'Столбцы сжато' : 'Столбцы свободно' }}</el-button-icon>
+                      @click="$emit('toggle-type-column')">{{ (typeColumn == 'fixed') ? 'Столбцы сжато' : 'Столбцы фиксировано' }}</el-button-icon>
       <v-divider vertical></v-divider>
       <el-button-icon icon="mdi-page-layout-footer"
                       :icon-color="(isFooter) ? 'blue' : ''"
@@ -37,9 +37,9 @@
     <dialog-bar-right is-dialog-name="Фильтры" 
                       :is-dialog-show="isOpenFilter" 
                       @close-dialog="isOpenFilter = false">
-      <!-- <data-filter :table-name="tableName" 
+      <data-filter :table-name="tableName" 
                    @accept="isOpenFilter = false"
-                   @close="isOpenFilter = false"></data-filter> -->
+                   @close="isOpenFilter = false"></data-filter>
     </dialog-bar-right>
       
     <dialog-full-page :is-dialog-name="isDialogName" 
@@ -105,7 +105,7 @@ export default {
     isDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }
   },
   watch: {
-    focusedElement() { this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : {} },
+    focusedElement() { if (typeof(this.focusedElement) == 'object') this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : {} },
   },
   methods: {
     eventClickAdding() {
