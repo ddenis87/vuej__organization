@@ -61,7 +61,6 @@ html, body {
   }
   &-body {
     grid-area: app-body;
-    // border: thin solid purple;
     height: 100%;
     padding-top: 3px;
   }

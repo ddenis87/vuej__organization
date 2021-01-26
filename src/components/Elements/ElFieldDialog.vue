@@ -3,8 +3,7 @@
     <!-- @click.stop - stop slider list -->
     <!-- @click:append-outer - open dialog -->
     <!-- @focus - for selected inner text -->
-    <v-autocomplete 
-                    class="el-field-dialog"
+    <v-autocomplete class="el-field-dialog"
                     dense
                     return-object
                     append-icon="mdi-dots-horizontal"
@@ -116,21 +115,23 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      if (this.selectedValue) {
+    if (this.selectedValue) {
+      setTimeout(() => {
         document.querySelector(`.content-editing .v-select__slot input`).select();
         document.querySelector(`.content-editing .v-select__slot input`).focus();
-      }
-    }, 10);
+      }, 10);
+    }
   },
   methods: {
     eventDialogOpen(event) { ////////
       // console.log('dialog open');
       this.isShowDialog = true;
-      setTimeout(() => {
-        document.querySelector(`.content-editing .v-select__slot input`).select();
-        document.querySelector(`.content-editing .v-select__slot input`).focus();
-      },10);
+      if (this.selectedValue) {
+        setTimeout(() => {
+          document.querySelector(`.content-editing .v-select__slot input`).select();
+          document.querySelector(`.content-editing .v-select__slot input`).focus();
+        },10);
+      }
     },
     eventDialogClose(event) {
       // console.log('dialog close');

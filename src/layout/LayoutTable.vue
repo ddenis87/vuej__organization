@@ -20,7 +20,7 @@ export default {
   grid-template-areas: "view";
   grid-template-rows: 1fr;
   grid-template-columns: 100%;
-  padding: 0px 2px;
+  padding: 0px 0px;
   &__view {
     grid-area: view;
     height: calc(100vh - 70px);

@@ -45,7 +45,7 @@
           </v-row>
           <v-row>
             <v-col cols="12"><el-field-dialog :single-line="false" :label="true" 
-                                              :properties="fieldForm.bk"
+                                              :properties="assingObject(fieldForm.bk, {related_model_view: '{head_code} - {head_name}'})"
                                               v-model="fieldFormValue.bk"></el-field-dialog></v-col>
           </v-row>
         </v-container>

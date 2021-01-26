@@ -34,20 +34,24 @@ export const TheTableForm = {
     },
   },
   created() {
-    console.log(this.tableName);
     this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: this.tableName});
   },
   methods: {
+    assingObject(base, added) {
+      return Object.assign(base, added);
+    },
     eventClickActionCancel() {
       this.$emit('event-action-cancel');
-      this.fieldFormValueClear();
+      this.$refs.formAction.reset();
+      // this.fieldFormValueClear();
     },
     eventClickActionAccept() {
       if (!this.fieldFormValueValidation()) return;
       let option = {actionName: (this.focusedElement == null) ? 'adding' : 'editing', values: {}};
       Object.assign(option.values, this.fieldFormValue);
       this.$emit('event-action-accept', option);
-      this.fieldFormValueClear();
+      // this.fieldFormValueClear();
+      this.$refs.formAction.reset();
     },
     fieldFormValueValidation() {
       console.log(this.fieldFormValue);
