@@ -4,7 +4,8 @@ export const LoadingData = {
       let isLoadingData = this.$store.getters[`DataTable/GET_IS_DATA_LOAD`];
       if (!isLoadingData && this.parentElement) {
         this.parentElement.addEventListener('scroll', this.eventScrollPagination);
-        setTimeout(() => this.eventScrollPagination(), 300);
+        if (this.$store.getters[`DataTable/GET_COUNT_RECORD`](this.properties.tableName) != 0)
+          setTimeout(() => this.eventScrollPagination(), 300);
       }
       return isLoadingData;
     },
@@ -19,7 +20,15 @@ export const LoadingData = {
     typeHeight() {
       if (this.typeHeight == 'dense')
       setTimeout(() => this.eventScrollPagination(), 300);
-    }
+    },
+    // isMultiline() {
+    //   this.$store.commit('DataTable/SET_STRING_SORTING', {
+    //     tableName: this.properties.tableName,
+    //     ordering: null,
+    //     key: null,
+    //   });
+    //   this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.tableName});
+    // },
   },
   created() {
     this.$store.dispatch('DataTable/GET_LIST_OPTION', { tableName: this.properties.tableName });

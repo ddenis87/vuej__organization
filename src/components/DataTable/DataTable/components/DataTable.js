@@ -9,6 +9,7 @@ export const DataTable = {
         case 'string':
         case 'integer':
         case 'date':
+        case 'boolean':
           return value;
         case 'choice':
           return value['display_name'];

@@ -24,6 +24,7 @@ export default {
       tablePropertiesUno: {
         tableName: 'organization',
         headers: [
+          {value: 'is_deleted', width: [60,60], subtype: 'icon', subvalue: {true: 'mdi-text-box-remove-outline', false: 'mdi-text-box-outline'}},
           {value: 'id', width: 60,},
           {value: 'institution_code', align: 'end', width: 90, },
           {value: 'registry_date', align: 'start', width: 110, },
@@ -42,20 +43,23 @@ export default {
       tablePropertiesMultiline: {
         tableName: 'organization',
         headers: [
-          [
+          [ {value: 'is_deleted', width: [60,60], subtype: 'icon', subvalue: {true: 'mdi-text-box-remove-outline', false: 'mdi-text-box-outline'}},
             {value: 'id', width: [140, 140],},
             {value: 'title', align: 'start', column: 3, width: [400,],},
           ], [
+            {},
             {value: 'institution_code', align: 'end', width: 140},
             {value: 'inn', width: [120,]},
             {value: 'kpp', width: [120,]},
             {value: 'budget_level', width: [120,]},
           ], [
+            {},
             {value: 'institution_type', width: [130,]},
             {value: 'egrul_status', width: [140, 140]},
             {value: 'rubpnubp_status', width: [140, 140]},
             {value: 'industry_typing', width: [120,]},
           ], [
+            {},
             {value: 'organization_type', align: 'start', width: 115, },
             {value: 'registry_date', align: 'start', width: 90, },
             {value: 'bk', column: 2, width: [180, ], related_model_view: '{head_code} - {head_name}'},

@@ -10,14 +10,21 @@ export default {
     state[option.tableName].filterString = filterString;
   },
   SET_STRING_SORTING(state, option = null) {
-    if (option == null) state[option.tableName].stringSorting = '';
+    if (option.key == null) {
+      state[option.tableName].stringSorting = '';
+      return;
+    }
     let stringSorting = '&ordering=';
     stringSorting += `${(option.ordering) ? '' : '-'}${option.key}`;
     state[option.tableName].stringSorting = stringSorting;
   },
   SET_STRING_FREE_SEARCH(state, option = null) {
-    if (option == null) state[option.tableName].stringFreeSearch = '';
-    state[option.tableName].stringFreeSearch = `&search=${option.value}`;
+    // console.log(option);
+    if (option.value == null) {
+      state[option.tableName].stringFreeSearch = '';
+      return;
+    }
+    state[option.tableName].stringFreeSearch = `&search=${option.value.toUpperCase()}`;
   },
   // SET_TABLE_NAME(state, option) { state[option.tableName].tableName = option.tableName; },
   
@@ -35,6 +42,12 @@ export default {
   SET_LIST_DATA(state, option) {
     if (option.clear == true) {
       state[option.tableName].listData.length = 0;
+      if (option.data.count == 0) {
+        console.log('clear');
+        state[option.tableName].listData = [];
+        state[option.tableName].count = 0;
+        return;
+      };
     }
     let listOption = state[option.tableName].listOption; //
     if (Array.isArray(option.data)) {

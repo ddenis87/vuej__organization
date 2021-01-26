@@ -21,7 +21,7 @@ export const Events = {
     },
   },
   methods: {
-    eventMouseOver() {
+    eventMouseOver(event) {
       if (event.target.classList.contains('content-display')) {
         let parent = event.target.closest('.header-column');
         this.isTooltipTimer = setTimeout(() => {

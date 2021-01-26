@@ -3,7 +3,9 @@
     <v-toolbar height="40" flat>
       <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="eventClickAdding">Добавить</el-button-icon>
       <el-button-icon icon="mdi-pencil" :disabled="!isFocusedElement" @click="eventClickEditing">Изменить</el-button-icon>
-      <el-button-icon icon="mdi-delete" :disabled="!isFocusedElement" @click="eventActionDeleting">Удалить</el-button-icon>
+      <v-divider vertical></v-divider>
+      <el-button-icon icon="mdi-close" :disabled="!isFocusedElement" @click="eventActionDeleting">Удалить</el-button-icon>
+      <el-button-icon icon="mdi-delete-variant" :disabled="!isFocusedElement" @click="eventActionDeleting">Показать помеченные на удаление</el-button-icon>
       <v-spacer></v-spacer>
 
       <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 

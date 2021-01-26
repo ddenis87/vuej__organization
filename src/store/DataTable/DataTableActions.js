@@ -80,6 +80,7 @@ export default {
           data: response.data,
           clear: true,
         }
+        console.log(mutationOption);
         state.commit('SET_LIST_DATA', mutationOption);
       })
       .catch(err => {

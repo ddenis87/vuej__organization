@@ -39,12 +39,9 @@
                                     :type-height="typeHeight">
           
         </data-table-content-display>
-        <!-- <v-btn x-small icon class="header-column__sort"> -->
         <div class="header-column__sort">
-          <v-icon  small color="blue">mdi-chevron-down</v-icon>
+          <v-icon>mdi-menu-down</v-icon>
         </div>
-          
-        <!-- </v-btn> -->
       </div>
     </div>
   </div>
@@ -104,8 +101,11 @@ export default {
       &:hover > .header-column__sort { visibility: visible; }
       &__sort {
         position: absolute;
+        display: inline-flex;
+        align-items: center;
         top: -1px;
-        right: -4px;
+        right: -6px;
+        height: 100%;
         visibility: hidden;
         &_active {
           visibility: visible;

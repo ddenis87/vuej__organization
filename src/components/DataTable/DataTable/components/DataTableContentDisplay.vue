@@ -2,10 +2,10 @@
   <div class="content-display"
        :class="`content-display_${typeHeight}`"
        :style="`text-align: ${properties['align']}`">
-    {{ displayValue }}
-    <!-- <div class="content-display__sort">
-      <slot></slot>
-    </div> -->
+    <div v-if="properties.type == 'boolean'">
+      <v-icon small v-if="properties.subtype == 'icon'">{{ (value) ? properties.subvalue.true : properties.subvalue.false }}</v-icon>
+    </div>
+    <span v-else v-text="displayValue"></span>
   </div>
 </template>
 
