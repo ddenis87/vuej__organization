@@ -8,6 +8,7 @@ export const DataTable = {
       switch(properties.type) {
         case 'string':
         case 'integer':
+        case 'date':
           return value;
         case 'choice':
           return value['display_name'];

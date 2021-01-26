@@ -26,10 +26,11 @@ export default {
         headers: [
           {value: 'id', width: 60,},
           {value: 'institution_code', align: 'end', width: 90, },
+          {value: 'registry_date', align: 'start', width: 110, },
           {value: 'organization_type', align: 'start', width: 115, },
           {value: 'title', align: 'start', width: [400,],},
-          {value: 'inn', width: [100, 100]},
-          {value: 'kpp', width: [100, 100],},
+          {value: 'inn', width: [110, 110]},
+          {value: 'kpp', width: [110, 110],},
           {value: 'rubpnubp_status', width: [100, 100]},
           {value: 'egrul_status', width: [145, 145]},
           {value: 'industry_typing', width: [120, 120]},
@@ -56,7 +57,8 @@ export default {
             {value: 'industry_typing', width: [120,]},
           ], [
             {value: 'organization_type', align: 'start', width: 115, },
-            {value: 'bk', column: 3, width: [180, ], related_model_view: '{head_code} - {head_name}'},
+            {value: 'registry_date', align: 'start', width: 90, },
+            {value: 'bk', column: 2, width: [180, ], related_model_view: '{head_code} - {head_name}'},
           ]
         ],
       },
