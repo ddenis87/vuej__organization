@@ -12,7 +12,7 @@
     </data-table-tooltip>
 
     <!-- OVERFLOW TEXT -->
-    <data-table-overflow d-id="body"
+    <data-table-overflow :d-id="`${id}-body`"
                          :data-properties="isTooltipProperties"
                          @is-show="isTooltipShow = true" 
                          @is-hide="isTooltipShow = false"></data-table-overflow>
@@ -92,6 +92,7 @@ export default {
     Editing,
   ],
   props: {
+    id: { type: String, default: 'dataTable' },
     tableName: { type: String, default: '' },
     template: Object,
     typeHeight: { type: String, default: 'fixed' },

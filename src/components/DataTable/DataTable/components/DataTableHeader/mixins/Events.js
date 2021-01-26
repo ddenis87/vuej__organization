@@ -1,6 +1,9 @@
 export const Events = {
   data() {
     return {
+      // isSorting: false,
+      isSortingOrderAsc: false,
+      isSortingCurrentField: '',
       isTooltipShow: false,
       isTooltipTimer: null,
       isTooltipProperties: { top: 0, left: 0, width: 0, height: 0, text: '' },
@@ -32,11 +35,38 @@ export const Events = {
         }, 1100);
       }
     },
-
     eventMouseOut(event) {
       if (event.relatedTarget?.classList?.contains('tooltip')) return;
       this.isTooltipShow = false;
       clearTimeout(this.isTooltipTimer);
+    },
+    eventClickColumn(event) {
+      if (document.querySelector('.header-row').querySelector('.header-column__sort_active')) {
+        document.querySelector('.header-row').querySelector('.header-column__sort_active').classList.remove('header-column__sort_active_asc');
+        document.querySelector('.header-row').querySelector('.header-column__sort_active').classList.remove('header-column__sort_active');
+      }
+
+      let targetColumn = event.target.closest('.header-column');
+      targetColumn.querySelector('.header-column__sort').classList.add('header-column__sort_active');
+
+      if (this.isSortingOrderAsc == false) {
+        this.isSortingOrderAsc = true;
+        targetColumn.querySelector('.header-column__sort').classList.add('header-column__sort_active_asc');
+      } else {
+        this.isSortingOrderAsc = false;
+        targetColumn.querySelector('.header-column__sort').classList.remove('header-column__sort_active_asc');
+      }
+      if (this.isSortingCurrentField != targetColumn.getAttribute('data-key')) {
+        this.isSortingCurrentField = targetColumn.getAttribute('data-key');
+        this.isSortingOrderAsc = true;
+        targetColumn.querySelector('.header-column__sort').classList.add('header-column__sort_active_asc');
+      };
+      this.$store.commit('DataTable/SET_STRING_SORTING', {
+        tableName: this.tableName,
+        ordering: this.isSortingOrderAsc,
+        key: targetColumn.getAttribute('data-key'),
+      });
+      this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.tableName});
     },
   },
 }

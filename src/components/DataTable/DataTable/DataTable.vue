@@ -1,7 +1,9 @@
 <template>
   <div class="data-table" :id="id">
     <div class="data-table__header">
-      <data-table-header :template="computedTemplateTable"
+      <data-table-header :id="`data-table-${id}`"
+                         :table-name="properties.tableName"
+                         :template="computedTemplateTable"
                          :type-height="typeHeight"
                          :type-column="typeColumn"
                          :items="gettingDataHeader"
@@ -11,7 +13,8 @@
     </div>
 
     <div class="data-table__body">
-      <data-table-body :table-name="properties.tableName"
+      <data-table-body :id="`data-table-${id}`"
+                       :table-name="properties.tableName"
                        :template="computedTemplateTable"
                        :type-height="typeHeight"
                        :type-column="typeColumn"

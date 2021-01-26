@@ -40,7 +40,7 @@ export default {
         return;
       }
       let overflowLine = document.querySelector(`.${this.dId}-data-overflow-line`);
-      if (overflow.getBoundingClientRect().width - 5 < overflowLine.getBoundingClientRect().width) {
+      if (overflow.getBoundingClientRect().width + 4 < overflowLine.getBoundingClientRect().width) {
         this.$emit('is-show');
         return;
       }

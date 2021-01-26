@@ -28,9 +28,9 @@ export default {
           {value: 'institution_code', align: 'end', width: 90, },
           {value: 'organization_type', align: 'start', width: 115, },
           {value: 'title', align: 'start', width: [400,],},
-          {value: 'inn', width: [115, 120]},
-          {value: 'kpp', width: [115, 115],},
-          {value: 'rubpnubp_status', width: [140, 140]},
+          {value: 'inn', width: [100, 100]},
+          {value: 'kpp', width: [100, 100],},
+          {value: 'rubpnubp_status', width: [100, 100]},
           {value: 'egrul_status', width: [145, 145]},
           {value: 'industry_typing', width: [120, 120]},
           {value: 'institution_type', width: [130, 130]},
@@ -56,7 +56,7 @@ export default {
             {value: 'industry_typing', width: [120,]},
           ], [
             {value: 'organization_type', align: 'start', width: 115, },
-            {value: 'bk', column: 3, width: [180, ], related_model_view: { delimiter: ' - ', field: ['head_code','head_name'] }},
+            {value: 'bk', column: 3, width: [180, ], related_model_view: '{head_code} - {head_name}'},
           ]
         ],
       },

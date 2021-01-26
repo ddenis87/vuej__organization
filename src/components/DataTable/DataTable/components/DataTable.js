@@ -4,6 +4,7 @@ export const DataTable = {
   },
   methods: {
     gettingValueForType(properties, value) {
+      if (value == null) return '';
       switch(properties.type) {
         case 'string':
         case 'integer':
@@ -12,11 +13,11 @@ export const DataTable = {
           return value['display_name'];
         case 'field': {
           let newValue = properties.related_model_view;
-          let templateValue = properties.related_model_view.match(/[{\w}]/gi).join(',').replace(/,/g, '').slice(1, -1).split('}{')
+          let templateValue = properties.related_model_view.match(/[{\w}]/gi).join(',').replace(/,/g, '').slice(1, -1).split('}{');
           templateValue.forEach(element => {
             newValue = newValue.replace(`{${element}}`, value[element]);
           });
-          return newValue
+          return newValue;
         }
       }
     },

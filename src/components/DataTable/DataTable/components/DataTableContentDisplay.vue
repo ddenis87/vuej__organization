@@ -3,6 +3,9 @@
        :class="`content-display_${typeHeight}`"
        :style="`text-align: ${properties['align']}`">
     {{ displayValue }}
+    <!-- <div class="content-display__sort">
+      <slot></slot>
+    </div> -->
   </div>
 </template>
 
@@ -29,10 +32,19 @@ export default {
 
 <style lang="scss" scoped>
 .content-display {
+  position: relative;
   width: 100%;
   -webkit-user-select: none;
   text-overflow: ellipsis;
   overflow: hidden;
+
+  // &__sort {
+  //   position: absolute;
+  //   top: -2px;
+  //   right: -8px;
+  //   z-index: 9999;
+  // }
+
   &_fixed {
     display: -webkit-box;
     -webkit-box-orient: vertical;

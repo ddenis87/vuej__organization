@@ -12,14 +12,14 @@
     </data-table-tooltip>
 
     <!-- OVERFLOW TEXT -->
-    <data-table-overflow d-id="body"
+    <data-table-overflow :d-id="`${id}-header`"
                          :data-properties="isTooltipProperties"
                          @is-show="isTooltipShow = true" 
                          @is-hide="isTooltipShow = false"></data-table-overflow>
 
     <div class="header-row" 
          :class="`header-row_${typeHeight}`"
-         :style="template">
+         :style="template" @click="(event) => eventClickColumn(event)">
       
       <div class="header-column header-column__action-max"
            :class="`header-column_${typeColumn}`"
@@ -32,10 +32,19 @@
            :class="`header-column_${typeColumn}`"
            :key="`header-${index}`"
            :style="item.position_in_template"
-           :data-overflow-text="item.label">
+           :data-overflow-text="item.label"
+           :data-key="item.value">
         <data-table-content-display :value="item.label"
                                     :properties="{type: 'string'}"
-                                    :type-height="typeHeight"></data-table-content-display>
+                                    :type-height="typeHeight">
+          
+        </data-table-content-display>
+        <!-- <v-btn x-small icon class="header-column__sort"> -->
+        <div class="header-column__sort">
+          <v-icon  small color="blue">mdi-chevron-down</v-icon>
+        </div>
+          
+        <!-- </v-btn> -->
       </div>
     </div>
   </div>
@@ -61,6 +70,8 @@ export default {
     Events,
   ],
   props: {
+    id: { type: String, default: 'dataTable' },
+    tableName: { type: String, default: '' },
     template: Object,
     typeHeight: { type: String, default: 'fixed' },
     typeColumn: { type: String, default: 'fixed' },
@@ -77,7 +88,6 @@ export default {
 .header {
   &-row {
     display: grid;
-    // border-top: 2px solid white;
     border-bottom: $rowBorder;
     background-color: white;
     
@@ -89,7 +99,22 @@ export default {
     &_dense { grid-template-rows: repeat(auto-fit, $rowHeightDense); }
     &_auto  { grid-template-rows: repeat(auto-fit, $rowHeightAuto);  }
     .header-column {
-      
+      position: relative;
+
+      &:hover > .header-column__sort { visibility: visible; }
+      &__sort {
+        position: absolute;
+        top: -1px;
+        right: -4px;
+        visibility: hidden;
+        &_active {
+          visibility: visible;
+          &_asc {
+            transform: rotate(180deg);
+          }
+        }
+      }
+        
       &__action-max {
         grid-area: action_max;
         visibility: hidden;
@@ -108,7 +133,7 @@ export default {
         padding-left: $columnPaddingLRDense; 
         padding-right: $columnPaddingLRDense;
 
-        white-space: nowrap;
+        // white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
       }

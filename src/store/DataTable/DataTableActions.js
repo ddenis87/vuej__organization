@@ -68,10 +68,11 @@ export default {
   GET_LIST_DATA(state, option) {
     state.commit('SET_IS_DATA_LOAD', true);
     let filterString = state.getters.GET_FILTER_STRING(option.tableName);
+    let filterSorting = state.getters.GET_STRING_SORTING(option.tableName);
     let countRecordLoad = state.getters.GET_COUNT_RECORD_LOAD(option.tableName);
-    console.log(state.getters.GET_ADDRESS_API + option.tableName + countRecordLoad + filterString);
+    console.log(state.getters.GET_ADDRESS_API + option.tableName + countRecordLoad + filterSorting + filterString);
     axios
-      .get(state.getters.GET_ADDRESS_API + option.tableName + countRecordLoad + filterString)
+      .get(state.getters.GET_ADDRESS_API + option.tableName + countRecordLoad + filterSorting + filterString)
       .then(response => {
         let mutationOption = {
           tableName: option.tableName,

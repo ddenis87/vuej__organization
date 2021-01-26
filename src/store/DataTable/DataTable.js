@@ -5,29 +5,23 @@ import actions from './DataTableActions.js';
 export default {
   namespaced: true,
   state: {
-    // addressApi: 'https://an67.pythonanywhere.com/',
-    // addressApi: 'https://httpbin.org/basic-auth/foo/bar',
     addressApi: 'https://an67.pythonanywhere.com/api/v1/',
-    // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/v1/',
-    // addressApi: 'http://an67.pythonanywhere.com/api/v1/',
-    // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api-token-auth/',
-    // addressApi: 'https://cors-anywhere.herokuapp.com/http://an67.pythonanywhere.com/api/',
     isDataLoad: false,
 
     "budgetclassification": {
-      // tableName: null,
       description: null,
       countRecordLoad: '?page_size=30',
       filterString: '',
+      stringSorting: '',
       count: 0,
       listOption: [],
       listData: [],
     },
     "organization" : {
-      // tableName: null,
       description: null,
       countRecordLoad: '?page_size=30',
       filterString: '',
+      stringSorting: '',
       count: 0,
       listOption: {
         id: {value: 'id', label: 'ID', type: 'string'},
