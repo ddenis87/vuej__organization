@@ -76,40 +76,31 @@ export default {
   computed: {
     isValue() { return (this.fieldValue == undefined) ? true : false },
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
-    fieldListText() {
-      // let objectValue = this.properties.related_model_view;
-      // if (Array.isArray(objectValue.field)) {
-      //   let newValue = '';
-      //   objectValue.field.forEach((element, index) => {
-      //     newValue += this.properties.text[element];
-      //     if (index != objectValue.field.length - 1) newValue += objectValue.delimiter;
-      //   });
-      //   console.log(newValue);
-      //   return newValue;
-      // } else {
-      //   console.log(this.properties.text[objectValue.field]);
-      //   return this.properties.text[objectValue.field];
-      // }
-      // console.log(this.properties);
-      return 'head_name';
-      return (this.properties?.objectValue) ? this.properties.objectValue : 'head_name';
-    },
+    fieldListText() { return ('related_model_view' in this.properties) ? 'text' : 'id'; },
     fieldList() {
-      // if (!this.properties?.tableName) return [];
       let fieldList = [];
       let fieldListStore = this.$store.getters[`DataTable/GET_LIST_DATA`](this.properties['related_model_name']);
-      // console.log(fieldListStore);
       if (fieldListStore.length == 0) {
         this.$store.dispatch(`DataTable/GET_LIST_OPTION`, { tableName: this.properties['related_model_name'] });
         return [];
       }
-      // let searchRegular = /[qw]/gi
-      // console.log(fieldListStore);
+
+      if ('related_model_view' in this.properties) {
+        let templateValue = this.properties.related_model_view.match(/[{\w}]/gi).join(',').replace(/,/g, '').slice(1, -1).split('}{');
+        fieldListStore.forEach(element => {
+          let newValue = '';
+          newValue = this.properties.related_model_view;
+          templateValue.forEach(item => {
+            newValue = newValue.replace(`{${item}}`, element[item]);
+          });
+          fieldList.push(Object.assign(element, {text: newValue}));
+        });
+        return fieldList;
+      }
       return fieldListStore;
     },
     fieldShowValidation() { return (this.showValidation) ? false : true },
     displayNameTable() {
-      // console.log(this.properties);
       return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`](this.properties['related_model_name']);
     },
     componentForm() {
@@ -127,10 +118,8 @@ export default {
   mounted() {
     setTimeout(() => {
       if (this.selectedValue) {
-        // document.querySelector(`#${this.fieldId}`).select();
         document.querySelector(`.content-editing .v-select__slot input`).select();
         document.querySelector(`.content-editing .v-select__slot input`).focus();
-        // document.querySelector(`#${this.fieldId}`).focus();
       }
     }, 10);
   },
@@ -139,7 +128,6 @@ export default {
       // console.log('dialog open');
       this.isShowDialog = true;
       setTimeout(() => {
-        // document.querySelector(`#${this.fieldId}`).focus();
         document.querySelector(`.content-editing .v-select__slot input`).select();
         document.querySelector(`.content-editing .v-select__slot input`).focus();
       },10);
@@ -180,7 +168,7 @@ export default {
         event.preventDefault();
         if (this.fieldRequired && this.fieldValue.length == 0) { return; }
         // console.log(this.fieldValue);
-        let newFieldValue = this.$store.getters['DataTable/GET_LIST_DATA_ROW'](this.properties.tableName, this.fieldValue.toString());
+        // let newFieldValue = this.$store.getters['DataTable/GET_LIST_DATA_ROW'](this.properties.tableName, this.fieldValue.toString());
         this.isInputEmit = true;
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
