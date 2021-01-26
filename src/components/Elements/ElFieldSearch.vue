@@ -9,7 +9,7 @@
                 clearable
                 prepend-icon="mdi-magnify">
       <template v-slot:append>
-        <v-btn icon small><v-icon small>mdi-arrow-right</v-icon></v-btn>
+        <v-btn class="el-field-string__append" icon small @click="$emit('free-search', fieldValue)"><v-icon >mdi-arrow-right</v-icon></v-btn>
         
       </template>
     </v-text-field>
@@ -45,7 +45,9 @@ export default {
 .el-field-string {
   width: 100%;
   font-size: 14px;
-  
+  &__append {
+    margin-top: -2px;
+  }
 }
 .v-text-field {
   margin-top: -3.5px;

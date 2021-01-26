@@ -13,6 +13,7 @@ export default {
       countRecordLoad: '?page_size=30',
       filterString: '',
       stringSorting: '',
+      stringFreeSearch: '',
       count: 0,
       listOption: [],
       listData: [],
@@ -22,6 +23,7 @@ export default {
       countRecordLoad: '?page_size=30',
       filterString: '',
       stringSorting: '',
+      stringFreeSearch: '',
       count: 0,
       listOption: {
         id: {value: 'id', label: 'ID', type: 'string'},

@@ -22,7 +22,7 @@
         <v-toolbar-title>{{ nameTable || 'Выберите таблицу' }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-card min-width="380" max-height="34" flat v-if="isTableMount">
-          <el-field-search label-text="Произвольный поиск по таблице"></el-field-search>
+          <el-field-search label-text="Произвольный поиск по таблице" @free-search="freeSearch"></el-field-search>
         </v-card>
       </v-toolbar>
 
@@ -91,10 +91,10 @@ export default {
   data() {
     return {
       isMenu: false,
-      activeMenu: {value: 'Организации', path: 'TableOrganization'},
+      activeMenu: {value: 'Организации', path: 'TableOrganization', tableName: 'organization'},
       listMenu: [
-        {value: 'Организации', path: 'TableOrganization'},
-        {value: 'БК', path: 'TableBudgetclassification'},
+        {value: 'Организации', path: 'TableOrganization', tableName: 'organization'},
+        {value: 'БК', path: 'TableBudgetclassification', tableName: 'budgetclassification'},
       ],
 
       formProperties: null,
@@ -150,6 +150,13 @@ export default {
     },
     toggleMultiline() {
       this.isMultiline = !this.isMultiline;
+    },
+    freeSearch(value) {
+      this.$store.commit('DataTable/SET_STRING_FREE_SEARCH', {
+        tableName: this.activeMenu.tableName,
+        value: value,
+      });
+      this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.activeMenu.tableName});
     },
   },
 }

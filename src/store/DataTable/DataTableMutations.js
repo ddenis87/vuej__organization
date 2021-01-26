@@ -10,10 +10,14 @@ export default {
     state[option.tableName].filterString = filterString;
   },
   SET_STRING_SORTING(state, option = null) {
-    if (option == null) return '';
+    if (option == null) state[option.tableName].stringSorting = '';
     let stringSorting = '&ordering=';
     stringSorting += `${(option.ordering) ? '' : '-'}${option.key}`;
     state[option.tableName].stringSorting = stringSorting;
+  },
+  SET_STRING_FREE_SEARCH(state, option = null) {
+    if (option == null) state[option.tableName].stringFreeSearch = '';
+    state[option.tableName].stringFreeSearch = `&search=${option.value}`;
   },
   // SET_TABLE_NAME(state, option) { state[option.tableName].tableName = option.tableName; },
   
