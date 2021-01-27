@@ -18,7 +18,8 @@ export const Editing = {
     },
     checkForEditable(event, columnProperties) {
       if (!this.isEditable) { return false; } // if table properties editable set in false // ??? emit rowProperties
-      if (columnProperties['read_only']) { return false; } // field not can edit
+      if (columnProperties['read_only']) { return false; } // field not can edit (at API)
+      if (columnProperties['disabled'] == true) { return false } // disabled in properties table
       if (event.target.closest('.body-column').querySelector('.box-display.display-none')) { return false; } // if we are already editing
       return true;
     },

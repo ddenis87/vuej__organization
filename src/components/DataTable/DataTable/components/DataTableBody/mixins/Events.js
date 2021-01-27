@@ -47,10 +47,11 @@ export const Events = {
     },
     
     // EVENT FOCUS/SELECT/BLUR ROW
-    eventRowFocus(event) {
+    eventRowFocus(event, itemRow) {
       this.isRowFocus = true;
       event.target.classList.remove('body-row_hover');
       event.target.classList.add('body-row_focus');
+      this.$emit('event-row-focused', event, itemRow);
     },
     eventRowBlur(event) {
       this.isRowFocus = false;
@@ -90,22 +91,35 @@ export const Events = {
     },
 
     // EVENT NAVIGATION FOR TABLE
-    eventRowKeydown(event) {
+    eventRowKeydown(event, itemRow) {
       if (event.code.includes('Arrow') || event.code == 'Tab') {
         event.preventDefault();
         if ((event.code == 'ArrowDown' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return }
         if ((event.code == 'ArrowUp' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return }
       }
+      if (event.code == 'Delete') {
+        let sendOption = {
+          tableName: this.tableName,
+          recordId: itemRow['id'],
+          fieldName: 'is_deleted',
+          fieldValue: (itemRow['is_deleted']) ? false : true,
+        }
+        this.$store.commit('DataTable/ACTION_EDITING_ELEMENT', sendOption);
+      }
     },
-    eventColumnKeydown(event, rowProperties, columnProperties, columnValue) {
+    eventColumnKeydown(event, rowProperties, columnProperties, columnValue) { // ДОБАВИТЬ EMIT FOCUSED
       if (event.code.includes('Arrow') || event.code == 'Tab') {
+        event.stopPropagation();
         event.preventDefault();
-        if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return }
-        if ((event.code == 'ArrowLeft' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return }
+        if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return; }
+        if ((event.code == 'ArrowLeft' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return; }
         if (event.code == 'ArrowDown' && event.target.parentElement.nextElementSibling) { event.target.parentElement.nextElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
         if (event.code == 'ArrowUp' && event.target.parentElement.previousElementSibling) { event.target.parentElement.previousElementSibling.children[event.target.getAttribute('tabindex')].focus(); return; }
       }
-      if (event.code.includes('Key') || event.code.includes('Digit')) this.eventColumnDblclick(event, rowProperties, columnProperties, columnValue);
+      if (event.code.includes('Key') || event.code.includes('Digit')) {
+        event.stopPropagation();
+        this.eventColumnDblclick(event, rowProperties, columnProperties, columnValue);
+      }
     },
 
     // FUNCTION TOOLTIP

@@ -24,7 +24,7 @@ export default {
       tablePropertiesUno: {
         tableName: 'organization',
         headers: [
-          {value: 'is_deleted', width: [60,60], subtype: 'icon', subvalue: {true: 'mdi-text-box-remove-outline', false: 'mdi-text-box-outline'}},
+          {value: 'is_deleted', width: [60,60], disabled: true, subtype: 'icon', subvalue: {true: 'mdi-text-box-remove-outline', false: 'mdi-text-box-outline'}},
           {value: 'id', width: 60,},
           {value: 'institution_code', align: 'end', width: 90, },
           {value: 'registry_date', align: 'start', width: 110, },

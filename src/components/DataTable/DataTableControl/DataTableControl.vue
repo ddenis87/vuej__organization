@@ -4,8 +4,8 @@
       <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="eventClickAdding">Добавить</el-button-icon>
       <el-button-icon icon="mdi-pencil" :disabled="!isFocusedElement" @click="eventClickEditing">Изменить</el-button-icon>
       <v-divider vertical></v-divider>
-      <el-button-icon icon="mdi-close" :disabled="!isFocusedElement" @click="eventActionDeleting">Удалить</el-button-icon>
-      <el-button-icon icon="mdi-delete-variant" :disabled="!isFocusedElement" @click="eventActionDeleting">Показать помеченные на удаление</el-button-icon>
+      <el-button-icon icon="mdi-close" :disabled="!isFocusedElement" @click="eventActionMarkDeleting">Поменить на удаление</el-button-icon>
+      <el-button-icon icon="mdi-delete-variant" @click="eventActionShowMarkDeleting">Показать помеченные на удаление</el-button-icon>
       <v-spacer></v-spacer>
 
       <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
@@ -44,7 +44,7 @@
                    @close="isOpenFilter = false"></data-filter>
     </dialog-bar-right>
       
-    <dialog-full-page :is-dialog-name="isDialogName" 
+    <dialog-full-page :is-dialog-name="`${isDialogName} ${(isMarkDeletedRecord) ? '(помечен на удаление)' : ''}`" 
                       :is-dialog-show="isOpenDialog" 
                       @close-dialog="eventCloseDialog">
       <component :is="componentForm" 
@@ -71,7 +71,7 @@ export default {
     ElButtonIcon,
   },
   props: {
-    focusedElement: Object,
+    focusedElement: null,
     formProperties: Object,
 
     typeHeightNumber: { type: Number, default: 0 },
@@ -89,6 +89,7 @@ export default {
     }
   },
   computed: {
+    isMarkDeletedRecord() { return (this.focusedElementForm) ? !!this.focusedElementForm.is_deleted : false; },
     isMountTable() { return (this.formProperties) ? true : false },
     tableName() { return (this.formProperties) ? this.formProperties.tableName : null },
     componentForm() {
@@ -134,13 +135,18 @@ export default {
     eventActionCancel() {
       this.eventCloseDialog();
     },
-    eventActionDeleting() {
+    eventActionMarkDeleting() {
       let sendOption = {
-        actionName: 'deleting',
-        values: Object.assign({}, this.focusedElement),
+        tableName: this.formProperties.tableName,
+        recordId: this.focusedElement['id'],
+        fieldName: 'is_deleted',
+        fieldValue: (this.focusedElement['is_deleted']) ? false : true,
       }
-      this.eventActionAccept(sendOption);
-    }
+      this.$store.commit('DataTable/ACTION_EDITING_ELEMENT', sendOption);
+    },
+    eventActionShowMarkDeleting() {
+
+    },
   },
 }
 </script>

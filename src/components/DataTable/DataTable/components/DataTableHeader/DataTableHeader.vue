@@ -97,15 +97,15 @@ export default {
     &_auto  { grid-template-rows: repeat(auto-fit, $rowHeightAuto);  }
     .header-column {
       position: relative;
-
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(242, 242, 242, .6);
+      }
       &:hover > .header-column__sort { visibility: visible; }
       &__sort {
         position: absolute;
-        display: inline-flex;
-        align-items: center;
         top: -1px;
-        right: -6px;
-        height: 100%;
+        right: -0px;
         visibility: hidden;
         &_active {
           visibility: visible;

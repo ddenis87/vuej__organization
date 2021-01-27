@@ -23,11 +23,11 @@
          :key="`body-row-${indexRow}`"
          :style="template"
          :tabindex="indexRow"
-         @focus="eventRowFocus"
+         @focus="(event) => eventRowFocus(event, itemRow)"
          @blur="eventRowBlur"
          @click="(event) => eventRowClick(event, itemRow)"
          @dblclick="(event) => eventRowDblclick(event, itemRow)"
-         @keydown="eventRowKeydown">
+         @keydown="(event) => eventRowKeydown(event, itemRow)">
       
       <div class="body-column__action-max"
            :class="`body-column_${typeColumn}`"
@@ -47,7 +47,7 @@
            @focus="eventColumnFocus"
            @blur="eventColumnBlur"
            @dblclick="(event) => eventColumnDblclick(event, itemRow, itemColumn, itemRow[itemColumn.value])"
-           @keydown.stop="(event) => eventColumnKeydown(event, itemRow, itemColumn, itemRow[itemColumn.value])"
+           @keydown="(event) => eventColumnKeydown(event, itemRow, itemColumn, itemRow[itemColumn.value])"
            @editing-canceled="editingCanceled"
            @editing-accepted="editingAccepted">
 

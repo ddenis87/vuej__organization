@@ -79,7 +79,7 @@ export default {
     state[option.tableName].listData.splice(index, 1);
     // console.log(state[option.tableName].listData);
   },
-  EDITING_LIST_DATA(state, option) {
+  EDITING_LIST_DATA(state, option) { // editing element in form
     let newItem = {};
     Object.assign(newItem, option.values);
     let index = state[option.tableName].listData.findIndex(item => item.id == option.values.id);
@@ -88,10 +88,19 @@ export default {
 
     state[option.tableName].listData.splice(index, 1, newItem);
   },
-  EDITING_LIST_DATA_FIELD(state, option) {
-    // let newItem = {};
-    // Object.assign(newItem, option.values);
-    let index = state[option.tableName].listData.findIndex(item => item.id == option.id);
-    state[option.tableName].listData[index][option.field] = option.value;
+  // EDITING_LIST_DATA_FIELD(state, option) { // editin column in table
+  //   // let newItem = {};
+  //   // Object.assign(newItem, option.values);
+  //   let index = state[option.tableName].listData.findIndex(item => item.id == option.id);
+  //   state[option.tableName].listData[index][option.field] = option.value;
+  // },
+
+  ACTION_ADDING_RECORD(state, option) {
+    state[option.tableName].listData.unshift(option.values);
   },
+  ACTION_EDITING_ELEMENT(state, option) {
+    let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
+    state[option.tableName].listData[index][option.fieldName] = option.fieldValue;
+  },
+
 }
