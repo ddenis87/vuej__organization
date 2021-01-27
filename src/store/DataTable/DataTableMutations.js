@@ -1,5 +1,8 @@
 export default {
   SET_IS_DATA_LOAD(state, status = false) { state.isDataLoad = status; },
+
+  TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) { state[option.tableName].filterDefault['is_deleted'] = option.value; },
+
   SET_FILTER_STRING(state, option = null) {
     if (option.filters == null) { state[option.tableName].filterString = ''; return; }
     let filterString = '&';

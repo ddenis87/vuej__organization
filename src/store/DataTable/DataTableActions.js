@@ -1,36 +1,15 @@
 import axios from 'axios';
 
-// axios.defaults.withCredentials = true;
-// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-// axios.defaults.xsrfCookieName = 'csrftoken';
-
-// axios.defaults.baseURL = 'http://an67.pythonanywhere.com/api/v1/organization/';
 export default {
   GET_LIST_OPTION(state, option) {
-    // console.log(state.rootGetters['Login/GET_USER_TOKEN_ACCESS']);
+    let addressApi = state.getters.GETTING_ADDRESS_API('option', option.tableName);
     if (state.getters.GET_DESCRIPTION_TABLE(option.tableName)) { return; };
     state.commit('SET_IS_DATA_LOAD', true);
-    // state.commit('SET_TABLE_NAME', { tableName: option.tableName });
     
     let tokenAccess = state.rootGetters['Login/GET_USER_TOKEN_ACCESS'];
-    // console.log(tokenAccess);
     axios.defaults.headers.common = {'Authorization': tokenAccess};
-    // axios.defaults.headers.common = {'Content-Type': 'application/x-www-form-urlencoded'};
-    // console.log(basicAuth);
-    // axios.defaults.headers.common = {'Authorization': `Token ${'46e92c2f2eadaee08d0161613d6f35173d48aeaa'}`};
     axios
-      .options(state.getters.GET_ADDRESS_API + option.tableName + '/')
-      // .get(state.getters.GET_ADDRESS_API + option.tableName + '/')
-      // .post(state.getters.GET_ADDRESS_API,{
-      //   username: 'frontender_1',
-      // password: 'fr01Nt3n63R',
-      // }, {
-      //   headers: {
-      //     username: 'frontender_1',
-      //     password: 'fr01Nt3n63R',
-      //   }
-      // })
-
+      .options(addressApi)
       .then(response => {
         console.log(response);
         let mutationOption = {
@@ -41,63 +20,29 @@ export default {
         state.commit('SET_LIST_OPTION', mutationOption);
         state.dispatch('GET_LIST_DATA', {tableName: option.tableName});
       })
-      .catch(err => {
-        console.log(err);
-
-        // if not work server
-        // state.commit('SET_LIST_OPTION', {
-        //   description: 'Testing table',
-        //   tableName: 'organisations',
-        //   data: {
-        //     id: {value: 'id', label: 'ID', type: 'string'},
-        //     bk: {value: 'bk', label: 'BK', type: 'nested object'},
-        //     institution_code: {value: 'institution_code', label: 'Код', type: 'string'},
-        //     title: {value: 'title', label: 'Наименование', type: 'string'},
-        //     inn: {value: 'inn', label: 'ИНН', type: 'string'},
-        //     egrul_status: {value: 'egrul_status', label: 'ЕГРЮЛ статус', type: 'choice', choices: [
-        //       {display_name: 'Действующий', value: 1},
-        //       {display_name: 'Спец. указания', value: 2},
-        //     ]}
-        //   }
-        // });
-        // state.dispatch('GET_LIST_DATA', {tableName: 'organisations'});
-      })
+      .catch(error => console.log(error))
       .finally(() => state.commit('SET_IS_DATA_LOAD'));
   },
   
   GET_LIST_DATA(state, option) {
     state.commit('SET_IS_DATA_LOAD', true);
-    let filterString = state.getters.GET_FILTER_STRING(option.tableName);
-    let filterSorting = state.getters.GET_STRING_SORTING(option.tableName);
-    let filterFreeSearch = state.getters.GET_STRING_FREE_SEARCH(option.tableName);
-    let countRecordLoad = state.getters.GET_COUNT_RECORD_LOAD(option.tableName);
-    console.log(state.getters.GET_ADDRESS_API + option.tableName + countRecordLoad + filterSorting + filterString + filterFreeSearch);
+    let addressApi = state.getters.GETTING_ADDRESS_API('get', option.tableName);
+    console.log(addressApi);
     axios
-      .get(state.getters.GET_ADDRESS_API + option.tableName + countRecordLoad + filterSorting + filterString + filterFreeSearch)
+      .get(addressApi)
       .then(response => {
         let mutationOption = {
           tableName: option.tableName,
           data: response.data,
           clear: true,
         }
-        console.log(mutationOption);
+        // console.log(mutationOption);
         state.commit('SET_LIST_DATA', mutationOption);
       })
-      .catch(err => {
-        console.log(err);
-        // state.commit('SET_LIST_DATA', {
-        //   tableName: 'organisations',
-        //   clear: true,
-        //   data: [
-        //     {id: '1', bk: {id: '1', head_name: 'test', head_code: '333' }, institution_code: '2', title: 'Test organisations 1', inn: '1111111', egrul_status: 1},
-        //     {id: '2', bk: {id: '1', head_name: 'test', head_code: '333' }, institution_code: '3', title: 'Test organisations 2', inn: '1111112', egrul_status: 1},
-        //     {id: '3', bk: {id: '1', head_name: 'test', head_code: '333' }, institution_code: '4', title: 'Test organisations 3', inn: '1111113', egrul_status: 1},
-        //     {id: '4', bk: {id: '1', head_name: 'test', head_code: '333' }, institution_code: '5', title: 'Test organisations 4', inn: '1111114', egrul_status: 1},
-        //   ],
-        // });
-      })
+      .catch(error => console.log(error))
       .finally(() => state.commit('SET_IS_DATA_LOAD'));
   },
+
   GET_LIST_DATA_NEXT(state, option) {
     state.commit('SET_IS_DATA_LOAD', true);
     let filterString = state.getters.GET_FILTER_STRING(option.tableName);

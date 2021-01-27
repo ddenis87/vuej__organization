@@ -2,10 +2,7 @@
   <div class="content-display"
        :class="`content-display_${typeHeight}`"
        :style="`text-align: ${properties['align']}`">
-    <div v-if="properties.type == 'boolean'">
-      <v-icon small v-if="properties.subtype == 'icon'">{{ (value) ? properties.subvalue.true : properties.subvalue.false }}</v-icon>
-    </div>
-    <span v-else v-text="displayValue"></span>
+    {{ displayValue }}
   </div>
 </template>
 
@@ -32,7 +29,7 @@ export default {
 
 <style lang="scss" scoped>
 .content-display {
-  position: relative;
+  // position: relative;
   width: 100%;
   -webkit-user-select: none;
   text-overflow: ellipsis;

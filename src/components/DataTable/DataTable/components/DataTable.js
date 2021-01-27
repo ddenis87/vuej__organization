@@ -21,8 +21,8 @@ export const DataTable = {
           }
           return `${dd}.${mm}.${yyyy}`;
         }
-        case 'boolean':
-          return value;
+        // case 'boolean':
+        //   return value;
         case 'choice':
           return value['display_name'];
         case 'field': {

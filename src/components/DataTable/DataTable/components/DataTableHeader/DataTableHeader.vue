@@ -99,7 +99,7 @@ export default {
       position: relative;
       &:hover {
         cursor: pointer;
-        background-color: rgba(242, 242, 242, .6);
+        // background-color: rgba(242, 242, 242, .6);
       }
       &:hover > .header-column__sort { visibility: visible; }
       &__sort {

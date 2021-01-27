@@ -33,17 +33,17 @@ export const Events = {
 
     // EVENT HOVER BODY TABLE (HOVER ROW, TOOLTIP)
     eventMouseOver(event) {
-      if (!this.isColumnEditing && !this.isRowFocus) {
+      if (!this.isColumnFocus && !this.isColumnEditing && !this.isRowFocus)
         event.target.closest('.body-row')?.classList.add('body-row_hover');
-        this.tooltipShow(event);
-      }
+      this.tooltipShow(event);
+      
     },
     eventMouseOut(event) {
       if (event.relatedTarget?.classList?.contains('tooltip')) return;
-      if (!this.isColumnEditing && !this.isRowFocus) {
+      if (!this.isColumnFocus && !this.isColumnEditing && !this.isRowFocus)
         event.target.closest('.body-row')?.classList.remove('body-row_hover');
-        this.tooltipHide(event);
-      }
+      this.tooltipHide(event);
+      
     },
     
     // EVENT FOCUS/SELECT/BLUR ROW

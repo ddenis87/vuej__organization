@@ -16,7 +16,6 @@ export default {
   mutations: {
     SET_PROCCESS_REQUEST(state, status = false) { state.isProccessRequest = status },
     SET_USER_TOKEN_ACCESS(state, option) {
-      console.log(option);
       state.userTokenAccess = option;
       localStorage.setItem('Token', option);
       localStorage.setItem('userName', state.userName);
@@ -40,13 +39,11 @@ export default {
             password: option.password
           })
           .then(response => {
-            console.log(response);
             state.commit('SET_USER_TOKEN_ACCESS', response.data.token);
             resolve(response);
           })
           .catch(error => {
             console.log(error);
-            console.log('error: ' + error);
             reject(error);
           })
           .finally(() => state.commit('SET_PROCCESS_REQUEST'));

@@ -1,6 +1,18 @@
 export default {
   GET_IS_DATA_LOAD(state) { return state.isDataLoad; },
-  GET_ADDRESS_API(state) { return state.addressApi; },
+
+  GETTING_ADDRESS_API:(state, getters, rootState, rootGetters) => (option, tableName) => {
+    let addressApi = rootGetters.GETTING_ADDRESS_API + 'api/v1/' + tableName + '/';
+    switch (option) {
+      case 'option': return addressApi;
+      case 'get': {
+        addressApi += `?`;
+        for (let item of Object.entries(state[tableName].filterDefault)) if (item[1] != undefined) addressApi += `${item[0]}=${item[1]}&`;
+        return addressApi;
+      }
+    }
+  },
+
   GET_ADDRESS_API_NEXT:(state) => (tableName) => { return state[tableName].next; },
 
   // GET_FILTER_STRING(state) { return state.filterString; },
