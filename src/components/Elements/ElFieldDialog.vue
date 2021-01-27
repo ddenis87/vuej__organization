@@ -143,7 +143,7 @@ export default {
       // console.log(option);
       this.fieldValue = option.id;
       this.$emit('input', option);
-
+      console.log(option);
       this.$emit('editing-accepted', {
         tableName: this.properties.tableName,
         key: 'Enter',
@@ -167,16 +167,20 @@ export default {
 
       if (event.key == 'Enter' || event.key == 'Tab') {
         event.preventDefault();
+        // console.log(this.fieldValue);
         if (this.fieldRequired && this.fieldValue.length == 0) { return; }
         // console.log(this.fieldValue);
+        let newFieldValue = (this.isInputFirstEnter) ? this.fieldList.find(item => item.id == this.fieldValue.id) : this.propertiesValue;
+        // console.log(this.isInputFirstEnter);
+        // console.log(newFieldValue);
         // let newFieldValue = this.$store.getters['DataTable/GET_LIST_DATA_ROW'](this.properties.tableName, this.fieldValue.toString());
         this.isInputEmit = true;
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
           key: event.key,
           keyShift: event.shiftKey,
-          // value: newFieldValue,
-          value: this.fieldValue,
+          value: newFieldValue,
+          // value: this.fieldValue,
           field: this.properties.value,
           id: this.properties.idRow
         });

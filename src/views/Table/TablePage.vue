@@ -21,7 +21,7 @@
         <!-- <v-app-bar-nav-icon @click.stop="isMenu = !isMenu"></v-app-bar-nav-icon> -->
         <v-toolbar-title>{{ nameTable || 'Выберите таблицу' }}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <el-field-date dense label :properties="{label: 'Дата регистрации'}"></el-field-date>
+        <!-- <el-field-date dense label :properties="{label: 'Дата регистрации'}"></el-field-date> -->
         <v-card min-width="380" max-height="34" flat v-if="isTableMount">
           <el-field-search label-text="Произвольный поиск по таблице" @free-search="freeSearch"></el-field-search>
         </v-card>

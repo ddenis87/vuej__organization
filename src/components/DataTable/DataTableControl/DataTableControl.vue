@@ -4,7 +4,7 @@
       <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="eventClickAdding">Добавить</el-button-icon>
       <el-button-icon icon="mdi-pencil" :disabled="!isFocusedElement" @click="eventClickEditing">Изменить</el-button-icon>
       <v-divider vertical></v-divider>
-      <el-button-icon icon="mdi-close" :disabled="!isFocusedElement" @click="eventActionMarkDeleting">Поменить на удаление</el-button-icon>
+      <el-button-icon :icon="(isMarkDeletedRecord) ? 'mdi-text-box-plus-outline' : 'mdi-text-box-remove-outline'" :disabled="!isFocusedElement" @click="eventActionMarkDeleting">{{ (isMarkDeletedRecord) ? 'Снять пометку на удаление' : 'Пометить на удаление'}}</el-button-icon>
       <el-button-icon icon="mdi-delete-variant" @click="eventActionShowMarkDeleting">Показать помеченные на удаление</el-button-icon>
       <v-spacer></v-spacer>
 
@@ -143,6 +143,7 @@ export default {
         fieldValue: (this.focusedElement['is_deleted']) ? false : true,
       }
       this.$store.commit('DataTable/ACTION_EDITING_ELEMENT', sendOption);
+      this.focusedElementForm = null;
     },
     eventActionShowMarkDeleting() {
 
