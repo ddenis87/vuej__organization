@@ -8,7 +8,19 @@ export const DataTable = {
       switch(properties.type) {
         case 'string':
         case 'integer':
-        case 'date':
+          return value;
+        case 'date': {
+          // console.log(value);
+          let [yyyy, mm, dd] = value.split('-');
+          if ('related_model_view' in properties) {
+            let newValue = properties.related_model_view;
+            newValue = newValue.replace(`{yyyy}`, yyyy);
+            newValue = newValue.replace(`{mm}`, mm);
+            newValue = newValue.replace(`{dd}`, dd);
+            return newValue;
+          }
+          return `${dd}.${mm}.${yyyy}`;
+        }
         case 'boolean':
           return value;
         case 'choice':

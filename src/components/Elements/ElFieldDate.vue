@@ -1,42 +1,51 @@
 <template>
-  <v-text-field
-                class="el-field-string" 
-                :dense="dense"
-                v-model="fieldValue"
-                :single-line="singleLine"
-                :label="fieldLabel"
-                :maxlength="fieldMaxLength"
-                :hide-details="fieldShowValidation"
-                :rules="(fieldRequired) ? [fieldRules.required] : []"
-                @keydown.stop="eventKeyDown"
-                @blur.stop="eventBlur"
-                @input="eventInput">
-    </v-text-field>
-    
+    <v-menu v-model="isDialog" offset-y>
+      <template v-slot:activator="{ on }">
+      <v-text-field class="el-field-date"
+                    :dense="dense"
+                    v-model="fieldValue"
+                    :single-line="singleLine"
+                    :label="fieldLabel"
+                    append-icon="mdi-menu-down"
+                    v-on="on"
+                    @click:append="eventOpenDialog"
+                    @keydown.stop="eventKeyDown"
+                    @blur.stop="eventBlur"></v-text-field>
+      </template>
+      <v-date-picker
+          v-model="fieldValueDate"
+          locale="ru"
+          first-day-of-week="1"
+          
+          no-title
+          scrollable @input="eventSelectDate"
+        ></v-date-picker>
+    </v-menu>
 </template>
 
 <script>
 export default {
-  name: 'ElFieldString',
+  name: 'ElFieldDate',
   model: {
     prop: 'propertiesValue',
     event: 'input',
   },
   props: {
-    // isUse: { type: String, default: '' },
     properties: '',
-    propertiesValue: '',
+    propertiesValue: { type: String, default: ''},
     label: {type: Boolean, default: false}, // hidden or show label
     dense: {type: Boolean, default: true},
     singleLine: {type: Boolean, default: true},
     showValidation: {type: Boolean, default: false}, // hidden or show hint error
     selectedValue: {type: Boolean, defalt: false}, // selected value in text field after mounted
+    
   },
   data() {
     return {
+      isDialog: false,
       isInputEmit: false,
-      // fieldId: `El-${(this.properties) ? `${this.isUse}-` + this.properties.value : ''}`,
-      fieldValue: this.propertiesValue,
+      fieldValue: (this.propertiesValue) ? this.propertiesValue.split('-').reverse().join('.') : null,
+      fieldValueDate: (this.propertiesValue) ? this.propertiesValue : null,
       fieldRequired: this.properties?.required,
       fieldRules: {
         required: value => !!value || 'мин. 1 символ',
@@ -45,7 +54,6 @@ export default {
   },
   computed: {
     fieldLabel() { return (this.label) ? this.properties?.label: '' },
-    fieldMaxLength() { return (this.properties?.max_length) ? this.properties.max_length : Infinity; },
     fieldShowValidation() { return (this.showValidation) ? false : true }
   },
   watch: {
@@ -56,19 +64,28 @@ export default {
   mounted() {
     setTimeout(() => {
       if (this.selectedValue) {
-        // console.log(document.querySelector(`.content-editing .v-text-field__slot input`));
         document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
         document.querySelector(`.content-editing .v-text-field__slot input`).select();
         document.querySelector(`.content-editing .v-text-field__slot input`).focus();
-        // document.querySelector(`#${this.fieldId}`).setSelectionRange(0, 0);
-        // document.querySelector(`#${this.fieldId}`).select();
-        // document.querySelector(`#${this.fieldId}`).focus();
       }
     }, 10);
   },
   methods: {
-    eventInput() {
-      this.$emit('input', this.fieldValue);
+    eventOpenDialog() {
+
+      this.isDialog = !this.isDialog;
+      if (this.isDialog == true) this.isInputEmit = true;
+    },
+    eventSelectDate() {
+      this.fieldValue = this.fieldValueDate.split('-').reverse().join('.');
+      setTimeout(() => {
+      // if (this.selectedValue) {
+        document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
+        document.querySelector(`.content-editing .v-text-field__slot input`).select();
+        document.querySelector(`.content-editing .v-text-field__slot input`).focus();
+        this.isInputEmit = false;
+      // }
+    }, 10);
     },
     eventKeyDown(event) {
       // console.log('input string component');
@@ -85,31 +102,30 @@ export default {
           tableName: this.properties.tableName,
           key: event.key,
           keyShift: event.shiftKey,
-          value: this.fieldValue,
+          value: this.fieldValue.split('.').reverse().join('-'),
           field: this.properties.value,
           id: this.properties.idRow
         });
       }
     },
-
     eventBlur() {
       if (!this.isInputEmit) {
-        // console.log('blur string component');
         this.$emit('editing-canceled');
       }
-    },
+    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.el-field-string {
-  width: 100%;
-  font-size: 14px;
-  
+.el-field-date {
+  &__field {
+    width: 100%;
+  }
 }
 .v-text-field {
   margin-top: -3.5px;
+  font-size: 14px;
 }
 ::v-deep {
   .v-input__append-outer {

@@ -100,9 +100,9 @@ export default {
         let newFieldValue = (this.isInputFirstEnter) ? {
           'display_name': this.fieldValue['display_name'],
           value: this.fieldValue.value
-        } : this.properties['display_name'];
+        } : this.propertiesValue;
         this.isInputEmit = true;
-        
+        console.log(newFieldValue);
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
           key: event.key,

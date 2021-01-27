@@ -27,7 +27,7 @@ export default {
           {value: 'is_deleted', width: [60,60], disabled: true, subtype: 'icon', subvalue: {true: 'mdi-text-box-remove-outline', false: 'mdi-text-box-outline'}},
           {value: 'id', width: 60,},
           {value: 'institution_code', align: 'end', width: 90, },
-          {value: 'registry_date', align: 'start', width: 110, },
+          {value: 'registry_date', align: 'start', width: 110,},
           {value: 'organization_type', align: 'start', width: 115, },
           {value: 'title', align: 'start', width: [400,],},
           {value: 'inn', width: [110, 110]},
