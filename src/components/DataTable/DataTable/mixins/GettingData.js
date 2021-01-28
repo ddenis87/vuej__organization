@@ -3,7 +3,7 @@ export const GettingData = {
     gettingDataHeader() {
       let headerBase = [];
       let headerReturn = [];
-      let headerStore = this.$store.getters[`DataTable/GET_LIST_OPTION`](this.properties.tableName);
+      let headerStore = this.$store.getters[`DataTable/GET_OPTIONS`](this.properties.tableName);
 
       if (Array.isArray(this.properties.headers[0])) {
         for (let i = 0; i < this.properties.headers.length; i++) { headerBase.push(...this.properties.headers[i]) }
@@ -20,7 +20,8 @@ export const GettingData = {
       return headerReturn;
     },
     gettingDataBody() {
-      return this.$store.getters[`DataTable/GET_LIST_DATA`](this.properties.tableName);
+      if ('tableName' in this.properties)
+        return this.$store.getters[`DataTable/GET_DATA`](this.properties.tableName);
     },
   }
 }

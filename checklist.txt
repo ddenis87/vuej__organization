@@ -1,0 +1,5 @@
+1. Tooltip
+2. Edit in table
+3. Change typeColumn, typeHeight
+4. Multiline
+5. Load to scroll

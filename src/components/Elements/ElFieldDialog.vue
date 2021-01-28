@@ -78,9 +78,9 @@ export default {
     fieldListText() { return ('related_model_view' in this.properties) ? 'text' : 'id'; },
     fieldList() {
       let fieldList = [];
-      let fieldListStore = this.$store.getters[`DataTable/GET_LIST_DATA`](this.properties['related_model_name']);
+      let fieldListStore = this.$store.getters[`DataTable/GET_DATA`](this.properties['related_model_name']);
       if (fieldListStore.length == 0) {
-        this.$store.dispatch(`DataTable/GET_LIST_OPTION`, { tableName: this.properties['related_model_name'] });
+        this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, { tableName: this.properties['related_model_name'] });
         return [];
       }
 
@@ -100,7 +100,7 @@ export default {
     },
     fieldShowValidation() { return (this.showValidation) ? false : true },
     displayNameTable() {
-      return this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`](this.properties['related_model_name']);
+      return this.$store.getters[`DataTable/GET_DESCRIPTION`](this.properties['related_model_name']);
     },
     componentForm() {
       if (!this.properties['related_model_name']) return null;

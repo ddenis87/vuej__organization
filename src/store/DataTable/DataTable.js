@@ -5,27 +5,27 @@ import actions from './DataTableActions.js';
 export default {
   namespaced: true,
   state: {
-    isDataLoad: false,
+    processedStatus: false,
     "budgetclassification": {
       description: null,
-      filterString: '',
       filterDefault: {
         'page_size': 30,
         'is_deleted': false,
       },
-      stringSorting: '',
+      filterString: '',
+      sortingString: '',
       count: 0,
       listOption: {},
       listData: [],
     },
     "organization" : {
       description: null,
-      filterString: '',
       filterDefault: {
         'page_size': 30,
         'is_deleted': false,
       },
-      stringSorting: '',
+      filterString: '',
+      sortingString: '',
       count: 0,
       listOption: {},
       listData: [],

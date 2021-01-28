@@ -1,10 +1,10 @@
 export const LoadingData = {
   computed: {
     isLoadingData() {
-      let isLoadingData = this.$store.getters[`DataTable/GET_IS_DATA_LOAD`];
+      let isLoadingData = this.$store.getters[`DataTable/GET_PROCESSED_STATUS`];
       if (!isLoadingData && this.parentElement) {
         this.parentElement.addEventListener('scroll', this.eventScrollPagination);
-        if (this.$store.getters[`DataTable/GET_COUNT_RECORD`](this.properties.tableName) != 0)
+        if (this.$store.getters[`DataTable/GET_DATA_COUNT`](this.properties.tableName) != 0)
           setTimeout(() => this.eventScrollPagination(), 300);
       }
       return isLoadingData;
@@ -19,7 +19,7 @@ export const LoadingData = {
   watch: {
     typeHeight() {
       if (this.typeHeight == 'dense')
-      setTimeout(() => this.eventScrollPagination(), 300);
+        setTimeout(() => this.eventScrollPagination(), 300);
     },
     // isMultiline() {
     //   this.$store.commit('DataTable/SET_STRING_SORTING', {
@@ -31,10 +31,10 @@ export const LoadingData = {
     // },
   },
   created() {
-    this.$store.dispatch('DataTable/GET_LIST_OPTION', { tableName: this.properties.tableName });
+    this.$store.dispatch('DataTable/REQUEST_OPTIONS', { tableName: this.properties.tableName });
   },
   mounted() {
-    this.parentElement = document.getElementById(this.id)
+    this.parentElement = document.getElementById(this.id);
     this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;
   },
   updated() { this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;},
@@ -43,9 +43,8 @@ export const LoadingData = {
       let bootAnchorEdge = document.querySelector(`#${this.id}-boot-anchor`).getBoundingClientRect().bottom - 500;
       if (bootAnchorEdge < this.parentElementEdge) {
         this.parentElement.removeEventListener('scroll', this.eventScrollPagination);
-        if (this.$store.getters[`DataTable/GET_ADDRESS_API_NEXT`](this.properties.tableName) != undefined)
-          this.$store.dispatch(`DataTable/GET_LIST_DATA_NEXT`, {tableName: this.properties.tableName})
-            // .then(complite => setTimeout(() => this.eventScrollPagination(), 800));
+        if (this.$store.getters[`DataTable/GET_ADDRESS_API_PAGE_NEXT`](this.properties.tableName) != null)
+          this.$store.dispatch(`DataTable/REQUEST_DATA_NEXT`, {tableName: this.properties.tableName});
       }
     },
   },

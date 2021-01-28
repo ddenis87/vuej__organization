@@ -33,7 +33,7 @@
            :class="`body-column_${typeColumn}`"
            v-if="computedActionMax && !isMultiline">
         <v-btn x-small icon class="action-btn" @click="eventExpansionRow">
-          <v-icon small color="blue">mdi-chevron-down</v-icon>
+          <v-icon small>mdi-chevron-down</v-icon>
         </v-btn>
       </div>
 

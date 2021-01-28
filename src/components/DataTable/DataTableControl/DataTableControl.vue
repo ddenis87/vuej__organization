@@ -4,8 +4,10 @@
       <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="eventClickAdding">Добавить</el-button-icon>
       <el-button-icon icon="mdi-pencil" :disabled="!isFocusedElement" @click="eventClickEditing">Изменить</el-button-icon>
       <v-divider vertical></v-divider>
-      <el-button-icon :icon="(isMarkDeletedRecord) ? 'mdi-text-box-plus-outline' : 'mdi-text-box-remove-outline'" :disabled="!isFocusedElement" @click="eventActionMarkDeleting">{{ (isMarkDeletedRecord) ? 'Снять пометку на удаление' : 'Пометить на удаление'}}</el-button-icon>
-      <el-button-icon icon="mdi-delete-variant" @click="eventActionShowMarkDeleting">Показать помеченные на удаление</el-button-icon>
+      <el-button-icon :icon="(isMarkDeleted) ? 'mdi-text-box-plus-outline' : 'mdi-text-box-remove-outline'" :disabled="!isFocusedElement" @click="eventActionMarkDeleting">{{ (isMarkDeletedRecord) ? 'Снять пометку на удаление' : 'Пометить на удаление'}}</el-button-icon>
+      <el-button-icon icon="mdi-delete-variant"
+                      :icon-color="(isMarkDeleted) ? 'blue' : ''"
+                      @click="eventActionShowMarkDeleting">{{ (isMarkDeleted) ? 'Скрыть помеченные на удаление' : 'Показать помеченные на удаление' }}</el-button-icon>
       <v-spacer></v-spacer>
 
       <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
@@ -52,6 +54,15 @@
                  @event-action-accept="eventActionAccept"
                  @event-action-cancel="eventActionCancel"></component>
     </dialog-full-page>
+
+    <v-snackbar light
+                elevation="4"
+                v-model="snackBar.show">
+      <div class="snack">
+        <v-icon small color="green darken-3" v-if="snackBar.status">mdi-check</v-icon>
+        <v-icon small color="red darken-4" v-else>mdi-close</v-icon>
+        {{ snackBar.text }}</div>
+    </v-snackbar>
   </div>
 </template>
 
@@ -82,10 +93,18 @@ export default {
   },
   data() {
     return {
-      isOpenDialog: false,
       focusedElementForm: null,
+      isOpenDialog: false,
       isOpenFilter: false,
+      isMarkDeleted: false,
       typeHeight: ['fixed', 'dense', 'auto'],
+
+      snackBar: {
+        show: false,
+        text: '',
+        status: false,
+      },
+      
     }
   },
   computed: {
@@ -101,8 +120,9 @@ export default {
       return () => import(`@/components/TheTableForm/TheTableForm${componentForm}`);
     },
     isFilterActive() {
-      let filterString = this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties?.tableName);
-      return (filterString == '' || filterString == undefined) ? false : true;
+      return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties.tableName) == '') ? false : true : false;
+      // let filterString = this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties?.tableName);
+      // return (filterString == '' || filterString == undefined) ? false : true;
     },
     isFocusedElement() { return (this.focusedElementForm && Object.keys(this.focusedElementForm).length != 0) ? true : false },
     isDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }
@@ -135,24 +155,47 @@ export default {
     eventActionCancel() {
       this.eventCloseDialog();
     },
-    eventActionMarkDeleting() {
+    async eventActionMarkDeleting() {
       let sendOption = {
         tableName: this.formProperties.tableName,
         recordId: this.focusedElement['id'],
-        fieldName: 'is_deleted',
-        fieldValue: (this.focusedElement['is_deleted']) ? false : true,
       }
-      this.$store.commit('DataTable/ACTION_EDITING_ELEMENT', sendOption);
+      await this.$store.dispatch('DataTable/REQUEST_DATA_DELETE', sendOption)
+        .then(() => {
+          this.snackBar.text = (this.isMarkDeleted) ? 'Документ снят с удаления' : 'Документ помечен на удаление';
+          this.snackBar.show = true;
+          this.snackBar.status = true;
+          setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 2000);
+         })
+         .catch(() => {
+            this.snackBar.text = 'Ошибка, изменения не сохранены';
+            this.snackBar.show = true;
+            this.snackBar.status = false;
+            setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 2000);
+         });
       this.focusedElementForm = null;
     },
     eventActionShowMarkDeleting() {
-
+      this.isMarkDeleted = !this.isMarkDeleted;
+      this.$store.commit('DataTable/TOGGLE_FILTER_DEFAULT_IS_DELETED', {
+        tableName: this.formProperties.tableName,
+        value: this.isMarkDeleted,
+      });
+      this.$store.dispatch('DataTable/REQUEST_DATA', {tableName: this.formProperties.tableName});
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.data-table-control {
+  .snack {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}
 .dialog {
   &__title {
     color: white;

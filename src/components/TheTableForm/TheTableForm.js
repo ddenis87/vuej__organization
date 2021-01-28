@@ -16,7 +16,7 @@ export const TheTableForm = {
   },
   computed: {
     fieldForm() { 
-      let fieldForm = this.$store.getters[`DataTable/GET_LIST_OPTION`](this.tableName);
+      let fieldForm = this.$store.getters[`DataTable/GET_OPTIONS`](this.tableName);
       // for (let key of Object.keys(fieldForm)) {
       //   if (fieldForm[key].type == 'nested object') this.$set(fieldForm[key], 'objectValue', 'head_name'); //костыль, надо получать откуда-то
       // }
@@ -34,7 +34,7 @@ export const TheTableForm = {
     },
   },
   created() {
-    this.$store.dispatch(`DataTable/GET_LIST_OPTION`, {tableName: this.tableName});
+    this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, {tableName: this.tableName});
   },
   methods: {
     assingObject(base, added) {

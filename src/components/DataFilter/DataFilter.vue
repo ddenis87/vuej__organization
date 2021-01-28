@@ -54,13 +54,13 @@ export default {
     }
   },
   computed: {
-    nameTable() { return (!this.tableName) ? '' : this.$store.getters[`DataTable/GET_DESCRIPTION_TABLE`](this.tableName); },
+    nameTable() { return (!this.tableName) ? '' : this.$store.getters[`DataTable/GET_DESCRIPTION`](this.tableName); },
     emptyFilter() {
       return (this.listFieldChoice == 0 && this.listFieldNestedObject == 0) ? false : true;
     },
     listFieldChoice() {
       if (!this.tableName) return 0;
-      let listField = this.$store.getters[`DataTable/GET_LIST_OPTION`](this.tableName);
+      let listField = this.$store.getters[`DataTable/GET_OPTIONS`](this.tableName);
       let listFieldChoice = [];
       if (listField) {
         for (let item of Object.entries(listField)) {
@@ -72,7 +72,7 @@ export default {
     },
     listFieldNestedObject() {
       if (!this.tableName) return 0;
-      let listField = this.$store.getters[`DataTable/GET_LIST_OPTION`](this.tableName);
+      let listField = this.$store.getters[`DataTable/GET_OPTIONS`](this.tableName);
       let listFieldNestedObject = [];
       if (listField) {
         for (let item of Object.entries(listField)) {
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     acceptFilter() {
-      // console.log(this.dataFilterValue);
+      console.log(this.dataFilterValue);
       this.$store.commit('DataTable/SET_FILTER_STRING', (Object.keys(this.dataFilterValue).length != 0) ? {
         tableName: this.tableName,
         filters: this.dataFilterValue
@@ -93,7 +93,7 @@ export default {
             tableName: this.tableName,
             filters: null
           });
-      this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.tableName});
+      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.tableName});
       this.$emit('accept');
     },
     clearValue(key) {
