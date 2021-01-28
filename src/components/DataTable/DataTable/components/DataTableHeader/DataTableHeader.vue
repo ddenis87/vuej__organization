@@ -101,7 +101,7 @@ export default {
         cursor: pointer;
         // background-color: rgba(242, 242, 242, .6);
       }
-      &:hover > .header-column__sort { visibility: visible; }
+      // &:hover > .header-column__sort { visibility: visible; }
       &__sort {
         position: absolute;
         top: -1px;
