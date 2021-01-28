@@ -4,6 +4,7 @@
       <v-text-field class="el-field-date"
                     :dense="dense"
                     v-model="fieldValue"
+                    v-mask="'##.##.####'"
                     :single-line="singleLine"
                     :label="fieldLabel"
                     append-icon="mdi-menu-down"
@@ -119,7 +120,8 @@ export default {
     eventBlur(event) {
       console.log(event);
       if (event.relatedTarget && event.relatedTarget.classList.contains('body-column'))
-        this.$emit('editing-canceled');
+        if (!this.isInputEmit)
+          this.$emit('editing-canceled');
       // if (!this.isInputEmit) {
       //   this.$emit('editing-canceled');
       // }
