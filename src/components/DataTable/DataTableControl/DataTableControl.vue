@@ -165,13 +165,13 @@ export default {
           this.snackBar.text = (this.isMarkDeleted) ? 'Документ снят с удаления' : 'Документ помечен на удаление';
           this.snackBar.show = true;
           this.snackBar.status = true;
-          setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 2000);
+          setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 4000);
          })
          .catch(() => {
             this.snackBar.text = 'Ошибка, изменения не сохранены';
             this.snackBar.show = true;
             this.snackBar.status = false;
-            setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 2000);
+            setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 4000);
          });
       this.focusedElementForm = null;
     },

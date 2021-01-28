@@ -26,6 +26,8 @@ export default {
 
   GET_FILTER_STRING:(state) => (tableName) => { return state[tableName].filterString; },
   
+  GET_FREE_SEARCH_STRING:(state) => (tableName) => { return state[tableName].freeSearchString; },
+
   GET_SORTING_STRING:(state) => (tableName) => { return state[tableName].sortingString; },
 
   //  GET_FILTER_STRING(state) { return state.filterString; },

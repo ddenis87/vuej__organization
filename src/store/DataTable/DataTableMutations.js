@@ -16,6 +16,15 @@ export default {
     state[option.tableName].filterString = filterString;
   },
   SET_FILTER_STRING_CLEAR(state, option) { state[option.tableName].filterString = ''; },
+  
+  // FREE SEARCH
+  SET_FREE_SEARCH_STRING(state, option = null) {
+    if (option.value == null) {
+      state[option.tableName].freeSearchString = '';
+      return;
+    }
+    state[option.tableName].freeSearchString = `&search=${option.value.toUpperCase()}`;
+  },
 
   // SORTING
   SET_SORTING_STRING(state, option) {

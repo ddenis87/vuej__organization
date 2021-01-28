@@ -155,11 +155,11 @@ export default {
       this.isMultiline = !this.isMultiline;
     },
     freeSearch(value) {
-      this.$store.commit('DataTable/SET_STRING_FREE_SEARCH', {
+      this.$store.commit('DataTable/SET_FREE_SEARCH_STRING', {
         tableName: this.activeMenu.tableName,
         value: value,
       });
-      this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.activeMenu.tableName});
+      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName});
     },
   },
 }

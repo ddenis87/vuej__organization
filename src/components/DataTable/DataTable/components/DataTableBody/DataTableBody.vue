@@ -17,6 +17,11 @@
                          @is-show="isTooltipShow = true" 
                          @is-hide="isTooltipShow = false"></data-table-overflow>
     
+    <!-- NO ELEMENT FOR DISPLAY -->
+    <div class="body-empty"
+         :class="`body-empty_${typeColumn}`"
+         v-if="items.length == 0">Отсутствуют элементы для отображения по заданным устовиям</div>
+
     <div v-for="(itemRow, indexRow) in items"
          class="body-row"
          :class="`body-row_${typeHeight}`"
@@ -116,6 +121,16 @@ export default {
   color: $fontColor;
 
   box-sizing: border-box;
+  &-empty {
+    font-size: .875rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, .6);
+    padding: 5px 0px;
+
+    &_fixed { padding-left: $columnPaddingLRFixed; padding-right: $columnPaddingLRFixed; }
+    &_dense { padding-left: $columnPaddingLRDense; padding-right: $columnPaddingLRDense; }
+    &_auto  { padding-left: $columnPaddingLRAuto;  padding-right: $columnPaddingLRAuto;  }
+  }
   &-row {
     display: grid;
     border-bottom: $rowBorder;
