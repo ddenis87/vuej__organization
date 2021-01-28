@@ -39,7 +39,7 @@ export default {
 
   // OPTION & DATA
   SET_OPTIONS(state, option) {
-    console.log(option);
+    // console.log(option);
     state[option.tableName].listOption = option.data;
     state[option.tableName].description = option.description;
   },
@@ -67,7 +67,7 @@ export default {
       });
       Object.assign(state[option.tableName], option.data);
       delete state[option.tableName].results;
-      console.log(state[option.tableName]);
+      // console.log(state[option.tableName]);
     }
   },
 

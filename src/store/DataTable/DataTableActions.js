@@ -7,7 +7,7 @@ export default {
     state.commit('SET_PROCESSED_STATUS', true);
     
     let tokenAccess = state.rootGetters['Login/GET_USER_TOKEN_ACCESS'];
-    console.log(tokenAccess);
+    // console.log(tokenAccess);
     axios.defaults.headers.common = {'Authorization': tokenAccess};
     axios
       .options(addressApi)

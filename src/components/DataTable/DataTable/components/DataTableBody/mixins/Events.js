@@ -56,6 +56,9 @@ export const Events = {
     eventRowBlur(event) {
       this.isRowFocus = false;
       event.target.classList.remove('body-row_focus');
+      if (event.relatedTarget == null) {
+        this.$emit('event-body-blur');
+      }
     },
     eventRowClick(event, itemRow) {
       this.$emit('event-row-focused', event, itemRow);
@@ -77,6 +80,9 @@ export const Events = {
         this.isColumnFocus = false;
         event.target.parentElement.classList.remove('body-row_focus');
         event.target.classList.remove('body-column_focus');
+      }
+      if (event.relatedTarget == null) {
+        this.$emit('event-body-blur');
       }
     },
 

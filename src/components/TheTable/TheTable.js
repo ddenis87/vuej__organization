@@ -33,5 +33,8 @@ export const TheTable = {
     eventRowSelected(option) {
       this.$emit('row-selected', option);
     },
+    eventComponentBlur() {
+      this.$emit('component-blur');
+    },
   }
 }

@@ -7,6 +7,8 @@ export const EventsComponent = {
     eventRowSelected(event, option) {
       this.$emit('event-row-selected', option, this.properties.tableName);
     },
-
+    eventBodyBlur() {
+      this.$emit('event-component-blur');
+    }
   },
 }

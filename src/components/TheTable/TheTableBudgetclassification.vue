@@ -8,7 +8,8 @@
               :is-expansion="isExpansion"
               :is-multiline="isMultiline"
               @event-row-focused="eventRowFocused"
-              @event-row-selected="eventRowSelected"></data-table>
+              @event-row-selected="eventRowSelected"
+              @event-component-blur="eventComponentBlur"></data-table>
 </template>
 
 <script>

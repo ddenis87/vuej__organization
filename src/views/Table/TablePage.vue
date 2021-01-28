@@ -68,7 +68,8 @@
                    :is-multiline="isMultiline"
                    @table-mount="tableMount"
                    @row-focused="rowFocused"
-                   @row-selected="rowSelected"></component>
+                   @row-selected="rowSelected"
+                   @component-blur="componentBlur"></component>
       </div>
     </div>
   </div>
@@ -137,6 +138,9 @@ export default {
     },
     rowSelected(option) {
       this.$emit('event-row-selected', option); // поменять имя события здесь и в диалоге который его слушает (EL-element-dialog)
+    },
+    componentBlur() {
+      this.focusedElement = {};
     },
     toggleTypeRow() {
       if (this.typeHeightNumber == this.typeHeight.length - 1) { this.typeHeightNumber = 0; return; }

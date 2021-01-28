@@ -24,7 +24,8 @@
                        :is-expansion="isExpansion"
                        :is-multiline="isMultiline"
                        @event-row-focused="eventRowFocused"
-                       @event-row-selected="eventRowSelected"></data-table-body>
+                       @event-row-selected="eventRowSelected"
+                       @event-body-blur="eventBodyBlur"></data-table-body>
     </div>
 
     <!-- ANCHOR FOR LAZY LOAD DATA -->
