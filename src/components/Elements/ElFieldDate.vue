@@ -78,14 +78,22 @@ export default {
     },
     eventSelectDate() {
       this.fieldValue = this.fieldValueDate.split('-').reverse().join('.');
-      setTimeout(() => {
-      // if (this.selectedValue) {
-        document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
-        document.querySelector(`.content-editing .v-text-field__slot input`).select();
-        document.querySelector(`.content-editing .v-text-field__slot input`).focus();
-        this.isInputEmit = false;
-      // }
-    }, 10);
+      this.$emit('editing-accepted', {
+        tableName: this.properties.tableName,
+        key: 'Enter',
+        keyShift: 'false',
+        value: this.fieldValue.split('.').reverse().join('-'),
+        field: this.properties.value,
+        id: this.properties.idRow
+      });
+    //   setTimeout(() => {
+    //   // if (this.selectedValue) {
+    //     document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
+    //     document.querySelector(`.content-editing .v-text-field__slot input`).select();
+    //     document.querySelector(`.content-editing .v-text-field__slot input`).focus();
+    //     this.isInputEmit = false;
+    //   // }
+    // }, 10);
     },
     eventKeyDown(event) {
       // console.log('input string component');
@@ -108,10 +116,13 @@ export default {
         });
       }
     },
-    eventBlur() {
-      if (!this.isInputEmit) {
+    eventBlur(event) {
+      console.log(event);
+      if (event.relatedTarget && event.relatedTarget.classList.contains('body-column'))
         this.$emit('editing-canceled');
-      }
+      // if (!this.isInputEmit) {
+      //   this.$emit('editing-canceled');
+      // }
     }
   },
 }
