@@ -4,7 +4,9 @@
       <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="eventClickAdding">Добавить</el-button-icon>
       <el-button-icon icon="mdi-pencil" :disabled="!isFocusedElement" @click="eventClickEditing">Изменить</el-button-icon>
       <v-divider vertical></v-divider>
-      <el-button-icon :icon="(isMarkDeleted) ? 'mdi-text-box-plus-outline' : 'mdi-text-box-remove-outline'" :disabled="!isFocusedElement" @click="eventActionMarkDeleting">{{ (isMarkDeletedRecord) ? 'Снять пометку на удаление' : 'Пометить на удаление'}}</el-button-icon>
+      <el-button-icon :icon="(isMarkDeleted) ? 'mdi-text-box-remove-outline' : 'mdi-text-box-remove-outline'" 
+                      :disabled="!isFocusedElement" 
+                      @click="eventActionMarkDeleting">{{ (isMarkDeletedRecord) ? 'Снять пометку на удаление' : 'Установить пометку на удаление'}}</el-button-icon>
       <el-button-icon icon="mdi-delete-variant"
                       :icon-color="(isMarkDeleted) ? 'blue' : ''"
                       @click="eventActionShowMarkDeleting">{{ (isMarkDeleted) ? 'Скрыть помеченные на удаление' : 'Показать помеченные на удаление' }}</el-button-icon>
@@ -160,9 +162,10 @@ export default {
         tableName: this.formProperties.tableName,
         recordId: this.focusedElement['id'],
       }
+      this.focusedElementForm = null;
       await this.$store.dispatch('DataTable/REQUEST_DATA_DELETE', sendOption)
         .then(() => {
-          this.snackBar.text = (this.isMarkDeleted) ? 'Документ снят с удаления' : 'Документ помечен на удаление';
+          this.snackBar.text = (this.isMarkDeleted) ? 'Пометка на удаление снята' : 'Пометка на удаление установлена';
           this.snackBar.show = true;
           this.snackBar.status = true;
           setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 4000);
@@ -173,7 +176,7 @@ export default {
             this.snackBar.status = false;
             setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 4000);
          });
-      this.focusedElementForm = null;
+      
     },
     eventActionShowMarkDeleting() {
       this.isMarkDeleted = !this.isMarkDeleted;

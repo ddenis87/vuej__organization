@@ -1,5 +1,6 @@
 <template>
-    <v-menu v-model="isDialog" offset-y>
+  <div class="field-date-box">
+    <v-menu v-model="isDialog" offset-y :close-on-click="false" :close-on-content-click="false">
       <template v-slot:activator="{ on }">
       <v-text-field class="el-field-date"
                     :dense="dense"
@@ -7,21 +8,26 @@
                     v-mask="'##.##.####'"
                     :single-line="singleLine"
                     :label="fieldLabel"
-                    append-icon="mdi-menu-down"
+                    
+                    append-icon="mdi-calendar-range"
                     v-on="on"
                     @click:append="eventOpenDialog"
                     @keydown.stop="eventKeyDown"
-                    @blur.stop="eventBlur"></v-text-field>
+                    @blur.stop="eventBlur">      
+      </v-text-field>
       </template>
-      <v-date-picker
-          v-model="fieldValueDate"
-          locale="ru"
-          first-day-of-week="1"
-          
-          no-title
-          scrollable @input="eventSelectDate"
-        ></v-date-picker>
+      <div class="field-date-box__date-picker" tabindex="1" @blur="eventBlurDatePicker">
+        <v-date-picker v-model="fieldValueDate"
+                       locale="ru"
+                       first-day-of-week="1"
+                        
+                       no-title
+                       scrollable @input="eventSelectDate"></v-date-picker>
+      </div>
+      
     </v-menu>
+  </div>
+    
 </template>
 
 <script>
@@ -75,9 +81,10 @@ export default {
     eventOpenDialog() {
 
       this.isDialog = !this.isDialog;
-      if (this.isDialog == true) this.isInputEmit = true;
+      // if (this.isDialog == true) this.isInputEmit = true;
     },
     eventSelectDate() {
+      // console.log('button');
       this.fieldValue = this.fieldValueDate.split('-').reverse().join('.');
       this.$emit('editing-accepted', {
         tableName: this.properties.tableName,
@@ -96,6 +103,10 @@ export default {
     //   // }
     // }, 10);
     },
+    // eventChangeDate() {
+    //   console.log('event change');
+    // },
+
     eventKeyDown(event) {
       // console.log('input string component');
       if (event.key == 'Escape') {
@@ -118,14 +129,14 @@ export default {
       }
     },
     eventBlur(event) {
-      console.log(event);
-      if (event.relatedTarget && event.relatedTarget.classList.contains('body-column'))
-        if (!this.isInputEmit)
-          this.$emit('editing-canceled');
-      // if (!this.isInputEmit) {
-      //   this.$emit('editing-canceled');
-      // }
-    }
+      if (event.relatedTarget == null) { this.$emit('editing-canceled'); return; }
+      if (event.relatedTarget.closest('.field-date-box__date-picker')) return;
+      this.$emit('editing-canceled');
+    },
+    eventBlurDatePicker(event) {
+      if (event.relatedTarget == null) { this.$emit('editing-canceled'); return; }
+      if (event.relatedTarget.classList.contains('body-column')) { this.$emit('editing-canceled'); return; }
+    },
   },
 }
 </script>
@@ -143,6 +154,12 @@ export default {
 ::v-deep {
   .v-input__append-outer {
     margin-top: -8px;
+  }
+  .v-input__append-inner {
+    button {
+      margin-bottom: 3px;
+    }
+    
   }
 }
 </style>

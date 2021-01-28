@@ -27,7 +27,7 @@ export default {
         headers: [
           {value: 'id', width: 60,},
           {value: 'institution_code', align: 'end', width: 90, },
-          {value: 'registry_date', align: 'start', width: 110,},
+          {value: 'registry_date', align: 'start', width: 120,},
           {value: 'organization_type', align: 'start', width: 115, },
           {value: 'title', align: 'start', width: [400,],},
           {value: 'inn', width: [110, 110]},
