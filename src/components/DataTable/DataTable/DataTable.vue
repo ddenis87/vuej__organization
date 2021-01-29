@@ -25,6 +25,7 @@
                        :is-multiline="isMultiline"
                        @event-row-focused="eventRowFocused"
                        @event-row-selected="eventRowSelected"
+                       @event-row-keydown="eventRowKeydown"
                        @event-body-blur="eventBodyBlur"></data-table-body>
     </div>
 

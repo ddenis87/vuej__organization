@@ -9,6 +9,7 @@
               :is-multiline="isMultiline"
               @event-row-focused="eventRowFocused"
               @event-row-selected="eventRowSelected"
+              @event-row-keydown="eventRowKeydown"
               @event-component-blur="eventComponentBlur"></data-table>
 </template>
 
@@ -22,6 +23,7 @@ export default {
   ],
   props: {
     typeRowNumber: { type: Number, default: 1 },
+    isEditable: { type: Boolean, default: false },
   },
   data() {
     return {

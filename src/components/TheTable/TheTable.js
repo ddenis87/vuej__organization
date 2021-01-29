@@ -33,6 +33,9 @@ export const TheTable = {
     eventRowSelected(option) {
       this.$emit('row-selected', option);
     },
+    eventRowKeydown(event, option) {
+      this.$emit('row-keydown', event, option);
+    },
     eventComponentBlur() {
       this.$emit('component-blur');
     },

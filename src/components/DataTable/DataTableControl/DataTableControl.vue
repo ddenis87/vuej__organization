@@ -184,6 +184,7 @@ export default {
         tableName: this.formProperties.tableName,
         value: this.isMarkDeleted,
       });
+      this.focusedElementForm = null;
       this.$store.dispatch('DataTable/REQUEST_DATA', {tableName: this.formProperties.tableName});
     },
   },

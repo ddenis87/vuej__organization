@@ -24,6 +24,8 @@ export default {
   GET_DATA_COUNT_LOAD:(state) => (tableName) => { return state[tableName].listData.length; },
   GET_DESCRIPTION:(state) => (tableName) => { return state[tableName].description; },
 
+  GET_FILTER_DEFAULT_IS_DELETED:(state) => (tableName) => { return state[tableName].filterDefault['is_deleted']; },
+
   GET_FILTER_STRING:(state) => (tableName) => { return state[tableName].filterString; },
   
   GET_FREE_SEARCH_STRING:(state) => (tableName) => { return state[tableName].freeSearchString; },
