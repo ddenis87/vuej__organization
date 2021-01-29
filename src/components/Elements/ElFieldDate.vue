@@ -1,6 +1,9 @@
 <template>
   <div class="field-date-box">
-    <v-menu v-model="isDialog" offset-y :close-on-click="false" :close-on-content-click="false">
+    <v-menu offset-y
+            v-model="isDialog"
+            :close-on-click="false"
+            :close-on-content-click="false">
       <template v-slot:activator="{ on }">
       <v-text-field class="el-field-date"
                     :dense="dense"
@@ -8,6 +11,7 @@
                     v-mask="fieldMask"
                     :single-line="singleLine"
                     :label="fieldLabel"
+                    :rules="(fieldRequired) ? [fieldRules.required] : []"
                     append-icon="mdi-calendar-range"
                     v-on="on"
                     @click:append="eventOpenDialog"
@@ -24,10 +28,8 @@
                        no-title
                        scrollable @input="eventSelectDate"></v-date-picker>
       </div>
-      
     </v-menu>
   </div>
-    
 </template>
 
 <script>
@@ -56,6 +58,9 @@ export default {
       fieldRequired: this.properties?.required,
       fieldRules: {
         required: value => !!value || 'мин. 1 символ',
+        date: value => {
+
+        },
       },
       fieldMask: [/[0123]/,/\d/,'.',/[01]/,/\d/,'.',/[2]/,/[0]/,/\d/,/\d/],
     }
@@ -104,11 +109,13 @@ export default {
         event.preventDefault();
         if (this.fieldRequired && this.fieldValue.length == 0) return;
         this.isInputEmit = true;
+        let newValue = new Date(this.fieldValue.split('.').reverse().join('-'));
+        newValue = `${newValue.getFullYear()}-${(+newValue.getMonth() < 9) ? `0${newValue.getMonth() + 1}` : newValue.getMonth() + 1}-${(+newValue.getDate() < 10) ? `0${newValue.getDate()}` : newValue.getDate()}`;
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
           key: event.key,
           keyShift: event.shiftKey,
-          value: this.fieldValue.split('.').reverse().join('-'),
+          value: newValue, //this.fieldValue.split('.').reverse().join('-'),
           field: this.properties.value,
           id: this.properties.idRow
         });
@@ -117,7 +124,8 @@ export default {
     eventBlur(event) {
       if (event.relatedTarget == null) { this.$emit('editing-canceled'); return; }
       if (event.relatedTarget.closest('.field-date-box__date-picker')) return;
-      this.$emit('editing-canceled');
+      if (!this.isInputEmit)
+        this.$emit('editing-canceled');
     },
     eventBlurDatePicker(event) {
       if (event.relatedTarget == null) { this.$emit('editing-canceled'); return; }
