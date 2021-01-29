@@ -5,10 +5,9 @@
       <v-text-field class="el-field-date"
                     :dense="dense"
                     v-model="fieldValue"
-                    v-mask="'##.##.####'"
+                    v-mask="fieldMask"
                     :single-line="singleLine"
                     :label="fieldLabel"
-                    
                     append-icon="mdi-calendar-range"
                     v-on="on"
                     @click:append="eventOpenDialog"
@@ -16,11 +15,12 @@
                     @blur.stop="eventBlur">      
       </v-text-field>
       </template>
-      <div class="field-date-box__date-picker" tabindex="1" @blur="eventBlurDatePicker">
+      <div class="field-date-box__date-picker"
+           tabindex="1"
+           @blur="eventBlurDatePicker">
         <v-date-picker v-model="fieldValueDate"
                        locale="ru"
                        first-day-of-week="1"
-                        
                        no-title
                        scrollable @input="eventSelectDate"></v-date-picker>
       </div>
@@ -56,7 +56,8 @@ export default {
       fieldRequired: this.properties?.required,
       fieldRules: {
         required: value => !!value || 'мин. 1 символ',
-      }
+      },
+      fieldMask: [/[0123]/,/\d/,'.',/[01]/,/\d/,'.',/[2]/,/[0]/,/\d/,/\d/],
     }
   },
   computed: {
@@ -79,12 +80,9 @@ export default {
   },
   methods: {
     eventOpenDialog() {
-
       this.isDialog = !this.isDialog;
-      // if (this.isDialog == true) this.isInputEmit = true;
     },
     eventSelectDate() {
-      // console.log('button');
       this.fieldValue = this.fieldValueDate.split('-').reverse().join('.');
       this.$emit('editing-accepted', {
         tableName: this.properties.tableName,
@@ -94,21 +92,9 @@ export default {
         field: this.properties.value,
         id: this.properties.idRow
       });
-    //   setTimeout(() => {
-    //   // if (this.selectedValue) {
-    //     document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
-    //     document.querySelector(`.content-editing .v-text-field__slot input`).select();
-    //     document.querySelector(`.content-editing .v-text-field__slot input`).focus();
-    //     this.isInputEmit = false;
-    //   // }
-    // }, 10);
     },
-    // eventChangeDate() {
-    //   console.log('event change');
-    // },
 
     eventKeyDown(event) {
-      // console.log('input string component');
       if (event.key == 'Escape') {
         this.isInputEmit = true;
         this.$emit('editing-canceled', {key: 'Escape'});
