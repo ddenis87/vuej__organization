@@ -21,12 +21,13 @@
       </template>
       <div class="field-date-box__date-picker"
            tabindex="1"
+           @click="eventClickDatePicker"
            @blur="eventBlurDatePicker">
         <v-date-picker v-model="fieldValueDate"
                        locale="ru"
                        first-day-of-week="1"
                        no-title
-                       scrollable @input="eventSelectDate"></v-date-picker>
+                       scrollable @input="eventSelectDate" @change="eventChangeDatePicker"></v-date-picker>
       </div>
     </v-menu>
   </div>
@@ -88,6 +89,7 @@ export default {
       this.isDialog = !this.isDialog;
     },
     eventSelectDate() {
+      this.isInputEmit = true;
       this.fieldValue = this.fieldValueDate.split('-').reverse().join('.');
       this.$emit('editing-accepted', {
         tableName: this.properties.tableName,
@@ -109,8 +111,13 @@ export default {
         event.preventDefault();
         if (this.fieldRequired && this.fieldValue.length == 0) return;
         this.isInputEmit = true;
-        let newValue = new Date(this.fieldValue.split('.').reverse().join('-'));
-        newValue = `${newValue.getFullYear()}-${(+newValue.getMonth() < 9) ? `0${newValue.getMonth() + 1}` : newValue.getMonth() + 1}-${(+newValue.getDate() < 10) ? `0${newValue.getDate()}` : newValue.getDate()}`;
+        let newValue;
+        console.log(this.fieldValue);
+        if (this.fieldValue == '') { newValue = ''; }
+        else {
+          newValue = new Date(this.fieldValue.split('.').reverse().join('-'));
+          newValue = `${newValue.getFullYear()}-${(+newValue.getMonth() < 9) ? `0${newValue.getMonth() + 1}` : newValue.getMonth() + 1}-${(+newValue.getDate() < 10) ? `0${newValue.getDate()}` : newValue.getDate()}`;
+        }
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
           key: event.key,
@@ -122,14 +129,25 @@ export default {
       }
     },
     eventBlur(event) {
-      if (event.relatedTarget == null) { this.$emit('editing-canceled'); return; }
-      if (event.relatedTarget.closest('.field-date-box__date-picker')) return;
-      if (!this.isInputEmit)
-        this.$emit('editing-canceled');
+      if (!this.isInputEmit) {
+        if (event.relatedTarget == null) { this.$emit('editing-canceled'); return; }
+        if (event.relatedTarget)
+          if (event.relatedTarget.closest('.field-date-box__date-picker')) { event.relatedTarget.closest('.field-date-box__date-picker').focus(); return; }
+        if (!this.isInputEmit)
+          this.$emit('editing-canceled');
+      }
     },
     eventBlurDatePicker(event) {
-      if (event.relatedTarget == null) { this.$emit('editing-canceled'); return; }
-      if (event.relatedTarget.classList.contains('body-column')) { this.$emit('editing-canceled'); return; }
+      if (!this.isInputEmit) {
+        if (event.relatedTarget == null) { this.$emit('editing-canceled'); return; }
+        if (event.relatedTarget.classList.contains('body-column')) { this.$emit('editing-canceled'); return; }
+      }
+    },
+    eventClickDatePicker() {
+      console.log('click date picker');
+    },
+    eventChangeDatePicker() {
+      console.log('change date picker');
     },
   },
 }

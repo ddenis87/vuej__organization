@@ -11,6 +11,7 @@ export const DataTable = {
           return value;
         case 'date': {
           // console.log(value);
+          if (value == '') return value;
           let [yyyy, mm, dd] = value.split('-');
           if ('related_model_view' in properties) {
             let newValue = properties.related_model_view;
