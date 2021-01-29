@@ -17,6 +17,12 @@ const routes = [
     component: () => import('@/views/Login.vue'),
   },
   {
+    path: '/Logout',
+    name: 'Logout',
+    meta: { layout: 'Empty' },
+    component: () => import('@/views/Logout.vue'),
+  },
+  {
     path: '/Table/TablePage',
     name: 'TablePage',
     meta: { layout: 'Table' },

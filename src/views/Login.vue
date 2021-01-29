@@ -1,39 +1,31 @@
 <template>
-  <!-- <v-row justify="center" style="height: 100vh;" >
-    <v-col align-self="center">
-      <v-card width="500"> -->
-        <div class="login">
-          <v-card width="500"  flat class="login__window">
-            <dialog-toolbar is-dialog-name="Авторизация" :is-close="false"></dialog-toolbar>
-            <v-form class="form-login" ref="FormLogin">
-              <el-progress-bar :isShow="isProccessRequest"></el-progress-bar>
-              <div class="form-login__label"><v-subheader>Логин</v-subheader></div>
-              <v-text-field dense single-line :rules="[rules.required]" v-model="userData.userName"></v-text-field>
-              <div class="form-login__label"><v-subheader>Пароль</v-subheader></div>
-              <v-text-field dense single-line 
-                            :type="isPasswordShow ? 'text' : 'password'"
-                            :rules="[rules.required]" 
-                            :append-icon="isPasswordShow ? 'mdi-eye' : 'mdi-eye-off'"
-                            v-model="userData.password"
-                            @click:append="isPasswordShow = !isPasswordShow"></v-text-field>
-              <v-card-actions class="form-login__action">
-                <span class="form-login__error" v-show="isError">Предоставлены неверные данные для входа</span>
-                <v-spacer></v-spacer>
-                <v-btn :dark="!isProccessRequest"
-                        color="blue darken-3" 
-                        height="30" 
-                        :disabled="isProccessRequest"
-                        @click="sendLogin">Войти
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
-        </div>
-        
-      <!-- </v-card>
-    </v-col>
-    
-  </v-row> -->
+  <div class="login">
+    <v-card width="500"  flat class="login__window">
+      <dialog-toolbar is-dialog-name="Авторизация" :is-close="false"></dialog-toolbar>
+      <v-form class="form-login" ref="FormLogin">
+        <el-progress-bar :isShow="isProccessRequest"></el-progress-bar>
+        <div class="form-login__label"><v-subheader>Логин</v-subheader></div>
+        <v-text-field dense single-line :rules="[rules.required]" v-model="userData.userName"></v-text-field>
+        <div class="form-login__label"><v-subheader>Пароль</v-subheader></div>
+        <v-text-field dense single-line autocomplete="false"
+                      :type="isPasswordShow ? 'text' : 'password'"
+                      :rules="[rules.required]" 
+                      :append-icon="isPasswordShow ? 'mdi-eye' : 'mdi-eye-off'"
+                      v-model="userData.password"
+                      @click:append="isPasswordShow = !isPasswordShow"></v-text-field>
+        <v-card-actions class="form-login__action">
+          <span class="form-login__error" v-show="isError">Предоставлены неверные данные для входа</span>
+          <v-spacer></v-spacer>
+          <v-btn :dark="!isProccessRequest"
+                  color="blue darken-3" 
+                  height="30" 
+                  :disabled="isProccessRequest"
+                  @click="sendLogin">Войти
+          </v-btn>
+        </v-card-actions>
+      </v-form>
+    </v-card>
+  </div>
 </template>
 
 <script>
