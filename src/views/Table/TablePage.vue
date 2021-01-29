@@ -23,7 +23,9 @@
         <v-spacer></v-spacer>
         <!-- <el-field-date dense label :properties="{label: 'Дата регистрации'}"></el-field-date> -->
         <v-card min-width="380" max-height="34" flat v-if="isTableMount">
-          <el-field-search label-text="Произвольный поиск по таблице" @free-search="freeSearch"></el-field-search>
+          <el-field-search label-text="Произвольный поиск по таблице" 
+                           @free-search="freeSearch" 
+                           @free-search-clear="freeSearchClear"></el-field-search>
         </v-card>
       </v-toolbar>
 
@@ -162,6 +164,13 @@ export default {
       this.$store.commit('DataTable/SET_FREE_SEARCH_STRING', {
         tableName: this.activeMenu.tableName,
         value: value,
+      });
+      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName});
+    },
+    freeSearchClear() {
+      this.$store.commit('DataTable/SET_FREE_SEARCH_STRING', {
+        tableName: this.activeMenu.tableName,
+        value: null,
       });
       this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName});
     },

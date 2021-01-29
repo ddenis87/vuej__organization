@@ -18,12 +18,12 @@ export default {
   SET_FILTER_STRING_CLEAR(state, option) { state[option.tableName].filterString = ''; },
   
   // FREE SEARCH
-  SET_FREE_SEARCH_STRING(state, option = null) {
+  SET_FREE_SEARCH_STRING(state, option) {
     if (option.value == null) {
       state[option.tableName].freeSearchString = '';
       return;
     }
-    state[option.tableName].freeSearchString = `&search=${option.value.toUpperCase()}`;
+    state[option.tableName].freeSearchString = `search=${option.value.toUpperCase()}&`;
   },
 
   // SORTING

@@ -7,7 +7,8 @@
                 :hide-details="false"
                 clear-icon="mdi-close"
                 clearable
-                prepend-icon="mdi-magnify">
+                prepend-icon="mdi-magnify"
+                @click:clear="$emit('free-search-clear')">
       <template v-slot:append>
         <v-btn class="el-field-string__append" icon small @click="$emit('free-search', fieldValue)"><v-icon >mdi-arrow-right</v-icon></v-btn>
         
