@@ -42,7 +42,7 @@
 
 <script>
 import ElFieldChoice from '@/components/Elements/ElField/ElFieldChoice.vue';
-import ElFieldDialog from '@/components/Elements/ElFieldDialog.vue';
+import ElFieldDialog from '@/components/Elements/ElField/ElFieldDialog.vue';
 export default {
   name: 'DataFilter',
   components: {

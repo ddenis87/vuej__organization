@@ -21,7 +21,6 @@
         <!-- <v-app-bar-nav-icon @click.stop="isMenu = !isMenu"></v-app-bar-nav-icon> -->
         <v-toolbar-title>{{ nameTable || 'Выберите таблицу' }}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <!-- <el-field-date dense label :properties="{label: 'Дата регистрации'}"></el-field-date> -->
         <v-card min-width="380" max-height="34" flat v-if="isTableMount">
           <el-field-search :is-label="true"
                            :input-properties="{label: 'Произвольный поиск по таблице'}"
@@ -84,7 +83,6 @@ import ProfileUserBar from '@/components/Profile/ProfileUserBar.vue';
 import DialogBarLeft from '@/components/Dialogs/DialogBarLeft.vue';
 
 import DataTableControl from '@/components/DataTable/DataTableControl/DataTableControl.vue';
-import ElFieldDate from '@/components/Elements/ElFieldDate.vue';
 
 export default {
   name: 'PageTable',
@@ -93,7 +91,6 @@ export default {
     ProfileUserBar,
     DialogBarLeft,
     DataTableControl,
-    ElFieldDate,
   },
   data() {
     return {

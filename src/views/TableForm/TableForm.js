@@ -1,14 +1,14 @@
-import ElFieldNumber from '@/components/Elements/ElFieldNumber.vue';
-import ElFieldString from '@/components/Elements/ElFieldString.vue';
-import ElFieldChoice from '@/components/Elements/ElFieldChoice.vue';
-import ElFieldDialog from '@/components/Elements/ElFieldDialog.vue';
+// import ElFieldNumber from '@/components/Elements/ElFieldNumber.vue';
+// import ElFieldString from '@/components/Elements/ElFieldString.vue';
+// import ElFieldChoice from '@/components/Elements/ElFieldChoice.vue';
+// import ElFieldDialog from '@/components/Elements/ElFieldDialog.vue';
 
 export const TableForm = {
   components: {
-    ElFieldNumber,
-    ElFieldString,
-    ElFieldChoice,
-    ElFieldDialog,
+    // ElFieldNumber,
+    // ElFieldString,
+    // ElFieldChoice,
+    // ElFieldDialog,
   },
   props: {
     actionName: 'adding',
