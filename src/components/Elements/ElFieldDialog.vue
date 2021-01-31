@@ -178,7 +178,7 @@ export default {
         this.$emit('editing-accepted', {
           tableName: this.properties.tableName,
           key: event.key,
-          keyShift: event.shiftKey,
+          shift: event.shiftKey,
           value: newFieldValue,
           // value: this.fieldValue,
           field: this.properties.value,

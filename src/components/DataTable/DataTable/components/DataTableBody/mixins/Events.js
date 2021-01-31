@@ -64,7 +64,11 @@ export const Events = {
       this.$emit('event-row-focused', event, itemRow);
     },
     eventRowDblclick(event, itemRow) {
-      this.$emit('event-row-selected', event, itemRow);
+      
+      let newItemRow = Object.assign({}, itemRow);
+      if ('text' in newItemRow) delete newItemRow.text;
+      // console.log(newItemRow);
+      this.$emit('event-row-selected', event, newItemRow);
     },
 
     // EVENT FOCUS/BLUR COLUMN
@@ -129,7 +133,7 @@ export const Events = {
           return;
         }
       }
-      if (event.code.includes('Key') || event.code.includes('Digit')) {
+      if (event.code.includes('Key') || event.code.includes('Digit') || event.code == 'Enter') {
         event.stopPropagation();
         this.eventColumnDblclick(event, itemRow, itemColumn, columnValue);
       }

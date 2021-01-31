@@ -4,11 +4,16 @@
       <v-list flat>
         <v-subheader class="data-filter__title">{{ nameTable }}</v-subheader>
         <v-list-item v-for="item in listFieldChoice" :key="item.key">
-          <el-field-choice label 
+          <!-- <el-field-choice label 
                            :bt-clear="true"
                            :properties="item"
                            :single-line="false"
-                           v-model="dataFilterValue[item.key]" @clear="() => clearValue(item.key)"></el-field-choice>
+                           v-model="dataFilterValue[item.key]" @clear="() => clearValue(item.key)"></el-field-choice> -->
+          <el-field-choice is-label 
+                           :is-btn-clear="true"
+                           :inputProperties="item"
+                           :is-single-line="false"
+                           v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-choice>
         </v-list-item>
         <v-list-item v-for="item in listFieldNestedObject" :key="item.key">
           <el-field-dialog label
@@ -36,7 +41,7 @@
 </template>
 
 <script>
-import ElFieldChoice from '@/components/Elements/ElFieldChoice.vue';
+import ElFieldChoice from '@/components/Elements/ElField/ElFieldChoice.vue';
 import ElFieldDialog from '@/components/Elements/ElFieldDialog.vue';
 export default {
   name: 'DataFilter',

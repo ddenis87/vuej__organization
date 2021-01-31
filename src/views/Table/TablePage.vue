@@ -23,9 +23,10 @@
         <v-spacer></v-spacer>
         <!-- <el-field-date dense label :properties="{label: 'Дата регистрации'}"></el-field-date> -->
         <v-card min-width="380" max-height="34" flat v-if="isTableMount">
-          <el-field-search label-text="Произвольный поиск по таблице" 
-                           @free-search="freeSearch" 
-                           @free-search-clear="freeSearchClear"></el-field-search>
+          <el-field-search :is-label="true"
+                           :input-properties="{label: 'Произвольный поиск по таблице'}"
+                           @keydown-enter="freeSearch" 
+                           @keydown-clear="freeSearchClear"></el-field-search>
         </v-card>
       </v-toolbar>
 
@@ -78,7 +79,7 @@
 </template>
 
 <script>
-import ElFieldSearch from '@/components/Elements/ElFieldSearch.vue';
+import ElFieldSearch from '@/components/Elements/ElField/ElFieldSearch.vue';
 import ProfileUserBar from '@/components/Profile/ProfileUserBar.vue';
 import DialogBarLeft from '@/components/Dialogs/DialogBarLeft.vue';
 

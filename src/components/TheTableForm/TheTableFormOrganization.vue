@@ -4,48 +4,51 @@
       <v-form ref="formAction">
         <v-container fluid>
           <v-row>
-            <v-col cols="12"><el-field-string :single-line="false" :label="true" is-use="form"
-                                              :properties="fieldForm.title" 
+            <v-col cols="2"><el-field-date :is-single-line="false" :is-label="true" is-use-in=".form"
+                                           :inputProperties="fieldForm.registry_date" 
+                                           v-model="fieldFormValue.registry_date"></el-field-date></v-col>
+            <v-col cols="10"><el-field-string :is-single-line="false" :is-label="true" is-use="form"
+                                              :inputProperties="fieldForm.title"
                                               v-model="fieldFormValue.title"></el-field-string></v-col>
           </v-row>
           <v-row>
-            <v-col cols="4"><el-field-number :single-line="false" :label="true" is-use="form"
-                                             :properties="fieldForm.institution_code" 
+            <v-col cols="4"><el-field-number :is-single-line="false" :is-label="true" is-use="form"
+                                             :inputProperties="fieldForm.institution_code" 
                                              v-model="fieldFormValue.institution_code"></el-field-number></v-col>
 
-            <v-col cols="4"><el-field-string :single-line="false" :label="true" is-use="form"
-                                             :properties="fieldForm.inn" 
+            <v-col cols="4"><el-field-string :is-single-line="false" :is-label="true" is-use="form"
+                                             :inputProperties="fieldForm.inn" 
                                              v-model="fieldFormValue.inn"></el-field-string></v-col>
 
-            <v-col cols="4"><el-field-string :single-line="false" :label="true" is-use="form"
-                                             :properties="fieldForm.kpp" 
+            <v-col cols="4"><el-field-string :is-single-line="false" :is-label="true" is-use="form"
+                                             :inputProperties="fieldForm.kpp" 
                                              v-model="fieldFormValue.kpp"></el-field-string></v-col>
           </v-row>
           <v-row >
-            <v-col cols="5"><el-field-choice :single-line="false" :label="true" is-use="form"
-                                             :properties="fieldForm.rubpnubp_status" 
+            <v-col cols="5"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+                                             :inputProperties="fieldForm.rubpnubp_status" 
                                              v-model="fieldFormValue.rubpnubp_status"></el-field-choice></v-col>
 
-            <v-col cols="7"><el-field-choice :single-line="false" :label="true" is-use="form"
-                                             :properties="fieldForm.egrul_status" 
+            <v-col cols="7"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+                                             :inputProperties="fieldForm.egrul_status" 
                                              v-model="fieldFormValue.egrul_status"></el-field-choice></v-col>
           </v-row>
           <v-row>
-            <v-col cols="4"><el-field-choice :single-line="false" :label="true" is-use="form"
-                                             :properties="fieldForm.institution_type" 
+            <v-col cols="4"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+                                             :inputProperties="fieldForm.institution_type" 
                                              v-model="fieldFormValue.institution_type"></el-field-choice></v-col>
 
-            <v-col cols="4"><el-field-choice :single-line="false" :label="true" is-use="form"
-                                             :properties="fieldForm.industry_typing" 
+            <v-col cols="4"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+                                             :inputProperties="fieldForm.industry_typing" 
                                              v-model="fieldFormValue.industry_typing"></el-field-choice></v-col>
 
-            <v-col cols="4"><el-field-choice :single-line="false" :label="true" is-use="form"
-                                             :properties="fieldForm.budget_level" 
+            <v-col cols="4"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+                                             :inputProperties="fieldForm.budget_level" 
                                              v-model="fieldFormValue.budget_level"></el-field-choice></v-col>
           </v-row>
           <v-row>
-            <v-col cols="12"><el-field-dialog :single-line="false" :label="true" 
-                                              :properties="assingObject(fieldForm.bk, {related_model_view: '{head_code} - {head_name}'})"
+            <v-col cols="12"><el-field-dialog :is-single-line="false" :is-label="true" 
+                                              :inputProperties="assingObject(fieldForm.bk, {related_model_view: '{head_code} - {head_name}'})"
                                               v-model="fieldFormValue.bk"></el-field-dialog></v-col>
           </v-row>
         </v-container>
@@ -73,6 +76,7 @@ export default {
       tableName: 'organization',
       fieldFormValue: {
         title: '',
+        registry_date: '',
         institution_code: '',
         inn: '',
         kpp: '',
@@ -90,6 +94,7 @@ export default {
     fieldFormValueClear() {
       this.fieldFormValue = {
         title: '',
+        registry_date: '',
         institution_code: '',
         inn: '',
         kpp: '',

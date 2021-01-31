@@ -1,12 +1,14 @@
-import ElFieldNumber from '@/components/Elements/ElFieldNumber.vue';
-import ElFieldString from '@/components/Elements/ElFieldString.vue';
-import ElFieldChoice from '@/components/Elements/ElFieldChoice.vue';
-import ElFieldDialog from '@/components/Elements/ElFieldDialog.vue';
+import ElFieldNumber from '@/components/Elements/ElField/ElFieldNumber.vue';
+import ElFieldString from '@/components/Elements/ElField/ElFieldString.vue';
+import ElFieldDate from '@/components/Elements/ElField/ElFieldDate.vue';
+import ElFieldChoice from '@/components/Elements/ElField/ElFieldChoice.vue';
+import ElFieldDialog from '@/components/Elements/ElField/ElFieldDialog.vue';
 
 export const TheTableForm = {
   components: {
     ElFieldNumber,
     ElFieldString,
+    ElFieldDate,
     ElFieldChoice,
     ElFieldDialog,
   },
@@ -41,12 +43,15 @@ export const TheTableForm = {
       return Object.assign(base, added);
     },
     eventClickActionCancel() {
+      // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
       this.$emit('event-action-cancel');
       this.$refs.formAction.reset();
       // this.fieldFormValueClear();
     },
     eventClickActionAccept() {
+      
       if (!this.fieldFormValueValidation()) return;
+      // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
       let option = {actionName: (this.focusedElement == null) ? 'adding' : 'editing', values: {}};
       Object.assign(option.values, this.fieldFormValue);
       this.$emit('event-action-accept', option);
