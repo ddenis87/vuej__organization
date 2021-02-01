@@ -105,7 +105,7 @@ export default {
       &__sort {
         position: absolute;
         top: -1px;
-        right: -0px;
+        right: -7px;
         visibility: hidden;
         &_active {
           visibility: visible;

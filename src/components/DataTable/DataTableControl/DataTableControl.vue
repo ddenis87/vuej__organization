@@ -9,7 +9,7 @@
                       @click="eventActionMarkDeleting">{{ (isMarkDeletedRecord) ? 'Снять пометку на удаление' : 'Установить пометку на удаление'}}</el-button-icon>
       <el-button-icon icon="mdi-delete-variant"
                       :icon-color="(isMarkDeleted) ? 'blue' : ''"
-                      @click="eventActionShowMarkDeleting">{{ (isMarkDeleted) ? 'Скрыть помеченные на удаление' : 'Показать помеченные на удаление' }}</el-button-icon>
+                      @click="eventActionShowMarkDeleting">{{ (isMarkDeleted) ? 'Выйти из корзины' : 'Показать помеченные на удаление' }}</el-button-icon>
       <v-spacer></v-spacer>
 
       <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
