@@ -1,7 +1,7 @@
 <template>
   <v-dialog class="dialog"
             fullscreen 
-            transition="dialog-bottom-transition" 
+            :transition="transition" 
             v-model="isDialogShow" 
             @click:outside="$emit('close-dialog')">
     <v-card>
@@ -22,6 +22,10 @@ export default {
   props: {
     isDialogShow: {type: Boolean, default: false},
     isDialogName: {type: String, default: ''},
+    isTransition: { type: String, default: 'bottom' },
+  },
+  computed: {
+    transition() { return `dialog-${this.isTransition}-transition` }
   },
 }
 </script>

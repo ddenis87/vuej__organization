@@ -84,4 +84,51 @@ export default {
       .finally(() => state.commit('SET_PROCESSED_STATUS'));
     })
   },
+
+
+  // 
+  REQUEST_OPTIONS_ONLY(state, option) {
+    return new Promise((resolve, reject) => {
+      if (state.getters.GET_DESCRIPTION(option.tableName)) { resolve() };
+      let addressApi = state.getters.GET_ADDRESS_API('option', option.tableName);
+      let tokenAccess = state.rootGetters['Login/GET_USER_TOKEN_ACCESS'];
+      axios.defaults.headers.common = {'Authorization': tokenAccess};
+      axios
+      .options(addressApi)
+      .then(response => {
+        let mutationOption = {
+          tableName: option.tableName,
+          description: response.data.description,
+          data: JSON.parse(response.request.response).actions.POST
+        }
+        state.commit('SET_OPTIONS', mutationOption);
+        resolve();
+      })
+      .catch(error => {
+        console.log(error)
+        reject(error);
+      })
+    });
+    
+    // if (state.getters.GET_DESCRIPTION(option.tableName)) { return; };
+    // state.commit('SET_PROCESSED_STATUS', true);
+    
+    
+    // // console.log(tokenAccess);
+    
+    // axios
+    //   .options(addressApi)
+    //   .then(response => {
+    //     let mutationOption = {
+    //       tableName: option.tableName,
+    //       description: response.data.description,
+    //       data: JSON.parse(response.request.response).actions.POST
+    //     }
+    //     state.commit('SET_OPTIONS', mutationOption);
+    //     if (!'is_deleted' in mutationOption.data) state.commit('TOGGLE_FILTER_DEFAULT_IS_DELETED', { tableName: option.tableName, value: undefined });
+    //     state.dispatch('REQUEST_DATA', {tableName: option.tableName});
+    //   })
+    //   .catch(error => console.log(error))
+    //   .finally(() => state.commit('SET_PROCESSED_STATUS'));
+  },
 }

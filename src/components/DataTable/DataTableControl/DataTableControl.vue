@@ -41,17 +41,23 @@
       <el-button-icon icon="mdi-filter-variant" 
                       
                       :disabled="!isMountTable"
-                      @click="isOpenFilter = !isOpenFilter">Расширенный фильтр</el-button-icon>
+                      @click="isOpenFilterExtended = !isOpenFilterExtended">Расширенный фильтр</el-button-icon>
     </v-toolbar>
     
     <dialog-bar-right is-dialog-name="Фильтры" 
                       :is-dialog-show="isOpenFilter" 
                       @close-dialog="isOpenFilter = false">
-      <data-filter :table-name="tableName" 
+      <!-- <data-filter :table-name="tableName" 
                    @accept="isOpenFilter = false"
-                   @close="isOpenFilter = false"></data-filter>
+                   @close="isOpenFilter = false"></data-filter> -->
     </dialog-bar-right>
     
+    <dialog-full-page is-dialog-name="Расширенный фильтр"
+                      :is-dialog-show="isOpenFilterExtended"
+                      @close-dialog="isOpenFilterExtended = false">
+      <component :is="componentFilterExtended" :tableName="tableName"></component>
+    </dialog-full-page>
+
     <dialog-full-page :is-dialog-name="`${isDialogName} ${(isMarkDeletedRecord) ? '(помечен на удаление)' : ''}`" 
                       :is-dialog-show="isOpenDialog" 
                       @close-dialog="eventCloseDialog">
@@ -76,6 +82,8 @@
 import DialogFullPage from '@/components/Dialogs/DialogFullPage.vue';
 import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
 import DataFilter from '@/components/DataFilter/DataFilter.vue';
+// import DataFilterExtended from '@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue';
+
 
 import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
 
@@ -85,6 +93,7 @@ export default {
     DialogFullPage,
     DialogBarRight,
     DataFilter,
+    // DataFilterExtended,
     ElButtonIcon,
   },
   props: {
@@ -102,6 +111,7 @@ export default {
       focusedElementForm: null,
       isOpenDialog: false,
       isOpenFilter: false,
+      isOpenFilterExtended: false,
       isMarkDeleted: false,
       typeHeight: ['fixed', 'dense', 'auto'],
 
@@ -124,6 +134,10 @@ export default {
         componentForm += item[0].toUpperCase() + item.slice(1);
       })
       return () => import(`@/components/TheTableForm/TheTableForm${componentForm}`);
+    },
+    componentFilterExtended() {
+      if (!this.formProperties?.tableName) return null;
+      return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
     },
     isFilterActive() {
       return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties.tableName) == '') ? false : true : false;

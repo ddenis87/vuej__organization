@@ -20,8 +20,10 @@ export const GettingData = {
       return headerReturn;
     },
     gettingDataBody() {
-      if ('tableName' in this.properties)
+      if ('tableName' in this.properties) {
+        console.log(this.$store.getters[`DataTable/GET_DATA`](this.properties.tableName));
         return this.$store.getters[`DataTable/GET_DATA`](this.properties.tableName);
+      }
     },
   }
 }
