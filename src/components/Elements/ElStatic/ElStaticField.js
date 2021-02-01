@@ -1,4 +1,4 @@
-export const ElField = {
+export const ElStaticField = {
   model: {
     prop: 'inputValue',
     event: 'input-value'
@@ -12,15 +12,15 @@ export const ElField = {
     isBtnClear: {type: Boolean, default: false},
     isValueSelected: {type: Boolean, defalt: false},  // selected value in text field after mounted
     isValueFocus: {type: Boolean, defalt: false},
-    inputProperties: {
-      type: Object,
-      default() {
-        return {
-          label: '',
-          required: { type: Boolean, default: false },
-        }
-      }
-    },
+    // inputProperties: {
+    //   type: Object,
+    //   default() {
+    //     return {
+    //       label: '',
+    //       required: { type: Boolean, default: false },
+    //     }
+    //   }
+    // },
     inputValue: '',
   },
   data() {

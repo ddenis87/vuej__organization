@@ -17,7 +17,8 @@
           @blur="eventRowBlur"
           @click="(event) => eventRowClick(event, itemRow)">
 
-      <div class="body-column"></div>
+      <div class="body-column"></div> <!-- EMPTY FIRST COLUMN -->
+
       <div v-for="(itemColumn, indexColumn) in headers"
            class="body-column"
            :key="`body-column-${indexColumn}`"
@@ -25,9 +26,8 @@
            :tabindex="indexColumn"
            @focus="eventColumnFocus"
            @blur="eventColumnBlur">
-        {{ itemRow[itemColumn.key] }}
+        <slot :name="itemColumn.key" :value="itemRow">{{ itemRow[itemColumn.key] }}</slot>
       </div>
-
     </div>
 
   </div>
@@ -83,7 +83,7 @@ export default {
       border: thin solid rgba(0, 0, 255, 0);
       border-right: $rowBorder;
       outline: none;
-
+      overflow: hidden;
       &:last-child { border-right: 0px; }
       &_focus { border: $columnBorderFocus; }
       &_editing { background-color: white; }

@@ -2,7 +2,7 @@
   <div class="control">
       <!-- <v-spacer></v-spacer> -->
       <v-btn class="control__btn" color="blue darken-1" dark depressed small height="26">Применить</v-btn>
-      <v-btn class="control__btn" color="blue darken-1" dark depressed small height="26">Отменить</v-btn>
+      <v-btn class="control__btn" color="blue darken-1" dark depressed small height="26" @click="$emit('close')">Отменить</v-btn>
   </div>
 </template>
 

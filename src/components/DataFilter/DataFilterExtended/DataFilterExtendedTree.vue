@@ -2,7 +2,7 @@
   <div class="tree">
       
     <div class="tree-control">
-      <v-btn color="blue darken-1" dark depressed small height="26" @click="selectedField">Добавить</v-btn>
+      <v-btn color="blue darken-1" dark depressed small height="26" @click="fieldSelected">Добавить</v-btn>
     </div>
     <div class="tree-title">
       <v-subheader>Доступные поля</v-subheader>
@@ -16,7 +16,7 @@
                   :items="treeList"
                   :item-key="'key'"
                   :item-text="'label'"
-                  :active.sync="fieldSelected"
+                  :active.sync="fieldSelectedValue"
                   :load-children="loadTreeListChildren"></v-treeview>
       </div>
       
@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       open: [],
-      fieldSelected: [],
+      fieldSelectedValue: [],
       treeListChildren: [],
       // treeItemSelected: [],
     }
@@ -69,9 +69,9 @@ export default {
           console.log(error);
         })
     },
-    selectedField() {
-      this.$emit('selected-field', this.fieldSelected[0]);
-      this.fieldSelected = [];
+    fieldSelected() {
+      this.$emit('field-selected', this.fieldSelectedValue[0]);
+      this.fieldSelectedValue = [];
     },
   }
 }

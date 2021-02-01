@@ -47,15 +47,16 @@
     <dialog-bar-right is-dialog-name="Фильтры" 
                       :is-dialog-show="isOpenFilter" 
                       @close-dialog="isOpenFilter = false">
-      <!-- <data-filter :table-name="tableName" 
-                   @accept="isOpenFilter = false"
-                   @close="isOpenFilter = false"></data-filter> -->
+      <component :is="componentFilter"
+                 :tableName="tableName"
+                 @accept="isOpenFilter = false"
+                 @close="isOpenFilter = false"></component>
     </dialog-bar-right>
     
     <dialog-full-page is-dialog-name="Расширенный фильтр"
                       :is-dialog-show="isOpenFilterExtended"
                       @close-dialog="isOpenFilterExtended = false">
-      <component :is="componentFilterExtended" :tableName="tableName"></component>
+      <component :is="componentFilterExtended" :tableName="tableName" @close-dialog="isOpenFilterExtended = false"></component>
     </dialog-full-page>
 
     <dialog-full-page :is-dialog-name="`${isDialogName} ${(isMarkDeletedRecord) ? '(помечен на удаление)' : ''}`" 
@@ -81,7 +82,7 @@
 <script>
 import DialogFullPage from '@/components/Dialogs/DialogFullPage.vue';
 import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
-import DataFilter from '@/components/DataFilter/DataFilter.vue';
+// import DataFilter from '@/components/DataFilter/DataFilter.vue';
 // import DataFilterExtended from '@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue';
 
 
@@ -92,7 +93,7 @@ export default {
   components: {
     DialogFullPage,
     DialogBarRight,
-    DataFilter,
+    // DataFilter,
     // DataFilterExtended,
     ElButtonIcon,
   },
@@ -138,6 +139,10 @@ export default {
     componentFilterExtended() {
       if (!this.formProperties?.tableName) return null;
       return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
+    },
+    componentFilter() {
+      if (!this.formProperties?.tableName) return null;
+      return () => import('@/components/DataFilter/DataFilter.vue')
     },
     isFilterActive() {
       return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties.tableName) == '') ? false : true : false;

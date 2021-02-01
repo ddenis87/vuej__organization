@@ -1,13 +1,18 @@
 <template>
   <div class="list">
     <div class="list-control">
-      <v-btn color="blue darken-1" dark depressed small height="26" @click="deleteField">Удалить</v-btn>
+      <v-btn color="blue darken-1" dark depressed small height="26" @click="fieldDelete">Удалить</v-btn>
     </div>
     <div class="list-box">
       <div class="list-box__list">
         <data-table-lazy :headers="tableHeaders"
                          :items="tableItems"
-                         @focused-row="focusedRow"></data-table-lazy>
+                         @focused-row="focusedRow">
+          <template v-slot:compare>
+            <!-- {{ computedSlotValue(slotValue.value) }} -->
+            <el-static-field-choice-compare></el-static-field-choice-compare>
+          </template>
+        </data-table-lazy>
       </div>
       
     </div>
@@ -16,12 +21,15 @@
 </template>
 
 <script>
+
 import DataTableLazy from '@/components/DataTable/DataTableLazy/DataTableLazy.vue';
+import ElStaticFieldChoiceCompare from '@/components/Elements/ElStatic/ElStaticFieldChoiceCompare.vue';
 
 export default {
   name: 'DataFilterExtendedList',
   components: {
     DataTableLazy,
+    ElStaticFieldChoiceCompare,
   },
   props: {
     tableItems: {type: Array, default() { return [] }},
@@ -34,23 +42,24 @@ export default {
         {key: 'compare', text: 'Вид сравнения', 'position_in_template': 'grid-area: compare', width: [200, 200]},
         {key: 'text', text: 'Значение', 'position_in_template': 'grid-area: text', width: [200,]},
       ],
-      // tableItems: [
-      //   {key: 'bk', label: 'БК', compare: 'Равно', text: 'qwe', type: 'field'},
-      //   {key: 'inn', label: 'ИНН', compare: 'Равно', text: '21312', type: 'String'},
-      //   {key: 'budget_level', label: 'Уровень бюджета', compare: 'Равно', text: 'zxc', type: 'choice'},
-      // ],
     }
+  },
+  computed: {
+    
   },
   methods: {
     focusedRow(option) {
       console.log(option);
       this.fieldSelected = option;
     },
-    deleteField() {
-      if ('key' in this.fieldSelected)
-        this.tableItems.splice( this.tableItems.findIndex(item => item.key == this.fieldSelected.key) ,1);
+    fieldDelete() {
+      this.$emit('field-delete', this.fieldSelected);
       this.fieldSelected = {};
-    }
+    },
+    computedSlotValue(option) {
+      console.log(option);
+      return '123455';
+    },
   },
 }
 </script>

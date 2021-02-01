@@ -8,7 +8,11 @@
       <data-table-lazy-body :headers="headers" 
                             :items="items"
                             :template="computedTemplateTable"
-                            @focused-row="focusedRow"></data-table-lazy-body>
+                            @focused-row="focusedRow">
+        <template v-for="item in headers" v-slot:[item.key]="slotValue">
+          <slot :name="item.key" :value="slotValue.value"></slot>
+        </template>
+      </data-table-lazy-body>
     </div>
     <div class="data-table-lazy__footer"></div>
   </div>

@@ -4,11 +4,6 @@
       <v-list flat>
         <v-subheader class="data-filter__title">{{ nameTable }}</v-subheader>
         <v-list-item v-for="item in listFieldChoice" :key="item.key">
-          <!-- <el-field-choice label 
-                           :bt-clear="true"
-                           :properties="item"
-                           :single-line="false"
-                           v-model="dataFilterValue[item.key]" @clear="() => clearValue(item.key)"></el-field-choice> -->
           <el-field-choice is-label 
                            :is-btn-clear="true"
                            :inputProperties="item"
@@ -16,12 +11,12 @@
                            v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-choice>
         </v-list-item>
         <v-list-item v-for="item in listFieldNestedObject" :key="item.key">
-          <el-field-dialog label
-                           :required="false"
-                           :bt-clear="true"
-                           :properties="item"
-                           :single-line="false"
-                           v-model="dataFilterValue[item.key]" @clear="() => clearValue(item.key)"></el-field-dialog>
+          <el-field-dialog is-label
+                           :is-required="false"
+                           :is-btn-clear="true"
+                           :inputProperties="item"
+                           :is-single-line="false"
+                           v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-dialog>
         </v-list-item>
       </v-list>
       <v-card-actions v-if="emptyFilter">

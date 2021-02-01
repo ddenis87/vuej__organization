@@ -1,11 +1,12 @@
 <template>
   <div class="data-filter-extended">
     <data-filter-extended-tree :table-name="tableName"
-                               @selected-field="selectedField"></data-filter-extended-tree> <!-- css class tree -->
+                               @field-selected="fieldSelected"></data-filter-extended-tree> <!-- css class tree -->
 
-    <data-filter-extended-list :table-items="tableItems"></data-filter-extended-list> <!-- css class list -->
+    <data-filter-extended-list :table-items="tableItems"
+                               @field-delete="fieldDelete"></data-filter-extended-list> <!-- css class list -->
     
-    <data-filter-extended-control></data-filter-extended-control> <!-- css class control -->
+    <data-filter-extended-control @close="$emit('close-dialog')"></data-filter-extended-control> <!-- css class control -->
   </div>
 </template>
 
@@ -27,14 +28,20 @@ export default {
   data() {
     return {
       tableItems: [
-        {key: 'bk', label: 'БК', compare: 'Равно', text: 'qwe', type: 'field'},
-        {key: 'inn', label: 'ИНН', compare: 'Равно', text: '21312', type: 'String'},
-        {key: 'budget_level', label: 'Уровень бюджета', compare: 'Равно', text: 'zxc', type: 'choice'},
+        // {key: 'bk', label: 'БК', compare: 'Равно', text: 'qwe', type: 'field'},
+        // {key: 'inn', label: 'ИНН', compare: 'Равно', text: '21312', type: 'String'},
+        // {key: 'budget_level', label: 'Уровень бюджета', compare: 'Равно', text: 'zxc', type: 'choice'},
       ],
     }
   },
   methods: {
-    selectedField() {},
+    fieldSelected(option) {
+      console.log(option);
+      this.tableItems.push(Object.assign(option, {compare: '', text: ''}));
+    },
+    fieldDelete(option) {
+      this.tableItems.splice( this.tableItems.findIndex(item => item.key == option.key) ,1);
+    },
   },
 }
 </script>
