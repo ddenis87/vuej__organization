@@ -4,11 +4,13 @@
       <v-form ref="formAction">
         <v-container fluid>
           <v-row>
-            <v-col cols="2"><el-field-date :is-single-line="false" :is-label="true" is-use-in=".form"
-                                           :inputProperties="fieldForm.registry_date" 
+            <v-col cols="2"><el-field-date :is-single-line="false"
+                                           :is-label="true"
+                                           :input-properties="fieldForm.registry_date" 
                                            v-model="fieldFormValue.registry_date"></el-field-date></v-col>
-            <v-col cols="10"><el-field-string :is-single-line="false" :is-label="true" is-use="form"
-                                              :inputProperties="fieldForm.title"
+            <v-col cols="10"><el-field-string :is-single-line="false"
+                                              :is-label="true"
+                                              :input-properties="fieldForm.title"
                                               v-model="fieldFormValue.title"></el-field-string></v-col>
           </v-row>
           <v-row>

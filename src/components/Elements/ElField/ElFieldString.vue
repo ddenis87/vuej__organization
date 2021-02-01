@@ -1,21 +1,47 @@
 <template>
-  <v-text-field class="el-field-string"
+  <div>
+    <v-text-field v-if="inputType == 'text-field'"
+                  class="el-field-string"
+                  :dense="isDense"
+                  :single-line="isSingleLine"
+                  :hide-details="isShowValidation"
+                  :rules="(fieldRequired) ? [rules.required] : []"
+                  :label="fieldLabel"
+                  :maxLength="fieldMaxLength"
+                  v-model="fieldValue"
+                  @input="emitInputValue"
+                  @keydown.stop.esc="keydownEsc"
+                  @keydown.stop.prevent.enter.tab="keydownEnterTab"
+                  @keydown.stop
+                  @blur="blurComponent">
+      <template v-slot:append-outer v-if="isBtnClear">
+        <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+      </template>
+    </v-text-field>
+    <v-textarea v-else
+                class="el-field-string"
                 :dense="isDense"
                 :single-line="isSingleLine"
                 :hide-details="isShowValidation"
                 :rules="(fieldRequired) ? [rules.required] : []"
                 :label="fieldLabel"
                 :maxLength="fieldMaxLength"
+                auto-grow
+                rows="1" height="20"
                 v-model="fieldValue"
                 @input="emitInputValue"
                 @keydown.stop.esc="keydownEsc"
                 @keydown.stop.prevent.enter.tab="keydownEnterTab"
                 @keydown.stop
                 @blur="blurComponent">
-    <template v-slot:append-outer v-if="isBtnClear">
-      <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
-    </template>
-  </v-text-field>
+        <template v-slot:append-outer v-if="isBtnClear">
+          <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+        </template>
+      </v-textarea>
+  </div>
+  
+  
+
 </template>
 
 <script>
@@ -25,6 +51,9 @@ export default {
   mixins: [
     ElField,
   ],
+  props: {
+    inputType: { type: String, default: 'text-field' },
+  },
   mounted() {
     setTimeout(() => {
       let fieldInput = document.querySelector(`.content-editing .v-text-field__slot input`);
@@ -46,6 +75,9 @@ export default {
 }
 .v-text-field {
   margin-top: -3.5px;
+}
+.v-textarea {
+  margin-top: 3px;
 }
 ::v-deep {
   .v-input__append-outer {
