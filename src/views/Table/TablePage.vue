@@ -159,14 +159,14 @@ export default {
       this.isMultiline = !this.isMultiline;
     },
     freeSearch(value) {
-      this.$store.commit('DataTable/SET_FREE_SEARCH_STRING', {
+      this.$store.commit('DataTable/SET_FILTER_SEARCH', {
         tableName: this.activeMenu.tableName,
         value: value,
       });
       this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName});
     },
     freeSearchClear() {
-      this.$store.commit('DataTable/SET_FREE_SEARCH_STRING', {
+      this.$store.commit('DataTable/SET_FILTER_SEARCH', {
         tableName: this.activeMenu.tableName,
         value: null,
       });

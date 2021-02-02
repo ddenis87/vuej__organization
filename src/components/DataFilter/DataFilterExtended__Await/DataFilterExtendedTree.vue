@@ -30,6 +30,7 @@ export default {
   name: 'DataFilterExtendedTree',
   props: {
     tableName: { type: String, default: null, },
+    listException: { type: Array, default() { return [] } },
   },
   data() {
     return {
@@ -42,9 +43,10 @@ export default {
   computed: {
     treeList() {
       let treeListArray = [];
-      let treeList = this.$store.getters[`DataTable/GET_OPTIONS`](this.tableName);
+      let treeList = this.$store.getters[`DataTable/DataFilterExtended/GET_OPTIONS1`](this.tableName);
       for (let key of Object.keys(treeList)) {
-        treeListArray.push(Object.assign({key: key}, treeList[key], ('related_model_name' in treeList[key]) ? {children: this.treeListChildren} : {}));
+        if (!this.listException.includes(key))
+          treeListArray.push(Object.assign({key: key}, treeList[key], ('related_model_name' in treeList[key]) ? {children: this.treeListChildren} : {}));
       }
       console.log(treeListArray);
       console.log(treeList);
@@ -60,9 +62,10 @@ export default {
     async loadTreeListChildren(item) {
       await this.$store.dispatch('DataTable/REQUEST_OPTIONS_ONLY', { tableName: item['related_model_name'] })
         .then(response => {
-          let treeListChildren = this.$store.getters[`DataTable/GET_OPTIONS`](item['related_model_name']);
+          let treeListChildren = this.$store.getters[`DataTable/DataFilterExtended/GET_OPTIONS1`](item['related_model_name']);
           for (let key of Object.keys(treeListChildren)) {
-            item.children.push(Object.assign({key: key}, treeListChildren[key], ('related_model_name' in treeListChildren[key]) ? {children: this.treeListChildren} : {}));
+            if (!this.listException.includes(key))
+              item.children.push(Object.assign({key: key}, treeListChildren[key], ('related_model_name' in treeListChildren[key]) ? {children: this.treeListChildren} : {}));
           }
         })
         .catch((error) => {

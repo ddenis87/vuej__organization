@@ -2,9 +2,10 @@
   <v-autocomplete class="el-field-choice"
                   
                   return-object
-                  
+                  placeholder="Выбрать"
                   no-data-text="Значение отсутствует"
-                  solo flat background-color="rgba(242, 242, 242, 0)"
+                  background-color="rgba(242, 242, 242, 1)"
+                  rounded
                   :dense="isDense"
                   :single-line="isSingleLine"
                   :hide-details="isShowValidation"
@@ -92,13 +93,14 @@ export default {
   }
 }
 .v-text-field {
-  margin-bottom: -26px;
+  margin-top: -3.5px;
    input {
     padding: 0px;
   }
 }
 ::v-deep {
   .v-input__append-inner {
+    margin-top: -2px !important;
     cursor: pointer;
   }
   .v-input__append-outer {

@@ -2,36 +2,36 @@ import getters from './DataTableGetters.js';
 import mutations from './DataTableMutations.js';
 import actions from './DataTableActions.js';
 
+class DataTableBase {
+  constructor(pageSize = 30, isDeleted = false) {
+    this.filterDefault['page_size'] = pageSize;
+    this.filterDefault['is_deleted'] = isDeleted;
+  }
+  description = null;
+  countTotal = 0;
+  filterDefault = {
+    'page_size': null,
+    'is_deleted': null,
+  };
+  filterPrimitive = '';
+  filterSearch = '';
+  filterSorting = '';
+  filterExtended = {
+    string: '',
+    list: [],
+  };
+  listOption = {};
+  listData = [];
+}
+
 export default {
   namespaced: true,
   state: {
     processedStatus: false,
-    "budgetclassification": {
-      description: null,
-      filterDefault: {
-        'page_size': 30,
-        'is_deleted': false,
-      },
-      filterString: '',
-      sortingString: '',
-      freeSearchString: '',
-      count: 0,
-      listOption: {},
-      listData: [],
-    },
-    "organization" : {
-      description: null,
-      filterDefault: {
-        'page_size': 30,
-        'is_deleted': false,
-      },
-      filterString: '',
-      sortingString: '',
-      freeSearchString: '',
-      count: 0,
-      listOption: {},
-      listData: [],
-    }
+
+    "budgetclassification": new DataTableBase(),
+    "organization": new DataTableBase(),
+    
   },
   getters,
   mutations,

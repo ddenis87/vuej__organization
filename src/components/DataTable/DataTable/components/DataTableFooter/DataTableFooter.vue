@@ -13,7 +13,7 @@ export default {
   },
   computed: {
     gettingCountRowInBase() {
-      return this.$store.getters[`DataTable/GET_DATA_COUNT`](this.tableName);
+      return this.$store.getters[`DataTable/GET_DATA_COUNT_TOTAL`](this.tableName);
     },
     gettingCountRowLoad() {
       return this.$store.getters[`DataTable/GET_DATA_COUNT_LOAD`](this.tableName);

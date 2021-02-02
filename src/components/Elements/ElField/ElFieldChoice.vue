@@ -87,6 +87,7 @@ export default {
 }
 ::v-deep {
   .v-input__append-inner {
+    margin-top: -2px !important;
     cursor: pointer;
   }
   .v-input__append-outer {

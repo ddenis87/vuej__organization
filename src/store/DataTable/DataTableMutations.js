@@ -6,35 +6,35 @@ export default {
     state[option.tableName].filterDefault['is_deleted'] = option.value;
     // state.dispatch('REQUEST_DATA', {tableName: option.tableName});
   },
-  SET_FILTER_STRING(state, option) {
-    if (option.filters == null) { state[option.tableName].filterString = ''; return; }
-    let filterString = '';
+  SET_FILTER_PRIMITIVE(state, option) {
+    if (option.filters == null) { state[option.tableName].filterPrimitive = ''; return; }
+    let filterPrimitive = '';
     for(let item of Object.entries(option.filters)) {
-      if ('id' in item[1]) filterString += `${item[0]}__id=${item[1].id}&`;
-      else filterString += `${item[0]}=${item[1].value}&`;
+      if ('id' in item[1]) filterPrimitive += `${item[0]}__id=${item[1].id}&`;
+      else filterPrimitive += `${item[0]}=${item[1].value}&`;
     }
-    state[option.tableName].filterString = filterString;
+    state[option.tableName].filterPrimitive = filterPrimitive;
   },
-  SET_FILTER_STRING_CLEAR(state, option) { state[option.tableName].filterString = ''; },
+  SET_FILTER_PRIMITIVE_CLEAR(state, option) { state[option.tableName].filterPrimitive = ''; },
   
   // FREE SEARCH
-  SET_FREE_SEARCH_STRING(state, option) {
+  SET_FILTER_SEARCH(state, option) {
     if (option.value == null) {
-      state[option.tableName].freeSearchString = '';
+      state[option.tableName].filterSearch = '';
       return;
     }
-    state[option.tableName].freeSearchString = `search=${option.value.toUpperCase()}&`;
+    state[option.tableName].filterSearch = `search=${option.value.toUpperCase()}&`;
   },
 
   // SORTING
-  SET_SORTING_STRING(state, option) {
+  SET_FILTER_SORTING(state, option) {
     if (option.key == null) {
-      state[option.tableName].sortingString = '';
+      state[option.tableName].filterSorting = '';
       return;
     }
-    let sortingString = 'ordering=';
-    sortingString += `${(option.ordering) ? '' : '-'}${option.key}&`;
-    state[option.tableName].sortingString = sortingString;
+    let filterSorting = 'ordering=';
+    filterSorting += `${(option.ordering) ? '' : '-'}${option.key}&`;
+    state[option.tableName].filterSorting = filterSorting;
   },
 
   // OPTION & DATA

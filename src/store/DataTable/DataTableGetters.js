@@ -17,20 +17,23 @@ export default {
   GET_ADDRESS_API_PAGE_NEXT:(state) => (tableName) => { return state[tableName].next; },
   GET_ADDRESS_API_PAGE_PREVIOUS:(state) => (tableName) => { return state[tableName].previous; },
 
-  GET_OPTIONS:(state) => (tableName) => { return state[tableName].listOption; },
-  
+  GET_OPTIONS:(state) => (tableName) => {
+    console.log(tableName);
+    return state[tableName].listOption; 
+  },
   GET_DATA:(state) => (tableName) => { return state[tableName].listData; },
-  GET_DATA_COUNT:(state) => (tableName) => { return state[tableName].count; },
-  GET_DATA_COUNT_LOAD:(state) => (tableName) => { return state[tableName].listData.length; },
+
   GET_DESCRIPTION:(state) => (tableName) => { return state[tableName].description; },
+  GET_DATA_COUNT_TOTAL:(state) => (tableName) => { return state[tableName].countTotal; },
+  GET_DATA_COUNT_LOAD:(state) => (tableName) => { return state[tableName].listData.length; },
 
-  GET_FILTER_DEFAULT_IS_DELETED:(state) => (tableName) => { return state[tableName].filterDefault['is_deleted']; },
-
-  GET_FILTER_STRING:(state) => (tableName) => { return state[tableName].filterString; },
   
-  GET_FREE_SEARCH_STRING:(state) => (tableName) => { return state[tableName].freeSearchString; },
 
-  GET_SORTING_STRING:(state) => (tableName) => { return state[tableName].sortingString; },
+  GET_FILTER_DEFAULT_IS_DELETED:(state) => (tableName) => { return state[tableName].filterDefault['is_deleted']; }, // ????
+
+  GET_FILTER_PRIMITIVE:(state) => (tableName) => { return state[tableName].filterPrimitive; },
+  GET_FILTER_SEARCH:(state) => (tableName) => { return state[tableName].filterSearch; },
+  GET_FILTER_SORTING:(state) => (tableName) => { return state[tableName].filterSorting; },
 
   //  GET_FILTER_STRING(state) { return state.filterString; },
 

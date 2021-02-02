@@ -65,8 +65,12 @@ export default {
   margin-top: -3.5px;
 }
 ::v-deep {
+  .v-input__append-inner {
+    margin-top: -2px !important;
+    cursor: pointer;
+  }
   .v-input__append-outer {
-    margin-top: -8px;
+    margin-top: -0px;
   }
   input { text-align: end; }
 }

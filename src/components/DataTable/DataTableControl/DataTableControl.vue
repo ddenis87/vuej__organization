@@ -53,11 +53,14 @@
                  @close="isOpenFilter = false"></component>
     </dialog-bar-right>
     
-    <dialog-full-page is-dialog-name="Расширенный фильтр"
+    <dialog-bar-right is-dialog-name="Расширенный фильтр"
                       :is-dialog-show="isOpenFilterExtended"
+                      width="510"
                       @close-dialog="isOpenFilterExtended = false">
-      <component :is="componentFilterExtended" :tableName="tableName" @close-dialog="isOpenFilterExtended = false"></component>
-    </dialog-full-page>
+      <component :is="componentFilterExtended"
+                 :table-name="tableName"
+                 @close-dialog="isOpenFilterExtended = false"></component>
+    </dialog-bar-right>
 
     <dialog-full-page :is-dialog-name="`${isDialogName} ${(isMarkDeletedRecord) ? '(помечен на удаление)' : ''}`" 
                       :is-dialog-show="isOpenDialog" 
@@ -145,7 +148,7 @@ export default {
       return () => import('@/components/DataFilter/DataFilter.vue')
     },
     isFilterActive() {
-      return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_STRING`](this.formProperties.tableName) == '') ? false : true : false;
+      return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_PRIMITIVE`](this.formProperties.tableName) == '') ? false : true : false;
     },
     isFocusedElement() { return (this.focusedElementForm && Object.keys(this.focusedElementForm).length != 0) ? true : false },
     isDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }

@@ -86,7 +86,7 @@ export default {
   methods: {
     acceptFilter() {
       console.log(this.dataFilterValue);
-      this.$store.commit('DataTable/SET_FILTER_STRING', (Object.keys(this.dataFilterValue).length != 0) ? {
+      this.$store.commit('DataTable/SET_FILTER_PRIMITIVE', (Object.keys(this.dataFilterValue).length != 0) ? {
         tableName: this.tableName,
         filters: this.dataFilterValue
       } : {

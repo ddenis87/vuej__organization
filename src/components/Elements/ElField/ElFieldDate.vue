@@ -21,7 +21,10 @@
                     @keydown.stop
 
                     @click:append="eventOpenDialog"
-                    @blur.stop="blurComponent">      
+                    @blur.stop="blurComponent">
+        <template v-slot:append-outer v-if="isBtnClear">
+          <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+        </template>
       </v-text-field>
       </template>
       <div :class="`field-date-box__date-picker`"
@@ -141,7 +144,7 @@ export default {
 }
 ::v-deep {
   .v-input__append-outer {
-    margin-top: -8px;
+    margin-top: -0px;
   }
   .v-input__append-inner {
     button {

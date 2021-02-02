@@ -4,7 +4,7 @@ export const LoadingData = {
       let isLoadingData = this.$store.getters[`DataTable/GET_PROCESSED_STATUS`];
       if (!isLoadingData && this.parentElement) {
         this.parentElement.addEventListener('scroll', this.eventScrollPagination);
-        if (this.$store.getters[`DataTable/GET_DATA_COUNT`](this.properties.tableName) != 0)
+        if (this.$store.getters[`DataTable/GET_DATA_COUNT_TOTAL`](this.properties.tableName) != 0)
           setTimeout(() => this.eventScrollPagination(), 300);
       }
       return isLoadingData;

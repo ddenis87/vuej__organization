@@ -27,9 +27,9 @@ export default {
   
   REQUEST_DATA(state, option) {
     state.commit('SET_PROCESSED_STATUS', true);
-    let filterString = state.getters.GET_FILTER_STRING(option.tableName);
-    let sortingString = state.getters.GET_SORTING_STRING(option.tableName);
-    let freeSearchString = state.getters.GET_FREE_SEARCH_STRING(option.tableName);
+    let filterString = state.getters.GET_FILTER_PRIMITIVE(option.tableName);
+    let sortingString = state.getters.GET_FILTER_SORTING(option.tableName);
+    let freeSearchString = state.getters.GET_FILTER_SEARCH(option.tableName);
     let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName) + filterString + freeSearchString + sortingString;
     console.log(addressApi);
     axios
