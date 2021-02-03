@@ -17,10 +17,7 @@ export default {
   GET_ADDRESS_API_PAGE_NEXT:(state) => (tableName) => { return state[tableName].next; },
   GET_ADDRESS_API_PAGE_PREVIOUS:(state) => (tableName) => { return state[tableName].previous; },
 
-  GET_OPTIONS:(state) => (tableName) => {
-    console.log(tableName);
-    return state[tableName].listOption; 
-  },
+  GET_OPTIONS:(state) => (tableName) => { return state[tableName].listOption; },
   GET_DATA:(state) => (tableName) => { return state[tableName].listData; },
 
   GET_DESCRIPTION:(state) => (tableName) => { return state[tableName].description; },

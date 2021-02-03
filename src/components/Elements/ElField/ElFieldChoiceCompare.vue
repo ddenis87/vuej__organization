@@ -42,9 +42,9 @@ export default {
   data() {
     return {
       rEqually: {value: 'equally', display_name: 'Равно'},
-      rMore: {value: 'more', display_name: 'Больше'},
+      // rMore: {value: 'more', display_name: 'Больше'},
       rMoreOrEqually: {value: 'moreOrEqually', display_name: 'Больше или равно'},
-      rLess: {value: 'less', display_name: 'Меньше '},
+      // rLess: {value: 'less', display_name: 'Меньше '},
       rLessOrEqually: {value: 'lessOrEqually', display_name: 'Меньше или равно'},
       rInList: {value: 'inList', display_name: 'В списке'},
       rContains: {value: 'contains', display_name: 'Содержит'},
@@ -68,13 +68,15 @@ export default {
   methods: {
     fieldListMap(type) {
       switch(type) {
-        case 'integer': return [this.rEqually, this.rMore, this.rMoreOrEqually, this.rLess, this.rLessOrEqually, this.rBetween];
+        case 'integer': return [this.rEqually, this.rContains, this.rMoreOrEqually, this.rLessOrEqually, this.rBetween];
         case 'string': return [this.rEqually, this.rContains];
         case 'choice': return [this.rEqually, this.rInList];
-        case 'date': return [this.rEqually, this.rMore, this.rMoreOrEqually, this.rLess, this.rLessOrEqually, this.rBetween];
+        case 'date': return [this.rEqually, this.rMoreOrEqually, this.rLessOrEqually, this.rBetween];
+        // case 'datetime': return [this.rEqually, this.rMore, this.rMoreOrEqually, this.rLess, this.rLessOrEqually, this.rBetween];
+        case 'field': return [this.rEqually, this.rInList];
       }
     },
-    emitInputValue(option) { this.$emit('input-value', option); }, //this.fieldValue); }, // for form, emit only value
+    emitInputValue() { this.$emit('input-value', this.fieldValue); }, //this.fieldValue); }, // for form, emit only value
   },
 }
 </script>

@@ -3,7 +3,7 @@
     <template v-if="!isTitle">
       <div class="item-compare">
           <el-field-choice-compare :input-properties="inputProperties"
-                                   @input-value="inputValueCompare"></el-field-choice-compare>
+                                   v-model="valueCompare"></el-field-choice-compare>
       </div>
       <div class="item-data">
         <component :is="componentField"
@@ -13,8 +13,7 @@
                    :is-btn-clear="true"
                    :is-single-line="false"
                    :input-properties="inputProperties"
-                   @input-value="inputValueData"
-                   @input-value-blur="inputValueDataBlur"></component>
+                   @keydown-clear="resetComponent"></component>
       </div>
     </template>
     <template v-else>
@@ -42,82 +41,77 @@ export default {
     return {
       isDisabledData: true,
       valueCompare: null,
+      valueCompareArray: {
+        'equally': '=',
+        'more': '__gte=',
+        'moreOrEqually': '__gte=',
+        'less': '__lte=',
+        'lessOrEqually': '__lte=',
+        'inList': '__in=',
+        'between': ['__gte=', '__lte='],
+      },
+      valueData: null,
       filterProperties: {
-        option: null,
+        compare: null,
         value: null,
       }
     }
   },
   computed: {
     componentField() {
-      switch(this.inputProperties.type) {
-        case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
-        case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');
-        case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumber.vue');
-        case 'boolean': return () => import('@/components/Elements/ElField/ElFieldSwitch.vue');
-        case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
-        // case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
-        default: return null;
+      let key = this.inputProperties.key;
+      this.filterProperties.compare = `${key}${this.valueCompareArray[this.valueCompare]}`;  //  SET COMPARE EQUALLY
+      switch(this.valueCompare) {
+        case 'equally': {
+          this.isDisabledData = false;
+          return this.componentByTypeDefault(this.inputProperties.type);
+        }
+        case 'more':
+        case 'moreOrEqually':
+        case 'less':
+        case 'lessOrEqually': {
+          this.isDisabledData = false;
+          return this.componentByTypeDefault(this.inputProperties.type);
+        }
+        case 'inList': {
+          return null;
+          // this.isDisabledData = false;
+          // switch(this.inputProperties.type) {
+          //   case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
+          //   case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
+          //   case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
+          // }
+        }
+        case 'between': {
+          this.isDisabledData = false;
+          switch(this.inputProperties.type) {
+            case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumberRange.vue');
+            case 'date': return () => import('@/components/Elements/ElField/ElFieldDateRange.vue');
+          }
+        }
+        default: {
+          return this.componentByTypeDefault(this.inputProperties.type);
+        }
       }
     },
   },
   methods: {
-    inputValueCompare(option) {
-      this.filterProperties.option = this.computedLineCompare(option);
-      this.buildingFilterLine();
-      this.isDisabledData = false;
-    },
-    inputValueData(option) {
-      // console.log(option);
-      // console.log(this.computedLineData(option));
-      this.filterProperties.value = this.computedLineData(option);
-      switch(this.inputProperties.type) {
-        case 'data':
-        case 'choice':
-        case 'field': this.buildingFilterLine();
+    componentByTypeDefault(type) {
+      switch(type) {
+        case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');
+        case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumber.vue');
+        case 'boolean': return () => import('@/components/Elements/ElField/ElFieldSwitch.vue');
+        case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
+        case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
+        case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
       }
     },
-    inputValueDataBlur(option) {
-      this.buildingFilterLine();
+    resetComponent() {
+      this.valueCompare = null;
+      this.isDisabledData = true;
     },
-    computedLineCompare(option) {
-      let key = this.inputProperties.key;
-      this.valueCompare = option;
-      switch(option) {
-        case 'equally': return `${key}=`;
-        case 'more': return `${key}__gte=`;
-        case 'moreOrEqually': return `${key}__gte=`
-        case 'less': return `${key}__lte=`;
-        case 'lessOrEqually': return `${key}__lte=`;
-        case 'inList': return `${key}__in=`;
-        case 'contains': return 'search=';
-        case 'between': return [`${key}__gte=`, `${key}__lte=`];
-        default: return null;
-      }
-    },
-    computedLineData(option) {
-      let type = this.inputProperties.type;
-      switch(this.valueCompare) {
-        case 'equally':
-        case 'moreOrEqually':
-        case 'lessOrEqually':
-        case 'contains': return this.computedLineDataString(option);
-        case 'more': return this.computedLineDataString(+option + 1);
-        case 'less': return this.computedLineDataString(+option - 1);
-        default: return null;
-      }
-    },
-    computedLineDataString(option) {
-      switch(this.inputProperties.type) {
-        case 'string':
-        case 'integer':
-        case 'data': return option;
-        case 'choice': return option.value;
-        default: null;
-      }
-    },
-    buildingFilterLine() {
-      console.log(this.filterProperties); // EMIT
+    eventInputCompare() {
+
     }
   },
 }

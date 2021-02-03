@@ -110,7 +110,7 @@ export default {
   },
   computed: {
     isLoadingData() {
-      return isLoadingData = this.$store.getters[`DataTable/GET_PROCESSED_STATUS`];
+      return this.$store.getters[`DataTable/GET_PROCESSED_STATUS`];
     },
   },
 }

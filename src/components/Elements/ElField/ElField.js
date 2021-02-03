@@ -59,7 +59,7 @@ export const ElField = {
       }
       this.emitAccepted(sendOption);
     },
-    blurComponent() { if (this.isEmit == false) { this.emitCanceled(); this.$emit('input-value-blur', this.fieldValue); } },
+    blurComponent() { if (this.isEmit == false) { this.emitCanceled(); } },
 
     // EVENTS EMITTED COMPONENT
     emitAccepted(option) {
