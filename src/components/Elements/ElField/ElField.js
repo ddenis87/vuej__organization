@@ -10,6 +10,7 @@ export const ElField = {
     isShowValidation: {type: Boolean, default: false}, // hidden or show validation error
     isRequired: {type: Boolean, default: true},
     isBtnClear: {type: Boolean, default: false},
+    isDisabled: { type: Boolean, default: false },
     isValueSelected: {type: Boolean, defalt: false},  // selected value in text field after mounted
     isValueFocus: {type: Boolean, defalt: false},
     inputProperties: {
@@ -58,7 +59,7 @@ export const ElField = {
       }
       this.emitAccepted(sendOption);
     },
-    blurComponent() { if (this.isEmit == false) this.emitCanceled(); },
+    blurComponent() { if (this.isEmit == false) { this.emitCanceled(); this.$emit('input-value-blur', this.fieldValue); } },
 
     // EVENTS EMITTED COMPONENT
     emitAccepted(option) {
@@ -69,7 +70,7 @@ export const ElField = {
       this.emitEnterValue() // for form
       this.$emit('editing-accepted', option); // for table
     },
-    emitCanceled() { this.$emit('editing-canceled'); },
+    emitCanceled() { this.$emit('editing-canceled');  },
     emitInputValue(option) { this.$emit('input-value', option); }, //this.fieldValue); }, // for form, emit only value
 // ----------
     // emitInputValue(option) { this.$emit('input-value', this.fieldValue); }, // for form, emit only value

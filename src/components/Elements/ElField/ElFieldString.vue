@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <div class="el-field">
     <v-text-field v-if="inputType == 'text-field'"
-                  class="el-field-string"
+                  class="el-field__item"
                   :dense="isDense"
                   :single-line="isSingleLine"
                   :hide-details="isShowValidation"
                   :rules="(fieldRequired) ? [rules.required] : []"
                   :label="fieldLabel"
+                  :disabled="isDisabled"
                   :maxLength="fieldMaxLength"
                   v-model="fieldValue"
                   @input="emitInputValue"
@@ -69,23 +70,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-field-string {
-  width: 100%;
-  font-size: 14px;
-}
-.v-text-field {
-  margin-top: -3.5px;
-}
-.v-textarea {
-  margin-top: 3px;
-}
-::v-deep {
-  .v-input__append-inner {
-    margin-top: -2px !important;
-    cursor: pointer;
-  }
-  .v-input__append-outer {
-    margin-top: -0px;
-  }
-}
+@import './ElField.scss';
 </style>

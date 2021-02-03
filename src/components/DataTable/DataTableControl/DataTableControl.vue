@@ -55,7 +55,7 @@
     
     <dialog-bar-right is-dialog-name="Расширенный фильтр"
                       :is-dialog-show="isOpenFilterExtended"
-                      width="510"
+                      width="570"
                       @close-dialog="isOpenFilterExtended = false">
       <component :is="componentFilterExtended"
                  :table-name="tableName"

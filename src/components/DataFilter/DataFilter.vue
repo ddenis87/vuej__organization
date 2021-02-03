@@ -1,4 +1,47 @@
 <template>
+  <div class="filter">
+    <div class="filter__title">
+      <v-subheader>{{ nameTable }}</v-subheader>
+    </div>
+    <!-- <div class="filter__sub-title">
+      <data-filter-extended-item :is-title="true"
+                                  :input-title="['Условие', 'Значение']"></data-filter-extended-item>
+    </div> -->
+    <div class="filter__body">
+      <!-- <v-list flat>
+      <v-list-item v-for="item in listFieldChoice" :key="item.key"> -->
+        <el-field-choice v-for="item in listFieldChoice" :key="item.key"
+                         is-label 
+                         :is-btn-clear="true"
+                         :inputProperties="item"
+                         :is-single-line="false"
+                         v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-choice>
+      <!-- </v-list-item> -->
+      <!-- <v-list-item v-for="item in listFieldNestedObject" :key="item.key"> -->
+        <el-field-dialog v-for="item in listFieldNestedObject" :key="item.key"
+                         is-label
+                         :is-required="false"
+                         :is-btn-clear="true"
+                         :inputProperties="item"
+                         :is-single-line="false"
+                         v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-dialog>
+      <!-- </v-list-item> -->
+      <!-- </v-list> -->
+    </div>
+    <div class="filter__action">
+      <template v-if="emptyFilter">
+        <v-btn class="btn btn-accept" color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn>
+      </template>
+      <template v-else>
+        <v-card-text>Для данной таблицы отсутствуют фильтры выбора. Воспользуйтесь произвольным поиском по таблице</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="btn btn-accept" color="blue darken-1" dark height="30" @click="$emit('close')">Закрыть</v-btn>
+        </v-card-actions>
+      </template>
+    </div>
+  </div>
+<!-- 
   <div class="data-filter">
     <v-card flat tile>
       <v-list flat>
@@ -32,7 +75,7 @@
       </template>
       
     </v-card>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -104,14 +147,63 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.data-filter {
-  padding: 0px 10px;
-  z-index: 9999;
+@import './DataFilter.scss';
+.filter {
+  display: grid;
+  grid-template-areas: "filter__title" "filter__body" "filter__action";
+  grid-template-columns: 1fr;
+  grid-template-rows: 48px 1fr 48px;
+  padding: 8px 0px;
+  padding-left: 10px;
+  height: calc(100vh - 64px);
+  overflow: hidden;
   &__title {
+    grid-area: filter__title;
     text-transform: uppercase;
+    overflow: hidden;
+  }
+  &__sub-title {
+    grid-area: filter__sub-title;
+    padding: 0px 8px;
+    border-bottom: thin solid rgba(0,0,0,.12);    
+    overflow: hidden;
+  }
+
+  &__body {
+    grid-area: filter__body;
+    padding: 0px 8px;
+    padding-top: 20px;
+    padding-right: 10px;
+    border-bottom: thin solid rgba(0,0,0,.12);  
+    overflow: hidden;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: $scrollWidth;
+      height: $scrollHeight;
+      border-radius: $scrollBorderRadius;
+      &-thumb {
+        border-radius: $scrollThumbBorderRadius;
+        background-color: $scrollThumbBackgroundColor;
+      }
+    }
+  }
+  &__action {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 56px;
+    padding: 0px 16px;
   }
 }
-.v-list-item {
-  padding: 0px 5px;
-}
+
+// .data-filter {
+//   padding: 0px 10px;
+//   z-index: 9999;
+//   &__title {
+//     text-transform: uppercase;
+//   }
+// }
+// .v-list-item {
+//   padding: 0px 5px;
+// }
 </style>

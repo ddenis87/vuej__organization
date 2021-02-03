@@ -1,29 +1,31 @@
 <template>
-  <v-autocomplete class="el-field-choice"
-                  auto-select-first
-                  return-object
-                  hide-selected
-                  no-data-text="Значение отсутствует"
-
-                  :dense="isDense"
-                  :single-line="isSingleLine"
-                  :hide-details="isShowValidation"
-                  :rules="(fieldRequired) ? [rules.required] : []"
-                  :label="fieldLabel"
-                  :items="fieldList"
-                  :item-text="'display_name'"
-                  :item-value="'value'"
-                  v-model="fieldValue"
-                  @input="emitInputValue"
-                  @change="changeValue"
-                  @keydown.stop.esc="keydownEsc"
-                  @keydown.stop.prevent.enter.tab="keydownEnterTab"
-                  @keydown.stop
-                  @blur="blurComponent">
-    <template v-slot:append-outer v-if="isBtnClear">
-      <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
-    </template>
-  </v-autocomplete>
+  <div class="el-field">
+    <v-autocomplete class="el-field__item"
+                    auto-select-first
+                    return-object
+                    hide-selected
+                    no-data-text="Значение отсутствует"
+                    :dense="isDense"
+                    :single-line="isSingleLine"
+                    :hide-details="isShowValidation"
+                    :rules="(fieldRequired) ? [rules.required] : []"
+                    :label="fieldLabel"
+                    :disabled="isDisabled"
+                    :items="fieldList"
+                    :item-text="'display_name'"
+                    :item-value="'value'"
+                    v-model="fieldValue"
+                    @input="emitInputValue"
+                    @change="changeValue"
+                    @keydown.stop.esc="keydownEsc"
+                    @keydown.stop.prevent.enter.tab="keydownEnterTab"
+                    @keydown.stop
+                    @blur="blurComponent">
+      <template v-slot:append-outer v-if="isBtnClear">
+        <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+      </template>
+    </v-autocomplete>
+  </div>
 </template>
 
 <script>
@@ -72,26 +74,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-input {
-  text-align: center;
-  font-size: 14px;
-  .v-input__control {
-    padding: 0px;
-  }
-}
-.v-text-field {
-  margin-top: -3.5px;
-   input {
-    padding: 0px;
-  }
-}
-::v-deep {
-  .v-input__append-inner {
-    margin-top: -2px !important;
-    cursor: pointer;
-  }
-  .v-input__append-outer {
-    margin-top: -0px;
-  }
-}
+@import './ElField.scss';
 </style>

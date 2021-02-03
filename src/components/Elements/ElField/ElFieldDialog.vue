@@ -1,9 +1,7 @@
 <template>
-  <div class="dialog" >
+  <div class="el-field" >
     <!-- @click.stop - stop slider list -->
-    <!-- @click:append-outer - open dialog -->
-    <!-- @focus - for selected inner text -->
-    <v-autocomplete class="el-field-dialog"
+    <v-autocomplete class="el-field__item"
                     return-object
                     hide-selected
                     no-data-text="Значение отсутствует"
@@ -14,6 +12,7 @@
                     :hide-details="isShowValidation"
                     :rules="(fieldRequired) ? [rules.required] : []"
                     :label="fieldLabel"
+                    :disabled="isDisabled"
                     :items="fieldList"
                     :item-text="fieldListText"
                     :item-value="'id'"
@@ -114,7 +113,6 @@ export default {
       },100);
     },
     rowSelected(option) {
-      // console.log(option);
       this.fieldValue = option.id;
       let sendOption = {
         key: 'Enter',
@@ -122,21 +120,11 @@ export default {
         value: option,
       }
       this.isEmit = true;
-// ----------
-      // this.$emit('input-value', option);
-      // this.$emit('editing-accepted', sendOption);
-// ----------
       this.emitAccepted(sendOption); // mixins
       this.isDialogShow = false;
     },
     openDialog() {
       this.isDialogShow = true;
-      if (this.isValueSelected) {
-        setTimeout(() => {
-          document.querySelector(`.content-editing .v-select__slot input`).select();
-          document.querySelector(`.content-editing .v-select__slot input`).focus();
-        },10);
-      }
     },
     blurComponent(event) {
       if (!this.isDialogShow && !this.isEmit) {
@@ -148,41 +136,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-input {
-  text-align: center;
-  font-size: 14px;
-  .v-input__control {
-    padding: 0px;
-  }
-}
-.v-text-field {
-  margin-top: -3.5px;
-   input {
-    padding: 0px;
-  }
-}
-
-.dialog {
-  width: 100%;
-  background-color: white;
-  &__title {
-    color: white;
-  }
-  &__table {
-    height: calc(100% - 82px);
-    color: white;
-    &::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-      border-radius: 4px;
-      &-thumb {
-        border-radius: 3px;
-        background-color: rgba(0,0,0,0.2);
-      }
-    }
-  }
-}
-::v-deep {
-  .v-icon { margin-right: 0px; }
-}
+@import './ElField.scss';
 </style>

@@ -105,6 +105,7 @@ export default {
     position: sticky;
     top: 0px;
     display: flex;
+    min-height: 5px;
     z-index: 300;
   }
   &__body {

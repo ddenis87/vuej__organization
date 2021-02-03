@@ -20,7 +20,7 @@
     <!-- NO ELEMENT FOR DISPLAY -->
     <div class="body-empty"
          :class="`body-empty_${typeColumn}`"
-         v-if="items.length == 0">Отсутствуют элементы для отображения по заданным условиям</div>
+         v-if="items.length == 0 && !isLoadingData">Отсутствуют элементы для отображения по заданным условиям</div>
 
     <div v-for="(itemRow, indexRow) in items"
          class="body-row"
@@ -107,6 +107,11 @@ export default {
     isEditable: {type: Boolean, default: false},
     isExpansion: {type: Boolean, default: false},
     isMultiline: {type: Boolean, default: false},
+  },
+  computed: {
+    isLoadingData() {
+      return isLoadingData = this.$store.getters[`DataTable/GET_PROCESSED_STATUS`];
+    },
   },
 }
 </script>

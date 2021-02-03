@@ -1,22 +1,20 @@
 <template>
-  <div class="data-filter-extended">
-    <v-card flat tile>
-      <v-list flat>
-        <v-subheader class="data-filter-extended__title">{{ tableNameDescription }}</v-subheader>
-        <div class="data-filter-extended__body">
-          <data-filter-extended-item :is-title="true"
-                                     :input-title="['Условие', 'Значение']"></data-filter-extended-item>
-          <data-filter-extended-item v-for="item in filterList"
-                                     :key="item.key"
-                                     :input-properties="item"></data-filter-extended-item>
-        </div>
-        
-      </v-list>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn class="btn btn-accept" color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn>
-      </v-card-actions>
-    </v-card>
+  <div class="filter">
+    <div class="filter__title">
+      <v-subheader>{{ tableNameDescription }}</v-subheader>
+    </div>
+    <div class="filter__sub-title">
+      <data-filter-extended-item :is-title="true"
+                                  :input-title="['Условие', 'Значение']"></data-filter-extended-item>
+    </div>
+    <div class="filter__body">
+      <data-filter-extended-item v-for="item in filterList"
+                                  :key="item.key"
+                                  :input-properties="item"></data-filter-extended-item>
+    </div>
+    <div class="filter__action">
+      <v-btn class="btn btn-accept" depressed color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn>
+    </div>
   </div>
 </template>
 
@@ -30,7 +28,7 @@ export default {
   },
   props: {
     tableName: { type: String, default: null, },
-    listException: { type: Array, default() { return [] } },
+    listException: { type: Array, default() { return ['id'] } },
   },
   computed: {
     tableNameDescription() { return (!this.tableName) ? '' : this.$store.getters[`DataTable/GET_DESCRIPTION`](this.tableName); },
@@ -51,12 +49,51 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.data-filter-extended {
-  padding: 0px 0px;
+@import './DataFilterExtended.scss';
+.filter {
+  display: grid;
+  grid-template-areas: "filter__title" "filter__sub-title" "filter__body" "filter__action";
+  grid-template-columns: 1fr;
+  grid-template-rows: 48px 30px 1fr 48px;
+  padding: 8px 0px;
+  padding-left: 10px;
+  height: calc(100vh - 64px);
+  overflow: hidden;
   &__title {
+    grid-area: filter__title;
     text-transform: uppercase;
+    overflow: hidden;
   }
+  &__sub-title {
+    grid-area: filter__sub-title;
+    padding: 0px 8px;
+    border-bottom: thin solid rgba(0,0,0,.12);    
+    overflow: hidden;
+  }
+
   &__body {
+    grid-area: filter__body;
+    padding: 0px 8px;
+    padding-top: 20px;
+    padding-right: 10px;
+    border-bottom: thin solid rgba(0,0,0,.12);  
+    overflow: hidden;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: $scrollWidth;
+      height: $scrollHeight;
+      border-radius: $scrollBorderRadius;
+      &-thumb {
+        border-radius: $scrollThumbBorderRadius;
+        background-color: $scrollThumbBackgroundColor;
+      }
+    }
+  }
+  &__action {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 56px;
     padding: 0px 16px;
   }
 }

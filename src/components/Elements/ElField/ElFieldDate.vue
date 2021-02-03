@@ -1,17 +1,18 @@
 <template>
-  <div class="field-date-box">
+  <div class="el-field">
     <v-menu offset-y
             v-model="isDialogShow"
             :close-on-click="false"
             :close-on-content-click="false">
       <template v-slot:activator="{ on }">
-      <v-text-field class="el-field-date"
+      <v-text-field class="el-field__item"
                     append-icon="mdi-calendar-range"
                     :dense="isDense"
                     :single-line="isSingleLine"
                     :hide-details="isShowValidation"
                     :rules="(fieldRequired) ? [rules.required] : []"
                     :label="fieldLabel"
+                    :disabled="isDisabled"
                     v-on="on"
                     v-model="fieldValue"
                     v-mask="fieldMask"
@@ -27,7 +28,7 @@
         </template>
       </v-text-field>
       </template>
-      <div :class="`field-date-box__date-picker`"
+      <div :class="`el-field__date-picker`"
            tabindex="1"
            
            @blur="blurDatePicker">
@@ -104,8 +105,8 @@ export default {
           return;
         }
         if (event.relatedTarget)
-          if (event.relatedTarget.closest(`.field-date-box__date-picker`)) { 
-            event.relatedTarget.closest(`.field-date-box__date-picker`).focus();
+          if (event.relatedTarget.closest(`.el-field__date-picker`)) { 
+            event.relatedTarget.closest(`.el-field__date-picker`).focus();
             return;
           }
         if (!this.isEmit) {
@@ -133,24 +134,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-field-date {
-  &__field {
-    width: 100%;
-  }
-}
-.v-text-field {
-  margin-top: -3.5px;
-  font-size: 14px;
-}
-::v-deep {
-  .v-input__append-outer {
-    margin-top: -0px;
-  }
-  .v-input__append-inner {
-    button {
-      margin-bottom: 3px;
-    }
-    
+@import './ElField.scss';
+.el-field {
+  &__date-picker {
+    background-color: rgba(255, 255, 255, 1);
   }
 }
 </style>

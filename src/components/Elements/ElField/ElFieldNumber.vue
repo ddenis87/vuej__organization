@@ -1,20 +1,23 @@
 <template>
-  <v-text-field class="el-field-number"
-                :dense="isDense"
-                :single-line="isSingleLine"
-                :hide-details="isShowValidation"
-                :rules="(fieldRequired) ? [rules.required] : []"
-                :label="fieldLabel"
-                v-model="fieldValue"
-                @input="emitInputValue"
-                @keydown.stop.esc="keydownEsc"
-                @keydown.stop.prevent.enter.tab="keydownEnterTab"
-                @keydown.stop="keydownKey"
-                @blur="blurComponent">
-    <template v-slot:append-outer v-if="isBtnClear">
-      <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
-    </template>
-  </v-text-field>
+  <div class="el-field">
+    <v-text-field class="el-field__item"
+                  :dense="isDense"
+                  :single-line="isSingleLine"
+                  :hide-details="isShowValidation"
+                  :rules="(fieldRequired) ? [rules.required] : []"
+                  :label="fieldLabel"
+                  :disabled="isDisabled"
+                  v-model="fieldValue"
+                  @input="emitInputValue"
+                  @keydown.stop.esc="keydownEsc"
+                  @keydown.stop.prevent.enter.tab="keydownEnterTab"
+                  @keydown.stop="keydownKey"
+                  @blur="blurComponent">
+      <template v-slot:append-outer v-if="isBtnClear">
+        <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+      </template>
+    </v-text-field>
+  </div>
 </template>
 
 <script>
@@ -57,21 +60,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-field-number {
-  width: 100%;
-  font-size: 14px;
-}
-.v-text-field {
-  margin-top: -3.5px;
-}
+@import './ElField.scss';
+
 ::v-deep {
-  .v-input__append-inner {
-    margin-top: -2px !important;
-    cursor: pointer;
-  }
-  .v-input__append-outer {
-    margin-top: -0px;
-  }
   input { text-align: end; }
 }
 </style>
