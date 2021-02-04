@@ -6,6 +6,7 @@
           <v-row>
             <v-col cols="2"><el-field-date :is-single-line="false"
                                            :is-label="true"
+                                           :is-btn-clear="true"
                                            :input-properties="fieldForm.registry_date" 
                                            v-model="fieldFormValue.registry_date"></el-field-date></v-col>
             <v-col cols="10"><el-field-string :is-single-line="false"

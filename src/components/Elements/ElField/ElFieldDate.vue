@@ -15,7 +15,7 @@
                     :disabled="isDisabled"
                     v-on="on"
                     v-model="fieldValue"
-                    v-mask="fieldMask"
+                    
                     @input="emitInputValue"
                     @keydown.stop.esc="keydownEsc"
                     @keydown.stop.prevent.enter.tab="keydownEnterTab"

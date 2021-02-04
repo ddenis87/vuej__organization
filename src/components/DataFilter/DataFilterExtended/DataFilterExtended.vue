@@ -29,7 +29,7 @@ export default {
   },
   props: {
     tableName: { type: String, default: null, },
-    listException: { type: Array, default() { return ['id'] } },
+    listException: { type: Array, default() { return ['id', 'is_deleted'] } },
   },
   data() {
     return {

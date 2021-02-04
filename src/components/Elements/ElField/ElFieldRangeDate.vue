@@ -7,9 +7,9 @@
                    :is-required="isRequired"
                    :is-disabled="isDisabled"
                    :input-properties="{label: 'Начало'}"
-                   v-model="start"
+                   v-model="fieldValue.start"
                    @input-value="eventInputValue"
-                   @keydown-clear="eventClearValueStart"></el-field-date>
+                   @keydown-clear="eventClearValue"></el-field-date>
                    
     <el-field-date class="el-field__item"
                    :is-label="isLabel"
@@ -18,9 +18,9 @@
                    :is-required="isRequired"
                    :is-disabled="isDisabled"
                    :input-properties="{label: 'Окончание'}"
-                   v-model="end"
+                   v-model="fieldValue.end"
                    @input-value="eventInputValue"
-                   @keydown-clear="eventClearValueEnd"></el-field-date>
+                   @keydown-clear="eventClearValue"></el-field-date>
   </div>
 </template>
 
@@ -45,54 +45,35 @@ export default {
   },
   data() {
     return {
-      // fieldValue: {
+      fieldValue: {
         start: null,
         end: null,
-      // },
+      },
     }
   },
   watch: {
-    inputValue() { 
-      this.start = (this.inputValue.start) ? this.inputValue.start : null;
-      this.end = (this.inputValue.end) ? this.inputValue.end : null;
-    }, 
+    inputValue() { this.fieldValue = this.inputValue; },
   },
   methods: {
     eventInputValue() {
-      if (this.start && this.end) {
-        if (this.start) this.start = this.start.split('-').reverse().join('.');
-        if (this.end) this.end = this.end.split('-').reverse().join('.');
-        this.$emit('input-value', { start: this.start, end: this.end });
+      if (this.fieldValue.start && this.fieldValue.end) {
+        if (this.fieldValue.start) this.fieldValue.start = this.fieldValue.start.split('-').reverse().join('.');
+        if (this.fieldValue.end) this.fieldValue.end = this.fieldValue.end.split('-').reverse().join('.');
+        this.$emit('input-value', this.fieldValue);
       }
     },
-    eventClearValueStart() {
-       this.start = null;
-       if (!this.start && !this.end) {
+
+    eventClearValue(key) {
+      switch(key) {
+        case 'start': this.fieldValue.start = null; break;
+        case 'end': this.fieldValue.end = null; break;
+      }
+      if (!this.fieldValue.start && !this.fieldValue.end) {
         this.$emit('keydown-clear');
         return;
       }
-      // this.$emit('input-value', { start: this.start, end: this.end });
+      this.$emit('input-value', this.fieldValue);
     },
-    eventClearValueEnd() {
-       this.end = null;
-       if (!this.start && !this.end) {
-        this.$emit('keydown-clear');
-        return;
-      }
-      // this.$emit('input-value', { start: this.start, end: this.end });
-    },
-    // eventClearValue(key) {
-    //   console.log(key);
-    //   switch(key) {
-    //     case 'start': { this.fieldValue.start = null; break; }
-    //     case 'end': { this.fieldValue.end = null; break; }
-    //   }
-    //   if (!this.fieldValue.start && !this.fieldValue.end) {
-    //     this.$emit('keydown-clear');
-    //     return;
-    //   }
-    //   this.$emit('input-value', this.fieldValue);
-    // },
   },
 }
 </script>
