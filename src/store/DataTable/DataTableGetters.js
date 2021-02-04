@@ -7,7 +7,7 @@ export default {
       case 'option': return addressApi;
       case 'get': {
         addressApi += `?`;
-        for (let item of Object.entries(state[tableName].filterDefault)) if (item[1] != undefined) addressApi += `${item[0]}=${item[1]}&`;
+        for (let item of Object.entries(state[tableName].filterDefault)) if (item[1] != undefined) addressApi += `&${item[0]}=${item[1]}`;
         return addressApi;
       }
       case 'delete': return addressApi;
@@ -29,8 +29,20 @@ export default {
   GET_FILTER_DEFAULT_IS_DELETED:(state) => (tableName) => { return state[tableName].filterDefault['is_deleted']; }, // ????
 
   GET_FILTER_PRIMITIVE:(state) => (tableName) => { return state[tableName].filterPrimitive; },
+  GET_FILTER_EXTENDED:(state) => (tableName) => { return state[tableName].filterExtended; },
   GET_FILTER_SEARCH:(state) => (tableName) => { return state[tableName].filterSearch; },
   GET_FILTER_SORTING:(state) => (tableName) => { return state[tableName].filterSorting; },
+
+  GET_FILTER_ALL:(state) => (tableName) => {
+    console.log(state[tableName].filterPrimitive + 
+                state[tableName].filterExtended + 
+                state[tableName].filterSearch +
+                state[tableName].filterSorting);
+    return state[tableName].filterPrimitive + 
+           state[tableName].filterExtended + 
+           state[tableName].filterSearch +
+           state[tableName].filterSorting;
+  }
 
   //  GET_FILTER_STRING(state) { return state.filterString; },
 

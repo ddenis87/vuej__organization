@@ -39,7 +39,7 @@
                       :disabled="!isMountTable"
                       @click="isOpenFilter = !isOpenFilter">Фильтр</el-button-icon>
       <el-button-icon icon="mdi-filter-variant" 
-                      
+                      :icon-color="(isFilterExtendedActive) ? 'blue' : ''"
                       :disabled="!isMountTable"
                       @click="isOpenFilterExtended = !isOpenFilterExtended">Расширенный фильтр</el-button-icon>
     </v-toolbar>
@@ -59,7 +59,8 @@
                       @close-dialog="isOpenFilterExtended = false">
       <component :is="componentFilterExtended"
                  :table-name="tableName"
-                 @close-dialog="isOpenFilterExtended = false"></component>
+                 @close-dialog="isOpenFilterExtended = false"
+                 @accept="isOpenFilterExtended = false"></component>
     </dialog-bar-right>
 
     <dialog-full-page :is-dialog-name="`${isDialogName} ${(isMarkDeletedRecord) ? '(помечен на удаление)' : ''}`" 
@@ -149,6 +150,9 @@ export default {
     },
     isFilterActive() {
       return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_PRIMITIVE`](this.formProperties.tableName) == '') ? false : true : false;
+    },
+    isFilterExtendedActive() {
+      return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_EXTENDED`](this.formProperties.tableName) == '') ? false : true : false;
     },
     isFocusedElement() { return (this.focusedElementForm && Object.keys(this.focusedElementForm).length != 0) ? true : false },
     isDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }

@@ -74,6 +74,8 @@ export default {
         case 'date': return [this.rEqually, this.rMoreOrEqually, this.rLessOrEqually, this.rBetween];
         // case 'datetime': return [this.rEqually, this.rMore, this.rMoreOrEqually, this.rLess, this.rLessOrEqually, this.rBetween];
         case 'field': return [this.rEqually, this.rInList];
+
+        case 'boolean': { this.$emit('input-value', 'equally'); }
       }
     },
     emitInputValue() { this.$emit('input-value', this.fieldValue); }, //this.fieldValue); }, // for form, emit only value

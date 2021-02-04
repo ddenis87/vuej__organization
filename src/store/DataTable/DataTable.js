@@ -16,10 +16,7 @@ class DataTableBase {
   filterPrimitive = '';
   filterSearch = '';
   filterSorting = '';
-  filterExtended = {
-    string: '',
-    list: [],
-  };
+  filterExtended = '';
   listOption = {};
   listData = [];
 }

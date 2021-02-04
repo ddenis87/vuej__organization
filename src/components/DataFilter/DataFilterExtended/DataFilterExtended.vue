@@ -10,7 +10,8 @@
     <div class="filter__body">
       <data-filter-extended-item v-for="item in filterList"
                                   :key="item.key"
-                                  :input-properties="item"></data-filter-extended-item>
+                                  :input-properties="item"
+                                  @input-filter="inputFilter"></data-filter-extended-item>
     </div>
     <div class="filter__action">
       <v-btn class="btn btn-accept" depressed color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn>
@@ -30,6 +31,11 @@ export default {
     tableName: { type: String, default: null, },
     listException: { type: Array, default() { return ['id'] } },
   },
+  data() {
+    return {
+      valueFilterObject: {},
+    }
+  },
   computed: {
     tableNameDescription() { return (!this.tableName) ? '' : this.$store.getters[`DataTable/GET_DESCRIPTION`](this.tableName); },
     filterList() {
@@ -38,12 +44,41 @@ export default {
       for (let key of Object.keys(filterList))
         if (!this.listException.includes(key))
           filterListArray.push(Object.assign({key: key}, filterList[key]));
-      console.log(filterListArray);
+      // console.log(filterListArray);
       return filterListArray;
     },
   },
   methods: {
-    acceptFilter() {},
+    inputFilter(option) {
+      // console.log(option);
+      
+      if (option.key == 'is_deleted') { return; }
+      if (option.value == null) {
+        // if (this.valueFilterObject)
+        // console.log('delete');
+        if (option.key in this.valueFilterObject) delete this.valueFilterObject[option.key];
+
+        return;
+      }
+      this.valueFilterObject[option.key] = option.value;
+      // console.log(this.valueFilterObject);
+    },
+    acceptFilter() {
+      
+      let filterString = '';
+      for(let value of Object.values(this.valueFilterObject)) {
+        filterString += value;
+      }
+      
+      if (filterString == '') this.$store.commit('DataTable/SET_FILTER_EXTENDED_CLEAR', { tableName: this.tableName })
+      else this.$store.commit('DataTable/SET_FILTER_EXTENDED', {
+        tableName: this.tableName,
+        value: filterString,
+      })
+      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.tableName});
+      this.$emit('accept');
+      // console.log(filterString);
+    },
   }
 }
 </script>

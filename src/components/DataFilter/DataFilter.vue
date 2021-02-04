@@ -12,6 +12,7 @@
       <v-list-item v-for="item in listFieldChoice" :key="item.key"> -->
         <el-field-choice v-for="item in listFieldChoice" :key="item.key"
                          is-label 
+                         :is-required="false"
                          :is-btn-clear="true"
                          :inputProperties="item"
                          :is-single-line="false"

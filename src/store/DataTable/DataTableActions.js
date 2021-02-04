@@ -27,10 +27,12 @@ export default {
   
   REQUEST_DATA(state, option) {
     state.commit('SET_PROCESSED_STATUS', true);
-    let filterString = state.getters.GET_FILTER_PRIMITIVE(option.tableName);
-    let sortingString = state.getters.GET_FILTER_SORTING(option.tableName);
-    let freeSearchString = state.getters.GET_FILTER_SEARCH(option.tableName);
-    let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName) + filterString + freeSearchString + sortingString;
+    let filterString = state.getters.GET_FILTER_ALL(option.tableName);
+    // let filterString = state.getters.GET_FILTER_PRIMITIVE(option.tableName);
+    // let sortingString = state.getters.GET_FILTER_SORTING(option.tableName);
+    // let freeSearchString = state.getters.GET_FILTER_SEARCH(option.tableName);
+    console.log(state.getters.GET_FILTER_ALL(option.tableName))
+    let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName) + filterString;
     console.log(addressApi);
     axios
       .get(addressApi)

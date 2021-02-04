@@ -76,8 +76,8 @@ export const ElField = {
     // emitInputValue(option) { this.$emit('input-value', this.fieldValue); }, // for form, emit only value
 // ----------
     emitClearValue() {
-      this.fieldValue = null;
-      this.emitInputValue()
+      // this.fieldValue = null;
+      this.emitInputValue();
       this.$emit('keydown-clear'); // for form
     },
     emitEnterValue() {

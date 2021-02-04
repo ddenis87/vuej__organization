@@ -7,23 +7,30 @@ export default {
     // state.dispatch('REQUEST_DATA', {tableName: option.tableName});
   },
   SET_FILTER_PRIMITIVE(state, option) {
+    state[option.tableName].filterExtended = '';
     if (option.filters == null) { state[option.tableName].filterPrimitive = ''; return; }
     let filterPrimitive = '';
     for(let item of Object.entries(option.filters)) {
-      if ('id' in item[1]) filterPrimitive += `${item[0]}__id=${item[1].id}&`;
-      else filterPrimitive += `${item[0]}=${item[1].value}&`;
+      if ('id' in item[1]) filterPrimitive += `&${item[0]}__id=${item[1].id}`;
+      else filterPrimitive += `&${item[0]}=${item[1].value}`;
     }
     state[option.tableName].filterPrimitive = filterPrimitive;
   },
   SET_FILTER_PRIMITIVE_CLEAR(state, option) { state[option.tableName].filterPrimitive = ''; },
   
+  SET_FILTER_EXTENDED(state, option) {
+    state[option.tableName].filterPrimitive = '';
+    state[option.tableName].filterExtended = option.value;
+  },
+  SET_FILTER_EXTENDED_CLEAR(state, option) { state[option.tableName].filterExtended = ''; },
+
   // FREE SEARCH
   SET_FILTER_SEARCH(state, option) {
     if (option.value == null) {
       state[option.tableName].filterSearch = '';
       return;
     }
-    state[option.tableName].filterSearch = `search=${option.value.toUpperCase()}&`;
+    state[option.tableName].filterSearch = `&search=${option.value.toUpperCase()}`;
   },
 
   // SORTING
@@ -32,8 +39,8 @@ export default {
       state[option.tableName].filterSorting = '';
       return;
     }
-    let filterSorting = 'ordering=';
-    filterSorting += `${(option.ordering) ? '' : '-'}${option.key}&`;
+    let filterSorting = '&ordering=';
+    filterSorting += `${(option.ordering) ? '' : '-'}${option.key}`;
     state[option.tableName].filterSorting = filterSorting;
   },
 

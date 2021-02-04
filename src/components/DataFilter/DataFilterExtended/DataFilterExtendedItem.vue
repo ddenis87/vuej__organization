@@ -9,10 +9,12 @@
         <component :is="componentField"
                    is-label
                    :is-required="false"
-                   :is-disabled="isDisabledData"
+                   :is-disabled="isDisabledData || !valueCompare"
                    :is-btn-clear="true"
                    :is-single-line="false"
                    :input-properties="inputProperties"
+                   v-model="valueData"
+                   @input-value="eventInputData"
                    @keydown-clear="resetComponent"></component>
       </div>
     </template>
@@ -43,53 +45,36 @@ export default {
       valueCompare: null,
       valueCompareArray: {
         'equally': '=',
-        'more': '__gte=',
+        // 'more': '__gte=',
         'moreOrEqually': '__gte=',
-        'less': '__lte=',
+        // 'less': '__lte=',
         'lessOrEqually': '__lte=',
         'inList': '__in=',
         'between': ['__gte=', '__lte='],
       },
       valueData: null,
-      filterProperties: {
-        compare: null,
-        value: null,
-      }
     }
   },
   computed: {
     componentField() {
-      let key = this.inputProperties.key;
-      this.filterProperties.compare = `${key}${this.valueCompareArray[this.valueCompare]}`;  //  SET COMPARE EQUALLY
+      this.valueData = null;
+      let valueDefault = {key: this.inputProperties.key, value: (this.inputProperties.type == 'boolean') ? 
+        `${this.computedLineCompare(this.valueCompare)}false` : null};
+      // console.log(valueDefault);
+      this.$emit('input-filter', valueDefault); //  EMIT ---------------<<<<<<<<<<<<
       switch(this.valueCompare) {
-        case 'equally': {
-          this.isDisabledData = false;
-          return this.componentByTypeDefault(this.inputProperties.type);
-        }
-        case 'more':
-        case 'moreOrEqually':
-        case 'less':
-        case 'lessOrEqually': {
-          this.isDisabledData = false;
-          return this.componentByTypeDefault(this.inputProperties.type);
-        }
         case 'inList': {
           return null;
-          // this.isDisabledData = false;
-          // switch(this.inputProperties.type) {
-          //   case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
-          //   case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
-          //   case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
-          // }
         }
         case 'between': {
           this.isDisabledData = false;
           switch(this.inputProperties.type) {
-            case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumberRange.vue');
-            case 'date': return () => import('@/components/Elements/ElField/ElFieldDateRange.vue');
+            case 'integer': return () => import('@/components/Elements/ElField/ElFieldRangeNumber.vue');
+            case 'date': return () => import('@/components/Elements/ElField/ElFieldRangeDate.vue');
           }
         }
         default: {
+          this.isDisabledData = false;
           return this.componentByTypeDefault(this.inputProperties.type);
         }
       }
@@ -106,13 +91,72 @@ export default {
         case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
       }
     },
+    computedLineCompare(option) {
+      let key = this.inputProperties.key;
+      this.valueCompare = option;
+      switch(option) {
+        case 'equally': return `&${key}=`;
+        // case 'more': return `${key}__gte=`;
+        case 'moreOrEqually': return `&${key}__gte=`
+        // case 'less': return `${key}__lte=`;
+        case 'lessOrEqually': return `&${key}__lte=`;
+        case 'inList': return `&${key}__in=`;
+        case 'contains': return `&${key}__contains=`;
+        case 'between': return [`&${key}__gte=`, `${key}__lte=`];
+        default: return null;
+      }
+    },
     resetComponent() {
       this.valueCompare = null;
       this.isDisabledData = true;
+      this.$emit('input-filter', { key: this.inputProperties.key, value: null }); // EMIT -----------------<<<<<<<<<<
     },
-    eventInputCompare() {
+    eventInputCompare() {},
 
-    }
+    eventInputData () {
+      let emitValue = {};
+      switch(this.valueCompare) {
+        case 'equally':
+        case 'contains': 
+        case 'moreOrEqually':
+        case 'lessOrEqually': {
+          switch(this.inputProperties.type) {
+            case 'string':
+            case 'integer':
+            case 'date': {
+              if (!this.valueData) emitValue = { key: this.inputProperties.key, value: null };
+              else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData}` }
+              break;
+            }
+            case 'boolean': {
+              emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${(this.valueData) ? 'true' : 'false'}`};
+              break;
+            }
+            case 'choice': {
+              if (!this.valueData.value) emitValue = { key: this.inputProperties.key, value: null };
+              else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData.value}` }
+              break;
+            }
+            case 'field': { break; } // WAIT
+          }
+          break;
+        }
+        case 'between': {
+          if (!this.valueData.start || !this.valueData.end) {
+            emitValue = { key: this.inputProperties.key, value: null };
+            break;
+          }
+          let newValueData = [];
+          newValueData.push(`${this.computedLineCompare(this.valueCompare)[0]}${this.valueData.start.split('.').reverse().join('-')}`);
+          newValueData.push(`${this.computedLineCompare(this.valueCompare)[1]}${this.valueData.end.split('.').reverse().join('-')}`);
+          emitValue = { key: this.inputProperties.key, value: newValueData.join('&')};
+          break;
+        }
+        case 'inList': { break; } // WAIT
+      }
+      // console.log(emitValue);
+      this.$emit('input-filter', emitValue); // EMIT -----------------<<<<<<<<<<
+    },
   },
 }
 </script>
