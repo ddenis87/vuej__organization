@@ -11,7 +11,7 @@ export default {
     if (option.filters == null) { state[option.tableName].filterPrimitive = ''; return; }
     let filterPrimitive = '';
     for(let item of Object.entries(option.filters)) {
-      if ('id' in item[1]) filterPrimitive += `&${item[0]}__id=${item[1].id}`;
+      if ('id' in item[1]) filterPrimitive += `&${item[0]}=${item[1].id}`;
       else filterPrimitive += `&${item[0]}=${item[1].value}`;
     }
     state[option.tableName].filterPrimitive = filterPrimitive;

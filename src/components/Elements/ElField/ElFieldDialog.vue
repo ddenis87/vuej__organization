@@ -55,19 +55,22 @@ export default {
   data() {
     return {
       isDialogShow: false,
+      
     }
   },
   computed: {
-    fieldListText() { return ('related_model_view' in this.inputProperties) ? 'text' : 'id'; },
+    fieldListText() { 
+      return (this.$store.getters['DataTable/GET_RELATED_MODEL_VIEW'](this.inputProperties['related_model_name']) != '{id}') ? 'text' : 'id'; },
     fieldList() {
+      let relatedModelView = this.$store.getters['DataTable/GET_RELATED_MODEL_VIEW'](this.inputProperties['related_model_name']);
       let fieldList = [];
       let fieldListStore = this.$store.getters[`DataTable/GET_DATA`](this.inputProperties['related_model_name']);
       if (fieldListStore.length == 0) { this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, { tableName: this.inputProperties['related_model_name'] }); return []; }
-      if ('related_model_view' in this.inputProperties) {
-        let templateValue = this.inputProperties.related_model_view.match(/[{\w}]/gi).join(',').replace(/,/g, '').slice(1, -1).split('}{');
+      if (relatedModelView != '{id}') {
+        let templateValue = relatedModelView.match(/[{\w}]/gi).join(',').replace(/,/g, '').slice(1, -1).split('}{');
         fieldListStore.forEach(element => {
           let newValue = '';
-          newValue = this.inputProperties.related_model_view;
+          newValue = relatedModelView;
           templateValue.forEach(item => {
             newValue = newValue.replace(`{${item}}`, element[item]);
           });

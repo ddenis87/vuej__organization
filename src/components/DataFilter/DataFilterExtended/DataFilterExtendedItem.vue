@@ -125,7 +125,7 @@ export default {
             case 'integer':
             case 'date': {
               if (!this.valueData) emitValue = { key: this.inputProperties.key, value: null };
-              else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData}` }
+              else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData}` };
               break;
             }
             case 'boolean': {
@@ -133,11 +133,16 @@ export default {
               break;
             }
             case 'choice': {
-              if (!this.valueData.value) emitValue = { key: this.inputProperties.key, value: null };
-              else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData.value}` }
+              if (!this.valueData) emitValue = { key: this.inputProperties.key, value: null };
+              else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData.value}` };
               break;
             }
-            case 'field': { break; } // WAIT
+            case 'field': {
+              if (!this.valueData) emitValue = { key: this.inputProperties.key, value: null };
+              else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData.id}` };
+              // console.log(this.valueData);
+              break;
+            } // WAIT
           }
           break;
         }
