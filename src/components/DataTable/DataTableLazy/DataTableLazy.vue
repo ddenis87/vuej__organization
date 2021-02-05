@@ -53,6 +53,7 @@ export default {
   font-family: $dtFontFamily;
   // border-radius: $borderRadius;
   // box-shadow: $boxShadow;
+  border: $border;
   overflow: auto;
   box-sizing: border-box;
   &::-webkit-scrollbar {

@@ -25,7 +25,9 @@
                     @click:append.stop.prevent="openDialog"
                     @blur.prevent="blurComponent">
       <template v-slot:append>
-        <v-btn icon plain small @click="openDialog"><v-icon small>mdi-text-box-multiple-outline</v-icon></v-btn>
+        <v-btn icon
+               small 
+               @click.stop.prevent="openDialog"><v-icon small>mdi-text-box-multiple-outline</v-icon></v-btn>
       </template>
       <template v-slot:append-outer v-if="isBtnClear">
         <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>

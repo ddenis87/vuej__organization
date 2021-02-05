@@ -3,88 +3,48 @@
     <div class="filter__title">
       <v-subheader>{{ nameTable }}</v-subheader>
     </div>
-    <!-- <div class="filter__sub-title">
-      <data-filter-extended-item :is-title="true"
-                                  :input-title="['Условие', 'Значение']"></data-filter-extended-item>
-    </div> -->
     <div class="filter__body">
-      <!-- <v-list flat>
-      <v-list-item v-for="item in listFieldChoice" :key="item.key"> -->
-        <el-field-choice v-for="item in listFieldChoice" :key="item.key"
-                         is-label 
-                         :is-required="false"
-                         :is-btn-clear="true"
-                         :inputProperties="item"
-                         :is-single-line="false"
-                         v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-choice>
-      <!-- </v-list-item> -->
-      <!-- <v-list-item v-for="item in listFieldNestedObject" :key="item.key"> -->
-        <el-field-dialog v-for="item in listFieldNestedObject" :key="item.key"
-                         is-label
-                         :is-required="false"
-                         :is-btn-clear="true"
-                         :inputProperties="item"
-                         :is-single-line="false"
-                         v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-dialog>
-      <!-- </v-list-item> -->
-      <!-- </v-list> -->
+      <el-field-choice v-for="item in listFieldChoice" :key="item.key"
+                        is-label 
+                        :is-required="false"
+                        :is-btn-clear="true"
+                        :inputProperties="item"
+                        :is-single-line="false"
+                        v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-choice>
+
+      <el-field-dialog v-for="item in listFieldNestedObject" :key="item.key"
+                        is-label
+                        :is-required="false"
+                        :is-btn-clear="true"
+                        :inputProperties="item"
+                        :is-single-line="false"
+                        v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-dialog>
     </div>
     <div class="filter__action">
       <template v-if="emptyFilter">
-        <v-btn class="btn btn-accept" color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn>
+        <el-button @click="acceptFilter">Применить</el-button>
+        <!-- <v-btn class="btn btn-accept" color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn> -->
       </template>
       <template v-else>
         <v-card-text>Для данной таблицы отсутствуют фильтры выбора. Воспользуйтесь произвольным поиском по таблице</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="btn btn-accept" color="blue darken-1" dark height="30" @click="$emit('close')">Закрыть</v-btn>
+          <el-button @click="$emit('close')">Закрыть</el-button>
+          <!-- <v-btn class="btn btn-accept" color="blue darken-1" dark height="30" @click="$emit('close')">Закрыть</v-btn> -->
         </v-card-actions>
       </template>
     </div>
   </div>
-<!-- 
-  <div class="data-filter">
-    <v-card flat tile>
-      <v-list flat>
-        <v-subheader class="data-filter__title">{{ nameTable }}</v-subheader>
-        <v-list-item v-for="item in listFieldChoice" :key="item.key">
-          <el-field-choice is-label 
-                           :is-btn-clear="true"
-                           :inputProperties="item"
-                           :is-single-line="false"
-                           v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-choice>
-        </v-list-item>
-        <v-list-item v-for="item in listFieldNestedObject" :key="item.key">
-          <el-field-dialog is-label
-                           :is-required="false"
-                           :is-btn-clear="true"
-                           :inputProperties="item"
-                           :is-single-line="false"
-                           v-model="dataFilterValue[item.key]" @keydown-clear="() => clearValue(item.key)"></el-field-dialog>
-        </v-list-item>
-      </v-list>
-      <v-card-actions v-if="emptyFilter">
-        <v-spacer></v-spacer>
-        <v-btn class="data-filter__btn-accept" color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn>
-      </v-card-actions>
-      <template v-else>
-        <v-card-text>Для данной таблицы отсутствуют фильтры выбора. Воспользуйтесь произвольным поиском по таблице</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn class="data-filter__btn-accept" color="blue darken-1" dark height="30" @click="$emit('close')">Закрыть</v-btn>
-        </v-card-actions>
-      </template>
-      
-    </v-card>
-  </div> -->
 </template>
 
 <script>
+import ElButton from '@/components/Elements/ElButton.vue';
 import ElFieldChoice from '@/components/Elements/ElField/ElFieldChoice.vue';
 import ElFieldDialog from '@/components/Elements/ElField/ElFieldDialog.vue';
 export default {
   name: 'DataFilter',
   components: {
+    ElButton,
     ElFieldChoice,
     ElFieldDialog,
   },
@@ -197,15 +157,4 @@ export default {
     padding: 0px 16px;
   }
 }
-
-// .data-filter {
-//   padding: 0px 10px;
-//   z-index: 9999;
-//   &__title {
-//     text-transform: uppercase;
-//   }
-// }
-// .v-list-item {
-//   padding: 0px 5px;
-// }
 </style>

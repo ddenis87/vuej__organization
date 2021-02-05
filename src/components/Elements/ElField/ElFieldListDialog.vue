@@ -1,0 +1,101 @@
+<template>
+  <div class="list-dialog">
+    <div class="list-dialog__title">
+      <v-subheader>{{ fieldLabel }}</v-subheader>
+    </div>
+    <div class="list-dialog__action">
+      <el-button>Добавить</el-button>
+      <el-button>Применить</el-button>
+    </div>
+    <div class="list-dialog__body">
+      <data-table-lazy :headers="tableHeaders"
+                       :items="tableItems"></data-table-lazy>
+    </div>
+  </div>
+  
+</template>
+
+<script>
+import DataTableLazy from '@/components/DataTable/DataTableLazy/DataTableLazy.vue';
+import ElButton from '@/components/Elements/ElButton.vue';
+export default {
+  name: 'ElFieldListDialog',
+  components: {
+    DataTableLazy,
+    ElButton,
+  },
+  props: {
+    inputProperties: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {
+      tableHeaders: [
+        {key: 'value', text: 'Значение', 'position_in_template': 'grid-area: value', width: [100, ]},
+      ],
+      tableItems: [],
+    }
+  },
+  computed: {
+    fieldLabel() { console.log(this.inputProperties); return this.inputProperties.label; },
+  },
+  methods: {
+    acceptFilter() {},
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import './ElFieldList.scss';
+.list-dialog {
+  display: grid;
+  grid-template-areas: "list-dialog__title" "list-dialog__action" "list-dialog__body";
+  grid-template-columns: 1fr;
+  grid-template-rows: 48px 48px 1fr;
+  padding: 8px 0px;
+  padding-left: 10px;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  &__title {
+    grid-area: list-dialog__title;
+    text-transform: uppercase;
+    overflow: hidden;
+  }
+  &__body {
+    grid-area: list-dialog__body;
+    padding: 0px 8px;
+    padding-top: 20px;
+    padding-right: 8px;
+    // border-top: thin solid rgba(0,0,0,.12);
+    // border-bottom: thin solid rgba(0,0,0,.12);
+    overflow: hidden;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: $scrollWidth;
+      height: $scrollHeight;
+      border-radius: $scrollBorderRadius;
+      &-thumb {
+        border-radius: $scrollThumbBorderRadius;
+        background-color: $scrollThumbBackgroundColor;
+      }
+    }
+  }
+  &__action {
+    grid-area: list-dialog__action;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 56px;
+    padding: 0px 16px;
+    border-top: thin solid rgba(0,0,0,.12);
+    border-bottom: thin solid rgba(0,0,0,.12);
+    .btn {
+      margin-left: 10px;
+    }
+  }
+}
+</style>

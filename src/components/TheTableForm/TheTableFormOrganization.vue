@@ -59,8 +59,10 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn dark height="30" class="table-form__btn-accept" color="blue darken-1" small depressed @click="eventClickActionCancel">Отменить</v-btn>
-        <v-btn dark height="30" class="table-form__btn-accept" color="blue darken-1" small depressed @click="eventClickActionAccept">Записать</v-btn>
+        <el-button @click="eventClickActionCancel">Отменить</el-button>
+        <el-button @click="eventClickActionAccept">Записать</el-button>
+        <!-- <v-btn dark height="30" class="table-form__btn-accept" color="blue darken-1" small depressed @click="eventClickActionCancel">Отменить</v-btn>
+        <v-btn dark height="30" class="table-form__btn-accept" color="blue darken-1" small depressed @click="eventClickActionAccept">Записать</v-btn> -->
       </v-card-actions>
     </v-card>
   </div>

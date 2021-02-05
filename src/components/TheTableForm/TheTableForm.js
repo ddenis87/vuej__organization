@@ -3,6 +3,7 @@ import ElFieldString from '@/components/Elements/ElField/ElFieldString.vue';
 import ElFieldDate from '@/components/Elements/ElField/ElFieldDate.vue';
 import ElFieldChoice from '@/components/Elements/ElField/ElFieldChoice.vue';
 import ElFieldDialog from '@/components/Elements/ElField/ElFieldDialog.vue';
+import ElButton from '@/components/Elements/ElButton.vue';
 
 export const TheTableForm = {
   components: {
@@ -11,6 +12,7 @@ export const TheTableForm = {
     ElFieldDate,
     ElFieldChoice,
     ElFieldDialog,
+    ElButton,
   },
   props: {
     actionName: 'adding',

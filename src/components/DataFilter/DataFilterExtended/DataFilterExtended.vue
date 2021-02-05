@@ -9,23 +9,24 @@
     </div>
     <div class="filter__body">
       <data-filter-extended-item v-for="item in filterList"
-                                  :key="item.key"
-                                  :input-properties="item"
-                                  @input-filter="inputFilter"></data-filter-extended-item>
+                                 :key="item.key"
+                                 :input-properties="item"
+                                 @input-filter="inputFilter"></data-filter-extended-item>
     </div>
     <div class="filter__action">
-      <v-btn class="btn btn-accept" depressed color="blue darken-1" dark height="30" @click="acceptFilter">Применить</v-btn>
+      <el-button @click="acceptFilter">Применить</el-button>
     </div>
   </div>
 </template>
 
 <script>
 import DataFilterExtendedItem from './DataFilterExtendedItem.vue';
-
+import ElButton from '@/components/Elements/ElButton.vue';
 export default {
   name: 'DataFilterExtended',
   components: {
     DataFilterExtendedItem,
+    ElButton,
   },
   props: {
     tableName: { type: String, default: null, },
@@ -126,6 +127,7 @@ export default {
     }
   }
   &__action {
+    grid-area: filter__action;
     display: flex;
     justify-content: flex-end;
     align-items: center;

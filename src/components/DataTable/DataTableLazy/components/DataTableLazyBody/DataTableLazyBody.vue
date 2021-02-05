@@ -3,10 +3,10 @@
        @mouseover="eventMouseOver"
        @mouseout="eventMouseOut">
 
-    <div class="body-empty"
+    <!-- <div class="body-empty"
          v-if="items.length == 0">
       Условия отсутствуют
-    </div>
+    </div> -->
 
     <div v-for="(itemRow, indexRow) in items"
           class="body-row"

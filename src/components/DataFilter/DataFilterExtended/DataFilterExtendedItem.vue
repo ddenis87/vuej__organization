@@ -64,7 +64,7 @@ export default {
       this.$emit('input-filter', valueDefault); //  EMIT ---------------<<<<<<<<<<<<
       switch(this.valueCompare) {
         case 'inList': {
-          return null;
+          return () => import('@/components/Elements/ElField/ElFieldList.vue');
         }
         case 'between': {
           this.isDisabledData = false;

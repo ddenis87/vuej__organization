@@ -38,7 +38,7 @@ export default {
           {value: 'industry_typing', width: [120, 120]},
           {value: 'institution_type', width: [130, 130]},
           {value: 'budget_level', width: [180, 180]},
-          {value: 'bk', width: [180, ], related_model_view: '{head_code} - {head_name}'},
+          {value: 'bk', width: [180, ],},
         ],
       },
       tablePropertiesMultiline: {
@@ -60,7 +60,7 @@ export default {
           ], [
             {value: 'organization_type', align: 'start', width: 115, },
             {value: 'registry_date', align: 'start', width: 90, },
-            {value: 'bk', column: 2, width: [180, ], related_model_view: '{head_code} - {head_name}'},
+            {value: 'bk', column: 2, width: [180, ],},
           ]
         ],
       },

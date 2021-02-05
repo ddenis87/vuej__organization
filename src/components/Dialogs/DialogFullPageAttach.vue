@@ -1,11 +1,14 @@
 <template>
   <v-dialog class="dialog"
-            fullscreen
+            fullscreen persistent
+            :attach="dialogAttach"
+            
             :transition="transition" 
             v-model="isDialogShow" 
             @click:outside="$emit('close-dialog')">
     <v-card>
       <dialog-toolbar :is-dialog-name="isDialogName"
+                      orientation="right"
                       @close-dialog="$emit('close-dialog')"></dialog-toolbar>
       <slot></slot>
     </v-card>
@@ -22,10 +25,13 @@ export default {
   props: {
     isDialogShow: {type: Boolean, default: false},
     isDialogName: {type: String, default: ''},
-    // isTransition: { type: String, default: 'bottom' },
+    isDialogAttach: '',
   },
   computed: {
-    transition() { return `dialog-bottom-transition` }
+    transition() { return `dialog-bottom-transition` },
+    dialogAttach() {
+      return (this.isDialogAttach == '') ? '.app' : this.isDialogAttach;
+    },
   },
 }
 </script>

@@ -22,8 +22,8 @@ export default {
     TheTable,
   ],
   props: {
-    typeRowNumber: { type: Number, default: 1 },
-    isEditable: { type: Boolean, default: false },
+    // typeRowNumber: { type: Number, default: 1 },
+    // isEditable: { type: Boolean, default: false },
   },
   data() {
     return {
