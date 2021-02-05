@@ -21,17 +21,17 @@ class DataTableBase {
 
   relatedModelView = '' // шаблон представление таблицы в других таблицах, компонентах, и т.д.
   listOption = {};
-  listFieldObject = [];
   listData = [];
 }
 
 export default {
   namespaced: true,
   state: {
-    statusProcessing: false,
+    processedStatus: false,
 
     "budgetclassification": new DataTableBase({ relatedModelView: '{head_code} - {head_name}' }),
     "organization": new DataTableBase({}),
+    
   },
   getters,
   mutations,

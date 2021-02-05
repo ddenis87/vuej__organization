@@ -15,8 +15,8 @@ export default {
     isShow: {type: Boolean, default: false},
     dataProperties: {type: Object, default: () => {
       return {
-        left: { type: Number, default: -10 },
-        top: { type: Number, default: -10 },
+        left: { type: Number, default: -300 },
+        top: { type: Number, default: -300 },
         width: Number,
       }
     }},

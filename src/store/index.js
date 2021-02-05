@@ -13,7 +13,7 @@ export default new Vuex.Store({
     addressApi: 'https://an67.pythonanywhere.com/',
   },
   getters: {
-    GETTING_ADDRESS_API(state) { return state.addressApi; },
+    GET_ADDRESS_API(state) { return state.addressApi; },
   },
   mutations: {},
   actions: {},

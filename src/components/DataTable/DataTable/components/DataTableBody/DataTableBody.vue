@@ -103,6 +103,7 @@ export default {
     typeHeight: { type: String, default: 'fixed' },
     typeColumn: { type: String, default: 'fixed' },
     items: { type: Array, default: () => [] },
+    // items: { type: Map, default: () => {} },
     itemsHeader: { type: Array, default: () => [] },
     isEditable: {type: Boolean, default: false},
     isExpansion: {type: Boolean, default: false},
@@ -110,7 +111,7 @@ export default {
   },
   computed: {
     isLoadingData() {
-      return this.$store.getters[`DataTable/GET_PROCESSED_STATUS`];
+      return this.$store.getters[`DataTable/GET_STATUS_PROCESSING`];
     },
   },
 }

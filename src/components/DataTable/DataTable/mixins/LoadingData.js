@@ -1,7 +1,7 @@
 export const LoadingData = {
   computed: {
     isLoadingData() {
-      let isLoadingData = this.$store.getters[`DataTable/GET_PROCESSED_STATUS`];
+      let isLoadingData = this.$store.getters[`DataTable/GET_STATUS_PROCESSING`];
       if (!isLoadingData && this.parentElement) {
         this.parentElement.addEventListener('scroll', this.eventScrollPagination);
         if (this.$store.getters[`DataTable/GET_DATA_COUNT_TOTAL`](this.properties.tableName) != 0)
@@ -30,8 +30,11 @@ export const LoadingData = {
     //   this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.tableName});
     // },
   },
-  created() {
-    this.$store.dispatch('DataTable/REQUEST_OPTIONS', { tableName: this.properties.tableName });
+  async created() {
+    await this.$store.dispatch('DataTable/REQUEST_OPTIONS', { tableName: this.properties.tableName })
+      .then(response => {
+        this.$store.dispatch('DataTable/REQUEST_DATA', { tableName: this.properties.tableName })
+      });
   },
   mounted() {
     this.parentElement = document.getElementById(this.id);
@@ -39,6 +42,12 @@ export const LoadingData = {
   },
   updated() { this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;},
   methods: {
+    // async createComponent() {
+    //  await this.$store.dispatch('DataTable/REQUEST_OPTIONS', { tableName: this.properties.tableName })
+    //     .then(resolve => {
+    //       this.$store.dispatch('DataTable/REQUEST_DATA', { tableName: this.properties.tableName })
+    //     })
+    // },
     eventScrollPagination() {
       let bootAnchorEdge = document.querySelector(`#${this.id}-boot-anchor`).getBoundingClientRect().bottom - 500;
       if (bootAnchorEdge < this.parentElementEdge) {

@@ -61,6 +61,7 @@ export const Events = {
         this.isSortingOrderAsc = true;
         targetColumn.querySelector('.header-column__sort').classList.add('header-column__sort_active_asc');
       };
+      this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.tableName });
       this.$store.commit('DataTable/SET_FILTER_SORTING', {
         tableName: this.tableName,
         ordering: this.isSortingOrderAsc,
