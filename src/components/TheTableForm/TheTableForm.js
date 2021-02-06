@@ -21,9 +21,6 @@ export const TheTableForm = {
   computed: {
     fieldForm() { 
       let fieldForm = this.$store.getters[`DataTable/GET_OPTIONS`](this.tableName);
-      // for (let key of Object.keys(fieldForm)) {
-      //   if (fieldForm[key].type == 'nested object') this.$set(fieldForm[key], 'objectValue', 'head_name'); //костыль, надо получать откуда-то
-      // }
       if (this.focusedElement != null) {
         for (let key of Object.keys(fieldForm)) {
           this.fieldFormValue[key] = this.focusedElement[key];
@@ -48,7 +45,6 @@ export const TheTableForm = {
       // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
       this.$emit('event-action-cancel');
       this.$refs.formAction.reset();
-      // this.fieldFormValueClear();
     },
     eventClickActionAccept() {
       
@@ -57,7 +53,6 @@ export const TheTableForm = {
       let option = {actionName: (this.focusedElement == null) ? 'adding' : 'editing', values: {}};
       Object.assign(option.values, this.fieldFormValue);
       this.$emit('event-action-accept', option);
-      // this.fieldFormValueClear();
       this.$refs.formAction.reset();
     },
     fieldFormValueValidation() {

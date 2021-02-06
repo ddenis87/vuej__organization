@@ -10,17 +10,14 @@ export const DataTable = {
         case 'integer':
           return value;
         case 'date': {
-          // console.log(value);
-          if (value == '') return value;
-          let [yyyy, mm, dd] = value.split('-');
-          // if ('related_model_view' in properties) {
-          //   let newValue = properties.related_model_view;
-          //   newValue = newValue.replace(`{yyyy}`, yyyy);
-          //   newValue = newValue.replace(`{mm}`, mm);
-          //   newValue = newValue.replace(`{dd}`, dd);
-          //   return newValue;
-          // }
-          return `${dd}.${mm}.${yyyy}`;
+          return value.split('-').reverse().join('.');
+        }
+        case 'datetime': {
+          let date = '';
+          let time = '';
+          date = value.split('T')[0].split('-').reverse().join('.');
+          time = value.split('T')[1].slice(0, 5);
+          return `${date} ${time}`;
         }
         // case 'boolean':
         //   return value;

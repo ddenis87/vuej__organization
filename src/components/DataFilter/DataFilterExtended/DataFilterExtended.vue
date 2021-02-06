@@ -5,7 +5,7 @@
     </div>
     <div class="filter__sub-title">
       <data-filter-extended-item :is-title="true"
-                                  :input-title="['Условие', 'Значение']"></data-filter-extended-item>
+                                 :input-title="['Условие', 'Значение']"></data-filter-extended-item>
     </div>
     <div class="filter__body">
       <data-filter-extended-item v-for="item in filterList"
@@ -91,7 +91,7 @@ export default {
   display: grid;
   grid-template-areas: "filter__title" "filter__sub-title" "filter__body" "filter__action";
   grid-template-columns: 1fr;
-  grid-template-rows: 48px 30px 1fr 48px;
+  grid-template-rows: 48px 48px 1fr 48px;
   padding: 8px 0px;
   padding-left: 10px;
   height: calc(100vh - 64px);
@@ -104,6 +104,8 @@ export default {
   &__sub-title {
     grid-area: filter__sub-title;
     padding: 0px 8px;
+    margin-top: -10px;
+    padding-right: 10px;
     border-bottom: thin solid rgba(0,0,0,.12);    
     overflow: hidden;
   }

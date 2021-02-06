@@ -2,7 +2,7 @@
   <div class="header">
     <div class="header-row" 
          :style="template">
-      <div class="header-column"></div>
+      <div class="header-column p-pp"></div>
       <div v-for="(item, index) in items"
            class="header-column"
            :key="`header-${index}`"
@@ -10,6 +10,7 @@
            :data-key="item.key">
         {{ item.text }}
       </div>
+      <div class="header-column p-clear" v-if="isClearable"></div>
     </div>
   </div>
 </template>
@@ -20,6 +21,7 @@ export default {
   props: {
     items: Array,
     template: Object,
+    isClearable: { type: Boolean, default: false },
   }
 }
 </script>
@@ -44,9 +46,10 @@ export default {
       height: 100%;
       padding: 3px 10px;
       border-right: $rowBorder;
-
       &:last-child { border-right: 0px; }
     }
+    .p-pp { grid-area: p-pp; }
+    .p-clear { grid-area: p-clear; }
   }
 }
 </style>

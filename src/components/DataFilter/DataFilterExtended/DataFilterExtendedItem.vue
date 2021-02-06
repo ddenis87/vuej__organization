@@ -2,8 +2,8 @@
   <div class="item">
     <template v-if="!isTitle">
       <div class="item-compare">
-          <el-field-choice-compare :input-properties="inputProperties"
-                                   v-model="valueCompare"></el-field-choice-compare>
+        <el-field-choice-compare :input-properties="inputProperties"
+                                  v-model="valueCompare"></el-field-choice-compare>
       </div>
       <div class="item-data">
         <component :is="componentField"
@@ -64,13 +64,13 @@ export default {
       this.$emit('input-filter', valueDefault); //  EMIT ---------------<<<<<<<<<<<<
       switch(this.valueCompare) {
         case 'inList': {
-          return () => import('@/components/Elements/ElField/ElFieldList.vue');
+          return () => import('@/components/Elements/ElField/ElFieldList/ElFieldList.vue');
         }
         case 'between': {
           this.isDisabledData = false;
           switch(this.inputProperties.type) {
-            case 'integer': return () => import('@/components/Elements/ElField/ElFieldRangeNumber.vue');
-            case 'date': return () => import('@/components/Elements/ElField/ElFieldRangeDate.vue');
+            case 'integer': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeNumber.vue');
+            case 'date': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeDate.vue');
           }
         }
         default: {
@@ -140,9 +140,8 @@ export default {
             case 'field': {
               if (!this.valueData) emitValue = { key: this.inputProperties.key, value: null };
               else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData.id}` };
-              // console.log(this.valueData);
               break;
-            } // WAIT
+            }
           }
           break;
         }
@@ -157,7 +156,11 @@ export default {
           emitValue = { key: this.inputProperties.key, value: newValueData.join('&')};
           break;
         }
-        case 'inList': { break; } // WAIT
+        case 'inList': {
+          if (!this.valueData) emitValue = { key: this.inputProperties.key, value: null };
+          else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData}` };
+          break;
+        }
       }
       // console.log(emitValue);
       this.$emit('input-filter', emitValue); // EMIT -----------------<<<<<<<<<<
@@ -172,16 +175,17 @@ export default {
   grid-template-areas: "compare data";
   grid-template-columns: 202px 1fr;
   grid-template-rows: 40px;
-  align-items: center;
+  align-items: flex-end;
   gap: 0px 15px;
-  padding-bottom: 12px;
-  &:last-child { padding-bottom: 0px; }
+  margin-bottom: 12px;
+  &:last-child { margin-bottom: 0px; }
   &-compare {
     grid-area: compare;
-
+    margin-bottom: -16px;
   }
   &-data {
     grid-area: data;
+    margin-bottom: -16px;
   }
 }
 </style>

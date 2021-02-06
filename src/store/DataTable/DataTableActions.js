@@ -39,7 +39,7 @@ export default {
         let mutationOptions = {
           tableName: option.tableName,
           data: response.data,
-          // clear: true,
+          clear: true,
         }
         state.commit('SET_DATA', mutationOptions);
       })
@@ -51,14 +51,14 @@ export default {
     state.commit('SET_STATUS_PROCESSING', true);
     let addressApi = state.getters.GET_ADDRESS_API_PAGE_NEXT(option.tableName);
     console.log(addressApi);
-    // if (addressApi == null) { state.commit('SET_STATUS_PROCESSING'); return; };
+    if (addressApi == null) { state.commit('SET_STATUS_PROCESSING'); return; };
     axios
       .get(addressApi)
       .then(response => {
         let mutationOptions = {
           tableName: option.tableName,
           data: response.data,
-          // clear: false,
+          clear: false,
         }
         state.commit('SET_DATA', mutationOptions);
       })

@@ -2,16 +2,18 @@
   <div class="data-table-lazy">
     <div class="data-table-lazy__header">
       <data-table-lazy-header :items="headers" 
-                              :template="computedTemplateTable"></data-table-lazy-header>
+                              :template="computedTemplateTable"
+                              :is-clearable="isClearable"></data-table-lazy-header>
     </div>
     <div class="data-table-lazy__body">
       <data-table-lazy-body :headers="headers" 
                             :items="items"
                             :template="computedTemplateTable"
-                            @focused-row="focusedRow">
-        <template v-for="item in headers" v-slot:[item.key]="slotValue">
-          <slot :name="item.key" :value="slotValue.value"></slot>
-        </template>
+                            :is-clearable="isClearable"
+                            :input-properties="inputProperties"
+                            @focused-row="focusedRow"
+                            @input-value="inputValue"
+                            @deleting-item="deletingItem">
       </data-table-lazy-body>
     </div>
     <div class="data-table-lazy__footer"></div>
@@ -24,7 +26,7 @@ import DataTableLazyHeader from './components/DataTableLazyHeader/DataTableLazyH
 import DataTableLazyBody from './components/DataTableLazyBody/DataTableLazyBody.vue';
 
 import { ComputedTemplate } from './mixins/ComputedTemplate.js'; // computedTemplateTable
-import { Events } from './mixins/Events.js';
+import { EventsComponent } from './mixins/EventsComponent.js';
 
 export default {
   name: 'DataTableLazy',
@@ -34,11 +36,18 @@ export default {
   },
   mixins: [
     ComputedTemplate,
-    Events,
+    EventsComponent,
   ],
   props: {
     headers: Array,
     items: Array,
+    isClearable: { type: Boolean, default: false },
+    inputProperties: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
 }
 </script>

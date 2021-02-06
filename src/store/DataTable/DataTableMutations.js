@@ -9,6 +9,7 @@ export default {
     state[option.tableName].description = option.description;
   },
   SET_DATA(state, option) {
+    if (option.clear == true) state[option.tableName].listData = [];
     state[option.tableName].countTotal = option.data.count;
     state[option.tableName].next = option.data.next;
     state[option.tableName].previous = option.data.previous;

@@ -6,7 +6,7 @@
                     hide-selected
                     no-data-text="Значение отсутствует"
                     
-
+                    
                     :dense="isDense"
                     :single-line="isSingleLine"
                     :hide-details="isShowValidation"

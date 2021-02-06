@@ -4,12 +4,17 @@
       <v-subheader>{{ fieldLabel }}</v-subheader>
     </div>
     <div class="list-dialog__action">
-      <el-button>Добавить</el-button>
-      <el-button>Применить</el-button>
+      <el-button @click="addingItem">Добавить</el-button>
+      <el-button @click="acceptList">Применить</el-button>
     </div>
     <div class="list-dialog__body">
       <data-table-lazy :headers="tableHeaders"
-                       :items="tableItems"></data-table-lazy>
+                       :items="tableItems"
+                       :is-clearable="true"
+                       :input-properties="inputProperties"
+                       @input-value="inputValue"
+                       @deleting-item="deletingItem">
+      </data-table-lazy>
     </div>
   </div>
   
@@ -18,6 +23,7 @@
 <script>
 import DataTableLazy from '@/components/DataTable/DataTableLazy/DataTableLazy.vue';
 import ElButton from '@/components/Elements/ElButton.vue';
+
 export default {
   name: 'ElFieldListDialog',
   components: {
@@ -38,13 +44,38 @@ export default {
         {key: 'value', text: 'Значение', 'position_in_template': 'grid-area: value', width: [100, ]},
       ],
       tableItems: [],
+      uniqueIndex: 0,
+      tableValue: [],
     }
   },
   computed: {
     fieldLabel() { console.log(this.inputProperties); return this.inputProperties.label; },
   },
   methods: {
-    acceptFilter() {},
+    addingItem() {
+      if (this.tableItems.length == 0) this.uniqueIndex = 0;
+      this.uniqueIndex = this.uniqueIndex + 1;
+      this.tableItems.push({uniqueIndex: this.uniqueIndex});
+    },
+    deletingItem(index) {
+      this.tableItems.splice(index, 1);
+    },
+    inputValue(tableValue) {
+      // console.log(tableValue);
+      this.tableValue = [];
+      if (this.inputProperties.type == 'field') {
+        for (let key of Object.keys(tableValue)) {
+          if (!this.tableValue.find(item => item.id == tableValue[key].id)) this.tableValue.push(tableValue[key]);
+        }
+      } else if (this.inputProperties.type == 'choice') {
+        for (let key of Object.keys(tableValue)) {
+          if (!this.tableValue.find(item => item.value == tableValue[key].value)) this.tableValue.push(tableValue[key]);
+        }
+      }
+    },
+    acceptList() {
+      this.$emit('accept-list', this.tableValue);
+    },
   }
 }
 </script>

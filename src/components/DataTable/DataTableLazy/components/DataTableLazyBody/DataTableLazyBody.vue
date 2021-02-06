@@ -3,11 +3,6 @@
        @mouseover="eventMouseOver"
        @mouseout="eventMouseOut">
 
-    <!-- <div class="body-empty"
-         v-if="items.length == 0">
-      Условия отсутствуют
-    </div> -->
-
     <div v-for="(itemRow, indexRow) in items"
           class="body-row"
           :key="`body-row-${indexRow}`"
@@ -17,7 +12,7 @@
           @blur="eventRowBlur"
           @click="(event) => eventRowClick(event, itemRow)">
 
-      <div class="body-column"></div> <!-- EMPTY FIRST COLUMN -->
+      <div class="body-column p-pp">{{ indexRow + 1 }}</div> <!-- EMPTY FIRST COLUMN -->
 
       <div v-for="(itemColumn, indexColumn) in headers"
            class="body-column"
@@ -26,7 +21,22 @@
            :tabindex="indexColumn"
            @focus="eventColumnFocus"
            @blur="eventColumnBlur">
-        <slot :name="itemColumn.key" :value="itemRow">{{ itemRow[itemColumn.key] }}</slot>
+        <div class="body-column__item">
+          <!-- <el-field-dialog :input-properties="inputProperties" 
+                           :key="itemRow.uniqueIndex"
+                           v-model="tableValue[itemRow.uniqueIndex]"
+                           @input-value="eventInputValue"></el-field-dialog> -->
+          <component :is="componentField"
+                     :input-properties="inputProperties" 
+                     :key="itemRow.uniqueIndex"
+                     v-model="tableValue[itemRow.uniqueIndex]"
+                     @input-value="eventInputValue"></component>
+        </div>
+        
+      </div>
+
+      <div class="body-column p-clear" v-if="isClearable">
+        <el-button-icon icon="mdi-close" :is-small="true" no-tooltip @click="() => deletingItem(indexRow, itemRow.uniqueIndex)"></el-button-icon>
       </div>
     </div>
 
@@ -35,16 +45,56 @@
 
 <script>
 import { DataTableLazyBodyEvents } from './DataTableLazyBodyEvents.js';
+import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
+import ElFieldDialog from '@/components/Elements/ElField/ElFieldDialog.vue';
+
 export default {
   name: 'DataTableLazyBody',
   mixins: [
     DataTableLazyBodyEvents,
   ],
+  components: {
+    ElButtonIcon,
+    ElFieldDialog,
+  },
   props: {
     headers: Array,
     items: Array,
     template: Object,
-  }
+    isClearable: { type: Boolean, default: false },
+    inputProperties: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {
+      tableValue: {},
+    }
+  },
+  computed: {
+    componentField() {
+      switch(this.inputProperties.type) {
+        case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
+        case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
+      }
+    }
+  },
+  methods: {
+    eventInputValue() {
+      this.$emit('input-value', this.tableValue);
+      // console.log(value);
+      // console.log(this.tableValue);
+    },
+    deletingItem(indexRow, indexTableValue) {
+      this.$emit('deleting-item', indexRow);
+      delete this.tableValue[indexTableValue];
+      this.$emit('input-value', this.tableValue);
+      // document.getElementById(`column-component-${indexRow}`).remove();
+    },
+  },
 }
 </script>
 
@@ -78,8 +128,7 @@ export default {
       display: flex;
       align-items: center;
       height: 100%;
-      padding: 3px 10px;
-      
+      padding: 0px 10px;
       border: thin solid rgba(0, 0, 255, 0);
       border-right: $rowBorder;
       outline: none;
@@ -87,6 +136,19 @@ export default {
       &:last-child { border-right: 0px; }
       &_focus { border: $columnBorderFocus; }
       &_editing { background-color: white; }
+
+      &__item {
+        width: 100%;
+        margin-bottom: -18px;
+      }
+    }
+    .p-pp { grid-area: p-pp; }
+    .p-clear {
+      grid-area: p-clear;
+      display: flex;
+      justify-content: center;
+      padding: 0px;
+      margin-left: -2px;
     }
   }
 }
