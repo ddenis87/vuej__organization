@@ -12,6 +12,7 @@ export const Editing = {
         columnProperties,
         columnValue,
       };
+      console.log(editingComponentProperties);
       let editingComponentVue = Vue.extend(ContentEditing);
       let editingComponent = new editingComponentVue({ vuetify, store, propsData: { properties: editingComponentProperties }}).$mount();
       target.prepend(editingComponent.$el);
