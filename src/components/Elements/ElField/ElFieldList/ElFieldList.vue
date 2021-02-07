@@ -33,6 +33,7 @@
                              :is-dialog-attach="attachDialog"
                              @close-dialog="closeDialog">
       <el-field-list-dialog :input-properties="inputProperties"
+                            :count-select-value="countSelectValue"
                             @accept-list="acceptList"></el-field-list-dialog>
     </dialog-full-page-attach>
   </div>
@@ -66,6 +67,12 @@ export default {
   //   }
   // },
   methods: {
+    clearValue() {
+      this.fieldValue = null;
+      this.fieldValueText = null;
+      this.countSelectValue = 0;
+      this.emitClearValue();
+    },
     acceptList(tableValue) {
       // console.log(this.inputProperties);
       this.isDialogShow = false;

@@ -80,6 +80,7 @@ export default {
       this.isDialogShow = false;
       this.isEmit = true;
       this.fieldValue = this.fieldValueDatePicker;
+      console.log(this.fieldValue);
       let sendOption = {
         key: 'Enter',
         shift: false,

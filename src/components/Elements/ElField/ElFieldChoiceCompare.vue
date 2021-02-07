@@ -80,7 +80,7 @@ export default {
         case 'string': return [this.rEqually, this.rContains];
         case 'choice': return [this.rEqually, this.rInList];
         case 'date': return [this.rEqually, this.rMoreOrEqually, this.rLessOrEqually, this.rBetween];
-        // case 'datetime': return [this.rEqually, this.rMoreOrEqually, this.rLessOrEqually, this.rBetween];
+        case 'datetime': return [this.rEqually, this.rMoreOrEqually, this.rLessOrEqually, this.rBetween];
         case 'field': return [this.rEqually, this.rInList];
 
         case 'boolean': { this.$emit('input-value', 'equally'); }

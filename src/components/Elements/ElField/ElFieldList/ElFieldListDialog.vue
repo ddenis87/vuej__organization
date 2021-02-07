@@ -31,6 +31,7 @@ export default {
     ElButton,
   },
   props: {
+    countSelectValue: { type: Number, default: 0, },
     inputProperties: {
       type: Object,
       default() {
@@ -51,9 +52,19 @@ export default {
   computed: {
     fieldLabel() { console.log(this.inputProperties); return this.inputProperties.label; },
   },
+  watch: {
+    countSelectValue() {
+      if (this.countSelectValue == 0) {
+        console.log('del')
+        this.tableItems.splice(0, this.tableItems.length);
+        // this.uniqueIndex = 0;
+        this.tableValue.splice(0, this.tableValue.length);
+      }
+    }
+  },
   methods: {
     addingItem() {
-      if (this.tableItems.length == 0) this.uniqueIndex = 0;
+      // if (this.tableItems.length == 0) this.uniqueIndex = 0;
       this.uniqueIndex = this.uniqueIndex + 1;
       this.tableItems.push({uniqueIndex: this.uniqueIndex});
     },

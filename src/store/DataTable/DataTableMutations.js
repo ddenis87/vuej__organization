@@ -76,4 +76,18 @@ export default {
     let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
     state[option.tableName].listData[index][option.fieldName] = option.fieldValue;
   },
+
+  ADDING_LIST_DATA(state, option) {
+    let newItem = {};
+    Object.assign(newItem, option.values);
+    console.log(newItem);
+    state[option.tableName].listData.unshift(newItem);
+  },
+  EDITING_LIST_DATA(state, option) { // editing record in form
+    let newItem = {};
+    Object.assign(newItem, option.values);
+    console.log(newItem);
+    let index = state[option.tableName].listData.findIndex(item => item.id == option.values.id);
+    state[option.tableName].listData.splice(index, 1, newItem);
+  },
 }

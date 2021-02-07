@@ -9,7 +9,12 @@
                                            :is-btn-clear="true"
                                            :input-properties="fieldForm.registry_date" 
                                            v-model="fieldFormValue.registry_date"></el-field-date></v-col>
-            <v-col cols="10"><el-field-string :is-single-line="false"
+            <v-col cols="2"><el-field-date-time :is-single-line="false"
+                                                :is-label="true"
+                                                :is-btn-clear="true"
+                                                :input-properties="fieldForm.last_visited" 
+                                                v-model="fieldFormValue.last_visited"></el-field-date-time></v-col>
+            <v-col cols="8"><el-field-string :is-single-line="false"
                                               :is-label="true"
                                               :input-properties="fieldForm.title"
                                               v-model="fieldFormValue.title"></el-field-string></v-col>
@@ -80,6 +85,7 @@ export default {
       fieldFormValue: {
         title: '',
         registry_date: '',
+        last_visited: '',
         institution_code: '',
         inn: '',
         kpp: '',
@@ -98,6 +104,7 @@ export default {
       this.fieldFormValue = {
         title: '',
         registry_date: '',
+        last_visited: '',
         institution_code: '',
         inn: '',
         kpp: '',

@@ -172,9 +172,12 @@ export default {
         tableName: this.formProperties.tableName,
       };
       Object.assign(sendOption, option);
-      sendOption.values.id = (sendOption.actionName == 'editing' || sendOption.actionName == 'deleting') ? this.focusedElement.id : 'newId';
+      if (sendOption.actionName != 'adding')
+        sendOption.values.id = (sendOption.actionName == 'editing' || sendOption.actionName == 'deleting') ? this.focusedElement.id : 'newId';
       console.log(sendOption);
-      this.$store.commit(`DataTable/${sendOption.actionName.toUpperCase()}_LIST_DATA`, sendOption)
+      this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
+      // this.$store.commit(`DataTable/${sendOption.actionName.toUpperCase()}_LIST_DATA`, sendOption)
+
       this.eventCloseDialog();
     },
     eventActionCancel() {

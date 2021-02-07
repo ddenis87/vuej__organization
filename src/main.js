@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import VueMask from './plugins/vmask';
+import VCalendar from './plugins/vcalendar';
 
 Vue.config.productionTip = false
 
@@ -13,5 +14,6 @@ new Vue({
   store,
   vuetify,
   VueMask,
+  VCalendar,
   render: h => h(App)
 }).$mount('#app')

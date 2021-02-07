@@ -88,6 +88,7 @@ export default {
         case 'boolean': return () => import('@/components/Elements/ElField/ElFieldSwitch.vue');
         case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
         case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
+        case 'datetime': return () => import('@/components/Elements/ElField/ElFieldDateTime.vue');
         case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
       }
     },
@@ -123,7 +124,8 @@ export default {
           switch(this.inputProperties.type) {
             case 'string':
             case 'integer':
-            case 'date': {
+            case 'date': 
+            case 'datetime': {
               if (!this.valueData) emitValue = { key: this.inputProperties.key, value: null };
               else emitValue = { key: this.inputProperties.key, value: `${this.computedLineCompare(this.valueCompare)}${this.valueData}` };
               break;
