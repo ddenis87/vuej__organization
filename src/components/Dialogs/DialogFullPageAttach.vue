@@ -4,8 +4,8 @@
             :attach="dialogAttach"
             
             :transition="transition" 
-            v-model="isDialogShow" 
-            @click:outside="$emit('close-dialog')">
+            v-model="showDialog" 
+            @click:outside="closeDialog">
     <v-card>
       <dialog-toolbar :is-dialog-name="isDialogName"
                       orientation="right"
@@ -27,11 +27,25 @@ export default {
     isDialogName: {type: String, default: ''},
     isDialogAttach: '',
   },
+  data() {
+    return {
+      showDialog: false,
+    }
+  },
   computed: {
     transition() { return `dialog-bottom-transition` },
     dialogAttach() {
       return (this.isDialogAttach == '') ? '.app' : this.isDialogAttach;
     },
+  },
+  watch: {
+    isDialogShow() { this.showDialog = this.isDialogShow; }
+  },
+  methods: {
+    closeDialog() {
+      this.showDialog = false;
+      this.$emit('close-dialog')
+    }
   },
 }
 </script>

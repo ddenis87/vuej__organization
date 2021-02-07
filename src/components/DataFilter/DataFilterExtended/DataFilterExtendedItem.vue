@@ -107,8 +107,8 @@ export default {
       }
     },
     resetComponent() {
-      this.valueCompare = null;
-      this.isDisabledData = true;
+      // this.valueCompare = null;
+      // this.isDisabledData = true;
       this.$emit('input-filter', { key: this.inputProperties.key, value: null }); // EMIT -----------------<<<<<<<<<<
     },
     eventInputCompare() {},

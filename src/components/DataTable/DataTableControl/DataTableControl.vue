@@ -86,9 +86,6 @@
 <script>
 import DialogFullPage from '@/components/Dialogs/DialogFullPage.vue';
 import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
-// import DataFilter from '@/components/DataFilter/DataFilter.vue';
-// import DataFilterExtended from '@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue';
-
 
 import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
 
@@ -97,8 +94,6 @@ export default {
   components: {
     DialogFullPage,
     DialogBarRight,
-    // DataFilter,
-    // DataFilterExtended,
     ElButtonIcon,
   },
   props: {

@@ -75,14 +75,14 @@ export default {
       this.$emit('input-value', this.buildingStringEmit(tableValue));
     },
     openDialog(event) {
-      // console.log(event.target.closest('.filter'));
+      this.isDialogShow = false;
       this.attachDialog = event.target.closest('.filter');
-      this.isDialogShow = !this.isDialogShow;
+      setTimeout(() => this.isDialogShow = true, 100);
     },
     closeDialog() {
-      setTimeout(() => {
+      // setTimeout(() => {
         this.isDialogShow = false;
-      },100);
+      // },100);
     },
     buildingStringDisplay(valueArray) {
       // console.log(valueArray);
