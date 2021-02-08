@@ -21,8 +21,8 @@
                     @keydown.stop.esc="keydownEsc"
                     @keydown.stop.prevent.enter.tab="keydownEnterTab"
                     @keydown.stop
-                    @click.stop.prevent
-                    @click:append.stop.prevent="openDialog"
+                    @click.prevent.stop
+                    @click:append.prevent.stop="openDialog"
                     @blur.prevent="blurComponent">
       <template v-slot:append>
         <v-btn icon

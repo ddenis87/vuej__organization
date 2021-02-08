@@ -30,7 +30,7 @@
             :close-on-content-click="false" @input="eventClickOutsideMenu">
       <div :class="`el-field__date-time`"
            tabindex="1"
-           @blur="blurDatePicker">
+           @blur="blurDatePicker" @dblclick="dblClickDate">
         <div class="time">
           <v-text-field class="time__field"
                         label="Время" 
@@ -86,7 +86,7 @@ export default {
   },
   watch: {
     inputValue() {
-      console.log(this.inputValue);
+      // console.log(this.inputValue);
       if (this.inputValue == null) {
         this.fieldValue = null;
         this.fieldValueDate = null;
@@ -109,6 +109,10 @@ export default {
     }, 10);
   },
   methods: {
+    dblClickDate() {
+      console.log('dbl click');
+      this.eventAccept();
+    },
     emitInputValue(option) {
       if (!this.fieldValue) return;
       if (this.fieldValue.length != 16) return;
@@ -208,6 +212,7 @@ export default {
         this.fieldValueDate = null;
         this.fieldValueTime = null;
         this.$emit('input-value', null);
+        this.$emit('keydown-clear');
       },10);
       
     },
