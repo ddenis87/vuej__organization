@@ -71,6 +71,7 @@ export default {
           switch(this.inputProperties.type) {
             case 'integer': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeNumber.vue');
             case 'date': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeDate.vue');
+            case 'datetime': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeDateTime.vue');
           }
         }
         default: {

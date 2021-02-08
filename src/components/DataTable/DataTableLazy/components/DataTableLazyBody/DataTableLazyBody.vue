@@ -22,11 +22,8 @@
            @focus="eventColumnFocus"
            @blur="eventColumnBlur">
         <div class="body-column__item">
-          <!-- <el-field-dialog :input-properties="inputProperties" 
-                           :key="itemRow.uniqueIndex"
-                           v-model="tableValue[itemRow.uniqueIndex]"
-                           @input-value="eventInputValue"></el-field-dialog> -->
           <component :is="componentField"
+                     :is-required="false"
                      :input-properties="inputProperties" 
                      :key="itemRow.uniqueIndex"
                      v-model="tableValue[itemRow.uniqueIndex]"

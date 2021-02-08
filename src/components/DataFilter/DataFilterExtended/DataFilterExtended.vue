@@ -113,7 +113,7 @@ export default {
   &__body {
     grid-area: filter__body;
     padding: 0px 8px;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-right: 10px;
     border-bottom: thin solid rgba(0,0,0,.12);  
     overflow: hidden;

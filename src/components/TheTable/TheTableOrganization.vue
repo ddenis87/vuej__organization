@@ -29,7 +29,7 @@ export default {
           {value: 'id', width: 60,},
           {value: 'institution_code', align: 'end', width: 105, },
           {value: 'registry_date', align: 'start', width: 120,},
-          {value: 'last_visited', align: 'start', width: 140,},
+          {value: 'last_visited', align: 'start', width: 160,},
           {value: 'organization_type', align: 'start', width: 115, },
           {value: 'title', align: 'start', width: [400,],},
           {value: 'inn', width: [110, 110]},

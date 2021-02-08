@@ -95,9 +95,7 @@ export default {
 .v-input {
   text-align: center;
   font-size: 14px;
-  .v-input__control {
-    padding: 0px;
-  }
+  
 }
 .v-text-field {
   margin-top: -3.5px;
