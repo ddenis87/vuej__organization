@@ -12,7 +12,7 @@
           @blur="eventRowBlur"
           @click="(event) => eventRowClick(event, itemRow)">
 
-      <div class="body-column p-pp">{{ indexRow + 1 }}</div> <!-- EMPTY FIRST COLUMN -->
+      <!-- <div class="body-column p-pp">{{ indexRow + 1 }}</div> EMPTY FIRST COLUMN -->
 
       <div v-for="(itemColumn, indexColumn) in headers"
            class="body-column"
@@ -127,7 +127,7 @@ export default {
       height: 100%;
       padding: 0px 10px;
       border: thin solid rgba(0, 0, 255, 0);
-      border-right: $rowBorder;
+      // border-right: $rowBorder;
       outline: none;
       overflow: hidden;
       &:last-child { border-right: 0px; }

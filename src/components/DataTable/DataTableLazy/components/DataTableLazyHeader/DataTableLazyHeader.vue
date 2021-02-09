@@ -2,7 +2,7 @@
   <div class="header">
     <div class="header-row" 
          :style="template">
-      <div class="header-column p-pp"></div>
+      <!-- <div class="header-column p-pp"></div> -->
       <div v-for="(item, index) in items"
            class="header-column"
            :key="`header-${index}`"
@@ -45,7 +45,7 @@ export default {
       align-items: center;
       height: 100%;
       padding: 3px 10px;
-      border-right: $rowBorder;
+      // border-right: $rowBorder;
       &:last-child { border-right: 0px; }
     }
     .p-pp { grid-area: p-pp; }

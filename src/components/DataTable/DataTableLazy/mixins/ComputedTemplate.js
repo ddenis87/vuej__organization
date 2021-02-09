@@ -14,7 +14,7 @@ export const ComputedTemplate = {
   methods: {
     computedAreaUnoLine(array) {
       let area = '"';
-      area += 'p-pp ';
+      // area += 'p-pp ';
       array.forEach(element => area += `${element.key} `);
       if (this.isClearable) area += 'p-clear ';
       area = area.trim();
@@ -23,7 +23,7 @@ export const ComputedTemplate = {
     },
     computedWidthUnoLine(array) {
       let columnWidth = '';
-      columnWidth += 'minmax(32px, 32px) ';
+      // columnWidth += 'minmax(32px, 32px) ';
       array.forEach(element => {
         if (element.width) {
           if (Array.isArray(element.width)) {

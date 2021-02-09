@@ -33,24 +33,24 @@
                                              v-model="fieldFormValue.kpp"></el-field-string></v-col>
           </v-row>
           <v-row >
-            <v-col cols="5"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+            <v-col cols="5"><el-field-choice 
                                              :inputProperties="fieldForm.rubpnubp_status" 
                                              v-model="fieldFormValue.rubpnubp_status"></el-field-choice></v-col>
 
-            <v-col cols="7"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+            <v-col cols="7"><el-field-choice 
                                              :inputProperties="fieldForm.egrul_status" 
                                              v-model="fieldFormValue.egrul_status"></el-field-choice></v-col>
           </v-row>
           <v-row>
-            <v-col cols="4"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+            <v-col cols="4"><el-field-choice 
                                              :inputProperties="fieldForm.institution_type" 
                                              v-model="fieldFormValue.institution_type"></el-field-choice></v-col>
 
-            <v-col cols="4"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+            <v-col cols="4"><el-field-choice 
                                              :inputProperties="fieldForm.industry_typing" 
                                              v-model="fieldFormValue.industry_typing"></el-field-choice></v-col>
 
-            <v-col cols="4"><el-field-choice :is-single-line="false" :is-label="true" is-use="form"
+            <v-col cols="4"><el-field-choice 
                                              :inputProperties="fieldForm.budget_level" 
                                              v-model="fieldFormValue.budget_level"></el-field-choice></v-col>
           </v-row>

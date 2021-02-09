@@ -87,7 +87,7 @@ export default {
         case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');
         case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumber.vue');
         case 'boolean': return () => import('@/components/Elements/ElField/ElFieldSwitch.vue');
-        case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
+        case 'choice': return () => import('@/components/Elements/Field/ElFieldChoice.vue');
         case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
         case 'datetime': return () => import('@/components/Elements/ElField/ElFieldDateTime.vue');
         case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');

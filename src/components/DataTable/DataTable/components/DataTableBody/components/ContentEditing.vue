@@ -5,13 +5,24 @@
                :input-value="propertiesComponent.text"
                :is-value-selected="true"
                :is-value-focus="true"
-
+                  
                :properties="propertiesComponent"
                :propertiesValue="propertiesComponent.text"
                :selectedValue="true"
                @editing-canceled="editingCanceled"
                @editing-accepted="editingAccepted"
-               @editing-blur-focus="editingCanceled"></component>
+               @editing-blur-focus="editingCanceled"
+               
+               :is-use="'table'"
+               :is-single-line="true"
+               :is-hide-message="true"
+               :is-hide-label="true"
+               :is-selected="true"
+               :is-btn-clear="false"
+               @keydown-enter="editingAccepted"
+               @keydown-tab="editingAccepted"
+               @keydown-esc="editingCanceled"
+               @blur-field="editingCanceled"></component>
   </div>
 </template>
 
@@ -29,7 +40,7 @@ export default {
           case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumber.vue');
           case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
           case 'datetime': return () => import('@/components/Elements/ElField/ElFieldDateTime.vue');
-          case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
+          case 'choice': return () => import('@/components/Elements/Field/ElFieldChoice.vue');
           case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
         }
       }
@@ -74,3 +85,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.content-editing {
+  display: flex;
+  margin-top: -7.5px;
+}
+</style>

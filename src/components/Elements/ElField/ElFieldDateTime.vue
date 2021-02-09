@@ -30,14 +30,14 @@
             :close-on-content-click="false" @input="eventClickOutsideMenu">
       <div :class="`el-field__date-time`"
            tabindex="1"
-           @blur="blurDatePicker" @dblclick="dblClickDate">
-        <div class="time">
+           @blur="blurDatePicker" >
+        <!-- <div class="time">
           <v-text-field class="time__field"
                         label="Время" 
                         placeholder="ЧЧ:ММ" 
                         v-mask="fieldMaskTime" 
                         v-model="fieldValueTime"></v-text-field>
-        </div>
+        </div> -->
         <div class="date">
           <v-date-picker v-model="fieldValueDate"
                        locale="ru"
@@ -46,10 +46,10 @@
                        scrollable 
                        @input="eventSelectDate"></v-date-picker>
         </div>
-        <div class="action">
+        <!-- <div class="action">
           <el-button-icon icon="mdi-close" @click="eventCancel">Отменить</el-button-icon>
           <el-button-icon icon="mdi-check" @click="eventAccept">Установить</el-button-icon>
-        </div>
+        </div> -->
       </div>
     </v-menu>
   </div>
@@ -141,6 +141,14 @@ export default {
       this.isDialogShow = !this.isDialogShow;
     },
     eventSelectDate() {
+      this.eventAccept();
+      setTimeout(() => {
+        if (this.isValueSelected) {
+          document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
+          document.querySelector(`.content-editing .v-text-field__slot input`).select();
+          document.querySelector(`.content-editing .v-text-field__slot input`).focus();
+        }
+      }, 10);
     },
     eventAccept() {
       let newTime = '';
@@ -165,9 +173,11 @@ export default {
         value: newDateTime,
       }
       this.isDialogShow = false;
+      this.fieldValue = newDateTime.split('T')[0].split('-').reverse().join('.') + ' ' +
+                                            newDateTime.split('T')[1].slice(0, 5);
       this.$emit('input-value', newDateTime);
       this.$emit('keydown-enter', newDateTime);
-      this.$emit('editing-accepted', sendOption);
+      // this.$emit('editing-accepted', sendOption);
     },
 
     eventCancel() {

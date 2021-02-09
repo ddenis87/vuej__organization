@@ -30,7 +30,7 @@
             :close-on-content-click="false" @input="eventClickOutsideMenu">
       <div :class="`el-field__date-time`"
            tabindex="1"
-           @blur="blurDatePicker" @dblclick="dblClickDate">
+           @blur="blurDatePicker">
         <!-- <div class="time">
           <v-text-field class="time__field"
                         label="Время" 
@@ -40,16 +40,17 @@
         </div> -->
         <div class="date">
           <v-date-picker v-model="fieldValueDate"
-                       locale="ru"
-                       first-day-of-week="1"
-                       no-title
-                       scrollable 
-                       @input="eventSelectDate"></v-date-picker>
+                        locale="ru"
+                        first-day-of-week="1"
+                        no-title
+                        scrollable 
+                        show-adjacent-months
+                        @input="eventSelectDate"></v-date-picker>
         </div>
-        <div class="action">
+        <!-- <div class="action">
           <el-button-icon icon="mdi-close" @click="eventCancel">Отменить</el-button-icon>
           <el-button-icon icon="mdi-check" @click="eventAccept">Установить</el-button-icon>
-        </div>
+        </div> -->
       </div>
     </v-menu>
   </div>
@@ -138,7 +139,15 @@ export default {
       this.isDialogY = elementTarget.top + 30;
       this.isDialogShow = !this.isDialogShow;
     },
-    eventSelectDate() {
+    eventSelectDate(value) {
+      this.eventAccept();
+      setTimeout(() => {
+        if (this.isValueSelected) {
+          document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
+          document.querySelector(`.content-editing .v-text-field__slot input`).select();
+          document.querySelector(`.content-editing .v-text-field__slot input`).focus();
+        }
+      }, 10);
     },
     eventAccept() {
       // let newTime = '';
@@ -163,9 +172,10 @@ export default {
         value: newDateTime,
       }
       this.isDialogShow = false;
+      this.fieldValue = newDate.split('-').reverse().join('.') ;
       this.$emit('input-value', newDateTime);
       this.$emit('keydown-enter', newDateTime);
-      this.$emit('editing-accepted', sendOption);
+      // this.$emit('editing-accepted', sendOption);
     },
 
     eventCancel() {

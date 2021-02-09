@@ -1,0 +1,24 @@
+.el-field {
+  padding-top: 8px;
+  // border: thin solid grey;
+  &_single-line {
+    padding-top: 0px;
+  }
+  &_hide-message {
+
+  }
+  &__item {
+    font-size: 14px;
+  }
+}
+
+::v-deep {
+  .v-input__append-inner {
+    margin-top: -2px !important;
+    cursor: pointer;
+  }
+  .v-input__append-outer {
+    margin-top: -2px;
+    margin-left: -3px;
+  }
+}

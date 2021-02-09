@@ -2,7 +2,7 @@ import ElFieldNumber from '@/components/Elements/ElField/ElFieldNumber.vue';
 import ElFieldString from '@/components/Elements/ElField/ElFieldString.vue';
 import ElFieldDate from '@/components/Elements/ElField/ElFieldDate.vue';
 import ElFieldDateTime from '@/components/Elements/ElField/ElFieldDateTime.vue';
-import ElFieldChoice from '@/components/Elements/ElField/ElFieldChoice.vue';
+import ElFieldChoice from '@/components/Elements/Field/ElFieldChoice.vue';
 import ElFieldDialog from '@/components/Elements/ElField/ElFieldDialog.vue';
 import ElButton from '@/components/Elements/ElButton.vue';
 

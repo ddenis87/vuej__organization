@@ -1,12 +1,12 @@
 <template>
   <v-tooltip bottom :disabled="noTooltip">
     <template v-slot:activator="{ on }">
-      <v-btn icon 
+      <v-btn icon class="el-button-icon"
              height="40"
              width="40"
              :disabled="disabled"
              :x-small="isSmall"
-             v-on="on"
+             v-on="on" plain
              @click="$emit('click')">
         <v-icon :small="isSmall" :color="iconColor">{{ icon }}</v-icon>
       </v-btn>
@@ -27,3 +27,7 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
