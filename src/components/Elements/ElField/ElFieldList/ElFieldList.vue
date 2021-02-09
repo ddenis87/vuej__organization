@@ -1,9 +1,6 @@
 <template>
   <div class="el-field">
-    <v-badge color="blue" class="el-field__badget"
-             :content="countSelectValue"
-             :value="countSelectValue"
-             overlap>
+
       <v-text-field class="el-field__item" :id="`el-field-list-${inputProperties.key}`"
                     :dense="isDense"
                     :single-line="isSingleLine"
@@ -20,39 +17,43 @@
                     @keydown.stop
                     @blur="blurComponent">
         <template v-slot:append>
-          <v-btn icon small :plain="false" @click="openDialog"><v-icon small>mdi-playlist-plus</v-icon></v-btn>
+          <v-btn icon small :plain="false" @click="openDialog"><v-icon small>mdi-dots-horizontal</v-icon></v-btn>
         </template>
         <template v-slot:append-outer v-if="isBtnClear">
           <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
         </template>
       </v-text-field>
-    </v-badge>
-    
-    <dialog-full-page-attach is-dialog-name="Список значений"
-                             :is-dialog-show="isDialogShow"
-                             :is-dialog-attach="attachDialog"
-                             @close-dialog="closeDialog">
+
+    <dialog-bar-right is-dialog-name="Список значений"
+                      :is-dialog-show="isDialogShow"
+                      width="586"
+                      @close-dialog="closeDialog">
       <el-field-list-dialog :input-properties="inputProperties"
                             :count-select-value="countSelectValue"
                             @accept-list="acceptList"></el-field-list-dialog>
-    </dialog-full-page-attach>
+    </dialog-bar-right>
+      
+
   </div>
 </template>
 
 <script>
 import { ElField } from '../ElField.js';
-import DialogFullPageAttach from '@/components/Dialogs/DialogFullPageAttach.vue';
+import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
 import ElFieldListDialog from './ElFieldListDialog.vue';
 
 export default {
   name: 'ElFieldList',
   components: {
-    DialogFullPageAttach,
     ElFieldListDialog,
+    DialogBarRight,
   },
   mixins: [
     ElField,
   ],
+  props: {
+    isShow: { type: Boolean, default: false, },
+  },
   data() {
     return {
       isDialogShow: false,
@@ -61,11 +62,10 @@ export default {
       countSelectValue: 0,
     }
   },
-  // computed: {
-  //   countSelectValue() {
 
-  //   }
-  // },
+  mounted() {
+    this.isDialogShow = this.isShow;
+  },
   methods: {
     clearValue() {
       this.fieldValue = null;

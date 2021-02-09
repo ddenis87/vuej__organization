@@ -21,14 +21,19 @@
            :tabindex="indexColumn"
            @focus="eventColumnFocus"
            @blur="eventColumnBlur">
-        <div class="body-column__item">
+        <!-- <div class="body-column__item"> -->
           <component :is="componentField"
-                     :is-required="false"
+                     
+                     :is-single-line="true"
+                     :is-hide-message="true"
+                     :is-hide-label="true"
+                     :is-selected="true"
+                     :is-btn-clear="false"
                      :input-properties="inputProperties" 
                      :key="itemRow.uniqueIndex"
                      v-model="tableValue[itemRow.uniqueIndex]"
                      @input-value="eventInputValue"></component>
-        </div>
+        <!-- </div> -->
         
       </div>
 
@@ -43,7 +48,6 @@
 <script>
 import { DataTableLazyBodyEvents } from './DataTableLazyBodyEvents.js';
 import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
-import ElFieldDialog from '@/components/Elements/ElField/ElFieldDialog.vue';
 
 export default {
   name: 'DataTableLazyBody',
@@ -52,7 +56,6 @@ export default {
   ],
   components: {
     ElButtonIcon,
-    ElFieldDialog,
   },
   props: {
     headers: Array,
@@ -74,7 +77,7 @@ export default {
   computed: {
     componentField() {
       switch(this.inputProperties.type) {
-        case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
+        case 'choice': return () => import('@/components/Elements/Field/ElFieldChoice.vue');
         case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
       }
     }
@@ -129,7 +132,7 @@ export default {
       border: thin solid rgba(0, 0, 255, 0);
       // border-right: $rowBorder;
       outline: none;
-      overflow: hidden;
+      // overflow: hidden;
       &:last-child { border-right: 0px; }
       &_focus { border: $columnBorderFocus; }
       &_editing { background-color: white; }

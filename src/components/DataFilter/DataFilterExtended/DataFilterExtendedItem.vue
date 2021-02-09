@@ -13,6 +13,7 @@
                    :is-btn-clear="true"
                    :is-single-line="false"
                    :input-properties="inputProperties"
+                   :is-show="isShow"
                    v-model="valueData"
                    @input-value="eventInputData"
                    @keydown-clear="resetComponent"></component>
@@ -37,10 +38,11 @@ export default {
   props: {
     isTitle: { type: Boolean, default: false },
     inputTitle: { type: Array, default:() => ['', ''] },
-    inputProperties: { type: Object, default:() => { type: null } },
+    inputProperties: { type: Object, default() { return { type: null, key: null } } },
   },
   data() {
     return {
+      isShow: false,
       isDisabledData: true,
       valueCompare: null,
       valueCompareArray: {
@@ -57,6 +59,7 @@ export default {
   },
   computed: {
     componentField() {
+      console.log(this.inputProperties);
       this.valueData = null;
       let valueDefault = {key: this.inputProperties.key, value: (this.inputProperties.type == 'boolean') ? 
         `${this.computedLineCompare(this.valueCompare)}false` : null};
@@ -79,6 +82,16 @@ export default {
           return this.componentByTypeDefault(this.inputProperties.type);
         }
       }
+    },
+  },
+  watch: {
+    valueCompare() {
+      if (this.valueCompare == 'inList') {
+        console.log(this.valueCompare);
+        this.isShow = true;
+        return;
+      }
+      this.isShow = false;
     },
   },
   methods: {

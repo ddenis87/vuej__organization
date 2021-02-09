@@ -58,6 +58,8 @@ export default {
       let editableElement = document.querySelector('.body-column_editing');
       let eventEditingCanceled = new CustomEvent('editing-canceled')
       editableElement.dispatchEvent(eventEditingCanceled);
+      // let eventClick = new Event('click');
+      // editableElement.dispatchEvent(eventClick);
       document.querySelector('.content-editing').remove();
       // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
     },
@@ -87,8 +89,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content-editing {
-  display: flex;
-  margin-top: -7.5px;
-}
+// .content-editing {
+//   display: flex;
+//   margin-top: -7.5px;
+// }
 </style>

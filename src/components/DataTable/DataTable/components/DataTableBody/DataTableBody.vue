@@ -67,11 +67,8 @@
                                       :properties="itemColumn"
                                       :type-height="typeHeight"></data-table-content-display>
         </div>
-
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -173,7 +170,7 @@ export default {
           }
         }
       }
-
+      
       .box-editing, .box-display {
         width: 100%;
         height: 100%;
