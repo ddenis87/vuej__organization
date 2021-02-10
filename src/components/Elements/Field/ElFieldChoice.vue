@@ -26,7 +26,7 @@
                     @update:list-index="eventUpdateList"
                     @blur="eventBlurField">
       <template v-slot:append-outer v-if="isBtnClear">
-        <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
+        <el-btn-icon-small  icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
       </template>
     </v-autocomplete>
   </div>
@@ -46,7 +46,9 @@ export default {
     }
   },
   computed: {
-    fieldItems() { let newFieldItems = this.inputProperties.choices; newFieldItems.shift({'display_name': 'Не заполнено', value: null}); return newFieldItems; return Object.assign(this.inputProperties.choices, {'display_name': 'Не заполнено', value: null}); },
+    fieldItems() { 
+      return this.inputProperties.choices;
+    },
   },
   mounted() {
     let fieldInput = document.querySelector(`.content-editing .v-select__slot input`);
@@ -60,15 +62,17 @@ export default {
       // console.log('update');
     },
     eventInputValue(event) {
-      console.log(event);
+      // console.log(event);
     },
     eventChangeValue(event) {
       this.isChangeValue = true;
       this.emitInputValue();
     },
     eventKey(event) {
-      console.log(event);
-      console.log(this.fieldValue);
+      if (event.key == 'Delete' || event.key == 'Backspace') {
+        this.fieldValue = null;
+        this.emitInputValue();
+      }
     },
     eventKeyEnter(event) {
       if (this.inputProperties.required && !this.isRequiredOff)
@@ -78,12 +82,12 @@ export default {
         let sendOption = {
           key: event.key,
           value: this.fieldValue,
+          event: event,
         }
         this.isEmit = true;
         this.emitKeyEnter(sendOption);
         return;
       }
-      console.log(this.fieldValue);
     },
     eventKeyTab(event) {
       if (this.inputProperties.required && !this.isRequiredOff)
@@ -92,6 +96,7 @@ export default {
         key: event.key,
         shift: event.shiftKey,
         value: this.fieldValue,
+        event: event,
       }
       this.isEmit = true;
       this.emitKeyTab(sendOption);
@@ -102,4 +107,7 @@ export default {
 
 <style lang="scss" scoped>
 @import './ElField.scss';
+.el-field {
+  z-index: 9999;
+}
 </style>

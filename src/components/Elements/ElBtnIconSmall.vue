@@ -1,7 +1,7 @@
 <template>
   <v-tooltip bottom :disabled="noTooltip">
     <template v-slot:activator="{ on }">
-      <v-btn class="el-button-icon"
+      <v-btn class="el-button-icon" tag="button" tabindex="1"
              icon
              small
              :disabled="isDisabled"

@@ -7,7 +7,7 @@
           class="body-row"
           :key="`body-row-${indexRow}`"
           :style="template"
-          :tabindex="indexRow"
+          
           @focus="(event) => eventRowFocus(event, itemRow)"
           @blur="eventRowBlur"
           @click="(event) => eventRowClick(event, itemRow)">
@@ -18,28 +18,31 @@
            class="body-column"
            :key="`body-column-${indexColumn}`"
            :style="itemColumn.position_in_template"
-           :tabindex="indexColumn"
+           
            @focus="eventColumnFocus"
            @blur="eventColumnBlur">
-        <!-- <div class="body-column__item"> -->
+        <div class="body-column__item">
           <component :is="componentField"
                      
                      :is-single-line="true"
                      :is-hide-message="true"
+                     :is-required-off="true"
                      :is-hide-label="true"
                      :is-selected="true"
-                     :is-btn-clear="false"
+                     :is-btn-clear="true"
                      :input-properties="inputProperties" 
                      :key="itemRow.uniqueIndex"
                      v-model="tableValue[itemRow.uniqueIndex]"
-                     @input-value="eventInputValue"></component>
-        <!-- </div> -->
+                     @input-value="eventInputValue"
+                     @keydown-enter="eventKeyEnter"
+                     @clear-value="() => deletingItem(indexRow, itemRow.uniqueIndex)"></component>
+        </div>
         
       </div>
 
-      <div class="body-column p-clear" v-if="isClearable">
+      <!-- <div class="body-column p-clear" v-if="isClearable">
         <el-button-icon icon="mdi-close" :is-small="true" no-tooltip @click="() => deletingItem(indexRow, itemRow.uniqueIndex)"></el-button-icon>
-      </div>
+      </div> -->
     </div>
 
   </div>
@@ -78,7 +81,7 @@ export default {
     componentField() {
       switch(this.inputProperties.type) {
         case 'choice': return () => import('@/components/Elements/Field/ElFieldChoice.vue');
-        case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
+        case 'field': return () => import('@/components/Elements/Field/ElFieldDialog.vue');
       }
     }
   },
@@ -88,12 +91,22 @@ export default {
       // console.log(value);
       // console.log(this.tableValue);
     },
+    eventKeyEnter(value) {
+      // console.log('enter');
+      // console.log(value);
+      // console.log(value.event);
+      // value.event.target.closest('.body').focus();
+    },
     deletingItem(indexRow, indexTableValue) {
       this.$emit('deleting-item', indexRow);
       delete this.tableValue[indexTableValue];
       this.$emit('input-value', this.tableValue);
       // document.getElementById(`column-component-${indexRow}`).remove();
     },
+    eventKeyBody(event) {
+      console.log(event);
+      if (event.key == 'Insert') { this.$emit('insert-item'); }
+    }
   },
 }
 </script>
@@ -116,30 +129,33 @@ export default {
   }
   &-row {
     display: grid;
-    grid-template-rows: 30px;
+    grid-template-rows: 32px;
     border-bottom: $rowBorder;
     outline: none;
     transition-delay: .05s;
 
-    &_hover { background-color: $rowBackgroundHover; }
-    &_focus { background-color: $rowBackgroundFocus; }
+    // &_hover { background-color: $rowBackgroundHover; }
+    // &_focus { background-color: $rowBackgroundFocus; }
 
     .body-column {
+      position: relative;
       display: flex;
       align-items: center;
       height: 100%;
-      padding: 0px 10px;
+      padding: 0px;
+      padding-left: 10px;
       border: thin solid rgba(0, 0, 255, 0);
       // border-right: $rowBorder;
       outline: none;
-      // overflow: hidden;
+      overflow: hidden;
       &:last-child { border-right: 0px; }
-      &_focus { border: $columnBorderFocus; }
-      &_editing { background-color: white; }
+      // &_focus { border: $columnBorderFocus; }
+      // &_editing { background-color: white; }
 
       &__item {
         width: 100%;
-        margin-bottom: -18px;
+        margin-bottom: -2px;
+        z-index: 999;
       }
     }
     .p-pp { grid-area: p-pp; }

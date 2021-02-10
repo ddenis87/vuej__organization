@@ -26,6 +26,9 @@
                     @keydown.stop
                     
                     @blur="eventBlurField">
+      <!-- <template v-slot:append>
+        <el-btn-icon-small tabindex="2" icon="mdi-dots-horizontal" no-tooltip @click="eventOpenDialog"></el-btn-icon-small>
+      </template> -->
       <template v-slot:append-outer v-if="isBtnClear">
         <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
       </template>
@@ -107,7 +110,7 @@ export default {
       this.isDialogShow = true;
     },
     eventSelectedRowDialog(option) {
-      this.fieldValue = option.id;
+      this.fieldValue = option;
       this.isChangeValue = true;
       this.isDialogShow = false;
       this.emitInputValue();
@@ -160,4 +163,7 @@ export default {
 
 <style lang="scss" scoped>
 @import './ElField.scss';
+.el-field {
+  z-index: 9999;
+}
 </style>

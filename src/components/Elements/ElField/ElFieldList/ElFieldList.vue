@@ -53,6 +53,7 @@ export default {
   ],
   props: {
     isShow: { type: Boolean, default: false, },
+    selectedItem: null,
   },
   data() {
     return {
@@ -74,7 +75,7 @@ export default {
       this.emitClearValue();
     },
     acceptList(tableValue) {
-      // console.log(this.inputProperties);
+      console.log(tableValue);
       this.isDialogShow = false;
       this.fieldValueText = this.buildingStringDisplay(tableValue);
       let elementField = document.getElementById(`el-field-list-${this.inputProperties.key}`);

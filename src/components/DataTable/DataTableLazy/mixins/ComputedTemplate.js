@@ -16,7 +16,7 @@ export const ComputedTemplate = {
       let area = '"';
       // area += 'p-pp ';
       array.forEach(element => area += `${element.key} `);
-      if (this.isClearable) area += 'p-clear ';
+      // if (this.isClearable) area += 'p-clear ';
       area = area.trim();
       area += `"`;
       return area;
@@ -35,7 +35,7 @@ export const ComputedTemplate = {
           columnWidth += `minmax(100px, 100vw) `;
         }
       });
-      if (this.isClearable) columnWidth += 'minmax(24px, 24px)';
+      // if (this.isClearable) columnWidth += 'minmax(24px, 24px)';
       return columnWidth;
     },
   }

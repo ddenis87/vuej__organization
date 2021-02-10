@@ -10,7 +10,7 @@
            :data-key="item.key">
         {{ item.text }}
       </div>
-      <div class="header-column p-clear" v-if="isClearable"></div>
+      <!-- <div class="header-column p-clear" v-if="isClearable"></div> -->
     </div>
   </div>
 </template>

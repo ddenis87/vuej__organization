@@ -2,14 +2,15 @@
   <div class="item">
     <template v-if="!isTitle">
       <div class="item-compare">
-        <el-field-choice-compare :input-properties="inputProperties"
-                                  v-model="valueCompare"></el-field-choice-compare>
+        <st-field-compare :input-properties="inputProperties"
+                                  v-model="valueCompare"></st-field-compare>
       </div>
       <div class="item-data">
         <component :is="componentField"
                    :is-required-off="true"
                    :is-disabled="isDisabledData || !valueCompare"
                    :input-properties="inputProperties"
+                   :selected-item="selectedItem"
                    :is-show="isShow"
                    v-model="valueData"
                    @input-value="eventInputData"
@@ -24,13 +25,13 @@
 </template>
 
 <script>
-import ElFieldChoiceCompare from '@/components/Elements/ElField/ElFieldChoiceCompare.vue'
+import StFieldCompare from '@/components/Elements/StField/StFieldCompare.vue'
 
 
 export default {
   name: 'DataFilterExtendedItem',
   components: {
-    ElFieldChoiceCompare
+    StFieldCompare
   },
   props: {
     isTitle: { type: Boolean, default: false },
@@ -52,6 +53,7 @@ export default {
         'between': ['__gte=', '__lte='],
       },
       valueData: null,
+      selectedItem: null,
     }
   },
   computed: {
@@ -63,14 +65,14 @@ export default {
       this.$emit('input-filter', valueDefault); //  EMIT ---------------<<<<<<<<<<<<
       switch(this.valueCompare) {
         case 'inList': {
-          return () => import('@/components/Elements/ElField/ElFieldList/ElFieldList.vue');
+          return () => import('@/components/Elements/Field/ElFieldInList/ElFieldInList.vue');
         }
         case 'between': {
           this.isDisabledData = false;
           switch(this.inputProperties.type) {
-            case 'integer': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeNumber.vue');
-            case 'date': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeDate.vue');
-            case 'datetime': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeDateTime.vue');
+            case 'integer': return () => import('@/components/Elements/Field/ElFieldRange/ElFieldRangeNumber.vue');
+            case 'date': return () => import('@/components/Elements/Field/ElFieldRange/ElFieldRangeDate.vue');
+            case 'datetime': return () => import('@/components/Elements/Field/ElFieldRange/ElFieldRangeDateTime.vue');
           }
         }
         default: {
@@ -175,6 +177,7 @@ export default {
         }
       }
       // console.log(emitValue);
+      this.selectedItem = emitValue;
       this.$emit('input-filter', emitValue); // EMIT -----------------<<<<<<<<<<
     },
   },
