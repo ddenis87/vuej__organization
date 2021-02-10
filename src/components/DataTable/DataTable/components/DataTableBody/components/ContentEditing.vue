@@ -13,7 +13,6 @@
                @editing-accepted="editingAccepted"
                @editing-blur-focus="editingCanceled"
                
-               :is-use="'table'"
                :is-single-line="true"
                :is-hide-message="true"
                :is-hide-label="true"
@@ -32,18 +31,24 @@ export default {
   props: {
     properties: Object,
   },
+  data() {
+    return {
+      isComponentNull: false,
+    }
+  },
   computed: {
     editingComponent() {
-      if (this.properties.columnProperties) {
+      console.log(this.isComponentNull);
+      if (this.properties.columnProperties && !this.isComponentNull) {
         switch(this.properties.columnProperties.type) {
           case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');
           case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumber.vue');
-          case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
-          case 'datetime': return () => import('@/components/Elements/ElField/ElFieldDateTime.vue');
+          case 'date': return () => import('@/components/Elements/Field/ElFieldDate.vue');
+          case 'datetime': return () => import('@/components/Elements/Field/ElFieldDateTime.vue');
           case 'choice': return () => import('@/components/Elements/Field/ElFieldChoice.vue');
           case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
         }
-      }
+      } else return null;
     },
     propertiesComponent() {
       let propertiesComponent = {};
@@ -58,18 +63,11 @@ export default {
       let editableElement = document.querySelector('.body-column_editing');
       let eventEditingCanceled = new CustomEvent('editing-canceled')
       editableElement.dispatchEvent(eventEditingCanceled);
-      // let eventClick = new Event('click');
-      // editableElement.dispatchEvent(eventClick);
-      document.querySelector('.content-editing').remove();
+      this.isComponentNull = true;
+      if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
       // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
     },
     editingAccepted(option) {
-      // let newOption = {};
-      // console.log(this.properties);
-      // console.log(option);
-      // Object.assign(newOption, option);
-      // newOption.tableName = this.properties.tableName;
-      // newOption.id = this.properties.rowId;
       let sendOption = {
         tableName: this.properties.tableName,
         recordId: this.properties.rowId,
@@ -81,7 +79,8 @@ export default {
       let editableElement = document.querySelector('.body-column_editing');
       let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: option.key, keyShift: option.shift } });
       editableElement.dispatchEvent(eventEditingAccepted);
-      document.querySelector('.content-editing').remove();
+      this.isComponentNull = true;
+      if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
       // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
     },
   }
@@ -89,8 +88,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .content-editing {
-//   display: flex;
-//   margin-top: -7.5px;
-// }
+.content-editing {
+  display: flex;
+  margin-top: -7.5px;
+}
 </style>

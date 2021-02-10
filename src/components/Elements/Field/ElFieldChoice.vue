@@ -6,7 +6,6 @@
                     return-object
                     no-data-text="Значение отсутствует"
                     tabindex="1"
-                    full-width
                     :single-line="isSingleLine"
                     :hide-details="isHideMessage"
                     :disabled="isDisabled"
@@ -14,6 +13,7 @@
                     :items="fieldItems"
                     :item-text="'display_name'"
                     :item-value="'value'"
+                    :rules="(fieldRequired) ? [rules.required] : []"
                     v-model="fieldValue"
                     @click.stop
                     @input="eventInputValue"
@@ -23,16 +23,10 @@
                     @keydown.tab="eventKeyTab"
                     @keydown.esc="eventKeyEsc"
                     @keydown.stop
+                    @update:list-index="eventUpdateList"
                     @blur="eventBlurField">
-      <!-- <template v-slot:item>
-        <v-menu  z-index="999" min-width="200" max-width="600" offset-overflow>
-          1234
-        </v-menu>
-      </template> -->
       <template v-slot:append-outer v-if="isBtnClear">
-        <v-btn icon small tabindex="2">
-          <v-icon small>mdi-close</v-icon>
-        </v-btn>
+        <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
       </template>
     </v-autocomplete>
   </div>
@@ -47,51 +41,39 @@ export default {
   ],
   data() {
     return {
-      isEmit: false,
-      pX: 0,
-      pY: 0,
+      // isEmit: false,
       isChangeValue: false,
     }
   },
   computed: {
     fieldItems() { return this.inputProperties.choices; },
-    fieldAttach() {
-      switch(this.isUse) {
-        case 'table':{
-      //     console.log(document.querySelector('.content-editing').getBoundingClientRect());
-      //     let fieldAttach = document.querySelector('.content-editing').getBoundingClientRect();
-      //     this.pX = fieldAttach.clientX;
-      //     this.pY = fieldAttach.clientY + 40;
-          return document.querySelector('.content-editing');
-        }
-      }
-    },
   },
   mounted() {
     let fieldInput = document.querySelector(`.content-editing .v-select__slot input`);
     if (!fieldInput) return;
     setTimeout(() => {
       fieldInput.focus();
-      // if (this.isSelected) fieldInput.select();
     }, 10);
   },
   methods: {
+    eventUpdateList() {
+      // console.log('update');
+    },
     eventInputValue(event) {
-      console.log(event);
+    //   console.log(event);
     },
     eventChangeValue(event) {
       this.isChangeValue = true;
-      console.log(event);
+      this.emitInputValue();
     },
     eventKeyEnter(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (!this.fieldValue) return;
       if (this.isChangeValue) {
         let sendOption = {
           key: event.key,
           value: this.fieldValue,
         }
-        // if (this.isUse == 'table' && document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
-        // event.preventDefault();
-        event.stopImmediatePropagation()
         this.isEmit = true;
         this.emitKeyEnter(sendOption);
       }
@@ -102,7 +84,6 @@ export default {
         shift: event.shiftKey,
         value: this.fieldValue,
       }
-      // if (this.isUse == 'table' && document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
       this.isEmit = true;
       this.emitKeyTab(sendOption);
     }
@@ -112,7 +93,4 @@ export default {
 
 <style lang="scss" scoped>
 @import './ElField.scss';
-.el-field__item-list {
-  color: green;
-}
 </style>

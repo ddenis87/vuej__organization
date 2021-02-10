@@ -1,10 +1,17 @@
+import ElBtnIconSmall from '@/components/Elements/ElBtnIconSmall.vue';
+import ElBtn from '@/components/Elements/ElBtn.vue';
+
 export const ElField = {
   model: {
     prop: 'inputValue',
     event: 'input-value',
   },
+  components: {
+    ElBtnIconSmall,
+    ElBtn,
+  },
   props: {
-    isUse: { type: String, default: 'form', },         // where use component
+    // isUse: { type: String, default: 'form', },         // where use component
     isSingleLine: { type: Boolean, default: false, },  // show or hide label
     isRequiredOff: { type: Boolean, default: false },  // 
     isHideMessage: { type: Boolean, default: false },  // hidden or show validation error
@@ -18,11 +25,16 @@ export const ElField = {
   },
   data() {
     return {
+      isEmit: false,
       fieldValue: this.inputValue,
+      rules: {
+        required(value) { return !!value || false; },
+      },
     }
   },
   computed: {
     fieldLabel() { if (!this.isHideLabel) return this.inputProperties.label; return; },
+    fieldRequired() { return (this.inputProperties.required && !this.isRequiredOff) ? true : false; },
   },
   watch: {
     inputValue() { this.fieldValue = this.inputValue; }, 
@@ -30,6 +42,11 @@ export const ElField = {
   methods: {
     // EVENTS --------------------- //
     eventKeyEsc() { this.isEmit = true; this.emitKeyEsc(); },
+    eventClearValue() {
+      this.fieldValue = null;
+      this.emitInputValue();
+      this.emitClearValue();
+    },
     eventBlurField() {
       if (!this.isEmit) this.emitBlurField();
     },
@@ -40,7 +57,7 @@ export const ElField = {
     emitKeyTab(option = null) { this.$emit('keydown-tab', option); },
     emitKeyEsc() { this.$emit('keydown-esc'); },
     emitClearValue() { this.$emit('clear-value'); },
-    emitInputValue() { this.$emit('input-value'); },
+    emitInputValue() { this.$emit('input-value', this.fieldValue); },
     emitBlurField() { this.$emit('blur-field') }
     // ----- ---------------------- //
   },
