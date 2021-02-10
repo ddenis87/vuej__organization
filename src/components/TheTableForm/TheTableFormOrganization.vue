@@ -4,31 +4,26 @@
       <v-form ref="formAction">
         <v-container fluid>
           <v-row>
-            <v-col cols="2"><el-field-date :is-single-line="false"
-                                           :is-label="true"
-                                           :is-btn-clear="true"
+            <v-col cols="2"><el-field-date 
                                            :input-properties="fieldForm.registry_date" 
                                            v-model="fieldFormValue.registry_date"></el-field-date></v-col>
-            <v-col cols="2"><el-field-date-time :is-single-line="false"
-                                                :is-label="true"
-                                                :is-btn-clear="true"
+            <v-col cols="2"><el-field-date-time 
                                                 :input-properties="fieldForm.last_visited" 
                                                 v-model="fieldFormValue.last_visited"></el-field-date-time></v-col>
-            <v-col cols="8"><el-field-string :is-single-line="false"
-                                              :is-label="true"
-                                              :input-properties="fieldForm.title"
-                                              v-model="fieldFormValue.title"></el-field-string></v-col>
+            <v-col cols="8"><el-field-string 
+                                             :input-properties="fieldForm.title"
+                                             v-model="fieldFormValue.title"></el-field-string></v-col>
           </v-row>
           <v-row>
-            <v-col cols="4"><el-field-number :is-single-line="false" :is-label="true" is-use="form"
+            <v-col cols="4"><el-field-number 
                                              :inputProperties="fieldForm.institution_code" 
                                              v-model="fieldFormValue.institution_code"></el-field-number></v-col>
 
-            <v-col cols="4"><el-field-string :is-single-line="false" :is-label="true" is-use="form"
+            <v-col cols="4"><el-field-string 
                                              :inputProperties="fieldForm.inn" 
                                              v-model="fieldFormValue.inn"></el-field-string></v-col>
 
-            <v-col cols="4"><el-field-string :is-single-line="false" :is-label="true" is-use="form"
+            <v-col cols="4"><el-field-string 
                                              :inputProperties="fieldForm.kpp" 
                                              v-model="fieldFormValue.kpp"></el-field-string></v-col>
           </v-row>
@@ -55,7 +50,7 @@
                                              v-model="fieldFormValue.budget_level"></el-field-choice></v-col>
           </v-row>
           <v-row>
-            <v-col cols="12"><el-field-dialog :is-single-line="false" :is-label="true" 
+            <v-col cols="12"><el-field-dialog 
                                               :inputProperties="assingObject(fieldForm.bk, {related_model_view: '{head_code} - {head_name}'})"
                                               v-model="fieldFormValue.bk"></el-field-dialog></v-col>
           </v-row>

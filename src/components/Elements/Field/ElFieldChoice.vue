@@ -22,7 +22,7 @@
                     @keydown.enter="eventKeyEnter"
                     @keydown.tab="eventKeyTab"
                     @keydown.esc="eventKeyEsc"
-                    @keydown.stop
+                    @keydown.stop="eventKey"
                     @update:list-index="eventUpdateList"
                     @blur="eventBlurField">
       <template v-slot:append-outer v-if="isBtnClear">
@@ -46,7 +46,7 @@ export default {
     }
   },
   computed: {
-    fieldItems() { return this.inputProperties.choices; },
+    fieldItems() { let newFieldItems = this.inputProperties.choices; newFieldItems.shift({'display_name': 'Не заполнено', value: null}); return newFieldItems; return Object.assign(this.inputProperties.choices, {'display_name': 'Не заполнено', value: null}); },
   },
   mounted() {
     let fieldInput = document.querySelector(`.content-editing .v-select__slot input`);
@@ -60,15 +60,20 @@ export default {
       // console.log('update');
     },
     eventInputValue(event) {
-    //   console.log(event);
+      console.log(event);
     },
     eventChangeValue(event) {
       this.isChangeValue = true;
       this.emitInputValue();
     },
+    eventKey(event) {
+      console.log(event);
+      console.log(this.fieldValue);
+    },
     eventKeyEnter(event) {
       if (this.inputProperties.required && !this.isRequiredOff)
         if (!this.fieldValue) return;
+      
       if (this.isChangeValue) {
         let sendOption = {
           key: event.key,
@@ -76,9 +81,13 @@ export default {
         }
         this.isEmit = true;
         this.emitKeyEnter(sendOption);
+        return;
       }
+      console.log(this.fieldValue);
     },
     eventKeyTab(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (!this.fieldValue) return;
       let sendOption = {
         key: event.key,
         shift: event.shiftKey,

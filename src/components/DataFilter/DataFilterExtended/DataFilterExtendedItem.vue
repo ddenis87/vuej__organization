@@ -7,16 +7,12 @@
       </div>
       <div class="item-data">
         <component :is="componentField"
-                   is-label
-                   :is-required="false"
+                   :is-required-off="true"
                    :is-disabled="isDisabledData || !valueCompare"
-                   :is-btn-clear="true"
-                   :is-single-line="false"
                    :input-properties="inputProperties"
                    :is-show="isShow"
                    v-model="valueData"
                    @input-value="eventInputData"
-                   @keydown-clear="resetComponent"
                    @clear-value="resetComponent"></component>
       </div>
     </template>
@@ -97,13 +93,13 @@ export default {
   methods: {
     componentByTypeDefault(type) {
       switch(type) {
-        case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');
-        case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumber.vue');
+        case 'string': return () => import('@/components/Elements/Field/ElFieldString.vue');
+        case 'integer': return () => import('@/components/Elements/Field/ElFieldNumber.vue');
         case 'boolean': return () => import('@/components/Elements/ElField/ElFieldSwitch.vue');
         case 'choice': return () => import('@/components/Elements/Field/ElFieldChoice.vue');
         case 'date': return () => import('@/components/Elements/Field/ElFieldDate.vue');
         case 'datetime': return () => import('@/components/Elements/Field/ElFieldDateTime.vue');
-        case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
+        case 'field': return () => import('@/components/Elements/Field/ElFieldDialog.vue');
       }
     },
     computedLineCompare(option) {

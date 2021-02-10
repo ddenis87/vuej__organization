@@ -74,6 +74,7 @@ export default {
 
   ACTION_EDITING_ELEMENT(state, option) { // editin column in table
     let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
+    console.log(state[option.tableName].listData[index]);
     state[option.tableName].listData[index][option.fieldName] = option.fieldValue;
   },
 
