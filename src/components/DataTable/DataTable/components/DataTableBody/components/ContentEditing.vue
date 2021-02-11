@@ -41,12 +41,12 @@ export default {
       console.log(this.isComponentNull);
       if (this.properties.columnProperties && !this.isComponentNull) {
         switch(this.properties.columnProperties.type) {
-          case 'string': return () => import('@/components/Elements/Field/ElFieldString.vue');
-          case 'integer': return () => import('@/components/Elements/Field/ElFieldNumber.vue');
-          case 'date': return () => import('@/components/Elements/Field/ElFieldDate.vue');
-          case 'datetime': return () => import('@/components/Elements/Field/ElFieldDateTime.vue');
-          case 'choice': return () => import('@/components/Elements/Field/ElFieldChoice.vue');
-          case 'field': return () => import('@/components/Elements/Field/ElFieldDialog.vue');
+          case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');
+          case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumber.vue');
+          case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
+          case 'datetime': return () => import('@/components/Elements/ElField/ElFieldDateTime.vue');
+          case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
+          case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
         }
       } else return null;
     },

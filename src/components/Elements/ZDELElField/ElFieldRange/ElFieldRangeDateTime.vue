@@ -1,24 +1,26 @@
 <template>
   <div class="el-field">
     <el-field-date-time class="el-field__item"
+                        :is-label="isLabel"
                         :is-single-line="isSingleLine"
-                        :is-required-off="true"
+                        :is-btn-clear="isBtnClear"
+                        :is-required="isRequired"
                         :is-disabled="isDisabled"
                         :input-properties="{label: 'Начало'}"
                         v-model="fieldValue.start"
                         @input-value="eventInputValue"
-                        @clear-value="eventClearValue"></el-field-date-time>
+                        @keydown-clear="eventClearValue"></el-field-date-time>
                    
     <el-field-date-time class="el-field__item"
-                        
+                        :is-label="isLabel"
                         :is-single-line="isSingleLine"
-                        
-                        :is-required-off="true"
+                        :is-btn-clear="isBtnClear"
+                        :is-required="isRequired"
                         :is-disabled="isDisabled"
                         :input-properties="{label: 'Окончание'}"
                         v-model="fieldValue.end"
                         @input-value="eventInputValue"
-                        @clear-value="eventClearValue"></el-field-date-time>
+                        @keydown-clear="eventClearValue"></el-field-date-time>
   </div>
 </template>
 

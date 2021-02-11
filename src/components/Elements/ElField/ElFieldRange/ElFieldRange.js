@@ -4,11 +4,14 @@ export const ElFieldRange = {
     event: 'input-value'
   },
   props: {
-    isSingleLine: { type: Boolean, default: true, },  // show or hide label
-    isLabel: { type: Boolean, default: false, },  // hidden or show label
-    isRequired: {type: Boolean, default: true},
-    isBtnClear: {type: Boolean, default: false},
-    isDisabled: { type: Boolean, default: false },
+    isSingleLine: { type: Boolean, default: false, },  // show or hide label
+    isRequiredOff: { type: Boolean, default: false },  // 
+    isHideMessage: { type: Boolean, default: false },  // hidden or show validation error
+    isHideLabel: { type: Boolean, dafault: false },    // hidden or show label
+    isDisabled: { type: Boolean, default: false },     // 
+    isSelected: { type: Boolean, defalt: false },      // selected value in text field after mounted
+    isBtnClear: { type: Boolean, default: true },     // hidden or show button clear
+
     inputValue: { type: Object, default() { return { start: null, end: null } } },
   },
   data() {
@@ -29,7 +32,7 @@ export const ElFieldRange = {
     },
     eventClearValue() {
       if (!this.fieldValue.start && !this.fieldValue.end) {
-        this.$emit('keydown-clear');
+        this.$emit('clear-value');
         return;
       }
       this.$emit('input-value', this.fieldValue);

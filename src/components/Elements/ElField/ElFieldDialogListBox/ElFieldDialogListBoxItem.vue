@@ -96,7 +96,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './ElFieldInList.scss';
+@import './ElFieldDialogListBox.scss';
 .list-dialog {
   display: grid;
   grid-template-areas: "list-dialog__title" "list-dialog__action" "list-dialog__body";

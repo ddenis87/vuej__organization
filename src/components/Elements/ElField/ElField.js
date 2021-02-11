@@ -1,27 +1,26 @@
+import ElBtnIconSmall from '@/components/Elements/ElBtnIconSmall.vue';
+import ElBtn from '@/components/Elements/ElBtn.vue';
+
 export const ElField = {
   model: {
     prop: 'inputValue',
-    event: 'input-value'
+    event: 'input-value',
+  },
+  components: {
+    ElBtnIconSmall,
+    ElBtn,
   },
   props: {
-    isDense: { type: Boolean, default: true, },
-    isSingleLine: { type: Boolean, default: true, },  // show or hide label
-    isLabel: { type: Boolean, default: false, },  // hidden or show label
-    isShowValidation: {type: Boolean, default: false}, // hidden or show validation error
-    isRequired: {type: Boolean, default: true},
-    isBtnClear: {type: Boolean, default: false},
-    isDisabled: { type: Boolean, default: false },
-    isValueSelected: {type: Boolean, defalt: false},  // selected value in text field after mounted
-    isValueFocus: {type: Boolean, defalt: false},
-    inputProperties: {
-      type: Object,
-      default() {
-        return {
-          label: '',
-          required: { type: Boolean, default: false },
-        }
-      }
-    },
+    // isUse: { type: String, default: 'form', },         // where use component
+    isSingleLine: { type: Boolean, default: false, },  // show or hide label
+    isRequiredOff: { type: Boolean, default: false },  // 
+    isHideMessage: { type: Boolean, default: false },  // hidden or show validation error
+    isHideLabel: { type: Boolean, dafault: false },    // hidden or show label
+    isDisabled: { type: Boolean, default: false },     // 
+    isSelected: { type: Boolean, defalt: false },      // selected value in text field after mounted
+    isBtnClear: { type: Boolean, default: true },     // hidden or show button clear
+
+    inputProperties: Object,
     inputValue: '',
   },
   data() {
@@ -34,54 +33,32 @@ export const ElField = {
     }
   },
   computed: {
-    fieldLabel() { if (this.isLabel) return this.inputProperties.label; return; },
-    fieldMaxLength() { return ('max_length' in this.inputProperties) ? this.inputProperties['max_length'] : Infinity; },
-    fieldRequired() { return (this.inputProperties.required && this.isRequired) ? true : false; },
-
-    isFieldValue() { return (this.fieldValue == null) ? true : false },
+    fieldLabel() { if (!this.isHideLabel) return this.inputProperties.label; return; },
+    fieldRequired() { return (this.inputProperties.required && !this.isRequiredOff) ? true : false; },
   },
   watch: {
     inputValue() { this.fieldValue = this.inputValue; }, 
   },
   methods: {
-    // EVENTS ON COMPONENT
-    clearValue() {
+    // EVENTS --------------------- //
+    eventKeyEsc() { this.isEmit = true; this.emitKeyEsc(); },
+    eventClearValue() {
       this.fieldValue = null;
+      this.emitInputValue();
       this.emitClearValue();
     },
-    keydownEsc() { this.isEmit = true; this.emitCanceled(); },
-    keydownEnterTab(event) {
-      this.isEmit = true;
-      let sendOption = {
-        key: event.key,
-        shift: event.shiftKey,
-        value: this.fieldValue,
-      }
-      this.emitAccepted(sendOption);
+    eventBlurField() {
+      if (!this.isEmit) this.emitBlurField();
     },
-    blurComponent() { if (this.isEmit == false) { this.emitCanceled(); } },
+    // ------ --------------------- //
 
-    // EVENTS EMITTED COMPONENT
-    emitAccepted(option) {
-      this.emitInputValue(option.value) // for form
-// ----------
-      // this.emitInputValue() // for form
-// ----------
-      this.emitEnterValue() // for form
-      this.$emit('editing-accepted', option); // for table
-    },
-    emitCanceled() { this.$emit('editing-canceled');  },
-    emitInputValue(option) { this.$emit('input-value', option); }, //this.fieldValue); }, // for form, emit only value
-// ----------
-    // emitInputValue(option) { this.$emit('input-value', this.fieldValue); }, // for form, emit only value
-// ----------
-    emitClearValue() {
-      // this.fieldValue = null;
-      this.emitInputValue();
-      this.$emit('keydown-clear'); // for form
-    },
-    emitEnterValue() {
-      this.$emit('keydown-enter', this.fieldValue); // for form
-    }
-  }
+    // EMITS ---------------------- //
+    emitKeyEnter(option = null) { this.$emit('keydown-enter', option); },
+    emitKeyTab(option = null) { this.$emit('keydown-tab', option); },
+    emitKeyEsc() { this.$emit('keydown-esc'); },
+    emitClearValue() { this.$emit('clear-value'); },
+    emitInputValue() { this.$emit('input-value', this.fieldValue); },
+    emitBlurField() { this.$emit('blur-field') }
+    // ----- ---------------------- //
+  },
 }

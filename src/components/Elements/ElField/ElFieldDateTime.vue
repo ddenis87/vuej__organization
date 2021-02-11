@@ -1,55 +1,48 @@
 <template>
-  <div class="el-field">
+  <div class="el-field el-field-date-time" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
     <v-text-field class="el-field__item"
+                  dense
                   append-icon="mdi-calendar-range"
-                  :dense="isDense"
+                  tabindex="1"
                   :single-line="isSingleLine"
-                  :hide-details="isShowValidation"
-                  :rules="(fieldRequired) ? [rules.required] : []"
-                  :label="fieldLabel"
+                  :hide-details="isHideMessage"
                   :disabled="isDisabled"
+                  :label="fieldLabel"
+                  :rules="(fieldRequired) ? [rules.required] : []"
                   v-model="fieldValue"
                   v-mask="fieldMask"
-                  @input="emitInputValue"
-                  @keydown.stop.esc="keydownEsc"
-                  @keydown.stop.prevent.enter.tab="keydownEnterTab"
+                  @input="eventInputValue"
+                  @keydown.enter="eventKeyEnter"
+                  @keydown.tab="eventKeyTab"
+                  @keydown.esc="eventKeyEsc"
                   @keydown.stop
-                  @click:append="eventOpenDialog"
-                  @blur.stop="blurComponent">
+                  @blur="eventBlurField"
+                  @click:append="eventOpenDialog">
       <template v-slot:append-outer v-if="isBtnClear">
-        <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+        <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
       </template>
     </v-text-field>
     <v-menu offset-y
             absolute
-            class="el-field__dialog"
+            class="el-field-date-time__dialog"
             :position-x="isDialogX"
             :position-y="isDialogY"
             v-model="isDialogShow"
             :close-on-click="true"
             :close-on-content-click="false" @input="eventClickOutsideMenu">
-      <div :class="`el-field__date-time`"
-           tabindex="1"
-           @blur="blurDatePicker" >
-        <!-- <div class="time">
-          <v-text-field class="time__field"
-                        label="Время" 
-                        placeholder="ЧЧ:ММ" 
-                        v-mask="fieldMaskTime" 
-                        v-model="fieldValueTime"></v-text-field>
-        </div> -->
+      <div :class="`el-field-date-time__date-time`">
         <div class="date">
           <v-date-picker v-model="fieldValueDate"
-                       locale="ru"
-                       first-day-of-week="1"
-                       no-title
-                       scrollable 
-                       @input="eventSelectDate"></v-date-picker>
+                        locale="ru"
+                        first-day-of-week="1"
+                        no-title
+                        scrollable 
+                        show-adjacent-months
+                        @input="eventSelectDate"></v-date-picker>
         </div>
-        <!-- <div class="action">
-          <el-button-icon icon="mdi-close" @click="eventCancel">Отменить</el-button-icon>
-          <el-button-icon icon="mdi-check" @click="eventAccept">Установить</el-button-icon>
-        </div> -->
+        <div class="control">
+          <el-btn is-orientation="left" @click="eventClickToday">Сегодня</el-btn>
+        </div>
       </div>
     </v-menu>
   </div>
@@ -57,23 +50,14 @@
 
 <script>
 import { ElField } from './ElField.js';
-import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
 export default {
   name: 'ElFieldDateTime',
   mixins: [
     ElField,
   ],
-  model: {
-    prop: 'inputValue',
-    event: 'input-value'
-  },
-  components: {
-    ElButtonIcon,
-  },
   data() {
     return {
       isDialogShow: false,
-      attachDialog: null,
       isDialogX: 0,
       isDialogY: 0,
       fieldValue: (this.inputValue) ? this.inputValue.split('T')[0].split('-').reverse().join('.') + ' ' +
@@ -82,11 +66,11 @@ export default {
       fieldValueTime: (this.inputValue) ? this.inputValue.split('T')[1].slice(0, 5) : null,
       fieldMask: [/[0123]/,/\d/,'.',/[01]/,/\d/,'.',/[2]/,/[0]/,/\d/,/\d/,' ',/[012]/,/\d/,':',/[012345]/,/\d/],
       fieldMaskTime: [/[012]/,/\d/,':',/[012345]/,/\d/],
+      fieldElementDOM: null,
     }
   },
   watch: {
     inputValue() {
-      // console.log(this.inputValue);
       if (this.inputValue == null) {
         this.fieldValue = null;
         this.fieldValueDate = null;
@@ -101,7 +85,7 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      if (this.isValueSelected) {
+      if (this.isSelected) {
         document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
         document.querySelector(`.content-editing .v-text-field__slot input`).select();
         document.querySelector(`.content-editing .v-text-field__slot input`).focus();
@@ -109,11 +93,55 @@ export default {
     }, 10);
   },
   methods: {
-    dblClickDate() {
-      console.log('dbl click');
-      this.eventAccept();
+    eventOpenDialog(event) {
+      this.fieldElementDOM = event.target.closest('.el-field').querySelector('.v-text-field__slot input');
+      let elementTarget = event.target.closest('.el-field').getBoundingClientRect();
+      this.isDialogX = elementTarget.left;
+      this.isDialogY = elementTarget.top + 40;
+      this.isDialogShow = !this.isDialogShow;
     },
-    emitInputValue(option) {
+    eventClickOutsideMenu() { this.emitBlurField(); },
+    eventSelectDate(event) {
+      let newTime = '';
+      if (this.fieldValueTime != null) {
+        newTime = (this.fieldValueTime.length != 5) ? '00:00' : this.fieldValueTime;
+      } else { newTime = '00:00' }
+
+      let newDate = '';
+      if (this.fieldValueDate == null) {
+        newDate = new Date();
+        newDate = `${newDate.getFullYear()}-` + 
+                  `${(+newDate.getMonth() < 9) ? '0' + (+newDate.getMonth() + 1) : +newDate.getMonth() + 1}-` + 
+                  `${(+newDate.getDate() < 10) ? '0' + newDate.getDate() : newDate.getDate()}`;
+      } else {
+        newDate = this.fieldValueDate;
+      }
+      let newDateTime = `${newDate}T${newTime}`;
+      this.isDialogShow = false;
+      this.fieldValue = newDateTime.split('T')[0].split('-').reverse().join('.') + ' ' +
+                                            newDateTime.split('T')[1].slice(0, 5);
+      this.emitInputValue(newDateTime);
+      setTimeout(() => {
+        this.fieldElementDOM.focus();
+      }, 10);
+    },
+    eventClickToday() {
+      let newTime = '00:00';
+      let newDate = new Date();
+      newDate = `${newDate.getFullYear()}-` + 
+                `${(+newDate.getMonth() < 9) ? '0' + (+newDate.getMonth() + 1) : +newDate.getMonth() + 1}-` + 
+                `${(+newDate.getDate() < 10) ? '0' + newDate.getDate() : newDate.getDate()}`;
+      let newDateTime = `${newDate}T${newTime}`;
+      this.fieldValueDate = newDate;
+      this.isDialogShow = false;
+      this.fieldValue = newDateTime.split('T')[0].split('-').reverse().join('.') + ' ' +
+                                            newDateTime.split('T')[1].slice(0, 5);
+      this.emitInputValue(newDateTime);
+      setTimeout(() => {
+        this.fieldElementDOM.focus();
+      }, 10);
+    },
+    eventInputValue() {
       if (!this.fieldValue) return;
       if (this.fieldValue.length != 16) return;
       let newDateTime = this.fieldValue.split(' ')[0].split('.').reverse().join('-') + 'T' + this.fieldValue.split(' ')[1];
@@ -129,65 +157,21 @@ export default {
         this.fieldValue = '';
         return;
       }
-      this.$emit('input-value', newDateTime);
+      this.emitInputValue(newDateTime);
     },
-
-    eventClickOutsideMenu() { this.emitCanceled(); },
-
-    eventOpenDialog(event) {
-      let elementTarget = event.target.closest('.el-field').getBoundingClientRect();
-      this.isDialogX = elementTarget.left;
-      this.isDialogY = elementTarget.top + 30;
-      this.isDialogShow = !this.isDialogShow;
-    },
-    eventSelectDate() {
-      this.eventAccept();
-      setTimeout(() => {
-        if (this.isValueSelected) {
-          document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
-          document.querySelector(`.content-editing .v-text-field__slot input`).select();
-          document.querySelector(`.content-editing .v-text-field__slot input`).focus();
+    eventKeyEnter(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (this.fieldValue.length != 16) return;
+      if (!this.fieldValue || this.fieldValue.length == 0) {
+        let sendOption = {
+          key: event.key,
+          shift: event.shiftKey,
+          value: null,
         }
-      }, 10);
-    },
-    eventAccept() {
-      let newTime = '';
-      if (this.fieldValueTime != null) {
-        newTime = (this.fieldValueTime.length != 5) ? '00:00' : this.fieldValueTime;
-      } else { newTime = '00:00' }
-
-      let newDate = '';
-      if (this.fieldValueDate == null) {
-        newDate = new Date();
-        newDate = `${newDate.getFullYear()}-` + 
-                  `${(+newDate.getMonth() < 9) ? '0' + (+newDate.getMonth() + 1) : +newDate.getMonth() + 1}-` + 
-                  `${(+newDate.getDate() < 10) ? '0' + newDate.getDate() : newDate.getDate()}`;
-      } else {
-        newDate = this.fieldValueDate;
+        this.emitInputValue(null);
+        this.emitKeyEnter(sendOption);
+        return;
       }
-
-      let newDateTime = `${newDate}T${newTime}`;
-      let sendOption = {
-        key: 'Enter',
-        shift: false,
-        value: newDateTime,
-      }
-      this.isDialogShow = false;
-      this.fieldValue = newDateTime.split('T')[0].split('-').reverse().join('.') + ' ' +
-                                            newDateTime.split('T')[1].slice(0, 5);
-      this.$emit('input-value', newDateTime);
-      this.$emit('keydown-enter', newDateTime);
-      // this.$emit('editing-accepted', sendOption);
-    },
-
-    eventCancel() {
-      this.fieldValueDate = null;
-      this.fieldValueTime = null;
-      this.isDialogShow = false;
-    },
-    
-    keydownEnterTab(event) {
-      if (this.fieldValue.length != 16) return;
       let newDateTime = this.fieldValue.split(' ')[0].split('.').reverse().join('-') + 'T' + this.fieldValue.split(' ')[1];
       if (new Date(newDateTime) == 'Invalid Date') {
         this.fieldValue = '';
@@ -208,12 +192,47 @@ export default {
       }
       this.isEmit = true;
       this.isDialogShow = false;
-      this.$emit('input-value', newDateTime);
-      this.$emit('keydown-enter', newDateTime);
-      this.$emit('editing-accepted', sendOption);
+      this.emitInputValue(newDateTime);
+      this.emitKeyEnter(sendOption);
+    },
+    eventKeyTab(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (this.fieldValue.length != 16) return;
+      if (!this.fieldValue || this.fieldValue.length == 0) {
+        let sendOption = {
+          key: event.key,
+          shift: event.shiftKey,
+          value: null,
+        }
+        this.emitInputValue(null);
+        this.emitKeyEnter(sendOption);
+        return;
+      }
+      let newDateTime = this.fieldValue.split(' ')[0].split('.').reverse().join('-') + 'T' + this.fieldValue.split(' ')[1];
+      if (new Date(newDateTime) == 'Invalid Date') {
+        this.fieldValue = '';
+        return;
+      }
+      let newDate = new Date(newDateTime);
+      newDate = `${newDate.getFullYear()}-` + 
+                `${(+newDate.getMonth() < 9) ? '0' + (+newDate.getMonth() + 1) : +newDate.getMonth() + 1}-` + 
+                `${(+newDate.getDate() < 10) ? '0' + newDate.getDate() : newDate.getDate()}`;
+      if (newDate.split('-').reverse().join('.') != this.fieldValue.split(' ')[0]) {
+        this.fieldValue = '';
+        return;
+      }
+      let sendOption = {
+        key: event.key,
+        shift: event.shiftKey,
+        value: newDateTime,
+      }
+      this.isEmit = true;
+      this.isDialogShow = false;
+      this.emitInputValue(newDateTime);
+      this.emitKeyTab(sendOption);
     },
 
-    clearValue() {
+    eventClearValue() {
       this.fieldValue = null;
       this.fieldValueDate = null;
       this.fieldValueTime = null;
@@ -221,62 +240,38 @@ export default {
         this.fieldValue = null;
         this.fieldValueDate = null;
         this.fieldValueTime = null;
-        this.$emit('input-value', null);
-        this.$emit('keydown-clear');
+        this.emitInputValue(null);
+        this.emitClearValue();
       },10);
-      
     },
 
-    blurComponent(event) {
-      if (!this.isEmit) {
-        if (event.relatedTarget == null) {
-          this.isDialogShow = false;
-          this.emitCanceled();
+    eventBlurField(event) {
+      if (event.relatedTarget)
+        if (event.relatedTarget.closest(`.el-field-date-time__date-time`)) { 
+          event.relatedTarget.closest(`.el-field-date-time__date-time`).focus();
+          this.fieldElementDOM = event.target;
           return;
         }
-        if (event.relatedTarget)
-          if (event.relatedTarget.closest(`.el-field__date-time`)) { 
-            event.relatedTarget.closest(`.el-field__date-time`).focus();
-            return;
-          }
-        if (!this.isEmit) {
-          this.isDialogShow = false;
-          this.emitCanceled();
-        }
+      if (!this.isEmit) {
+        this.isDialogShow = false;
+        this.emitKeyEsc();
       }
     },
-    blurDatePicker(event) {
-    },
+
+    emitInputValue(value) { this.$emit('input-value', value); },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 @import './ElField.scss';
-.el-field {
+.el-field-date-time {
   &__date-time {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 0px;
-    background-color: rgba(255, 255, 255, 1);
-    outline: none;
-    .time {
-      width: 100%;
-      padding: 0px 16px;
-      &__field {
-        font-size: 14px;
-      }
-    }
-    .date {
-      margin-top: -12px;
-    }
-    .action {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0px 12px;
+    background-color: white;
+    .control {
+      padding: 12px 12px;
+      padding-top: 0px;
+
     }
   }
 }

@@ -80,8 +80,8 @@ export default {
   computed: {
     componentField() {
       switch(this.inputProperties.type) {
-        case 'choice': return () => import('@/components/Elements/Field/ElFieldChoice.vue');
-        case 'field': return () => import('@/components/Elements/Field/ElFieldDialog.vue');
+        case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
+        case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
       }
     }
   },

@@ -1,28 +1,32 @@
 <template>
-  <div class="el-field">
+  <!-- @click.stop -- no slide list -->
+  <div class="el-field el-field-choice" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
     <v-autocomplete class="el-field__item"
-                    auto-select-first
+                    dense
                     return-object
-                    hide-selected
                     no-data-text="Значение отсутствует"
-                    :dense="isDense"
+                    tabindex="1"
                     :single-line="isSingleLine"
-                    :hide-details="isShowValidation"
-                    :rules="(fieldRequired) ? [rules.required] : []"
-                    :label="fieldLabel"
+                    :hide-details="isHideMessage"
                     :disabled="isDisabled"
-                    :items="fieldList"
+                    :label="fieldLabel"
+                    :items="fieldItems"
                     :item-text="'display_name'"
                     :item-value="'value'"
+                    :rules="(fieldRequired) ? [rules.required] : []"
                     v-model="fieldValue"
-                    @input="emitInputValue"
-                    @change="changeValue"
-                    @keydown.stop.esc="keydownEsc"
-                    @keydown.stop.prevent.enter.tab="keydownEnterTab"
-                    @keydown.stop
-                    @blur="blurComponent">
+                    @click.stop
+                    @input="eventInputValue"
+                    @change="eventChangeValue"
+                    
+                    @keydown.enter="eventKeyEnter"
+                    @keydown.tab="eventKeyTab"
+                    @keydown.esc="eventKeyEsc"
+                    @keydown.stop="eventKey"
+                    @update:list-index="eventUpdateList"
+                    @blur="eventBlurField">
       <template v-slot:append-outer v-if="isBtnClear">
-        <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+        <el-btn-icon-small  icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
       </template>
     </v-autocomplete>
   </div>
@@ -31,48 +35,79 @@
 <script>
 import { ElField } from './ElField.js';
 export default {
-  name: 'ElFieldChoice',
+  name: 'ElFiledChoice',
   mixins: [
     ElField,
   ],
   data() {
     return {
-      isInputFirstEnter: false,
-      isElementChange: false,
+      // isEmit: false,
+      isChangeValue: false,
     }
   },
   computed: {
-    fieldList() { if ('choices' in this.inputProperties) return this.inputProperties.choices; return []; },
+    fieldItems() { 
+      return this.inputProperties.choices;
+    },
   },
   mounted() {
+    let fieldInput = document.querySelector(`.content-editing .v-select__slot input`);
+    if (!fieldInput) return;
     setTimeout(() => {
-      let fieldInput = document.querySelector(`.content-editing .v-select__slot input`);
-      if (this.isValueSelected)
-        fieldInput.select();
-      if (this.isValueFocus)
-        fieldInput.focus();
+      fieldInput.focus();
     }, 10);
   },
   methods: {
-    keydownEnterTab(event) {
-      if (event.key == 'Enter')
-        if (!this.isInputFirstEnter || !this.isElementChange) { this.isInputFirstEnter = true; return; }
-        this.isEmit = true;
+    eventUpdateList() {
+      // console.log('update');
+    },
+    eventInputValue(event) {
+      // console.log(event);
+    },
+    eventChangeValue(event) {
+      this.isChangeValue = true;
+      this.emitInputValue();
+    },
+    eventKey(event) {
+      if (event.key == 'Delete' || event.key == 'Backspace') {
+        this.fieldValue = null;
+        this.emitInputValue();
+      }
+    },
+    eventKeyEnter(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (!this.fieldValue) return;
+      
+      if (this.isChangeValue) {
         let sendOption = {
           key: event.key,
-          shift: event.shiftKey,
           value: this.fieldValue,
+          event: event,
         }
-        this.emitAccepted(sendOption);
+        this.isEmit = true;
+        this.emitKeyEnter(sendOption);
+        return;
+      }
     },
-    changeValue(value) {
-      this.isInputFirstEnter = true;
-      this.isElementChange= true;
-    },
-  }
+    eventKeyTab(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (!this.fieldValue) return;
+      let sendOption = {
+        key: event.key,
+        shift: event.shiftKey,
+        value: this.fieldValue,
+        event: event,
+      }
+      this.isEmit = true;
+      this.emitKeyTab(sendOption);
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 @import './ElField.scss';
+.el-field-choice {
+  z-index: 9999;
+}
 </style>

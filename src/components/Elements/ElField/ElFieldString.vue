@@ -1,70 +1,73 @@
 <template>
-  <div class="el-field">
-    <v-text-field v-if="inputType == 'text-field'"
-                  class="el-field__item"
-                  :dense="isDense"
+  <div class="el-field el-field-string" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
+    <v-text-field class="el-field__item"
+                  dense
+                  tabindex="1"
                   :single-line="isSingleLine"
-                  :hide-details="isShowValidation"
-                  :rules="(fieldRequired) ? [rules.required] : []"
-                  :label="fieldLabel"
+                  :hide-details="isHideMessage"
                   :disabled="isDisabled"
+                  :label="fieldLabel"
                   :maxLength="fieldMaxLength"
+                  :rules="(fieldRequired) ? [rules.required] : []"
                   v-model="fieldValue"
-                  @input="emitInputValue"
-                  @keydown.stop.esc="keydownEsc"
-                  @keydown.stop.prevent.enter.tab="keydownEnterTab"
+
+                  @input="eventInputValue"
+                  @keydown.enter="eventKeyEnter"
+                  @keydown.tab="eventKeyTab"
+                  @keydown.esc="eventKeyEsc"
                   @keydown.stop
-                  @blur="blurComponent">
+                  @blur="eventBlurField">
       <template v-slot:append-outer v-if="isBtnClear">
-        <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+        <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
       </template>
     </v-text-field>
-    <v-textarea v-else
-                class="el-field-string"
-                :dense="isDense"
-                :single-line="isSingleLine"
-                :hide-details="isShowValidation"
-                :rules="(fieldRequired) ? [rules.required] : []"
-                :label="fieldLabel"
-                :maxLength="fieldMaxLength"
-                auto-grow
-                rows="1" height="20"
-                v-model="fieldValue"
-                @input="emitInputValue"
-                @keydown.stop.esc="keydownEsc"
-                @keydown.stop.prevent.enter.tab="keydownEnterTab"
-                @keydown.stop
-                @blur="blurComponent">
-        <template v-slot:append-outer v-if="isBtnClear">
-          <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
-        </template>
-      </v-textarea>
   </div>
-  
-  
-
 </template>
 
 <script>
 import { ElField } from './ElField.js';
 export default {
-  name: 'ElFieldString',
+  name: 'ElFiledString',
   mixins: [
     ElField,
   ],
-  props: {
-    inputType: { type: String, default: 'text-field' },
+  computed: {
+    fieldMaxLength() { return ('max_length' in this.inputProperties) ? this.inputProperties['max_length'] : Infinity; },
   },
   mounted() {
+    let fieldInput = document.querySelector(`.content-editing .v-text-field__slot input`);
+    if (!fieldInput) return;
     setTimeout(() => {
-      let fieldInput = document.querySelector(`.content-editing .v-text-field__slot input`);
-      if (this.isValueSelected) {
-        fieldInput.setSelectionRange(0, 0);
-        fieldInput.select();
-      }
-      if (this.isValueFocus)
-        fieldInput.focus();
+      fieldInput.setSelectionRange(0, 0);
+      fieldInput.select();
+      fieldInput.focus();
     }, 10);
+  },
+  methods: {
+    eventKeyEnter(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (!this.fieldValue) return;
+      let sendOption = {
+        key: event.key,
+        value: this.fieldValue,
+      }
+      this.isEmit = true;
+      this.emitKeyEnter(sendOption);
+    },
+    eventKeyTab(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (!this.fieldValue) return;
+      let sendOption = {
+        key: event.key,
+        shift: event.shiftKey,
+        value: this.fieldValue,
+      }
+      this.isEmit = true;
+      this.emitKeyTab(sendOption);
+    },
+    eventInputValue() {
+      this.emitInputValue();
+    },
   },
 }
 </script>

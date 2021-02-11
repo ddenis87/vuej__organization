@@ -65,14 +65,14 @@ export default {
       this.$emit('input-filter', valueDefault); //  EMIT ---------------<<<<<<<<<<<<
       switch(this.valueCompare) {
         case 'inList': {
-          return () => import('@/components/Elements/Field/ElFieldInList/ElFieldInList.vue');
+          return () => import('@/components/Elements/ElField/ElFieldDialogListBox/ElFieldDialogListBox.vue');
         }
         case 'between': {
           this.isDisabledData = false;
           switch(this.inputProperties.type) {
-            case 'integer': return () => import('@/components/Elements/Field/ElFieldRange/ElFieldRangeNumber.vue');
-            case 'date': return () => import('@/components/Elements/Field/ElFieldRange/ElFieldRangeDate.vue');
-            case 'datetime': return () => import('@/components/Elements/Field/ElFieldRange/ElFieldRangeDateTime.vue');
+            case 'integer': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeNumber.vue');
+            case 'date': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeDate.vue');
+            case 'datetime': return () => import('@/components/Elements/ElField/ElFieldRange/ElFieldRangeDateTime.vue');
           }
         }
         default: {
@@ -95,13 +95,13 @@ export default {
   methods: {
     componentByTypeDefault(type) {
       switch(type) {
-        case 'string': return () => import('@/components/Elements/Field/ElFieldString.vue');
-        case 'integer': return () => import('@/components/Elements/Field/ElFieldNumber.vue');
+        case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');
+        case 'integer': return () => import('@/components/Elements/ElField/ElFieldNumber.vue');
         case 'boolean': return () => import('@/components/Elements/ElField/ElFieldSwitch.vue');
-        case 'choice': return () => import('@/components/Elements/Field/ElFieldChoice.vue');
-        case 'date': return () => import('@/components/Elements/Field/ElFieldDate.vue');
-        case 'datetime': return () => import('@/components/Elements/Field/ElFieldDateTime.vue');
-        case 'field': return () => import('@/components/Elements/Field/ElFieldDialog.vue');
+        case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
+        case 'date': return () => import('@/components/Elements/ElField/ElFieldDate.vue');
+        case 'datetime': return () => import('@/components/Elements/ElField/ElFieldDateTime.vue');
+        case 'field': return () => import('@/components/Elements/ElField/ElFieldDialog.vue');
       }
     },
     computedLineCompare(option) {

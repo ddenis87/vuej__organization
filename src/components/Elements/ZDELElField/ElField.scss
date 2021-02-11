@@ -1,18 +1,13 @@
 .el-field {
   width: 100%;
-  padding-top: 8px;
-  // border: thin solid grey;
-  &_single-line {
-    padding-top: 0px;
-  }
-  &_hide-message {
-
-  }
   &__item {
+    width: 100%;
     font-size: 14px;
   }
+  .v-text-field {
+    margin-top: -3.5px;
+  }
 }
-
 ::v-deep {
   .v-input__append-inner {
     margin-top: -2px !important;

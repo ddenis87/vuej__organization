@@ -1,43 +1,42 @@
 <template>
-  <div class="el-field" >
+  <div class="el-field el-field-dialog" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
     <!-- @click.stop - stop slider list -->
     <v-autocomplete class="el-field__item"
+                    dense
                     return-object
-                    hide-selected
                     no-data-text="Значение отсутствует"
-                    
-                    
-                    :dense="isDense"
+                    append-icon="mdi-dots-horizontal"
+                    tabindex="1"
                     :single-line="isSingleLine"
-                    :hide-details="isShowValidation"
-                    :rules="(fieldRequired) ? [rules.required] : []"
-                    :label="fieldLabel"
+                    :hide-details="isHideMessage"
                     :disabled="isDisabled"
+                    :label="fieldLabel"
                     :items="fieldList"
                     :item-text="fieldListText"
                     :item-value="'id'"
+                    :rules="(fieldRequired) ? [rules.required] : []"
                     v-model="fieldValue"
-                    @input="emitInputValue"
-                    @keydown.stop.esc="keydownEsc"
-                    @keydown.stop.prevent.enter.tab="keydownEnterTab"
+                    @click.stop
+                    @click:append="eventOpenDialog"
+                    @input="eventInputValue"
+                    @change="eventChangeValue"
+                    @keydown.enter="eventKeyEnter"
+                    @keydown.tab="eventKeyTab"
+                    @keydown.esc="eventKeyEsc"
                     @keydown.stop
-                    @click.prevent.stop
-                    @click:append.prevent.stop="openDialog"
-                    @blur.prevent="blurComponent">
-      <template v-slot:append>
-        <v-btn icon
-               small 
-               @click.stop.prevent="openDialog"><v-icon small>mdi-dots-horizontal</v-icon></v-btn>
-      </template>
+                    
+                    @blur="eventBlurField">
+      <!-- <template v-slot:append>
+        <el-btn-icon-small tabindex="2" icon="mdi-dots-horizontal" no-tooltip @click="eventOpenDialog"></el-btn-icon-small>
+      </template> -->
       <template v-slot:append-outer v-if="isBtnClear">
-        <v-btn icon small :disabled="isFieldValue" @click="clearValue"><v-icon small>mdi-close</v-icon></v-btn>
+        <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
       </template>
     </v-autocomplete>
-
     <dialog-full-page :is-dialog-name="dialogName" 
                       :is-dialog-show="isDialogShow" 
-                      @close-dialog="closeDialog">
-        <component :is="componentForm" :isEditable="false" @row-selected="rowSelected"></component>
+                      @close-dialog="eventCloseDialog">
+      <component :is="componentForm" :isEditable="false" @row-selected="eventSelectedRowDialog"></component>
     </dialog-full-page>
   </div>
 </template>
@@ -45,7 +44,6 @@
 <script>
 import { ElField } from './ElField.js';
 import DialogFullPage from '@/components/Dialogs/DialogFullPage.vue';
-
 export default {
   name: 'ElFieldDialog',
   components: {
@@ -57,7 +55,8 @@ export default {
   data() {
     return {
       isDialogShow: false,
-      
+      isChangeValue: false,
+      fieldElementDOM: null,
     }
   },
   computed: {
@@ -91,52 +90,71 @@ export default {
     }
   },
   watch: {
-    inputValue() { this.fieldValue = (typeof(this.inputValue == 'object') && this.inputValue != null) ? this.inputValue.id : this.inputValue; }, 
+    // inputValue() { this.fieldValue = (typeof(this.inputValue == 'object') && this.inputValue != null) ? this.inputValue.id : this.inputValue; }, 
   },
   mounted() {
-    if (this.isValueSelected) {
+    let fieldInput = document.querySelector(`.content-editing .v-select__slot input`);
+    if (!fieldInput) return;
+    if (this.isSelected) {
       setTimeout(() => {
-        document.querySelector(`.content-editing .v-select__slot input`).select();
-        document.querySelector(`.content-editing .v-select__slot input`).focus();
+        fieldInput.select();
+        fieldInput.focus();
       }, 10);
     }
   },
   methods: {
-    keydownEnterTab(event) {
-      console.log(this.fieldValue);
-      if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
-      this.isEmit = true;
-      setTimeout(() => {
-        let sendOption = {
-          key: event.key,
-          shift: event.shiftKey,
-          value: this.fieldValue,
-        }
-        this.emitAccepted(sendOption); // mixins
-      }, 10); 
-    },
-    closeDialog() {
-      setTimeout(() => {
-        this.isDialogShow = false;
-      },100);
-    },
-    rowSelected(option) {
-      this.fieldValue = option.id;
-      let sendOption = {
-        key: 'Enter',
-        shift: false,
-        value: option,
-      }
-      this.isEmit = true;
-      this.emitAccepted(sendOption); // mixins
-      this.isDialogShow = false;
-    },
-    openDialog() {
+    eventOpenDialog(event) {
+      console.log(event);
+      this.fieldElementDOM = event.target.closest('.el-field').querySelector('.v-select__slot input');
+      console.log(this.fieldElementDOM);
       this.isDialogShow = true;
     },
-    blurComponent(event) {
-      if (!this.isDialogShow && !this.isEmit) {
-        this.emitCanceled();
+    eventSelectedRowDialog(option) {
+      this.fieldValue = option;
+      this.isChangeValue = true;
+      this.isDialogShow = false;
+      this.emitInputValue();
+      setTimeout(() => {
+        this.fieldElementDOM.focus();
+        this.fieldElementDOM.select();
+      }, 10);
+    },
+    eventInputValue(event) {
+      console.log('input');
+    },
+    eventChangeValue(event) {
+      console.log('change');
+      this.isChangeValue = true;
+      this.emitInputValue();
+    },
+    eventKeyEnter(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (!this.fieldValue) return;
+      if (this.isChangeValue) {
+        let sendOption = {
+          key: event.key,
+          value: this.fieldValue,
+        }
+        this.isEmit = true;
+        this.emitKeyEnter(sendOption);
+      }
+    },
+    eventKeyTab(event) {
+      if (this.inputProperties.required && !this.isRequiredOff)
+        if (!this.fieldValue) return;
+      let sendOption = {
+        key: event.key,
+        shift: event.shiftKey,
+        value: this.fieldValue,
+      }
+      this.isEmit = true;
+      this.emitKeyTab(sendOption);
+    },
+    eventCloseDialog() {},
+
+    eventBlurField() {
+      if (!this.isDialogShow  && !this.isEmit) {
+        this.emitBlurField();
       }
     },
   },
@@ -145,4 +163,7 @@ export default {
 
 <style lang="scss" scoped>
 @import './ElField.scss';
+.el-field-dialog {
+  z-index: 9999;
+}
 </style>

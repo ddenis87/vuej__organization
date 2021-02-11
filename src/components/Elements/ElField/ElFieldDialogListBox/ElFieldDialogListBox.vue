@@ -28,7 +28,7 @@
 
 <script>
 import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
-import ElFieldInListDialog from './ElFieldInListDialog.vue';
+import ElFieldInListDialog from './ElFieldDialogListBox.vue';
 import ElBtnIconSmall from '@/components/Elements/ElBtnIconSmall.vue';
 
 export default {
