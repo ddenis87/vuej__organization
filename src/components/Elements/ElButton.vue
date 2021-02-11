@@ -28,7 +28,9 @@ export default {
 
 <style lang="scss" scoped>
 .el-button {
+  outline: none;
   &__item {
+    outline: none;
     margin-left: 10px;
     &_right {
       margin-left: 0px;

@@ -1,20 +1,20 @@
 <template>
-  <div class="filter">
-    <div class="filter__title">
+  <div class="data-filter-extended" @keydown="eventKeydown" tabindex="0">
+    <div class="data-filter-extended__title">
       <v-subheader>{{ tableNameDescription }}</v-subheader>
     </div>
-    <div class="filter__sub-title">
+    <div class="data-filter-extended__sub-title">
       <data-filter-extended-item :is-title="true"
                                  :input-title="['Условие', 'Значение']"></data-filter-extended-item>
     </div>
-    <div class="filter__body">
+    <div class="data-filter-extended__body">
       <data-filter-extended-item v-for="item in filterList"
                                  :key="item.key"
                                  :input-properties="item"
                                  @input-filter="inputFilter"></data-filter-extended-item>
     </div>
-    <div class="filter__action">
-      <el-button @click="acceptFilter">Применить</el-button>
+    <div class="data-filter-extended__action" >
+      <el-button tabindex="1" @click="acceptFilter">Применить</el-button>
     </div>
   </div>
 </template>
@@ -50,6 +50,14 @@ export default {
     },
   },
   methods: {
+    eventKeydown(event) {
+      // console.log(event.target.closest('.data-filter-extended__action'));
+      if (event.target.closest('.data-filter-extended__action')) {
+        event.preventDefault();
+        // console.log(event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare').querySelector('input'));
+        event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare').querySelector('input').focus();
+      }
+    },
     inputFilter(option) {
       // console.log(option);
       
@@ -87,9 +95,9 @@ export default {
 
 <style lang="scss" scoped>
 @import './DataFilterExtended.scss';
-.filter {
+.data-filter-extended {
   display: grid;
-  grid-template-areas: "filter__title" "filter__sub-title" "filter__body" "filter__action";
+  grid-template-areas: "data-filter-extended__title" "data-filter-extended__sub-title" "data-filter-extended__body" "data-filter-extended__action";
   grid-template-columns: 1fr;
   grid-template-rows: 48px 48px 1fr 48px;
   padding: 8px 0px;
@@ -97,12 +105,12 @@ export default {
   height: calc(100vh - 64px);
   overflow: hidden;
   &__title {
-    grid-area: filter__title;
+    grid-area: data-filter-extended__title;
     text-transform: uppercase;
     overflow: hidden;
   }
   &__sub-title {
-    grid-area: filter__sub-title;
+    grid-area: data-filter-extended__sub-title;
     padding: 0px 8px;
     margin-top: -10px;
     padding-right: 10px;
@@ -111,7 +119,7 @@ export default {
   }
 
   &__body {
-    grid-area: filter__body;
+    grid-area: data-filter-extended__body;
     padding: 0px 8px;
     padding-top: 10px;
     padding-right: 10px;
@@ -129,7 +137,7 @@ export default {
     }
   }
   &__action {
-    grid-area: filter__action;
+    grid-area: data-filter-extended__action;
     display: flex;
     justify-content: flex-end;
     align-items: center;

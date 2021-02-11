@@ -1,13 +1,9 @@
 <template>
-  <div class="list-dialog" @keydown="eventKeydown" tabindex="0">
-    <div class="list-dialog__title">
+  <div class="el-field-dialog-list-item" @keydown.stop="eventKeydown" tabindex="0">
+    <div class="el-field-dialog-list-item__title">
       <v-subheader>{{ fieldLabel }}</v-subheader>
     </div>
-    <div class="list-dialog__action">
-      <el-button @click="addingItem" tabindex="1">Добавить</el-button>
-      <el-button @click="acceptList" tabindex="2">Применить</el-button>
-    </div>
-    <div class="list-dialog__body">
+    <div class="el-field-dialog-list-item__body">
       <data-table-lazy :headers="tableHeaders"
                        :items="tableItems"
                        :is-clearable="true"
@@ -17,6 +13,10 @@
                        @inserting-item="eventKeydown"
                        @deleting-item="deletingItem">
       </data-table-lazy>
+    </div>
+    <div class="el-field-dialog-list-item__action">
+      <el-button @click="addingItem" tabindex="1">Добавить</el-button>
+      <el-button class="tabspace-end" @click="acceptList" tabindex="1">Применить</el-button>
     </div>
   </div>
   
@@ -69,20 +69,24 @@ export default {
   },
   methods: {
     eventKeydown(event) {
-      console.log(event);
+      // console.log(event);
       switch(event.key) {
         case 'Insert': {
           this.addingItem();
           setTimeout(() => {
             let newEventClick = new Event('click');
-            event.target.closest('.list-dialog').dispatchEvent(newEventClick);
-            event.target.closest('.list-dialog').querySelector('.body').lastChild.querySelector('input').focus();
+            event.target.closest('.el-field-dialog-list-item').dispatchEvent(newEventClick);
+            event.target.closest('.el-field-dialog-list-item').querySelector('.body').lastChild.querySelector('input').focus();
           }, 100);
           break;
         }
-        // case 'Enter': {
-        //   this.acceptList();
-        // }
+        case 'Tab': {
+          if (event.target.closest('.tabspace-end')) {
+            event.preventDefault();
+            event.target.closest('.el-field-dialog-list-item').focus();
+          }
+          break;
+        }
       }
     },
     eventKeydownEnter() {
@@ -120,26 +124,26 @@ export default {
 
 <style lang="scss" scoped>
 @import './ElFieldDialogListBox.scss';
-.list-dialog {
+.el-field-dialog-list-item {
   display: grid;
-  grid-template-areas: "list-dialog__title" "list-dialog__action" "list-dialog__body";
+  grid-template-areas: "el-field-dialog-list-item__title" "el-field-dialog-list-item__body" "el-field-dialog-list-item__action";
   grid-template-columns: 1fr;
-  grid-template-rows: 48px 48px 1fr;
+  grid-template-rows: 48px 1fr 48px;
   padding: 8px 0px;
   padding-left: 10px;
   height: calc(100vh - 64px);
   overflow: hidden;
   outline: none;
   &__title {
-    grid-area: list-dialog__title;
+    grid-area: el-field-dialog-list-item__title;
     text-transform: uppercase;
     overflow: hidden;
   }
   &__body {
-    grid-area: list-dialog__body;
-    padding: 0px 8px;
-    padding-top: 20px;
-    padding-right: 8px;
+    grid-area: el-field-dialog-list-item__body;
+    padding: 0px 0px;
+    padding-top: 14px;
+    padding-right: 4px;
     // border-top: thin solid rgba(0,0,0,.12);
     // border-bottom: thin solid rgba(0,0,0,.12);
     overflow: hidden;
@@ -155,14 +159,14 @@ export default {
     }
   }
   &__action {
-    grid-area: list-dialog__action;
+    grid-area: el-field-dialog-list-item__action;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     height: 56px;
     padding: 0px 16px;
-    border-top: thin solid rgba(0,0,0,.12);
-    border-bottom: thin solid rgba(0,0,0,.12);
+    // border-top: thin solid rgba(0,0,0,.12);
+    // border-bottom: thin solid rgba(0,0,0,.12);
     .btn {
       margin-left: 10px;
     }

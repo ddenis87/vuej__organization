@@ -100,6 +100,7 @@ export default {
     eventKeydown(event) {
       // console.log(event);
       if (event.key == 'Insert') this.$emit('inserting-item', event);
+      if (event.key == 'Tab') event.stopPropagation();
     },
     eventKeyEnter(value) {
       // console.log('enter');
