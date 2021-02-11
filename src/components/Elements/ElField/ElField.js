@@ -47,18 +47,21 @@ export const ElField = {
       this.emitInputValue();
       this.emitClearValue();
     },
+    eventFocusField() { this.emitFocusField(); },
     eventBlurField() {
       if (!this.isEmit) this.emitBlurField();
     },
     // ------ --------------------- //
 
     // EMITS ---------------------- //
+    emitKeydown(event) { this.$emit('keydown-any', event); },
     emitKeyEnter(option = null) { this.$emit('keydown-enter', option); },
     emitKeyTab(option = null) { this.$emit('keydown-tab', option); },
     emitKeyEsc() { this.$emit('keydown-esc'); },
     emitClearValue() { this.$emit('clear-value'); },
     emitInputValue() { this.$emit('input-value', this.fieldValue); },
-    emitBlurField() { this.$emit('blur-field') }
+    emitFocusField() { this.$emit('focus-field') },
+    emitBlurField() { console.log('blur element'); this.$emit('blur-field') },
     // ----- ---------------------- //
   },
 }

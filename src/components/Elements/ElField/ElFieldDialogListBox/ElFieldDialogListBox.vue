@@ -1,5 +1,5 @@
 <template>
-  <div class="el-field" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
+  <div class="el-field el-field-dialog-list-box" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
     <v-text-field class="el-field__item"
                   dense
                   tabindex="1"
@@ -19,22 +19,22 @@
                       :is-dialog-show="isDialogShow"
                       width="586"
                       @close-dialog="eventCloseDialog">
-      <el-field-in-list-dialog :input-properties="inputProperties"
-                               :count-select-value="countSelectValue"
-                               @accept-list="eventAcceptList"></el-field-in-list-dialog>
+      <el-field-dialog-list-box-item :input-properties="inputProperties"
+                                     :count-select-value="countSelectValue"
+                                     @accept-list="eventAcceptList"></el-field-dialog-list-box-item>
     </dialog-bar-right>
   </div>
 </template>
 
 <script>
 import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
-import ElFieldInListDialog from './ElFieldDialogListBox.vue';
+import ElFieldDialogListBoxItem from './ElFieldDialogListBoxItem.vue';
 import ElBtnIconSmall from '@/components/Elements/ElBtnIconSmall.vue';
 
 export default {
-  name: 'ElFieldInList',
+  name: 'ElFieldDialogListBox',
   components: {
-    ElFieldInListDialog,
+    ElFieldDialogListBoxItem,
     DialogBarRight,
     ElBtnIconSmall,
   },
@@ -66,12 +66,10 @@ export default {
   },
   mounted() {
     this.isDialogShow = this.isShow;
-    console.log(document.activeElement.closest('.item').querySelector('.list-dialog__action').firstChild);
-    // let activElement = document.activeElement;
-    // document.activeElement.blur();
-    document.activeElement.closest('.item').querySelector('.list-dialog__action').firstChild.focus();
-    // document.activeElement.blur();
-    console.log(document.activeElement);
+    setTimeout(() => {
+      document.activeElement.closest('.item').querySelector('.body-column__item').firstChild.querySelector('input').focus();
+    }, 100);
+    // console.log(document.activeElement);
   },
   methods: {
     // EVENT ------------------------

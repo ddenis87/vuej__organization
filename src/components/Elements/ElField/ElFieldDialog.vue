@@ -1,6 +1,6 @@
 <template>
+  <!-- @click.stop - stop slider list -->
   <div class="el-field el-field-dialog" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
-    <!-- @click.stop - stop slider list -->
     <v-autocomplete class="el-field__item"
                     dense
                     return-object
@@ -23,8 +23,8 @@
                     @keydown.enter="eventKeyEnter"
                     @keydown.tab="eventKeyTab"
                     @keydown.esc="eventKeyEsc"
-                    @keydown.stop
-                    
+                    @keydown.stop="eventKeydown"
+                    @focus="eventFocusField"
                     @blur="eventBlurField">
       <!-- <template v-slot:append>
         <el-btn-icon-small tabindex="2" icon="mdi-dots-horizontal" no-tooltip @click="eventOpenDialog"></el-btn-icon-small>
@@ -126,6 +126,13 @@ export default {
       console.log('change');
       this.isChangeValue = true;
       this.emitInputValue();
+    },
+    eventKeydown(event) {
+      if (event.key == 'Delete' || event.key == 'Backspace') {
+        this.fieldValue = null;
+        this.emitInputValue();
+      }
+      this.emitKeydown(event);
     },
     eventKeyEnter(event) {
       if (this.inputProperties.required && !this.isRequiredOff)

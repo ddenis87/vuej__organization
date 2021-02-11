@@ -22,11 +22,12 @@
                     @keydown.enter="eventKeyEnter"
                     @keydown.tab="eventKeyTab"
                     @keydown.esc="eventKeyEsc"
-                    @keydown.stop="eventKey"
+                    @keydown.stop="eventKeydown"
                     @update:list-index="eventUpdateList"
+                    @focus="eventFocusField"
                     @blur="eventBlurField">
       <template v-slot:append-outer v-if="isBtnClear">
-        <el-btn-icon-small  icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
+        <el-btn-icon-small icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
       </template>
     </v-autocomplete>
   </div>
@@ -68,11 +69,12 @@ export default {
       this.isChangeValue = true;
       this.emitInputValue();
     },
-    eventKey(event) {
+    eventKeydown(event) {
       if (event.key == 'Delete' || event.key == 'Backspace') {
         this.fieldValue = null;
         this.emitInputValue();
       }
+      this.emitKeydown(event);
     },
     eventKeyEnter(event) {
       if (this.inputProperties.required && !this.isRequiredOff)

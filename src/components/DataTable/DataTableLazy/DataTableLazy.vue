@@ -6,17 +6,22 @@
                               :is-clearable="isClearable"></data-table-lazy-header>
     </div>
     <div class="data-table-lazy__body">
-      <data-table-lazy-body :headers="headers" 
+      <data-table-lazy-body :headers="headers"
                             :items="items"
                             :template="computedTemplateTable"
                             :is-clearable="isClearable"
                             :input-properties="inputProperties"
                             @focused-row="focusedRow"
                             @input-value="inputValue"
+                            @keydown-enter="eventKeydownEnter"
+                            @inserting-item="insertingItem"
                             @deleting-item="deletingItem">
       </data-table-lazy-body>
     </div>
-    <div class="data-table-lazy__footer"></div>
+    <div class="data-table-lazy__footer">
+      <div class="footer-item">Insert - добавить</div>
+      <!-- <div class="footer-item">Enter - применить</div> -->
+    </div>
   </div>
   
 </template>
@@ -85,6 +90,16 @@ export default {
     position: relative;
     display: flex;
     z-index: 100;
+  }
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    // justify-content: flex-end;
+    padding: 10px;
+    font-size: .925rem;
+    font-style: italic;
+    color: rgba(0, 0, 0, .3);
   }
 }
 </style>

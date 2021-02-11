@@ -1,9 +1,9 @@
 <template>
-  <div class="list-dialog" ws-tab-cycling="true" tabindex="0">
+  <div class="list-dialog" @keydown="eventKeydown" tabindex="0">
     <div class="list-dialog__title">
       <v-subheader>{{ fieldLabel }}</v-subheader>
     </div>
-    <div class="list-dialog__action" >
+    <div class="list-dialog__action">
       <el-button @click="addingItem" tabindex="1">Добавить</el-button>
       <el-button @click="acceptList" tabindex="2">Применить</el-button>
     </div>
@@ -13,6 +13,8 @@
                        :is-clearable="true"
                        :input-properties="inputProperties"
                        @input-value="inputValue"
+                       @keydown-enter="eventKeydownEnter"
+                       @inserting-item="eventKeydown"
                        @deleting-item="deletingItem">
       </data-table-lazy>
     </div>
@@ -25,7 +27,7 @@ import DataTableLazy from '@/components/DataTable/DataTableLazy/DataTableLazy.vu
 import ElButton from '@/components/Elements/ElButton.vue';
 
 export default {
-  name: 'ElFieldListDialog',
+  name: 'ElFieldDialogListBoxItem',
   components: {
     DataTableLazy,
     ElButton,
@@ -66,6 +68,26 @@ export default {
     this.addingItem();
   },
   methods: {
+    eventKeydown(event) {
+      console.log(event);
+      switch(event.key) {
+        case 'Insert': {
+          this.addingItem();
+          setTimeout(() => {
+            let newEventClick = new Event('click');
+            event.target.closest('.list-dialog').dispatchEvent(newEventClick);
+            event.target.closest('.list-dialog').querySelector('.body').lastChild.querySelector('input').focus();
+          }, 100);
+          break;
+        }
+        // case 'Enter': {
+        //   this.acceptList();
+        // }
+      }
+    },
+    eventKeydownEnter() {
+    //   this.acceptList();
+    },
     addingItem() {
       // if (this.tableItems.length == 0) this.uniqueIndex = 0;
       this.uniqueIndex = this.uniqueIndex + 1;
@@ -75,7 +97,7 @@ export default {
       this.tableItems.splice(index, 1);
     },
     inputValue(tableValue) {
-      // console.log(tableValue);
+      console.log(tableValue);
       this.tableValue = [];
       if (this.inputProperties.type == 'field') {
         for (let key of Object.keys(tableValue)) {
@@ -83,6 +105,7 @@ export default {
         }
       } else if (this.inputProperties.type == 'choice') {
         for (let key of Object.keys(tableValue)) {
+         if (tableValue[key])
           if (!this.tableValue.find(item => item.value == tableValue[key].value)) this.tableValue.push(tableValue[key]);
         }
       }
@@ -106,6 +129,7 @@ export default {
   padding-left: 10px;
   height: calc(100vh - 64px);
   overflow: hidden;
+  outline: none;
   &__title {
     grid-area: list-dialog__title;
     text-transform: uppercase;

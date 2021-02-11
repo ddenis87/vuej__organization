@@ -3,7 +3,7 @@
     <template v-if="!isTitle">
       <div class="item-compare">
         <st-field-compare :input-properties="inputProperties"
-                                  v-model="valueCompare"></st-field-compare>
+                          v-model="valueCompare"></st-field-compare>
       </div>
       <div class="item-data">
         <component :is="componentField"

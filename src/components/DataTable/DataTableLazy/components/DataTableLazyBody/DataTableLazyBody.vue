@@ -1,7 +1,8 @@
 <template>
-  <div class="body"
+  <div class="body" 
        @mouseover="eventMouseOver"
-       @mouseout="eventMouseOut">
+       @mouseout="eventMouseOut"
+       >
 
     <div v-for="(itemRow, indexRow) in items"
           class="body-row"
@@ -34,17 +35,19 @@
                      :key="itemRow.uniqueIndex"
                      v-model="tableValue[itemRow.uniqueIndex]"
                      @input-value="eventInputValue"
+                     @keydown-any="eventKeydown"
                      @keydown-enter="eventKeyEnter"
-                     @clear-value="() => deletingItem(indexRow, itemRow.uniqueIndex)"></component>
+                     @clear-value="() => deletingItem(indexRow, itemRow.uniqueIndex)"
+                     ></component>
         </div>
-        
       </div>
-
-      <!-- <div class="body-column p-clear" v-if="isClearable">
-        <el-button-icon icon="mdi-close" :is-small="true" no-tooltip @click="() => deletingItem(indexRow, itemRow.uniqueIndex)"></el-button-icon>
-      </div> -->
     </div>
 
+    <!-- <div class="body-row">
+      <div class="body-column">
+        <div class="body-column__message">Insert - для добавления</div>
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -74,10 +77,12 @@ export default {
   },
   data() {
     return {
+      messageInserting: '',
       tableValue: {},
     }
   },
   computed: {
+
     componentField() {
       switch(this.inputProperties.type) {
         case 'choice': return () => import('@/components/Elements/ElField/ElFieldChoice.vue');
@@ -86,13 +91,20 @@ export default {
     }
   },
   methods: {
+
     eventInputValue() {
       this.$emit('input-value', this.tableValue);
       // console.log(value);
       // console.log(this.tableValue);
     },
+    eventKeydown(event) {
+      // console.log(event);
+      if (event.key == 'Insert') this.$emit('inserting-item', event);
+    },
     eventKeyEnter(value) {
       // console.log('enter');
+      // console.log(value);
+      this.$emit('keydown-enter');
       // console.log(value);
       // console.log(value.event);
       // value.event.target.closest('.body').focus();
@@ -157,6 +169,11 @@ export default {
         margin-bottom: -2px;
         z-index: 999;
       }
+      // &__message {
+      //   font-size: .925rem;
+      //   font-style: italic;
+      //   color: rgba(0, 0, 0, .3);
+      // }
     }
     .p-pp { grid-area: p-pp; }
     .p-clear {
