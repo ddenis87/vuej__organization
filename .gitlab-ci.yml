@@ -1,0 +1,20 @@
+image: node:latest
+stages: 
+    - install
+    - build
+
+step-install:
+    stage: install
+    cache:
+        paths:
+            - node_modules/
+    script: 
+        - npm install --progress=false
+step-build:
+    stage: build
+    script:
+        - npm run build
+    artifacts:
+            paths:
+                - dist
+
