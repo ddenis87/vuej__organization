@@ -13,6 +13,7 @@
                @editing-accepted="editingAccepted"
                @editing-blur-focus="editingCanceled"
                
+               :is-hide-underline="true"
                :is-single-line="true"
                :is-hide-message="true"
                :is-hide-label="true"
@@ -65,7 +66,6 @@ export default {
       editableElement.dispatchEvent(eventEditingCanceled);
       this.isComponentNull = true;
       if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
-      // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
     },
     editingAccepted(option) {
       let sendOption = {
@@ -81,7 +81,6 @@ export default {
       editableElement.dispatchEvent(eventEditingAccepted);
       this.isComponentNull = true;
       if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
-      // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
     },
   }
 }
@@ -90,6 +89,6 @@ export default {
 <style lang="scss" scoped>
 .content-editing {
   display: flex;
-  margin-top: -7.5px;
+  margin-top: -9.5px;
 }
 </style>

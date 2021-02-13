@@ -1,5 +1,8 @@
 <template>
-  <div class="el-field el-field-date-time" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
+  <div class="el-field el-field-date-time"
+       :class="{'el-field_single-line': isSingleLine, 
+                'el-field_hide-message': isHideMessage,
+                'el-field_hide-underline': isHideUnderline}">
     <v-text-field class="el-field__item"
                   dense
                   append-icon="mdi-calendar-range"
@@ -8,9 +11,13 @@
                   :hide-details="isHideMessage"
                   :disabled="isDisabled"
                   :label="fieldLabel"
+                  :clearable="isBtnClear"
+                  :solo="isHideUnderline"
+                  :flat="isHideUnderline"
                   :rules="(fieldRequired) ? [rules.required] : []"
                   v-model="fieldValue"
                   v-mask="fieldMask"
+                  @click:clear="eventClearValue"
                   @input="eventInputValue"
                   @keydown.enter="eventKeyEnter"
                   @keydown.tab="eventKeyTab"
@@ -18,9 +25,9 @@
                   @keydown.stop
                   @blur="eventBlurField"
                   @click:append="eventOpenDialog">
-      <template v-slot:append-outer v-if="isBtnClear">
+      <!-- <template v-slot:append-outer v-if="isBtnClear">
         <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
-      </template>
+      </template> -->
     </v-text-field>
     <v-menu offset-y
             absolute

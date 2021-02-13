@@ -1,11 +1,12 @@
 <template>
   <v-tooltip bottom :disabled="noTooltip">
     <template v-slot:activator="{ on }">
-      <v-btn class="el-button-icon" tag="button" tabindex="1"
+      <v-btn class="el-button-icon"  tabindex="1"
              icon
              small
              :disabled="isDisabled"
              v-on="on"
+             plain
              @click="$emit('click')">
         <v-icon small :color="iconColor">{{ icon }}</v-icon>
       </v-btn>

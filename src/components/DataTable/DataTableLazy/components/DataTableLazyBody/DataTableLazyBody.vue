@@ -24,7 +24,7 @@
            @blur="eventColumnBlur">
         <div class="body-column__item">
           <component :is="componentField"
-                     
+                     :is-hide-underline="true"
                      :is-single-line="true"
                      :is-hide-message="true"
                      :is-required-off="true"
@@ -155,8 +155,8 @@ export default {
       display: flex;
       align-items: center;
       height: 100%;
-      padding: 0px;
-      padding-left: 10px;
+      padding: 0px 10px;
+      // padding-left: 10px;
       border: thin solid rgba(0, 0, 255, 0);
       // border-right: $rowBorder;
       outline: none;
@@ -167,7 +167,8 @@ export default {
 
       &__item {
         width: 100%;
-        margin-bottom: -2px;
+        // margin-bottom: -2px;
+        // padding-right: 42px;
         z-index: 999;
       }
       // &__message {

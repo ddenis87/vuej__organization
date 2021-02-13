@@ -9,7 +9,6 @@
                   :label="fieldLabel"
                   v-model="fieldValue"
                   clear-icon="mdi-close"
-                  clearable
                   prepend-icon="mdi-magnify"
                   @click:clear="eventClearValue"
                   @input="eventInputValue"

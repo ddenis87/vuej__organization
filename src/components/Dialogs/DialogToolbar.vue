@@ -9,7 +9,7 @@
     <template v-else>
       <el-button-icon icon="mdi-close" no-tooltip @click="$emit('close-dialog')" v-if="isClose"></el-button-icon>
       <v-spacer></v-spacer>
-      <v-toolbar-title >{{ isDialogName }}</v-toolbar-title>
+      <v-toolbar-title>{{ isDialogName }}</v-toolbar-title>
     </template>
     
   </v-toolbar>

@@ -1,9 +1,9 @@
 <template>
-  <div class="el-field-dialog-list-item" @keydown.stop="eventKeydown" tabindex="0">
-    <div class="el-field-dialog-list-item__title">
+  <div class="el-field-dialog-list-box-item" @keydown.stop="eventKeydown" tabindex="0">
+    <div class="el-field-dialog-list-box-item__title">
       <v-subheader>{{ fieldLabel }}</v-subheader>
     </div>
-    <div class="el-field-dialog-list-item__body">
+    <div class="el-field-dialog-list-box-item__body">
       <data-table-lazy :headers="tableHeaders"
                        :items="tableItems"
                        :is-clearable="true"
@@ -14,7 +14,7 @@
                        @deleting-item="deletingItem">
       </data-table-lazy>
     </div>
-    <div class="el-field-dialog-list-item__action">
+    <div class="el-field-dialog-list-box-item__action">
       <el-button @click="addingItem" tabindex="1">Добавить</el-button>
       <el-button class="tabspace-end" @click="acceptList" tabindex="1">Применить</el-button>
     </div>
@@ -75,15 +75,15 @@ export default {
           this.addingItem();
           setTimeout(() => {
             let newEventClick = new Event('click');
-            event.target.closest('.el-field-dialog-list-item').dispatchEvent(newEventClick);
-            event.target.closest('.el-field-dialog-list-item').querySelector('.body').lastChild.querySelector('input').focus();
+            event.target.closest('.el-field-dialog-list-box-item').dispatchEvent(newEventClick);
+            event.target.closest('.el-field-dialog-list-box-item').querySelector('.body').lastChild.querySelector('input').focus();
           }, 100);
           break;
         }
         case 'Tab': {
           if (event.target.closest('.tabspace-end')) {
             event.preventDefault();
-            event.target.closest('.el-field-dialog-list-item').focus();
+            event.target.closest('.el-field-dialog-list-box-item').focus();
           }
           break;
         }
@@ -124,26 +124,26 @@ export default {
 
 <style lang="scss" scoped>
 @import './ElFieldDialogListBox.scss';
-.el-field-dialog-list-item {
+.el-field-dialog-list-box-item {
   display: grid;
-  grid-template-areas: "el-field-dialog-list-item__title" "el-field-dialog-list-item__body" "el-field-dialog-list-item__action";
+  grid-template-areas: "el-field-dialog-list-box-item__title" "el-field-dialog-list-box-item__body" "el-field-dialog-list-box-item__action";
   grid-template-columns: 1fr;
   grid-template-rows: 48px 1fr 48px;
   padding: 8px 0px;
-  padding-left: 10px;
+  padding-left: 8px;
   height: calc(100vh - 64px);
   overflow: hidden;
   outline: none;
   &__title {
-    grid-area: el-field-dialog-list-item__title;
+    grid-area: el-field-dialog-list-box-item__title;
     text-transform: uppercase;
     overflow: hidden;
   }
   &__body {
-    grid-area: el-field-dialog-list-item__body;
-    padding: 0px 0px;
+    grid-area: el-field-dialog-list-box-item__body;
+    padding: 2px 4px;
     padding-top: 14px;
-    padding-right: 4px;
+    // padding-right: 4px;
     // border-top: thin solid rgba(0,0,0,.12);
     // border-bottom: thin solid rgba(0,0,0,.12);
     overflow: hidden;
@@ -159,7 +159,7 @@ export default {
     }
   }
   &__action {
-    grid-area: el-field-dialog-list-item__action;
+    grid-area: el-field-dialog-list-box-item__action;
     display: flex;
     justify-content: flex-end;
     align-items: center;

@@ -1,12 +1,5 @@
 <template>
   <div class="data-filter-extended" @keydown="eventKeydown" tabindex="0">
-    <div class="data-filter-extended__title">
-      <v-subheader>{{ tableNameDescription }}</v-subheader>
-    </div>
-    <div class="data-filter-extended__sub-title">
-      <data-filter-extended-item :is-title="true"
-                                 :input-title="['Условие', 'Значение']"></data-filter-extended-item>
-    </div>
     <div class="data-filter-extended__body">
       <data-filter-extended-item v-for="item in filterList"
                                  :key="item.key"
@@ -63,7 +56,6 @@ export default {
       
       if (option.key == 'is_deleted') { return; }
       if (option.value == null) {
-        // if (this.valueFilterObject)
         // console.log('delete');
         if (option.key in this.valueFilterObject) delete this.valueFilterObject[option.key];
 
@@ -97,26 +89,13 @@ export default {
 @import './DataFilterExtended.scss';
 .data-filter-extended {
   display: grid;
-  grid-template-areas: "data-filter-extended__title" "data-filter-extended__sub-title" "data-filter-extended__body" "data-filter-extended__action";
+  grid-template-areas: "data-filter-extended__body" "data-filter-extended__action";
   grid-template-columns: 1fr;
-  grid-template-rows: 48px 48px 1fr 48px;
+  grid-template-rows: 1fr 48px;
   padding: 8px 0px;
   padding-left: 10px;
   height: calc(100vh - 64px);
   overflow: hidden;
-  &__title {
-    grid-area: data-filter-extended__title;
-    text-transform: uppercase;
-    overflow: hidden;
-  }
-  &__sub-title {
-    grid-area: data-filter-extended__sub-title;
-    padding: 0px 8px;
-    margin-top: -10px;
-    padding-right: 10px;
-    border-bottom: thin solid rgba(0,0,0,.12);    
-    overflow: hidden;
-  }
 
   &__body {
     grid-area: data-filter-extended__body;

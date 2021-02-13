@@ -1,6 +1,9 @@
 <template>
   <!-- @click.stop - stop slider list -->
-  <div class="el-field el-field-dialog" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
+  <div class="el-field el-field-dialog" 
+       :class="{'el-field_single-line': isSingleLine, 
+                'el-field_hide-message': isHideMessage,
+                'el-field_hide-underline': isHideUnderline}">
     <v-autocomplete class="el-field__item"
                     dense
                     return-object
@@ -11,6 +14,9 @@
                     :hide-details="isHideMessage"
                     :disabled="isDisabled"
                     :label="fieldLabel"
+                    :clearable="isBtnClear"
+                    :solo="isHideUnderline"
+                    :flat="isHideUnderline"
                     :items="fieldList"
                     :item-text="fieldListText"
                     :item-value="'id'"
@@ -18,6 +24,7 @@
                     v-model="fieldValue"
                     @click.stop
                     @click:append="eventOpenDialog"
+                    @click:clear="eventClearValue"
                     @input="eventInputValue"
                     @change="eventChangeValue"
                     @keydown.enter="eventKeyEnter"
@@ -29,9 +36,9 @@
       <!-- <template v-slot:append>
         <el-btn-icon-small tabindex="2" icon="mdi-dots-horizontal" no-tooltip @click="eventOpenDialog"></el-btn-icon-small>
       </template> -->
-      <template v-slot:append-outer v-if="isBtnClear">
+      <!-- <template v-slot:append-outer v-if="isBtnClear">
         <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
-      </template>
+      </template> -->
     </v-autocomplete>
     <dialog-full-page :is-dialog-name="dialogName" 
                       :is-dialog-show="isDialogShow" 
@@ -157,7 +164,9 @@ export default {
       this.isEmit = true;
       this.emitKeyTab(sendOption);
     },
-    eventCloseDialog() {},
+    eventCloseDialog() {
+      this.isDialogShow = false;
+    },
 
     eventBlurField() {
       if (!this.isDialogShow  && !this.isEmit) {

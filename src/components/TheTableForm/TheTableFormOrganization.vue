@@ -54,6 +54,17 @@
                                               :inputProperties="assingObject(fieldForm.bk, {related_model_view: '{head_code} - {head_name}'})"
                                               v-model="fieldFormValue.bk"></el-field-dialog></v-col>
           </v-row>
+          <v-row>
+            <!-- <v-col cols="12"> -->
+              <v-col cols="4"><el-field-choice :is-hide-underline="true"
+                                               :is-single-line="true"
+                                               :is-hide-message="true"
+                                               :is-hide-label="true"
+                                               :is-btn-clear="true"
+                                               :inputProperties="fieldForm.egrul_status" 
+                                               ></el-field-choice></v-col>
+            <!-- </v-col> -->
+          </v-row>
         </v-container>
       </v-form>
 

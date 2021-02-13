@@ -6,7 +6,7 @@
              width="40"
              :disabled="disabled"
              :x-small="isSmall"
-             v-on="on" plain
+             v-on="on"
              @click="$emit('click')">
         <v-icon :small="isSmall" :color="iconColor">{{ icon }}</v-icon>
       </v-btn>

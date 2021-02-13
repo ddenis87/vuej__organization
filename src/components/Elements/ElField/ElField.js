@@ -16,6 +16,7 @@ export const ElField = {
     isRequiredOff: { type: Boolean, default: false },  // 
     isHideMessage: { type: Boolean, default: false },  // hidden or show validation error
     isHideLabel: { type: Boolean, dafault: false },    // hidden or show label
+    isHideUnderline: { type: Boolean, dafault: false },
     isDisabled: { type: Boolean, default: false },     // 
     isSelected: { type: Boolean, defalt: false },      // selected value in text field after mounted
     isBtnClear: { type: Boolean, default: true },     // hidden or show button clear

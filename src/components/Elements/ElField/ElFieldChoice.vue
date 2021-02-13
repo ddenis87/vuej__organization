@@ -1,6 +1,9 @@
 <template>
   <!-- @click.stop -- no slide list -->
-  <div class="el-field el-field-choice" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
+  <div class="el-field el-field-choice"
+       :class="{'el-field_single-line': isSingleLine, 
+                'el-field_hide-message': isHideMessage,
+                'el-field_hide-underline': isHideUnderline}">
     <v-autocomplete class="el-field__item"
                     dense
                     return-object
@@ -10,12 +13,16 @@
                     :hide-details="isHideMessage"
                     :disabled="isDisabled"
                     :label="fieldLabel"
+                    :clearable="isBtnClear"
+                    :solo="isHideUnderline"
+                    :flat="isHideUnderline"
                     :items="fieldItems"
                     :item-text="'display_name'"
                     :item-value="'value'"
                     :rules="(fieldRequired) ? [rules.required] : []"
                     v-model="fieldValue"
                     @click.stop
+                    @click:clear="eventClearValue"
                     @input="eventInputValue"
                     @change="eventChangeValue"
                     
@@ -26,9 +33,9 @@
                     @update:list-index="eventUpdateList"
                     @focus="eventFocusField"
                     @blur="eventBlurField">
-      <template v-slot:append-outer v-if="isBtnClear">
+      <!-- <template v-slot:append-outer v-if="isBtnClear">
         <el-btn-icon-small icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
-      </template>
+      </template> -->
     </v-autocomplete>
   </div>
 </template>
@@ -55,6 +62,8 @@ export default {
     let fieldInput = document.querySelector(`.content-editing .v-select__slot input`);
     if (!fieldInput) return;
     setTimeout(() => {
+      fieldInput.setSelectionRange(0, 0);
+      fieldInput.select();
       fieldInput.focus();
     }, 10);
   },
