@@ -1,5 +1,5 @@
 <template>
-  <div class="el-field-dialog-list-box-item" @keydown.stop="eventKeydown" tabindex="0">
+  <div class="el-field-dialog-list-box-item" tabindex="0" @keydown.stop="eventKeydown">
     <div class="el-field-dialog-list-box-item__title">
       <v-subheader>{{ fieldLabel }}</v-subheader>
     </div>
@@ -15,8 +15,8 @@
       </data-table-lazy>
     </div>
     <div class="el-field-dialog-list-box-item__action">
-      <el-button @click="addingItem" tabindex="1">Добавить</el-button>
-      <el-button class="tabspace-end" @click="acceptList" tabindex="1">Применить</el-button>
+      <el-button tabindex="1" @click="addingItem">Добавить</el-button>
+      <el-button class="tabspace-end" tabindex="1" @click="acceptList">Применить</el-button>
     </div>
   </div>
   
@@ -52,7 +52,7 @@ export default {
     }
   },
   computed: {
-    fieldLabel() { console.log(this.inputProperties); return this.inputProperties.label; },
+    fieldLabel() { return this.inputProperties.label; },
   },
   watch: {
     countSelectValue() {

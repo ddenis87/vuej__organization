@@ -143,7 +143,7 @@ export default {
   &-row {
     display: grid;
     grid-template-rows: 32px;
-    border-bottom: $rowBorder;
+    // border-bottom: $rowBorder;
     outline: none;
     transition-delay: .05s;
 

@@ -5,9 +5,7 @@
                 'el-field_hide-underline': isHideUnderline}">
     <v-text-field class="el-field__item"
                   dense
-                  append-icon="mdi-calendar-range"
                   tabindex="1"
-                  
                   :single-line="isSingleLine"
                   :hide-details="isHideMessage"
                   :disabled="isDisabled"
@@ -25,10 +23,10 @@
                   @keydown.esc="eventKeyEsc"
                   @keydown.stop
                   @blur="eventBlurField"
-                  @click:append="eventOpenDialog">
-      <!-- <template v-slot:append-outer v-if="isBtnClear">
-        <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
-      </template> -->
+                  >
+      <template v-slot:append>
+        <el-btn-icon-small tabindex="2" icon="mdi-calendar-range" no-tooltip @keydown="eventOpenDialog" @click="eventOpenDialog"></el-btn-icon-small>
+      </template>
     </v-text-field>
     <v-menu offset-y
             absolute
@@ -96,6 +94,9 @@ export default {
   },
   methods: {
     eventOpenDialog(event) {
+      if (event.type == 'keydown') {
+        if (event.key != 'Space') return;
+      }
       this.fieldElementDOM = event.target.closest('.el-field').querySelector('.v-text-field__slot input');
       let elementTarget = event.target.closest('.el-field').getBoundingClientRect();
       this.isDialogX = elementTarget.left;
@@ -158,11 +159,12 @@ export default {
       if (!this.fieldValue || this.fieldValue.length == 0) {
         let sendOption = {
           key: event.key,
-          shift: event.shiftKey,
           value: null,
+          event: event,
         }
         this.emitInputValue(null);
         this.emitKeyEnter(sendOption);
+        this.$emit('next-element', {event: event});
         return;
       }
       let newDateTime = this.fieldValue.split('.').reverse().join('-');
@@ -180,13 +182,14 @@ export default {
       }
       let sendOption = {
         key: event.key,
-        shift: event.shiftKey,
         value: newDateTime,
+        event: event,
       }
       this.isEmit = true;
       this.isDialogShow = false;
       this.emitInputValue(newDateTime);
       this.emitKeyEnter(sendOption);
+      this.$emit('next-element', {event: event});
     },
     eventKeyTab(event) {
       if (this.inputProperties.required && !this.isRequiredOff)
@@ -196,6 +199,7 @@ export default {
           key: event.key,
           shift: event.shiftKey,
           value: null,
+          event: event,
         }
         this.emitInputValue(null);
         this.emitKeyEnter(sendOption);
@@ -218,6 +222,7 @@ export default {
         key: event.key,
         shift: event.shiftKey,
         value: newDateTime,
+        event: event,
       }
       this.isEmit = true;
       this.isDialogShow = false;
@@ -267,4 +272,5 @@ export default {
     }
   }
 }
+
 </style>

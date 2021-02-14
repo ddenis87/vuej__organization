@@ -13,7 +13,8 @@
                   :flat="isHideUnderline"
                   v-model="fieldValueText"
                   @click:append="eventOpenDialog"
-                  @click:clear="eventClearValue">
+                  @click:clear="eventClearValue"
+                  @keydown.enter="eventKeyEnter">
       <!-- <template v-slot:append>
         <el-btn-icon-small tabindex="2" icon="mdi-dots-horizontal" no-tooltip @click="eventOpenDialog"></el-btn-icon-small>
       </template> -->
@@ -79,9 +80,9 @@ export default {
   },
   mounted() {
     this.isDialogShow = this.isShow;
-    // setTimeout(() => {
-    //   document.activeElement.closest('.item').querySelector('.body-column__item').firstChild.querySelector('input').focus();
-    // }, 100);
+    setTimeout(() => {
+      document.activeElement.closest('.item').querySelector('.body-column__item').firstChild.querySelector('input').focus();
+    }, 100);
     // console.log(document.activeElement);
   },
   methods: {
@@ -94,7 +95,7 @@ export default {
     eventCloseDialog() {
       this.isDialogShow = false;
       this.fieldListBoxComponent = null;
-      console.log(this.countSelectValue);
+      // console.log(this.countSelectValue);
       if (this.countSelectValue == 0) {
       //   this.fieldListBoxComponent = null;
         this.eventClearValue();
@@ -115,11 +116,19 @@ export default {
       this.emitInputValue();
       this.emitClearValue();
     },
-
+    eventKeyEnter(event) {
+      let sendOption = {
+        key: event.key,
+        value: this.fieldValue,
+        event: event,
+      }
+      this.emitKeyEnter(sendOption);
+    },
 
     // EMIT ------------------------
     emitInputValue() { this.$emit('input-value', this.fieldValue); },
     emitClearValue() { this.$emit('clear-value'); },
+    emitKeyEnter(option = null) { console.log('enter'); this.$emit('keydown-enter', option); },
 
     // FUNCTION --------------------
     buildingStringDisplay(valueArray) {

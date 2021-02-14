@@ -44,16 +44,18 @@
                       @click="isOpenFilterExtended = !isOpenFilterExtended">Расширенный фильтр</el-button-icon>
     </v-toolbar>
     
-    <dialog-bar-right is-dialog-name="Фильтры" 
+    <dialog-bar-right is-dialog-name="Фильтр"
+                      :tableName="tableName"
                       :is-dialog-show="isOpenFilter" 
                       @close-dialog="isOpenFilter = false">
       <component :is="componentFilter"
-                 :tableName="tableName"
+                 :table-name="tableName"
                  @accept="isOpenFilter = false"
                  @close="isOpenFilter = false"></component>
     </dialog-bar-right>
     
     <dialog-bar-right is-dialog-name="Расширенный фильтр"
+                      :tableName="tableName"
                       :is-dialog-show="isOpenFilterExtended"
                       width="586"
                       @close-dialog="isOpenFilterExtended = false">

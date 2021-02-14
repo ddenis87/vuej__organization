@@ -1,14 +1,14 @@
 <template>
   <v-tooltip bottom :disabled="noTooltip">
     <template v-slot:activator="{ on }">
-      <v-btn class="el-button-icon"  tabindex="1"
+      <v-btn class="el-button-icon"  tabindex="1" width="24" height="24"
              icon
              small
              :disabled="isDisabled"
              v-on="on"
              plain
-             @click="$emit('click')">
-        <v-icon small :color="iconColor">{{ icon }}</v-icon>
+             @click="(event) => $emit('click', event)" @keydown="(event) => $emit('keydown', event)">
+        <v-icon  :color="iconColor">{{ icon }}</v-icon>
       </v-btn>
     </template>
     <span class="tooltip-text tooltip-text-control"><slot></slot></span>

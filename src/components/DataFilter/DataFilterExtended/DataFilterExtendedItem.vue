@@ -14,6 +14,7 @@
                    :is-show="isShow"
                    v-model="valueData"
                    @input-value="eventInputData"
+                   @next-element="eventNextElement"
                    @clear-value="resetComponent"></component>
       </div>
     </template>
@@ -93,6 +94,13 @@ export default {
     },
   },
   methods: {
+    eventNextElement(option) {
+      // console.log(option);
+      // let thisComponent = option.event.target.closest('.item');
+      // let eventClick = new Event('click');
+      // thisComponent.dispatchEvent(eventClick);
+      // setTimeout(() => this.$emit('next-element', thisComponent), 100);
+    },
     componentByTypeDefault(type) {
       switch(type) {
         case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');

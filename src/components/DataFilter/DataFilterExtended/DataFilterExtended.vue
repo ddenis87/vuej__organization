@@ -1,13 +1,14 @@
 <template>
-  <div class="data-filter-extended" @keydown="eventKeydown" tabindex="0">
+  <div class="data-filter-extended" @keydown.stop="eventKeydown">
     <div class="data-filter-extended__body">
       <data-filter-extended-item v-for="item in filterList"
                                  :key="item.key"
                                  :input-properties="item"
-                                 @input-filter="inputFilter"></data-filter-extended-item>
+                                 @input-filter="inputFilter"
+                                 @next-element="nextElement"></data-filter-extended-item>
     </div>
-    <div class="data-filter-extended__action" >
-      <el-button tabindex="1" @click="acceptFilter">Применить</el-button>
+    <div class="data-filter-extended__action">
+      <el-button class="tabspace-end" @click="acceptFilter" @keydown.stop="eventKeydownAcceptFilter">Применить</el-button>
     </div>
   </div>
 </template>
@@ -31,7 +32,7 @@ export default {
     }
   },
   computed: {
-    tableNameDescription() { return (!this.tableName) ? '' : this.$store.getters[`DataTable/GET_DESCRIPTION`](this.tableName); },
+    // tableNameDescription() { return (!this.tableName) ? '' : this.$store.getters[`DataTable/GET_DESCRIPTION`](this.tableName); },
     filterList() {
       let filterListArray = [];
       let filterList = this.$store.getters[`DataTable/GET_OPTIONS`](this.tableName);
@@ -43,13 +44,33 @@ export default {
     },
   },
   methods: {
+    nextElement(target) {
+      // console.log(target.nextElementSibling.querySelector('.item-data .el-field__item input'));
+      // target.nextElementSibling.querySelector('.item-data .el-field__item input').focus();
+      // target.nextElementSibling.focus();
+    },
+    eventKeydownAcceptFilter(event) {
+      event.preventDefault();
+      console.log(event);
+      let startElement = event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare input');
+      startElement.focus();
+    },
     eventKeydown(event) {
-      // console.log(event.target.closest('.data-filter-extended__action'));
-      if (event.target.closest('.data-filter-extended__action')) {
-        event.preventDefault();
-        // console.log(event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare').querySelector('input'));
-        event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare').querySelector('input').focus();
-      }
+      // console.log(event);
+      // if (event.target.closest('.tabspace-end')) {
+      //   console.log('end');
+      //   console.log(document.activeElement);
+      //   let startElement = event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare input');
+      //   startElement.setSelectionRange(0, 0);
+      //   startElement.select();
+      //   startElement.focus();
+        
+      //   // console.log(event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare input') );
+      // }
+      // if (event.target.closest('.data-filter-extended__action')) {
+      //   event.preventDefault();
+      //   event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare').querySelector('input').focus();
+      // }
     },
     inputFilter(option) {
       // console.log(option);
@@ -89,9 +110,9 @@ export default {
 @import './DataFilterExtended.scss';
 .data-filter-extended {
   display: grid;
-  grid-template-areas: "data-filter-extended__body" "data-filter-extended__action";
+  grid-template-areas: "data-filter-extended__body" "data-filter-extended__action" "data-filter-extended__end";
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 48px;
+  grid-template-rows: 1fr 48px 0px;
   padding: 8px 0px;
   padding-left: 10px;
   height: calc(100vh - 64px);
@@ -122,6 +143,9 @@ export default {
     align-items: center;
     height: 56px;
     padding: 0px 16px;
+  }
+  &_end {
+    grid-area: data-filter-extended__end;
   }
 }
 </style>

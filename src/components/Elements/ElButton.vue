@@ -1,13 +1,13 @@
 <template>
   <div class="el-button">
-    <v-btn class="el-button__item"
+    <v-btn class="el-button__item" tabindex="1"
           :class="{'el-button__item_right': orientation}"
            depressed
            dark
            small
            color="blue darken-1" 
            :height="isHeight"
-           @click="$emit('click')">
+           @click="$emit('click')" @keydown="(event) => $emit('keydown', event)">
       <slot></slot>
     </v-btn>
   </div>

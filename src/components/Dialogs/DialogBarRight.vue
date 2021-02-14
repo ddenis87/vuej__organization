@@ -2,7 +2,7 @@
   <v-navigation-drawer temporary fixed hide-overlay right 
                        :width="width"
                        v-model="isOpen">
-    <dialog-toolbar :is-dialog-name="isDialogName"
+    <dialog-toolbar :is-dialog-name="dialogName"
                     orientation="right"
                     @close-dialog="$emit('close-dialog')"></dialog-toolbar>
     <slot></slot>
@@ -17,6 +17,7 @@ export default {
     DialogToolbar,
   },
   props: {
+    tableName: { type: String, default: null },
     isDialogName: { type: String, default: '' },
     isDialogShow: { type: Boolean, default: false },
     width: { type: String, default: '400' },
@@ -25,6 +26,11 @@ export default {
     return {
       isOpen: false,
     }
+  },
+  computed: {
+    dialogName() {
+      return (this.tableName) ? this.isDialogName + ' - ' + this.$store.getters[`DataTable/GET_DESCRIPTION`](this.tableName) : this.isDialogName;
+    },
   },
   watch: {
     isDialogShow() { this.isOpen = this.isDialogShow; },

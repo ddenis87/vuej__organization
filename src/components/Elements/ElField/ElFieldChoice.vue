@@ -88,7 +88,7 @@ export default {
     eventKeyEnter(event) {
       if (this.inputProperties.required && !this.isRequiredOff)
         if (!this.fieldValue) return;
-      
+        
       if (this.isChangeValue) {
         let sendOption = {
           key: event.key,
@@ -97,10 +97,16 @@ export default {
         }
         this.isEmit = true;
         this.emitKeyEnter(sendOption);
+        this.$emit('next-element', sendOption);
         return;
+      }
+      if (this.fieldValue == null) {
+        this.isEmit = true;
+        this.$emit('next-element', {event: event});
       }
     },
     eventKeyTab(event) {
+      // console.log(event);
       if (this.inputProperties.required && !this.isRequiredOff)
         if (!this.fieldValue) return;
       let sendOption = {

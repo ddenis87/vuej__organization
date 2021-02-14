@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     editingComponent() {
-      console.log(this.isComponentNull);
+      // console.log(this.isComponentNull);
       if (this.properties.columnProperties && !this.isComponentNull) {
         switch(this.properties.columnProperties.type) {
           case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');

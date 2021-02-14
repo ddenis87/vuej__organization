@@ -148,9 +148,16 @@ export default {
         let sendOption = {
           key: event.key,
           value: this.fieldValue,
+          event: event,
         }
         this.isEmit = true;
         this.emitKeyEnter(sendOption);
+        this.$emit('next-element', sendOption);
+        return;
+      }
+      if (this.fieldValue == null) {
+        this.isEmit = true;
+        this.$emit('next-element', {event: event});
       }
     },
     eventKeyTab(event) {
@@ -160,6 +167,7 @@ export default {
         key: event.key,
         shift: event.shiftKey,
         value: this.fieldValue,
+        event: event,
       }
       this.isEmit = true;
       this.emitKeyTab(sendOption);
