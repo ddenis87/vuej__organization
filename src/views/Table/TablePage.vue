@@ -25,7 +25,7 @@
           <el-field-search :is-label="true"
                            :input-properties="{label: 'Произвольный поиск по таблице'}"
                            @keydown-enter="freeSearch" 
-                           @keydown-clear="freeSearchClear"></el-field-search>
+                           @clear-value="freeSearchClear"></el-field-search>
         </v-card>
       </v-toolbar>
 
@@ -158,10 +158,11 @@ export default {
     toggleMultiline() {
       this.isMultiline = !this.isMultiline;
     },
-    freeSearch(value) {
+    freeSearch(option) {
+      console.log(option);
       this.$store.commit('DataTable/SET_FILTER_SEARCH', {
         tableName: this.activeMenu.tableName,
-        value: value,
+        value: option.value,
       });
       this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.activeMenu.tableName });
       this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName});

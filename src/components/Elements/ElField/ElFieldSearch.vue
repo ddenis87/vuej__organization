@@ -1,5 +1,7 @@
 <template>
-  <div class="el-field el-field-string" :class="{'el-field_single-line': isSingleLine, 'el-field_hide-message': isHideMessage}">
+  <div class="el-field el-field-string"
+       :class="{'el-field_single-line': isSingleLine, 
+                'el-field_hide-message': isHideMessage}">
     <v-text-field class="el-field__item"
                   dense
                   tabindex="1"
@@ -7,13 +9,13 @@
                   :hide-details="isHideMessage"
                   :disabled="isDisabled"
                   :label="fieldLabel"
+                  :clearable="isBtnClear"
                   v-model="fieldValue"
-                  clear-icon="mdi-close"
                   prepend-icon="mdi-magnify"
                   @click:clear="eventClearValue"
                   @input="eventInputValue"
-                  @keydown.stop.esc="eventKeyEsc"
-                  @keydown.stop.prevent.enter="eventKeyEnter"
+                  @keydown.esc="eventKeyEsc"
+                  @keydown.enter="eventKeyEnter"
                   @keydown.stop
                   @blur="eventBlurField">
       <template v-slot:append>
@@ -34,7 +36,14 @@ export default {
     eventInputValue() {
       this.emitInputValue();
     },
-    eventKeyEnter(event) {},
+    eventKeyEnter(event) {
+      let sendOption = {
+        key: event.key,
+        value: this.fieldValue,
+        event: event,
+      }
+      this.emitKeyEnter(sendOption)
+    },
 
   },
 }
