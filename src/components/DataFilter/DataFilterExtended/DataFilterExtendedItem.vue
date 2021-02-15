@@ -3,7 +3,8 @@
     <template v-if="!isTitle">
       <div class="item-compare">
         <st-field-compare :input-properties="inputProperties"
-                          v-model="valueCompare"></st-field-compare>
+                          v-model="valueCompare"
+                          @next-element="eventNextElement"></st-field-compare>
       </div>
       <div class="item-data">
         <component :is="componentField"
@@ -95,11 +96,17 @@ export default {
   },
   methods: {
     eventNextElement(option) {
-      // console.log(option);
-      // let thisComponent = option.event.target.closest('.item');
+      console.log(option);
+      let thisComponent = option.event.target.closest('.item');
+      let eventClick = new Event('click');
+      thisComponent.dispatchEvent(eventClick);
+      // if (option.event.target.closest('.item-compare')) {
+      //   thisComponent.querySelector('.item-data input').focus();
+      //   return;
+      // }
       // let eventClick = new Event('click');
       // thisComponent.dispatchEvent(eventClick);
-      // setTimeout(() => this.$emit('next-element', thisComponent), 100);
+      setTimeout(() => this.$emit('next-element', thisComponent), 100);
     },
     componentByTypeDefault(type) {
       switch(type) {

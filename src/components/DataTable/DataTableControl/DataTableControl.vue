@@ -61,6 +61,7 @@
                       @close-dialog="isOpenFilterExtended = false">
       <component :is="componentFilterExtended"
                  :table-name="tableName"
+                 :is-open="isOpenFilterExtended"
                  @close-dialog="isOpenFilterExtended = false"
                  @accept="isOpenFilterExtended = false"></component>
     </dialog-bar-right>

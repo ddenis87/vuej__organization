@@ -22,7 +22,7 @@
         <el-btn-icon-small tabindex="3" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
       </template> -->
     </v-text-field>
-    <dialog-bar-right is-dialog-name="Список значений"
+    <dialog-bar-right :is-dialog-name="`Список значений - ${inputProperties.label}`"
                       :is-dialog-show="isDialogShow"
                       width="586"
                       @close-dialog="eventCloseDialog">

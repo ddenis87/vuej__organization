@@ -1,21 +1,27 @@
 <template>
-  <v-autocomplete class="el-field"
-                  tabindex="1"
-                  placeholder="Выбрать"
-                  no-data-text="Значение отсутствует"
-                  background-color="rgba(242, 242, 242, 1)"
-                  rounded
-                  :disable-lookup="true"
-                  :dense="isDense"
-                  :single-line="isSingleLine"
-                  :label="fieldLabel"
-                  :items="fieldList"
-                  :item-text="'display_name'"
-                  :item-value="'value'"
-                  v-model="fieldValue"
-                  v-if="fieldList"
-                  @input="emitInputValue"
-                  @focus="eventFocus"></v-autocomplete>
+  <div class="el-field">
+    <v-autocomplete class="el-field__item"
+                    tabindex="1"
+                    placeholder="Выбрать"
+                    no-data-text="Значение отсутствует"
+                    background-color="rgba(242, 242, 242, 1)"
+                    rounded
+                    :disable-lookup="true"
+                    :dense="isDense"
+                    :single-line="isSingleLine"
+                    :label="fieldLabel"
+                    :items="fieldList"
+                    :item-text="'display_name'"
+                    :item-value="'value'"
+                    v-model="fieldValue"
+                    v-if="fieldList"
+                    @click.stop
+                    @input="emitInputValue"
+                    @keydown.enter="eventKeydownEnter"
+                    @keydown.stop
+                    @focus="eventFocus"></v-autocomplete>
+  </div>
+  
 </template>
 
 <script>
@@ -87,6 +93,13 @@ export default {
 
         case 'boolean': { this.$emit('input-value', 'equally'); }
       }
+    },
+    eventKeydownEnter(event) {
+      // console.log(this.fieldValue);
+      // setTimeout(() => {
+      //   if (this.fieldValue != 'inList') this.$emit('next-element', {event: event});
+      // }, 10);
+      // this.$emit('next-element', {event: event});
     },
     emitInputValue() { this.$emit('input-value', this.fieldValue); }, // for form, emit only value
     eventFocus(event) {

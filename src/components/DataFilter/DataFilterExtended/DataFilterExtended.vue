@@ -5,6 +5,7 @@
                                  :key="item.key"
                                  :input-properties="item"
                                  @input-filter="inputFilter"
+                                 @keydown.stop="eventKeydown"
                                  @next-element="nextElement"></data-filter-extended-item>
     </div>
     <div class="data-filter-extended__action">
@@ -24,6 +25,7 @@ export default {
   },
   props: {
     tableName: { type: String, default: null, },
+    isOpen: { type: Boolean, default: false, },
     listException: { type: Array, default() { return ['id', 'is_deleted'] } },
   },
   data() {
@@ -43,38 +45,43 @@ export default {
       return filterListArray;
     },
   },
+  watch: {
+    isOpen() {
+      if (this.isOpen == true) {
+        // console.log(document.activeElement);
+        // console.log(document.querySelector('.data-filter-extended .data-filter-extended__body').firstChild.querySelector('.item-compare input'));
+        setTimeout(() => {
+          document.querySelector('.data-filter-extended .data-filter-extended__body').firstChild.querySelector('.item-compare input').focus();
+        }, 100);
+      }
+    },
+  },
   methods: {
     nextElement(target) {
       // console.log(target.nextElementSibling.querySelector('.item-data .el-field__item input'));
-      // target.nextElementSibling.querySelector('.item-data .el-field__item input').focus();
+      // console.log(target.nextElementSibling);
+      if (target.nextElementSibling == null) {
+        target.closest('.data-filter-extended').querySelector('.tabspace-end button').focus();
+        return;
+      }
+      console.log(target.nextElementSibling);
+      target.nextElementSibling.querySelector('.item .item-data .el-field__item input').focus();
       // target.nextElementSibling.focus();
     },
     eventKeydownAcceptFilter(event) {
-      event.preventDefault();
-      console.log(event);
-      let startElement = event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare input');
-      startElement.focus();
+      if (event.key == 'Tab' && event.shiftKey == false) {
+        event.preventDefault();
+        // console.log(event);
+        let startElement = event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare input');
+        startElement.focus();
+      }
+      
     },
     eventKeydown(event) {
-      // console.log(event);
-      // if (event.target.closest('.tabspace-end')) {
-      //   console.log('end');
-      //   console.log(document.activeElement);
-      //   let startElement = event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare input');
-      //   startElement.setSelectionRange(0, 0);
-      //   startElement.select();
-      //   startElement.focus();
-        
-      //   // console.log(event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare input') );
-      // }
-      // if (event.target.closest('.data-filter-extended__action')) {
-      //   event.preventDefault();
-      //   event.target.closest('.data-filter-extended').querySelector('.data-filter-extended__body').firstChild.querySelector('.item-compare').querySelector('input').focus();
-      // }
+      console.log(event);
+      console.log(document.activeElement);
     },
     inputFilter(option) {
-      // console.log(option);
-      
       if (option.key == 'is_deleted') { return; }
       if (option.value == null) {
         // console.log('delete');
@@ -110,9 +117,9 @@ export default {
 @import './DataFilterExtended.scss';
 .data-filter-extended {
   display: grid;
-  grid-template-areas: "data-filter-extended__body" "data-filter-extended__action" "data-filter-extended__end";
+  grid-template-areas: "data-filter-extended__body" "data-filter-extended__action";
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 48px 0px;
+  grid-template-rows: 1fr 48px;
   padding: 8px 0px;
   padding-left: 10px;
   height: calc(100vh - 64px);
@@ -143,9 +150,6 @@ export default {
     align-items: center;
     height: 56px;
     padding: 0px 16px;
-  }
-  &_end {
-    grid-area: data-filter-extended__end;
   }
 }
 </style>

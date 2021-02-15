@@ -6,7 +6,7 @@
              small
              :disabled="isDisabled"
              v-on="on"
-             plain
+             tile
              @click="(event) => $emit('click', event)" @keydown="(event) => $emit('keydown', event)">
         <v-icon  :color="iconColor">{{ icon }}</v-icon>
       </v-btn>

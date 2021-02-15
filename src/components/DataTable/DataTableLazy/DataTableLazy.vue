@@ -1,10 +1,10 @@
 <template>
   <div class="data-table-lazy">
-    <div class="data-table-lazy__header">
+    <!-- <div class="data-table-lazy__header">
       <data-table-lazy-header :items="headers" 
                               :template="computedTemplateTable"
                               :is-clearable="isClearable"></data-table-lazy-header>
-    </div>
+    </div> -->
     <div class="data-table-lazy__body">
       <data-table-lazy-body :headers="headers"
                             :items="items"
