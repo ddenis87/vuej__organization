@@ -194,7 +194,7 @@ export default {
   &__body {
     z-index: 10;
     .table-body {
-      padding: 0px 5px;
+      padding: 5px 5px;
       height: calc(100vh - 160px);
       .table {
         height: 100%;

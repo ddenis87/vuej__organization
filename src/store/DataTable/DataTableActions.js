@@ -89,15 +89,30 @@ export default {
   REQUEST_DATA_ADDING(state, option) {
     state.commit('SET_STATUS_PROCESSING', true);
     let addressApi = state.getters.GET_ADDRESS_API('post', option.tableName);
-    // addressApi += `${option.recordId}`;
-    let tokenAccess = state.rootGetters['Login/GET_USER_TOKEN_ACCESS'];
-    axios.defaults.headers.common = {'Authorization': tokenAccess, 'Content-Type': 'multipart/form-data'};
-    // axios.defaults.headers.common = {  };
-    axios.data = option.values;
     console.log(addressApi);
     return new Promise((resolve, reject) => {
        axios
-        .post(addressApi)
+        .post(addressApi, option.formData)
+        .then(response => {
+          resolve(response);
+          state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
+          state.dispatch('REQUEST_DATA', {tableName: option.tableName});
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        })
+        .finally(() => state.commit('SET_STATUS_PROCESSING'));
+    })
+  },
+  REQUEST_DATA_EDITING(state, option) {
+    state.commit('SET_STATUS_PROCESSING', true);
+    let addressApi = state.getters.GET_ADDRESS_API('update', option.tableName);
+    addressApi += `${option.recordId}/`;
+    console.log(addressApi);
+    return new Promise((resolve, reject) => {
+       axios
+        .put(addressApi, option.formData)
         .then(response => {
           resolve(response);
           state.commit('SET_DATA_CLEAR', { tableName: option.tableName });

@@ -5,8 +5,9 @@ export default {
 
     switch (option) {
       case 'options': return addressApi;
-      case 'delete': 
-      case 'post': return addressApi.slice(0, -1);
+      case 'post':
+      case 'update':
+      case 'delete': return addressApi.slice(0, -1);
       case 'get': {
         for (let item of Object.entries(state[tableName].filterDefault)) addressApi += `&${item[0]}=${item[1]}`;
         return addressApi;

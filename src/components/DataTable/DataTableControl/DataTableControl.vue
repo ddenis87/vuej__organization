@@ -12,49 +12,26 @@
                       @click="eventActionShowMarkDeleting">{{ (isMarkDeleted) ? 'Выйти из корзины' : 'Показать помеченные на удаление' }}</el-button-icon>
       <v-spacer></v-spacer>
 
-      <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
-                      :disabled="(!isMountTable)"
-                      @click="$emit('toggle-type-row')">{{ (typeHeight[typeHeightNumber] == 'fixed') ? 'Строки сжато' : (typeHeight[typeHeightNumber] == 'dense') ? 'Строки свободно' : 'Строки фиксировано' }}</el-button-icon>
-      <el-button-icon icon="mdi-view-split-horizontal"
-                      :icon-color="(isExpansion) ? 'blue' : ''"
-                      :disabled="(!isMountTable || isMultiline)"
-                      @click="$emit('toggle-expansion')">Раскрытие строк</el-button-icon>
-      <v-divider vertical></v-divider>
-      <el-button-icon :icon="(typeColumn == 'fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel'" 
-                      :disabled="!isMountTable"
-                      @click="$emit('toggle-type-column')">{{ (typeColumn == 'fixed') ? 'Столбцы сжато' : 'Столбцы фиксировано' }}</el-button-icon>
-      <v-divider vertical></v-divider>
-      <el-button-icon icon="mdi-page-layout-footer"
-                      :icon-color="(isFooter) ? 'blue' : ''"
-                      :disabled="!isMountTable"
-                      @click="$emit('toggle-footer')">Итоги</el-button-icon>
-      <v-divider vertical></v-divider>
-      <el-button-icon icon="mdi-view-quilt"
-                      :icon-color="(isMultiline) ? 'blue' : ''"
-                      @click="$emit('toggle-multiline')">Многострочность</el-button-icon>
-      <v-divider vertical></v-divider>
-      
+      <!-- VIEW TABLE -->
+      <data-table-control-view :type-height-number="typeHeightNumber"
+                               :type-column="typeColumn"
+                               :is-footer="isFooter"
+                               :is-expansion="isExpansion"
+                               :is-multiline="isMultiline"
+                               :is-mount-table="isMountTable"
+                               @toggle-type-row="$emit('toggle-type-row')"
+                               @toggle-expansion="$emit('toggle-expansion')"
+                               @toggle-type-column="$emit('toggle-type-column')"
+                               @toggle-footer="$emit('toggle-footer')"
+                               @toggle-multiline="$emit('toggle-multiline')"></data-table-control-view>
+      <!-- FILTER TABLE -->
       <el-button-icon icon="mdi-filter-outline" 
-                      :icon-color="(isFilterActive) ? 'blue' : ''" 
-                      :disabled="!isMountTable"
-                      @click="isOpenFilter = !isOpenFilter">Фильтр</el-button-icon>
-      <el-button-icon icon="mdi-filter-variant" 
                       :icon-color="(isFilterExtendedActive) ? 'blue' : ''"
                       :disabled="!isMountTable"
-                      @click="isOpenFilterExtended = !isOpenFilterExtended">Расширенный фильтр</el-button-icon>
+                      @click="isOpenFilterExtended = !isOpenFilterExtended">Фильтр</el-button-icon>
     </v-toolbar>
-    
+
     <dialog-bar-right is-dialog-name="Фильтр"
-                      :tableName="tableName"
-                      :is-dialog-show="isOpenFilter" 
-                      @close-dialog="isOpenFilter = false">
-      <component :is="componentFilter"
-                 :table-name="tableName"
-                 @accept="isOpenFilter = false"
-                 @close="isOpenFilter = false"></component>
-    </dialog-bar-right>
-    
-    <dialog-bar-right is-dialog-name="Расширенный фильтр"
                       :tableName="tableName"
                       :is-dialog-show="isOpenFilterExtended"
                       width="586"
@@ -91,6 +68,7 @@ import DialogFullPage from '@/components/Dialogs/DialogFullPage.vue';
 import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
 
 import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
+import DataTableControlView from './DataTableControlView.vue';
 
 export default {
   name: 'DataTableControl',
@@ -98,6 +76,7 @@ export default {
     DialogFullPage,
     DialogBarRight,
     ElButtonIcon,
+    DataTableControlView,
   },
   props: {
     focusedElement: null,
@@ -113,7 +92,6 @@ export default {
     return {
       focusedElementForm: null,
       isOpenDialog: false,
-      isOpenFilter: false,
       isOpenFilterExtended: false,
       isMarkDeleted: false,
       typeHeight: ['fixed', 'dense', 'auto'],
@@ -142,13 +120,6 @@ export default {
       if (!this.formProperties?.tableName) return null;
       return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
     },
-    componentFilter() {
-      if (!this.formProperties?.tableName) return null;
-      return () => import('@/components/DataFilter/DataFilter.vue')
-    },
-    isFilterActive() {
-      return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_PRIMITIVE`](this.formProperties.tableName) == '') ? false : true : false;
-    },
     isFilterExtendedActive() {
       return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_EXTENDED`](this.formProperties.tableName) == '') ? false : true : false;
     },
@@ -175,10 +146,28 @@ export default {
         tableName: this.formProperties.tableName,
       };
       Object.assign(sendOption, option);
-      if (sendOption.actionName != 'adding')
-        sendOption.values.id = (sendOption.actionName == 'editing' || sendOption.actionName == 'deleting') ? this.focusedElement.id : 'newId';
+      // if (sendOption.actionName != 'adding')
+      //   sendOption.values.id = this.focusedElement.id : 'newId';
+      if (sendOption.actionName == 'editing') {
+        sendOption.recordId = option.values.id;
+        delete sendOption.values.id;
+      }
+      
+      // console.log(option);
+      let bFormData = new FormData();
+      for (let key of Object.keys(sendOption.values)) {
+        if (sendOption.values[key])
+          bFormData.set(`${key}`, `${sendOption.values[key]}`);
+      };
       console.log(sendOption);
-      this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
+      sendOption.formData = bFormData;
+      delete sendOption.values;
+      // console.log(bFormData.get('bk'));
+      if (sendOption.actionName == 'adding') {
+        this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
+      } else {
+        this.$store.dispatch('DataTable/REQUEST_DATA_EDITING', sendOption);
+      }
       // this.$store.commit(`DataTable/${sendOption.actionName.toUpperCase()}_LIST_DATA`, sendOption)
 
       this.eventCloseDialog();
@@ -205,7 +194,6 @@ export default {
             this.snackBar.status = false;
             setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 4000);
          });
-      
     },
     eventActionShowMarkDeleting() {
       this.isMarkDeleted = !this.isMarkDeleted;

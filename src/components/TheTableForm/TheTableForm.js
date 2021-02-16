@@ -51,13 +51,14 @@ export const TheTableForm = {
     eventClickActionAccept() {
       
       if (!this.fieldFormValueValidation()) return;
-      // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
-      let option = {actionName: (this.focusedElement == null) ? 'adding' : 'editing', values: {}};
+      let option = {values: {}};
+      
+      option.actionName = (this.focusedElement) ? 'editing' : 'adding';
       Object.assign(option.values, this.fieldFormValue);
       for (let key of Object.keys(option.values)) {
         if (option.values[key] != null) {
           if (typeof(option.values[key]) == 'object') {
-            console.log(option.values[key]);
+            // console.log(option.values[key]);
             if ('id' in option.values[key]) option.values[key] = option.values[key].id;
             else option.values[key] = option.values[key].value;
           }
@@ -68,7 +69,7 @@ export const TheTableForm = {
       this.$refs.formAction.reset();
     },
     fieldFormValueValidation() {
-      console.log(this.fieldFormValue);
+      // console.log(this.fieldFormValue);
       for (let key of Object.keys(this.fieldFormValue)) {
         if (this.fieldForm[key].required == true && (this.fieldFormValue[key] == '' || this.fieldFormValue[key] == null)) return false;
       }
