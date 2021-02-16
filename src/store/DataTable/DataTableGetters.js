@@ -23,7 +23,7 @@ export default {
 
   GET_OPTIONS:(state) => (tableName) => { return state[tableName].listOption; },
 
-  GET_DATA:(state) => (tableName) => { return state[tableName].listData; },
+  GET_DATA:(state) => (tableName) => { console.log(state[tableName].listData); return state[tableName].listData; },
   GET_DATA_COUNT_TOTAL:(state) => (tableName) => { return state[tableName].countTotal; },
   GET_DATA_COUNT_LOAD:(state) => (tableName) => { return state[tableName].listData.length; },
 

@@ -1,3 +1,4 @@
+import Vue from 'vue';
 export default {
   SET_STATUS_PROCESSING(state, status = false) { state.statusProcessing = status; },
 
@@ -28,6 +29,26 @@ export default {
         }
       }
       if (!state[option.tableName].listData.find(item => item.id == element.id)) state[option.tableName].listData.push(element)
+    });
+  },
+  SET_DATA_RECORD(state, option) {
+    console.log(option);
+    state[option.tableName].listFieldObject.forEach(fieldObject => {
+      let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
+      option.data.results.forEach(element => {
+        if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
+        element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
+      });
+    });
+    let listOption = state[option.tableName].listOption; //
+    option.data.results.forEach(element => {
+      for (let key of Object.keys(element)) { //
+        if (listOption[key].type == 'choice') { //
+          element[key] = listOption[key].choices.find(item => item.value == element[key]);
+        }
+      }
+      let indexItem = state[option.tableName].listData.findIndex(item => item.id == element.id);
+      Vue.set(state[option.tableName].listData, indexItem, element);
     });
   },
   SET_DATA_CLEAR(state, option) {

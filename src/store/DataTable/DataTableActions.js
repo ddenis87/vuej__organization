@@ -115,8 +115,9 @@ export default {
         .put(addressApi, option.formData)
         .then(response => {
           resolve(response);
-          state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
-          state.dispatch('REQUEST_DATA', {tableName: option.tableName});
+          // state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
+          // state.dispatch('REQUEST_DATA', {tableName: option.tableName});
+          state.dispatch('REQUEST_DATA_UPDATE_RECORD', {tableName: option.tableName, recordId: option.recordId});
         })
         .catch(err => {
           console.log(err);
@@ -124,5 +125,26 @@ export default {
         })
         .finally(() => state.commit('SET_STATUS_PROCESSING'));
     })
+  },
+
+  REQUEST_DATA_UPDATE_RECORD(state, option) {
+    state.commit('SET_STATUS_PROCESSING', true);
+    let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName);
+    
+    addressApi += `&id=${option.recordId}`;
+    console.log(addressApi);
+    axios
+      .get(addressApi)
+      .then(response => {
+        let mutationOptions = {
+          tableName: option.tableName,
+          data: response.data,
+          clear: false,
+        }
+        console.log(mutationOptions);
+        state.commit('SET_DATA_RECORD', mutationOptions);
+      })
+      .catch(error => console.log(error))
+      .finally(() => state.commit('SET_STATUS_PROCESSING'));
   },
 }
