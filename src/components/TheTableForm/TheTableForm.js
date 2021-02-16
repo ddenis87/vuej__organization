@@ -49,7 +49,12 @@ export const TheTableForm = {
       this.$refs.formAction.reset();
     },
     eventClickActionAccept() {
-      
+      if (!this.$refs.formAction.validate()) {
+        setTimeout(() => {
+          this.$refs.formAction.resetValidation();
+        }, 3000);
+        return;
+      }
       if (!this.fieldFormValueValidation()) return;
       let option = {values: {}};
       
