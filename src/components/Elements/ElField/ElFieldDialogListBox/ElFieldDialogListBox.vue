@@ -80,10 +80,11 @@ export default {
   },
   mounted() {
     this.isDialogShow = this.isShow;
+    console.log(document.activeElement);
     setTimeout(() => {
       document.activeElement.closest('.item').querySelector('.body-column__item').firstChild.querySelector('input').focus();
-    }, 100);
-    // console.log(document.activeElement);
+    }, 1000);
+    
   },
   methods: {
     // EVENT ------------------------

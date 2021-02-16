@@ -58,6 +58,7 @@ export default {
       rContains: {value: 'contains', display_name: 'Содержит'},
       rBetween: {value: 'between', display_name: 'Диапазон'},
       fieldValue: null,
+      isChange: false,
     }
     
   },
@@ -99,7 +100,8 @@ export default {
       // setTimeout(() => {
       //   if (this.fieldValue != 'inList') this.$emit('next-element', {event: event});
       // }, 10);
-      // this.$emit('next-element', {event: event});
+      // if (!this.isChange) 
+        this.$emit('next-element', {event: event});
     },
     emitInputValue() { this.$emit('input-value', this.fieldValue); }, // for form, emit only value
     eventFocus(event) {

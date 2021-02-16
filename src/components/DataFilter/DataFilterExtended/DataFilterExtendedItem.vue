@@ -96,17 +96,37 @@ export default {
   },
   methods: {
     eventNextElement(option) {
-      console.log(option);
+      // console.log(option);
       let thisComponent = option.event.target.closest('.item');
       let eventClick = new Event('click');
       thisComponent.dispatchEvent(eventClick);
-      // if (option.event.target.closest('.item-compare')) {
-      //   thisComponent.querySelector('.item-data input').focus();
-      //   return;
-      // }
+      if (option.event.target.closest('.item-compare')) {
+        setTimeout(() => {
+          if (this.valueCompare != 'inList') {
+            thisComponent.querySelector('.item-data input').focus();
+          } else {
+            setTimeout(() => {thisComponent.querySelector('.item-data input').focus()}, 500);
+          }
+        }, 100);
+        return;
+
+        // setTimeout(() => {
+        //   if (thisComponent.querySelector('.item-data input')) {
+        //     thisComponent.querySelector('.item-data input').focus();
+        //   } else {
+        //     console.log(document.activeElement);
+        //   }
+        // },500);
+        // return;
+        // if (thisComponent.querySelector('.item-data input'))
+        //   console.log(thisComponent.querySelector('.item-data input'));
+        //   setTimeout(() => thisComponent.querySelector('.item-data input').focus(), 10);
+        // // console.log(document.activeElement);
+        // return;
+      }
       // let eventClick = new Event('click');
       // thisComponent.dispatchEvent(eventClick);
-      setTimeout(() => this.$emit('next-element', thisComponent), 100);
+      setTimeout(() => this.$emit('next-element', thisComponent), 10);
     },
     componentByTypeDefault(type) {
       switch(type) {

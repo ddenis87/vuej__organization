@@ -80,7 +80,7 @@ export default {
   },
   SET_FILTER_SORTING(state, option) {
     if (option.key == null) {
-      state[option.tableName].filterSorting = '';
+      state[option.tableName].filterSorting = '&ordering=-id';
       return;
     }
     let filterSorting = '&ordering=';

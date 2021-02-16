@@ -20,7 +20,7 @@
     <!-- NO ELEMENT FOR DISPLAY -->
     <div class="body-empty"
          :class="`body-empty_${typeColumn}`"
-         v-if="items.length == 0 && !isLoadingData">Отсутствуют элементы для отображения по заданным условиям</div>
+         v-if="isEmptyData">Отсутствуют элементы для отображения по заданным условиям</div>
 
     <div v-for="(itemRow, indexRow) in items"
          class="body-row"
@@ -69,6 +69,8 @@
         </div>
       </div>
     </div>
+
+    
   </div>
 </template>
 
@@ -100,15 +102,29 @@ export default {
     typeHeight: { type: String, default: 'fixed' },
     typeColumn: { type: String, default: 'fixed' },
     items: { type: Array, default: () => [] },
-    // items: { type: Map, default: () => {} },
     itemsHeader: { type: Array, default: () => [] },
     isEditable: {type: Boolean, default: false},
     isExpansion: {type: Boolean, default: false},
     isMultiline: {type: Boolean, default: false},
   },
+  data() {
+    return {
+      isDataLoad: false,
+      isTimerLoad: null,
+    }
+  },
   computed: {
     isLoadingData() {
       return this.$store.getters[`DataTable/GET_STATUS_PROCESSING`];
+    },
+    isEmptyData() {
+      clearTimeout(this.isTimerLoad);
+      if (!this.$store.getters[`DataTable/GET_STATUS_PROCESSING`] && this.items.length == 0) {
+        this.isTimerLoad = setTimeout(() => {this.isDataLoad = true}, 1000);
+      } else {
+        this.isDataLoad = false;
+      }
+      return this.isDataLoad;
     },
   },
 }

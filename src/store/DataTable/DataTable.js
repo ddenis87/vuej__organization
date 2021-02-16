@@ -13,10 +13,11 @@ class DataTableBase {
   filterDefault = {
     'page_size': null,
     'is_deleted': null,
+    // 'ordering': '-id',
   };
   filterPrimitive = '';
   filterSearch = '';
-  filterSorting = '';
+  filterSorting = '&ordering=-id';
   filterExtended = '';
 
   relatedModelView = '' // шаблон представление таблицы в других таблицах, компонентах, и т.д.

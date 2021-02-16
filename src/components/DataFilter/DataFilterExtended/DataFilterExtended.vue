@@ -65,7 +65,7 @@ export default {
         return;
       }
       console.log(target.nextElementSibling);
-      target.nextElementSibling.querySelector('.item .item-data .el-field__item input').focus();
+      target.nextElementSibling.querySelector('.item .item-compare .el-field__item input').focus();
       // target.nextElementSibling.focus();
     },
     eventKeydownAcceptFilter(event) {
