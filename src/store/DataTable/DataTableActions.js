@@ -147,4 +147,25 @@ export default {
       .catch(error => console.log(error))
       .finally(() => state.commit('SET_STATUS_PROCESSING'));
   },
+  REQUEST_DATA_UPDATE_RECORD_ELEMENT(state, option) {
+    state.commit('SET_STATUS_PROCESSING', true);
+    let addressApi = state.getters.GET_ADDRESS_API('update', option.tableName);
+    addressApi += `${option.recordId}/`;
+    console.log(addressApi);
+    return new Promise((resolve, reject) => {
+       axios
+        .put(addressApi, option.formData)
+        .then(response => {
+          resolve(response);
+          // state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
+          // state.dispatch('REQUEST_DATA', {tableName: option.tableName});
+          state.dispatch('REQUEST_DATA_UPDATE_RECORD', {tableName: option.tableName, recordId: option.recordId});
+        })
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        })
+        .finally(() => state.commit('SET_STATUS_PROCESSING'));
+    })
+  },
 }

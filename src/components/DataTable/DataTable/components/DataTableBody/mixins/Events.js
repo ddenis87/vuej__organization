@@ -91,12 +91,13 @@ export const Events = {
     },
 
     // EVENT TOGGLE EDITING COLUMN
-    eventColumnDblclick(event, rowProperties, columnProperties, columnValue) {
+    eventColumnDblclick(event, itemRow, columnProperties, columnValue) {
+      // console.log(itemRow);
       if (!this.checkForEditable(event, columnProperties)) return;  // checkForEditable - in mixin Editing
       this.switchDecorationToEdit(event);  // switchDecorationToEdit - in mixin Editing
       if (event.target.closest('.body-column').querySelector('.box-editing-default')) {
         let target = event.target.closest('.body-column').querySelector('.box-editing-default');
-        this.mountEditingComponent(target, rowProperties.id, columnProperties, columnValue);  // mountEditingComponent - in mixin Editing
+        this.mountEditingComponent(target, itemRow, columnProperties, columnValue);  // mountEditingComponent - in mixin Editing
       }
     },
 

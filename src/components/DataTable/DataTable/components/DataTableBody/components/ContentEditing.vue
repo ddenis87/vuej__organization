@@ -68,14 +68,42 @@ export default {
       if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
     },
     editingAccepted(option) {
+      console.log(this.properties);
       let sendOption = {
         tableName: this.properties.tableName,
-        recordId: this.properties.rowId,
-        fieldName: this.properties.columnProperties.value,
-        fieldValue: option.value,
+        recordId: this.properties.itemRow.id,
+        // fieldName: this.properties.columnProperties.value,
+        // fieldValue: option.value,
       };
+      let newValue = null;
+      if (typeof(option.value) == 'object') {
+        if ('id' in option.value) newValue = option.value.id;
+        else newValue = option.value.value;
+      } else {
+        newValue = option.value;
+      }
+
+      let bFormData = new FormData();
+
+      for (let key of Object.keys(this.properties.itemRow)) {
+        let currentValue = this.properties.itemRow[key];
+        let newCurrentValue = null;
+        if (currentValue != null) {
+          if (typeof(currentValue) == 'object' && currentValue != null) {
+            if ('id' in currentValue) newCurrentValue = currentValue.id;
+            else newCurrentValue = currentValue.value;
+          } else {
+            newCurrentValue = currentValue;
+          }
+          console.log(key, ' - ', newCurrentValue);
+          bFormData.set(key, newCurrentValue);
+        }
+      }
+
+      bFormData.set(this.properties.columnProperties.value, newValue);
+      sendOption.formData = bFormData;
       // console.log(sendOption);
-      this.$store.commit('DataTable/ACTION_EDITING_ELEMENT', sendOption);
+      this.$store.dispatch('DataTable/REQUEST_DATA_UPDATE_RECORD_ELEMENT', sendOption);
       let editableElement = document.querySelector('.body-column_editing');
       let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: option.key, keyShift: option.shift } });
       editableElement.dispatchEvent(eventEditingAccepted);

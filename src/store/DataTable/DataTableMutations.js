@@ -28,7 +28,7 @@ export default {
           element[key] = listOption[key].choices.find(item => item.value == element[key]);
         }
       }
-      if (!state[option.tableName].listData.find(item => item.id == element.id)) state[option.tableName].listData.push(element)
+      if (!state[option.tableName].listData.find(item => item.id == element.id)) state[option.tableName].listData.push(element);
     });
   },
   SET_DATA_RECORD(state, option) {

@@ -5,10 +5,10 @@ import ContentEditing from '../components/ContentEditing.vue';
 
 export const Editing = {
   methods: {
-    mountEditingComponent(target, rowId, columnProperties, columnValue) {
+    mountEditingComponent(target, itemRow, columnProperties, columnValue) {
       let editingComponentProperties = {
         tableName: this.tableName,
-        rowId,
+        itemRow,
         columnProperties,
         columnValue,
       };
