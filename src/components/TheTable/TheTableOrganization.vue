@@ -27,11 +27,11 @@ export default {
         tableName: 'organization',
         headers: [
           // {value: 'id', width: 60,},
-          {value: 'institution_code', align: 'end', width: 80, },
+          {value: 'institution_code', align: 'end', width: 94, },
           {value: 'registry_date', align: 'start', width: 120,},
           {value: 'last_visited', align: 'start', width: 146,},
           // {value: 'organization_type', align: 'start', width: 115, },
-          {value: 'title', align: 'start', width: [400,],},
+          {value: 'title', align: 'start', width: [350,],},
           {value: 'inn', width: [104, 104]},
           {value: 'kpp', width: [94, 94],},
           {value: 'rubpnubp_status', width: [100, 100]},

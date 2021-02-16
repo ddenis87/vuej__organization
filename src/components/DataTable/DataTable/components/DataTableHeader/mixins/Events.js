@@ -11,7 +11,8 @@ export const Events = {
   },
   computed: {
     computedTooltipShift() {
-      let calcTooltipShift = { left: 3, top: -3, };
+      console.log(this.typeHeight, ' - ', this.typeColumn);
+      let calcTooltipShift = { left: -2, top: -3, };
       // if (this.typeHeight == 'fixed' && this.typeColumn == 'fixed') { calcTooltipShift.left = 4; calcTooltipShift.top = -2; return calcTooltipShift};
       if (this.typeHeight == 'fixed' && this.typeColumn == 'dense') { calcTooltipShift.left = -1; calcTooltipShift.top = -3; return calcTooltipShift};
       if (this.typeHeight == 'auto' && this.typeColumn == 'fixed') { calcTooltipShift.left = 3; calcTooltipShift.top = -3; return calcTooltipShift};
