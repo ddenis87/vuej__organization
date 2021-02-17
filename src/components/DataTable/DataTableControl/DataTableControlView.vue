@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar-items>
+  <div class="data-table-control-view">
     <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
                     :disabled="(!isMountTable)"
                     @click="$emit('toggle-type-row')">{{ (typeHeight[typeHeightNumber] == 'fixed') ? 'Строки сжато' : (typeHeight[typeHeightNumber] == 'dense') ? 'Строки свободно' : 'Строки фиксировано' }}</el-button-icon>
@@ -7,21 +7,21 @@
                     :icon-color="(isExpansion) ? 'blue' : ''"
                     :disabled="(!isMountTable || isMultiline)"
                     @click="$emit('toggle-expansion')">Раскрытие строк</el-button-icon>
-    <v-divider vertical></v-divider>
+    <!-- <v-divider vertical></v-divider> -->
     <el-button-icon :icon="(typeColumn == 'fixed') ? 'mdi-view-parallel-outline' : 'mdi-view-parallel'" 
                     :disabled="!isMountTable"
                     @click="$emit('toggle-type-column')">{{ (typeColumn == 'fixed') ? 'Столбцы сжато' : 'Столбцы фиксировано' }}</el-button-icon>
-    <v-divider vertical></v-divider>
+    <!-- <v-divider vertical></v-divider> -->
     <el-button-icon icon="mdi-page-layout-footer"
                     :icon-color="(isFooter) ? 'blue' : ''"
                     :disabled="!isMountTable"
                     @click="$emit('toggle-footer')">Итоги</el-button-icon>
-    <v-divider vertical></v-divider>
+    <!-- <v-divider vertical></v-divider> -->
     <el-button-icon icon="mdi-view-quilt"
                     :icon-color="(isMultiline) ? 'blue' : ''"
                     @click="$emit('toggle-multiline')">Многострочность</el-button-icon>
-    <v-divider vertical></v-divider>
-  </v-toolbar-items>
+    <!-- <v-divider vertical></v-divider> -->
+  </div>
 </template>
 
 <script>

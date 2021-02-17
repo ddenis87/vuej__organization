@@ -43,11 +43,12 @@ export default {
   mounted() {
     let fieldInput = document.querySelector(`.content-editing .v-text-field__slot input`);
     if (!fieldInput) return;
-    setTimeout(() => {
-      fieldInput.setSelectionRange(0, 0);
-      fieldInput.select();
-      fieldInput.focus();
-    }, 10);
+    if (isSelected)
+      setTimeout(() => {
+        fieldInput.setSelectionRange(0, 0);
+        fieldInput.select();
+        fieldInput.focus();
+      }, 10);
   },
   methods: {
     eventKeyEnter(event) {
@@ -63,6 +64,7 @@ export default {
       this.$emit('next-element', {event: event});
     },
     eventKeyTab(event) {
+      // console.log(event);
       if (this.inputProperties.required && !this.isRequiredOff)
         if (!this.fieldValue) return;
       let sendOption = {

@@ -121,7 +121,7 @@ export default {
     activeMenu() {
       this.isMenu = false;
       this.formProperties = null;
-      this.focusedElement = null;
+      this.focusedElement = {};
       this.typeHeightNumber = 0;
       this.typeColumn = 'fixed';
       this.isFooter = false;
@@ -129,6 +129,7 @@ export default {
   },
   methods: {
     tableMount(data, tableProperties) {
+      this.focusedElement = {};
       this.formProperties = tableProperties;
       // console.log(data);
     },

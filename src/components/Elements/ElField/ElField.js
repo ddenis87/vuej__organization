@@ -62,7 +62,7 @@ export const ElField = {
     emitClearValue() { this.$emit('clear-value'); },
     emitInputValue() { this.$emit('input-value', this.fieldValue); },
     emitFocusField() { this.$emit('focus-field') },
-    emitBlurField() { console.log('blur element'); this.$emit('blur-field') },
+    emitBlurField() { this.$emit('blur-field') },
     // ----- ---------------------- //
   },
 }

@@ -31,6 +31,10 @@ export default {
     state.commit('SET_STATUS_PROCESSING', true);
     let filterString = state.getters.GET_FILTER_ALL(option.tableName);
     let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName) + filterString;
+
+    if ('addingElement' in option) {
+      addressApi += `&page_by_id=${option.addingElement.id}`;
+    }
     console.log(addressApi);
     
     axios
@@ -94,9 +98,10 @@ export default {
        axios
         .post(addressApi, option.formData)
         .then(response => {
+          console.log(response);
           resolve(response);
           state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
-          state.dispatch('REQUEST_DATA', {tableName: option.tableName});
+          state.dispatch('REQUEST_DATA', {tableName: option.tableName, addingElement: response.data});
         })
         .catch(err => {
           console.log(err);

@@ -1,7 +1,7 @@
 <template>
   <div class="el-button">
     <v-btn class="el-button__item"
-    :class="{'el-button__item_right': orientation}"
+           :class="{'el-button__item_right': orientation}"
            depressed
            dark
            small

@@ -1,13 +1,14 @@
 <template>
   <div class="el-button">
     <v-btn class="el-button__item" tabindex="1"
-          :class="{'el-button__item_right': orientation}"
+          :class="{'el-button__item_right': isLeftOrientation}"
            depressed
            dark
            small
            color="blue darken-1" 
            :height="isHeight"
-           @click="$emit('click')" @keydown="(event) => $emit('keydown', event)">
+           @click="$emit('click')" 
+           @keydown="(event) => $emit('keydown', event)">
       <slot></slot>
     </v-btn>
   </div>
@@ -21,7 +22,7 @@ export default {
     isOrientation: {type: String, default: 'right'},
   },
   computed: {
-    orientation() { return (this.isOrientation == 'left') ? true : false; },
+    isLeftOrientation() { return (this.isOrientation == 'left') ? true : false; },
   },
 }
 </script>

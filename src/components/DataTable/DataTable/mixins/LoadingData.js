@@ -14,6 +14,7 @@ export const LoadingData = {
     return {
       parentElement: null,
       parentElementEdge: 0,
+      isScroll: false,
     }
   },
   watch: {
@@ -49,6 +50,7 @@ export const LoadingData = {
     //     })
     // },
     eventScrollPagination() {
+      this.isScroll = !this.isScroll;
       let bootAnchorEdge = document.querySelector(`#${this.id}-boot-anchor`).getBoundingClientRect().bottom - 500;
       if (bootAnchorEdge < this.parentElementEdge) {
         this.parentElement.removeEventListener('scroll', this.eventScrollPagination);

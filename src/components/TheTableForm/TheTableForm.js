@@ -20,6 +20,11 @@ export const TheTableForm = {
     actionName: 'adding',
     focusedElement: Object,
   },
+  data() {
+    return {
+      fieldArray: null,
+    }
+  },
   computed: {
     fieldForm() { 
       let fieldForm = this.$store.getters[`DataTable/GET_OPTIONS`](this.tableName);
@@ -39,7 +44,40 @@ export const TheTableForm = {
   created() {
     this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, {tableName: this.tableName});
   },
+  mounted() {
+    this.fieldArray = Array.from(document.querySelectorAll('.table-form .el-field__item input[tabindex="1"]'));
+    // console.log(this.fieldArray);
+  },
   methods: {
+    // NAVIGATION
+    eventNextElement(event) {
+      let target = event.event.target;
+      let eventClick = new Event('click');
+      target.closest('.el-field').dispatchEvent(eventClick);
+      let currentFieldIndex = this.fieldArray.indexOf(target);
+      // console.log(currentFieldIndex);
+      if (currentFieldIndex + 1 == this.fieldArray.length) {
+        target.closest('.table-form').querySelector('.tabspace-end button').focus();
+        return;
+      }
+      setTimeout(() => {
+        document.querySelectorAll('.table-form .el-field__item input[tabindex="1"]')[currentFieldIndex + 1].focus();
+      }, 100);
+    },
+    eventKeydownAccept(event) {
+      switch(event.key) {
+        case 'Enter': {this.eventClickActionAccept(); break;}
+        case 'Tab': {
+          // console.log(event.target.closest('.table-form').querySelectorAll('.el-field__item input[tabindex="1"]'));
+          setTimeout(() => {
+            event.target.closest('.table-form').querySelectorAll('.el-field__item input[tabindex="1"]')[0].focus();
+          }, 100);
+          break;
+        }
+      }
+    },
+
+    // ACTIONS
     assingObject(base, added) {
       return Object.assign(base, added);
     },

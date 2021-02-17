@@ -1,7 +1,7 @@
 <template>
   <div class="body"
        @mouseover="eventMouseOver"
-       @mouseout="eventMouseOut">
+       @mouseout="eventMouseOut" @scroll="scrollBody">
 
     <!-- TOOLTIP -->
     <data-table-tooltip :is-show="isTooltipShow"
@@ -106,6 +106,8 @@ export default {
     isEditable: {type: Boolean, default: false},
     isExpansion: {type: Boolean, default: false},
     isMultiline: {type: Boolean, default: false},
+
+    isScroll: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -125,6 +127,16 @@ export default {
         this.isDataLoad = false;
       }
       return this.isDataLoad;
+    },
+  },
+  watch: {
+    isScroll() {
+      this.isTooltipShow = false;
+    },
+  },
+  methods: {
+    scrollBody() {
+      console.log('scroll');
     },
   },
 }

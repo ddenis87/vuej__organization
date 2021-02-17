@@ -127,10 +127,10 @@ export default {
       }, 10);
     },
     eventInputValue(event) {
-      console.log('input');
+      // console.log('input');
     },
     eventChangeValue(event) {
-      console.log('change');
+      // console.log('change');
       this.isChangeValue = true;
       this.emitInputValue();
     },

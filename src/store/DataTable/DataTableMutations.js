@@ -80,7 +80,7 @@ export default {
   },
   SET_FILTER_SORTING(state, option) {
     if (option.key == null) {
-      state[option.tableName].filterSorting = '&ordering=-id';
+      state[option.tableName].filterSorting = '';
       return;
     }
     let filterSorting = '&ordering=';
@@ -92,24 +92,37 @@ export default {
     state[option.tableName].listData = [];
     state[option.tableName].filterDefault['is_deleted'] = option.value;
   },
+  TOGGLE_MODE_ADDING(state, option) { state[option.tableName].isModeAdding = option.value; },
 
-  ACTION_EDITING_ELEMENT(state, option) { // editin column in table
-    let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
-    console.log(state[option.tableName].listData[index]);
-    state[option.tableName].listData[index][option.fieldName] = option.fieldValue;
+  DATA_ADDING_ELEMENT(state, option) {
+    let fieldTable = {};
+    for (let key of Object.keys(state[option.tableName].listOption)) fieldTable[key] = null;
+    if (option.recordId == -1) {
+      state[option.tableName].listData.unshift(fieldTable);
+    } else {
+      let indexElement = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
+      state[option.tableName].listData.splice(indexElement + 1, 0, fieldTable);
+    }
+    state[option.tableName].isModeAdding = true; // ПЕРЕВОДИМ СОСТОЯНИЕ ТАБЛИЦЫ В РЕЖИМ ДОБАВЛЕНИЯ
   },
 
-  ADDING_LIST_DATA(state, option) {
-    let newItem = {};
-    Object.assign(newItem, option.values);
-    console.log(newItem);
-    state[option.tableName].listData.unshift(newItem);
-  },
-  EDITING_LIST_DATA(state, option) { // editing record in form
-    let newItem = {};
-    Object.assign(newItem, option.values);
-    console.log(newItem);
-    let index = state[option.tableName].listData.findIndex(item => item.id == option.values.id);
-    state[option.tableName].listData.splice(index, 1, newItem);
-  },
+  // ACTION_EDITING_ELEMENT(state, option) { // editin column in table
+  //   let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
+  //   console.log(state[option.tableName].listData[index]);
+  //   state[option.tableName].listData[index][option.fieldName] = option.fieldValue;
+  // },
+
+  // ADDING_LIST_DATA(state, option) {
+  //   let newItem = {};
+  //   Object.assign(newItem, option.values);
+  //   console.log(newItem);
+  //   state[option.tableName].listData.unshift(newItem);
+  // },
+  // EDITING_LIST_DATA(state, option) { // editing record in form
+  //   let newItem = {};
+  //   Object.assign(newItem, option.values);
+  //   console.log(newItem);
+  //   let index = state[option.tableName].listData.findIndex(item => item.id == option.values.id);
+  //   state[option.tableName].listData.splice(index, 1, newItem);
+  // },
 }

@@ -17,13 +17,15 @@ class DataTableBase {
   };
   filterPrimitive = '';
   filterSearch = '';
-  filterSorting = '&ordering=-id';
+  filterSorting = '';
   filterExtended = '';
 
   relatedModelView = '' // шаблон представление таблицы в других таблицах, компонентах, и т.д.
   listOption = {};
   listFieldObject = [];
   listData = [];
+
+  isModeAdding = false; // режим добавления елемента в таблицу
 }
 
 export default {

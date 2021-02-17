@@ -23,6 +23,8 @@
                        :is-editable="isEditable"
                        :is-expansion="isExpansion"
                        :is-multiline="isMultiline"
+                       
+                       :is-scroll="isScroll"
                        @event-row-focused="eventRowFocused"
                        @event-row-selected="eventRowSelected"
                        @event-row-keydown="eventRowKeydown"

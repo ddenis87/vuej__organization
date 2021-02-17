@@ -2,6 +2,7 @@
   <div class="data-table-control">
     <v-toolbar height="40" flat>
       <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="eventClickAdding">Добавить</el-button-icon>
+      <el-button-icon icon="mdi-table-row-plus-after" :disabled="!isMountTable" @click="eventClickAddingTable">Добавить строку</el-button-icon>
       <el-button-icon icon="mdi-pencil" :disabled="!isFocusedElement" @click="eventClickEditing">Изменить</el-button-icon>
       <v-divider vertical></v-divider>
       <el-button-icon :icon="(isMarkDeleted) ? 'mdi-text-box-remove-outline' : 'mdi-text-box-remove-outline'" 
@@ -10,6 +11,9 @@
       <el-button-icon icon="mdi-delete-variant"
                       :icon-color="(isMarkDeleted) ? 'blue' : ''"
                       @click="eventActionShowMarkDeleting">{{ (isMarkDeleted) ? 'Выйти из корзины' : 'Показать помеченные на удаление' }}</el-button-icon>
+      <!-- <data-table-control-actions :is-mount-table="isMountTable"
+                                  :focused-element="focusedElementForm"></data-table-control-actions> -->
+      <v-divider vertical></v-divider>
       <v-spacer></v-spacer>
 
       <!-- VIEW TABLE -->
@@ -25,6 +29,7 @@
                                @toggle-footer="$emit('toggle-footer')"
                                @toggle-multiline="$emit('toggle-multiline')"></data-table-control-view>
       <!-- FILTER TABLE -->
+      <v-divider vertical></v-divider>
       <el-button-icon icon="mdi-filter-outline" 
                       :icon-color="(isFilterExtendedActive) ? 'blue' : ''"
                       :disabled="!isMountTable"
@@ -69,6 +74,7 @@ import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
 
 import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
 import DataTableControlView from './DataTableControlView.vue';
+// import DataTableControlActions from './DataTableControlActions.vue';
 
 export default {
   name: 'DataTableControl',
@@ -77,6 +83,7 @@ export default {
     DialogBarRight,
     ElButtonIcon,
     DataTableControlView,
+    // DataTableControlActions,
   },
   props: {
     focusedElement: null,
@@ -133,6 +140,15 @@ export default {
     eventClickAdding() {
       this.focusedElementForm = null;
       this.isOpenDialog = true;
+    },
+    eventClickAddingTable() {
+      console.log(this.focusedElement);
+      let sendOption = {
+        tableName: this.formProperties.tableName,
+        recordId: ('id' in this.focusedElement) ? this.focusedElement.id : -1,
+      }
+      console.log(sendOption);
+      this.$store.commit('DataTable/DATA_ADDING_ELEMENT', sendOption);
     },
     eventClickEditing() {
       this.isOpenDialog = true;
