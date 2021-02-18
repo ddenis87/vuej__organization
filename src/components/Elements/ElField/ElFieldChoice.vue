@@ -1,5 +1,4 @@
 <template>
-  <!-- @click.stop -- no slide list -->
   <div class="el-field el-field-choice"
        :class="{'el-field_single-line': isSingleLine, 
                 'el-field_hide-message': isHideMessage,
@@ -21,8 +20,8 @@
                     :item-value="'value'"
                     :rules="(fieldRequired) ? [rules.required] : []"
                     v-model="fieldValue"
-                    @click.stop
                     @click:clear="eventClearValue"
+                    @click.stop
                     @input="eventInputValue"
                     @change="eventChangeValue"
                     
@@ -30,12 +29,8 @@
                     @keydown.tab="eventKeyTab"
                     @keydown.esc="eventKeyEsc"
                     @keydown.stop="eventKeydown"
-                    @update:list-index="eventUpdateList"
                     @focus="eventFocusField"
                     @blur="eventBlurField">
-      <!-- <template v-slot:append-outer v-if="isBtnClear">
-        <el-btn-icon-small icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
-      </template> -->
     </v-autocomplete>
   </div>
 </template>
@@ -68,12 +63,6 @@ export default {
     }, 10);
   },
   methods: {
-    eventUpdateList() {
-      // console.log('update');
-    },
-    eventInputValue(event) {
-      // console.log(event);
-    },
     eventChangeValue(event) {
       this.isChangeValue = true;
       this.emitInputValue();
@@ -86,17 +75,8 @@ export default {
       this.emitKeydown(event);
     },
     eventKeyEnter(event) {
-      if (this.inputProperties.required && !this.isRequiredOff) {
-        if (!this.fieldValue) {
-          this.isEmit = true;
-          setTimeout(() => {
-            event.target.focus();
-            this.isEmit = false;
-          }, 100);
-          return;
-        }
-      }
-        
+      if (this.checkRequiredField(event)) return;
+
       if (this.isChangeValue) {
         let sendOption = {
           key: event.key,
@@ -113,27 +93,6 @@ export default {
         this.$emit('next-element', {event: event});
       }
     },
-    eventKeyTab(event) {
-      event.preventDefault();
-      if (this.inputProperties.required && !this.isRequiredOff) {
-        if (!this.fieldValue) {
-          this.isEmit = true;
-          setTimeout(() => {
-            event.target.focus();
-            this.isEmit = false;
-          }, 100);
-          return;
-        }
-      }
-      let sendOption = {
-        key: event.key,
-        shift: event.shiftKey,
-        value: this.fieldValue,
-        event: event,
-      }
-      this.isEmit = true;
-      this.emitKeyTab(sendOption);
-    }
   },
 }
 </script>

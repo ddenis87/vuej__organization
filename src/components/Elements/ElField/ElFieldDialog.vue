@@ -33,12 +33,6 @@
                     @keydown.stop="eventKeydown"
                     @focus="eventFocusField"
                     @blur="eventBlurField">
-      <!-- <template v-slot:append>
-        <el-btn-icon-small tabindex="2" icon="mdi-dots-horizontal" no-tooltip @click="eventOpenDialog"></el-btn-icon-small>
-      </template> -->
-      <!-- <template v-slot:append-outer v-if="isBtnClear">
-        <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
-      </template> -->
     </v-autocomplete>
     <dialog-full-page :is-dialog-name="dialogName" 
                       :is-dialog-show="isDialogShow" 
@@ -126,9 +120,6 @@ export default {
         this.fieldElementDOM.select();
       }, 10);
     },
-    eventInputValue(event) {
-      // console.log('input');
-    },
     eventChangeValue(event) {
       // console.log('change');
       this.isChangeValue = true;
@@ -142,16 +133,7 @@ export default {
       this.emitKeydown(event);
     },
     eventKeyEnter(event) {
-      if (this.inputProperties.required && !this.isRequiredOff) {
-        if (!this.fieldValue) {
-          this.isEmit = true;
-          setTimeout(() => {
-            event.target.focus();
-            this.isEmit = false;
-          }, 100);
-          return;
-        }
-      }
+      if (this.checkRequiredField(event)) return;
 
       if (this.isChangeValue) {
         let sendOption = {
@@ -168,27 +150,6 @@ export default {
         this.isEmit = true;
         this.$emit('next-element', {event: event});
       }
-    },
-    eventKeyTab(event) {
-      event.preventDefault();
-      if (this.inputProperties.required && !this.isRequiredOff) {
-        if (!this.fieldValue) {
-          this.isEmit = true;
-          setTimeout(() => {
-            event.target.focus();
-            this.isEmit = false;
-          }, 100);
-          return;
-        }
-      }
-      let sendOption = {
-        key: event.key,
-        shift: event.shiftKey,
-        value: this.fieldValue,
-        event: event,
-      }
-      this.isEmit = true;
-      this.emitKeyTab(sendOption);
     },
     eventCloseDialog() {
       this.isDialogShow = false;

@@ -193,6 +193,7 @@ export default {
       this.emitKeyEnter(sendOption);
       this.$emit('next-element', {event: event});
     },
+    
     eventKeyTab(event) {
       if (this.inputProperties.required && !this.isRequiredOff)
         if (this.fieldValue.length != 10) return;
@@ -257,7 +258,7 @@ export default {
       }
     },
 
-    emitInputValue(value) { this.$emit('input-value', value); },
+    // emitInputValue(value) { this.$emit('input-value', value); },
   },
 }
 </script>

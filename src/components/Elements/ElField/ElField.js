@@ -41,7 +41,38 @@ export const ElField = {
     inputValue() { this.fieldValue = this.inputValue; }, 
   },
   methods: {
+    // METHODS ---------------------//
+    eventKeyTab(event) {
+      if (this.checkRequiredField(event)) return;
+      
+      let sendOption = {
+        key: event.key,
+        shift: event.shiftKey,
+        value: this.fieldValue,
+        event: event,
+      }
+      this.isEmit = true;
+      this.emitKeyTab(sendOption);
+    },
+    checkRequiredField(event) {
+      if (this.inputProperties.required && !this.isRequiredOff) {
+        if (event.key == 'Tab') event.preventDefault();
+        if (!this.fieldValue) {
+          this.isEmit = true;
+          setTimeout(() => {
+            event.target.focus();
+            this.isEmit = false;
+          }, 100);
+          return true;
+        }
+      }
+      return false;
+    },
+    // ------- ---------------------//
+
     // EVENTS --------------------- //
+    eventInputValue() { this.emitInputValue(); },
+
     eventKeyEsc() { this.isEmit = true; this.emitKeyEsc(); },
     eventClearValue() {
       this.fieldValue = null;
@@ -55,12 +86,13 @@ export const ElField = {
     // ------ --------------------- //
 
     // EMITS ---------------------- //
+    emitInputValue(option = this.fieldValue) { this.$emit('input-value', option); },
     emitKeydown(event) { this.$emit('keydown-any', event); },
     emitKeyEnter(option = null) { this.$emit('keydown-enter', option); },
     emitKeyTab(option = null) { this.$emit('keydown-tab', option); },
     emitKeyEsc() { this.$emit('keydown-esc'); },
     emitClearValue() { this.$emit('clear-value'); },
-    emitInputValue() { this.$emit('input-value', this.fieldValue); },
+    
     emitFocusField() { this.$emit('focus-field') },
     emitBlurField() { this.$emit('blur-field') },
     // ----- ---------------------- //

@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     editingComponent() {
-      console.log(this.properties);
+      // console.log(this.properties);
       if (this.properties.columnProperties && !this.isComponentNull) {
         switch(this.properties.columnProperties.type) {
           case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');
@@ -72,7 +72,7 @@ export default {
       }
     },
     async editingAccepted(option) {
-      console.log(option);
+      // console.log(option);
       if (this.isModeAdding) {
         this.editingAcceptedStore(option);
         return;
@@ -107,7 +107,7 @@ export default {
           bFormData.set(key, newCurrentValue);
         }
       }
-      console.log(this.properties.columnProperties.value, ' - ', newValue);
+      // console.log(this.properties.columnProperties.value, ' - ', newValue);
       bFormData.set(this.properties.columnProperties.value, newValue);
       
       sendOption.formData = bFormData;
@@ -129,8 +129,8 @@ export default {
     },
 
     editingAcceptedStore(option) {
-      console.log(option);
-      console.log(this.properties);
+      // console.log(option);
+      // console.log(this.properties);
       let sendOption = {
         tableName: this.properties.tableName,
         fieldName: this.properties.columnProperties.value,

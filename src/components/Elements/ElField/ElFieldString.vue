@@ -17,15 +17,13 @@
                   :rules="(fieldRequired) ? [rules.required] : []"
                   v-model="fieldValue"
                   @click:clear="eventClearValue"
+                  @click.stop
                   @input="eventInputValue"
                   @keydown.enter="eventKeyEnter"
                   @keydown.tab="eventKeyTab"
                   @keydown.esc="eventKeyEsc"
                   @keydown.stop
                   @blur="eventBlurField">
-      <!-- <template v-slot:append-outer v-if="isBtnClear">
-        <el-btn-icon-small tabindex="2" icon="mdi-close" no-tooltip @click="eventClearValue"></el-btn-icon-small>
-      </template> -->
     </v-text-field>
   </div>
 </template>
@@ -52,16 +50,8 @@ export default {
   },
   methods: {
     eventKeyEnter(event) {
-      if (this.inputProperties.required && !this.isRequiredOff) {
-        if (!this.fieldValue) {
-          this.isEmit = true;
-          setTimeout(() => {
-            event.target.focus();
-            this.isEmit = false;
-          }, 100);
-          return;
-        }
-      }
+      if (this.checkRequiredField(event)) return;
+
       let sendOption = {
         key: event.key,
         value: this.fieldValue,
@@ -70,30 +60,6 @@ export default {
       this.isEmit = true;
       this.emitKeyEnter(sendOption);
       this.$emit('next-element', {event: event});
-    },
-    eventKeyTab(event) {
-      event.preventDefault();
-      if (this.inputProperties.required && !this.isRequiredOff) {
-        if (!this.fieldValue) {
-          this.isEmit = true;
-          setTimeout(() => {
-            event.target.focus();
-            this.isEmit = false;
-          }, 100);
-          return;
-        }
-      }
-      let sendOption = {
-        key: event.key,
-        shift: event.shiftKey,
-        value: this.fieldValue,
-        event: event,
-      }
-      this.isEmit = true;
-      this.emitKeyTab(sendOption);
-    },
-    eventInputValue() {
-      this.emitInputValue();
     },
   },
 }
