@@ -3,74 +3,74 @@
     <v-form ref="formAction">
       <v-container fluid>
         <v-row dense>
-          <v-col cols="3">
+          <v-col cols="3" >
             <el-field-date :input-properties="fieldForm.registry_date" 
                            v-model="fieldFormValue.registry_date"
                            @next-element="eventNextElement"></el-field-date>
           </v-col>
         </v-row>
         <v-row dense>
-          <v-col cols="2">
-            <el-field-choice :inputProperties="fieldForm.organization_type" 
+          <v-col cols="3">
+            <el-field-choice :inputProperties="fieldForm.organization_type"
                              v-model="fieldFormValue.organization_type"
                              @next-element="eventNextElement"></el-field-choice>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="3">
             <el-field-choice :inputProperties="fieldForm.institution_type" 
                              v-model="fieldFormValue.institution_type"
                              @next-element="eventNextElement"></el-field-choice>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="3">
             <el-field-number :inputProperties="fieldForm.institution_code" 
                              v-model="fieldFormValue.institution_code"
                              @next-element="eventNextElement"></el-field-number>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="3">
             <el-field-choice :inputProperties="fieldForm.industry_typing" 
                              v-model="fieldFormValue.industry_typing"
                              @next-element="eventNextElement"></el-field-choice>
           </v-col>
         </v-row>
         <v-row dense>
-          <v-col cols="10">
+          <v-col cols="12">
             <el-field-string :input-properties="fieldForm.title"
                              v-model="fieldFormValue.title"
                              @next-element="eventNextElement"></el-field-string>
           </v-col>
         </v-row>
         <v-row dense>
-          <v-col cols="2">
+          <v-col cols="4">
             <el-field-string :inputProperties="fieldForm.inn" 
                              v-model="fieldFormValue.inn"
                              @next-element="eventNextElement"></el-field-string>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="4">
             <el-field-string :inputProperties="fieldForm.kpp" 
                              v-model="fieldFormValue.kpp"
                              @next-element="eventNextElement"></el-field-string>
           </v-col>
-          <v-col cols="2">
-            <el-field-choice :inputProperties="fieldForm.budget_level" 
+          <v-col cols="4">
+            <el-field-choice :inputProperties="fieldForm.budget_level"
                              v-model="fieldFormValue.budget_level"
                              @next-element="eventNextElement"></el-field-choice>
           </v-col>
         </v-row>
         <v-row dense>
-          <v-col cols="8">
+          <v-col cols="12">
             <el-field-choice :inputProperties="fieldForm.egrul_status" 
                              v-model="fieldFormValue.egrul_status"
                              @next-element="eventNextElement"></el-field-choice>
           </v-col>
         </v-row>
         <v-row dense>
-          <v-col cols="6">
+          <v-col cols="12">
             <el-field-choice :inputProperties="fieldForm.rubpnubp_status" 
                              v-model="fieldFormValue.rubpnubp_status"
                              @next-element="eventNextElement"></el-field-choice>
           </v-col>
         </v-row>
         <v-row dense>
-          <v-col cols="8">
+          <v-col cols="12">
             <el-field-dialog :inputProperties="assingObject(fieldForm.bk, {related_model_view: '{head_code} - {head_name}'})"
                              v-model="fieldFormValue.bk"
                              @next-element="eventNextElement"></el-field-dialog>

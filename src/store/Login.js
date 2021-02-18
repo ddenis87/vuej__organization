@@ -39,6 +39,7 @@ export default {
             password: option.password
           })
           .then(response => {
+            console.log(response);
             state.commit('SET_USER_TOKEN_ACCESS', response.data.token);
             resolve(response);
           })

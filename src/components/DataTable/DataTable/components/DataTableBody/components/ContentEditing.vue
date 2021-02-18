@@ -1,5 +1,6 @@
 <template>
-  <div class="content-editing">
+  <div class="content-editing"
+       :class="{'content-editing_required': this.properties.columnProperties.required}">
     <component :is="editingComponent"
                :input-properties="propertiesComponent"
                :input-value="propertiesComponent.text"
@@ -37,7 +38,7 @@ export default {
   },
   computed: {
     editingComponent() {
-      // console.log(this.isComponentNull);
+      console.log(this.properties);
       if (this.properties.columnProperties && !this.isComponentNull) {
         switch(this.properties.columnProperties.type) {
           case 'string': return () => import('@/components/Elements/ElField/ElFieldString.vue');
@@ -70,7 +71,7 @@ export default {
         return;
       }
     },
-    editingAccepted(option) {
+    async editingAccepted(option) {
       console.log(option);
       if (this.isModeAdding) {
         this.editingAcceptedStore(option);
@@ -108,14 +109,23 @@ export default {
       }
       console.log(this.properties.columnProperties.value, ' - ', newValue);
       bFormData.set(this.properties.columnProperties.value, newValue);
+      
       sendOption.formData = bFormData;
       // console.log(sendOption);
-      this.$store.dispatch('DataTable/REQUEST_DATA_UPDATE_RECORD_ELEMENT', sendOption);
       let editableElement = document.querySelector('.body-column_editing');
-      let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: option.key, keyShift: option.shift } });
-      editableElement.dispatchEvent(eventEditingAccepted);
-      this.isComponentNull = true;
-      if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
+      await this.$store.dispatch('DataTable/REQUEST_DATA_UPDATE_RECORD_ELEMENT', sendOption)
+        .then(() => {
+          let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: option.key, keyShift: option.shift } });
+          editableElement.dispatchEvent(eventEditingAccepted);
+        })
+        .catch(() => {
+          let eventEditingCanceled = new CustomEvent('editing-canceled')
+          editableElement.dispatchEvent(eventEditingCanceled);
+        })
+        .finally(() => {
+          this.isComponentNull = true;
+          if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
+        });
     },
 
     editingAcceptedStore(option) {
@@ -147,5 +157,8 @@ export default {
 .content-editing {
   display: flex;
   margin-top: -9.5px;
+  &_required {
+    border-bottom: thin dashed red;
+  }
 }
 </style>

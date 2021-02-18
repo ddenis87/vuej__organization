@@ -139,19 +139,25 @@ export default {
     
     addressApi += `&id=${option.recordId}`;
     console.log(addressApi);
-    axios
-      .get(addressApi)
-      .then(response => {
-        let mutationOptions = {
-          tableName: option.tableName,
-          data: response.data,
-          clear: false,
-        }
-        console.log(mutationOptions);
-        state.commit('SET_DATA_RECORD', mutationOptions);
-      })
-      .catch(error => console.log(error))
-      .finally(() => state.commit('SET_STATUS_PROCESSING'));
+    return new Promise((resolve, reject) => {
+      axios
+        .get(addressApi)
+        .then(response => {
+          let mutationOptions = {
+            tableName: option.tableName,
+            data: response.data,
+            clear: false,
+          }
+          console.log(mutationOptions);
+          state.commit('SET_DATA_RECORD', mutationOptions);
+          resolve(true);
+        })
+        .catch(error => {
+          console.log(error);
+          reject(false);
+        })
+        .finally(() => state.commit('SET_STATUS_PROCESSING'));
+    });
   },
   REQUEST_DATA_UPDATE_RECORD_ELEMENT(state, option) {
     state.commit('SET_STATUS_PROCESSING', true);
@@ -162,10 +168,8 @@ export default {
        axios
         .put(addressApi, option.formData)
         .then(response => {
-          resolve(response);
-          // state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
-          // state.dispatch('REQUEST_DATA', {tableName: option.tableName});
-          state.dispatch('REQUEST_DATA_UPDATE_RECORD', {tableName: option.tableName, recordId: option.recordId});
+          state.dispatch('REQUEST_DATA_UPDATE_RECORD', {tableName: option.tableName, recordId: option.recordId})
+            .then(() => resolve(response));
         })
         .catch(err => {
           console.log(err);

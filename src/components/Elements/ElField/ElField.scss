@@ -1,29 +1,16 @@
 .el-field {
   width: 100%;
   padding-top: 8px;
-  // border: thin solid grey;
   &_single-line {
     padding-top: 0px;
   }
-  &_hide-message {
-
-  }
-  &_hide-underline {
-    
-      
-    
-  }
   &__item {
     font-size: 14px;
-    // .v-text-field.v-text-field--solo.v-input--dense .v-input__append-outer {
-    //     margin-top: 4px;
-    //   }
   }
 }
 
 ::v-deep {
   .v-input__control {
-    // padding-top: 4px !important;
     .v-input__slot {
       padding: 0px !important;
     }
@@ -35,16 +22,9 @@
     margin-top: 2px !important;
     // width: 50px;
     cursor: pointer;
-    .v-input__icon {
-      // justify-content: flex-start;
-    }
   }
   .v-input__append-outer {
     margin: 0px;
     margin-top: -4px;
-    // margin-left: -28px;
   }
-  // .v-text-field.v-text-field--solo.v-input--dense .v-input__append-outer {
-  //   margin-top: 4px;
-  // }
 }
