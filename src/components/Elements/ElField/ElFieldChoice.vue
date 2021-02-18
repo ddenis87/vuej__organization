@@ -49,25 +49,14 @@ export default {
     }
   },
   computed: {
-    fieldItems() { 
-      return this.inputProperties.choices;
-    },
-  },
-  mounted() {
-    let fieldInput = document.querySelector(`.content-editing .v-select__slot input`);
-    if (!fieldInput) return;
-    setTimeout(() => {
-      fieldInput.setSelectionRange(0, 0);
-      fieldInput.select();
-      fieldInput.focus();
-    }, 10);
+    fieldItems() { return this.inputProperties.choices; },
   },
   methods: {
     eventChangeValue(event) {
       this.isChangeValue = true;
       this.emitInputValue();
     },
-    eventKeydown(event) {
+    eventKeydown(event) { // ???????
       if (event.key == 'Delete' || event.key == 'Backspace') {
         this.fieldValue = null;
         this.emitInputValue();
@@ -85,13 +74,14 @@ export default {
         }
         this.isEmit = true;
         this.emitKeyEnter(sendOption);
-        this.$emit('next-element', sendOption);
-        return;
+        // this.emitNextElement(event);
+        // return;
       }
       if (this.fieldValue == null) {
         this.isEmit = true;
-        this.$emit('next-element', {event: event});
+        // this.emitNextElement(event);
       }
+      this.emitNextElement(event);
     },
   },
 }

@@ -85,15 +85,6 @@ export default {
       this.fieldValueDate = (this.inputValue) ? this.inputValue : null;
     },
   },
-  mounted() {
-    setTimeout(() => {
-      if (this.isSelected) {
-        document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
-        document.querySelector(`.content-editing .v-text-field__slot input`).select();
-        document.querySelector(`.content-editing .v-text-field__slot input`).focus();
-      }
-    }, 10);
-  },
   methods: {
     eventOpenDialog(event) {
       if (event.type == 'keydown') {

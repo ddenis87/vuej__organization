@@ -90,19 +90,6 @@ export default {
       return () => import(`@/components/TheTable/TheTable${componentForm}`);
     }
   },
-  watch: {
-    // inputValue() { this.fieldValue = (typeof(this.inputValue == 'object') && this.inputValue != null) ? this.inputValue.id : this.inputValue; }, 
-  },
-  mounted() {
-    let fieldInput = document.querySelector(`.content-editing .v-select__slot input`);
-    if (!fieldInput) return;
-    if (this.isSelected) {
-      setTimeout(() => {
-        fieldInput.select();
-        fieldInput.focus();
-      }, 10);
-    }
-  },
   methods: {
     eventOpenDialog(event) {
       console.log(event);
@@ -125,7 +112,7 @@ export default {
       this.isChangeValue = true;
       this.emitInputValue();
     },
-    eventKeydown(event) {
+    eventKeydown(event) { // ???????
       if (event.key == 'Delete' || event.key == 'Backspace') {
         this.fieldValue = null;
         this.emitInputValue();

@@ -36,9 +36,27 @@ export const ElField = {
   computed: {
     fieldLabel() { if (!this.isHideLabel) return this.inputProperties.label; return; },
     fieldRequired() { return (this.inputProperties.required && !this.isRequiredOff) ? true : false; },
+    fieldMaxLength() { return ('max_length' in this.inputProperties) ? this.inputProperties['max_length'] : Infinity; },
   },
   watch: {
     inputValue() { this.fieldValue = this.inputValue; }, 
+  },
+  mounted() {
+    let inputElement = null;
+    switch (this.inputProperties.type) {
+      case 'string':
+      case 'integer': 
+      case 'date':
+      case 'datetime': inputElement = document.querySelector(`.content-editing .v-text-field__slot input`); break;
+      case 'choice': 
+      case 'field': inputElement = document.querySelector(`.content-editing .v-select__slot input`); break;
+    };
+    if (!this.isSelected) return;
+    setTimeout(() => {
+      inputElement.setSelectionRange(0, 0);
+      inputElement.select();
+      inputElement.focus();
+    }, 10);
   },
   methods: {
     // METHODS ---------------------//
@@ -93,6 +111,8 @@ export const ElField = {
     emitKeyEsc() { this.$emit('keydown-esc'); },
     emitClearValue() { this.$emit('clear-value'); },
     
+    emitNextElement(option) { this.$emit('next-element', {event: option}); },
+
     emitFocusField() { this.$emit('focus-field') },
     emitBlurField() { this.$emit('blur-field') },
     // ----- ---------------------- //

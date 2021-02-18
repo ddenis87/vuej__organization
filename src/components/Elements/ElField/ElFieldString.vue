@@ -35,19 +35,6 @@ export default {
   mixins: [
     ElField,
   ],
-  computed: {
-    fieldMaxLength() { return ('max_length' in this.inputProperties) ? this.inputProperties['max_length'] : Infinity; },
-  },
-  mounted() {
-    let fieldInput = document.querySelector(`.content-editing .v-text-field__slot input`);
-    if (!fieldInput) return;
-    if (this.isSelected)
-      setTimeout(() => {
-        fieldInput.setSelectionRange(0, 0);
-        fieldInput.select();
-        fieldInput.focus();
-      }, 10);
-  },
   methods: {
     eventKeyEnter(event) {
       if (this.checkRequiredField(event)) return;
@@ -59,7 +46,7 @@ export default {
       }
       this.isEmit = true;
       this.emitKeyEnter(sendOption);
-      this.$emit('next-element', {event: event});
+      this.emitNextElement(event);
     },
   },
 }

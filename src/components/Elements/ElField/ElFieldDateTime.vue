@@ -89,15 +89,6 @@ export default {
       this.fieldValueTime = (this.inputValue) ? this.inputValue.split('T')[1].slice(0, 5) : null;
     }
   },
-  mounted() {
-    setTimeout(() => {
-      if (this.isSelected) {
-        document.querySelector(`.content-editing .v-text-field__slot input`).setSelectionRange(0, 0);
-        document.querySelector(`.content-editing .v-text-field__slot input`).select();
-        document.querySelector(`.content-editing .v-text-field__slot input`).focus();
-      }
-    }, 10);
-  },
   methods: {
     eventOpenDialog(event) {
       if (event.type == 'keydown') {
