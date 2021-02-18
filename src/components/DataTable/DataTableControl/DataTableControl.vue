@@ -148,7 +148,7 @@ export default {
         recordId: ('id' in this.focusedElement) ? this.focusedElement.id : -1,
       }
       console.log(sendOption);
-      this.$store.commit('DataTable/DATA_ADDING_ELEMENT', sendOption);
+      this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
     },
     eventClickEditing() {
       this.isOpenDialog = true;

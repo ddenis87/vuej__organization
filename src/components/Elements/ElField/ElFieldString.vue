@@ -43,7 +43,7 @@ export default {
   mounted() {
     let fieldInput = document.querySelector(`.content-editing .v-text-field__slot input`);
     if (!fieldInput) return;
-    if (isSelected)
+    if (this.isSelected)
       setTimeout(() => {
         fieldInput.setSelectionRange(0, 0);
         fieldInput.select();

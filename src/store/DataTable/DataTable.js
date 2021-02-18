@@ -26,6 +26,10 @@ class DataTableBase {
   listData = [];
 
   isModeAdding = false; // режим добавления елемента в таблицу
+  modeAdding = {
+    status: false,
+    index: null,
+  }
 }
 
 export default {

@@ -13,7 +13,7 @@
     </div>
 
     <div class="data-table__body">
-      <data-table-body :id="`data-table-${id}`"
+      <data-table-body :id="id"
                        :table-name="properties.tableName"
                        :template="computedTemplateTable"
                        :type-height="typeHeight"

@@ -92,6 +92,7 @@ export default {
   },
   REQUEST_DATA_ADDING(state, option) {
     state.commit('SET_STATUS_PROCESSING', true);
+    state.commit('SET_CLEAR_NEXT_PREV_LINK', {tableName: option.tableName});
     let addressApi = state.getters.GET_ADDRESS_API('post', option.tableName);
     console.log(addressApi);
     return new Promise((resolve, reject) => {

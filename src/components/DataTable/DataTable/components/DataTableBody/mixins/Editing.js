@@ -56,8 +56,13 @@ export const Editing = {
           let nextEditableElement = null;
           if (event.detail.keyShift) nextEditableElement = event.target.previousElementSibling;
           else nextEditableElement = event.target.nextElementSibling;
+          console.log(nextEditableElement);
           this.switchDecorationToDisplay();
           event.target.classList.remove('body-column_focus');
+          if (!nextEditableElement) {
+            this.editingAcceptedNewElement();
+            return;
+          }
           setTimeout(() => {
             let nextEventDblclickToElement = new Event('dblclick', {bubbles: false});
             nextEditableElement.focus();
@@ -66,6 +71,31 @@ export const Editing = {
           break;
         }
       }
+    },
+
+    editingAcceptedNewElement() {
+      let index = this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName);
+      let sendOption = {
+        tableName: this.tableName,
+      };
+      let bFormData = new FormData();
+      for (let key of Object.keys(this.items[index])) {
+        if (this.items[index][key]) {
+          let newCurrentValue = null;
+          // console.log(this.items[index][key]);
+          if (typeof(this.items[index][key]) == 'object' && this.items[index][key] != null) {
+            if ('id' in this.items[index][key]) newCurrentValue = this.items[index][key].id;
+            else newCurrentValue = this.items[index][key].value;
+          } else {
+            newCurrentValue = this.items[index][key];
+          } 
+
+          bFormData.set(`${key}`, `${newCurrentValue}`);
+        }
+      };
+      console.log(sendOption);
+      sendOption.formData = bFormData;
+      this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
     },
   }
 }

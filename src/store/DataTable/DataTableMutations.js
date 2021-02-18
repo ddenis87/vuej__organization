@@ -2,6 +2,11 @@ import Vue from 'vue';
 export default {
   SET_STATUS_PROCESSING(state, status = false) { state.statusProcessing = status; },
 
+  SET_CLEAR_NEXT_PREV_LINK(state, option) {
+    state[option.tableName].next = null;
+    state[option.tableName].previous = null;
+  },
+
   SET_OPTIONS(state, option) {
     state[option.tableName].listOption = option.data;
     for (let key of Object.keys(option.data)) {
@@ -10,10 +15,12 @@ export default {
     state[option.tableName].description = option.description;
   },
   SET_DATA(state, option) {
+
     if (option.clear == true) state[option.tableName].listData = [];
     state[option.tableName].countTotal = option.data.count;
     state[option.tableName].next = option.data.next;
     state[option.tableName].previous = option.data.previous;
+    console.log(state[option.tableName]);
     state[option.tableName].listFieldObject.forEach(fieldObject => {
       let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
       option.data.results.forEach(element => {
@@ -92,19 +99,40 @@ export default {
     state[option.tableName].listData = [];
     state[option.tableName].filterDefault['is_deleted'] = option.value;
   },
-  TOGGLE_MODE_ADDING(state, option) { state[option.tableName].isModeAdding = option.value; },
+  TOGGLE_MODE_ADDING(state, option) {
+    state[option.tableName].modeAdding.status = option.status;
+    state[option.tableName].modeAdding.index = option.index;
+  },
 
-  DATA_ADDING_ELEMENT(state, option) {
+  // ---------------------------------------------------------------------------------------------------
+  DATA_STORE_ADDING_ELEMENT(state, option) {  // ADDING EMPTY LINE IN TABLE
     let fieldTable = {};
+    let indexElement = 0;
     for (let key of Object.keys(state[option.tableName].listOption)) fieldTable[key] = null;
     if (option.recordId == -1) {
       state[option.tableName].listData.unshift(fieldTable);
+      state[option.tableName].modeAdding.status = true;
+      state[option.tableName].modeAdding.index = indexElement;
     } else {
-      let indexElement = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
+      indexElement = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
       state[option.tableName].listData.splice(indexElement + 1, 0, fieldTable);
+      state[option.tableName].modeAdding.status = true; // ПЕРЕВОДИМ СОСТОЯНИЕ ТАБЛИЦЫ В РЕЖИМ ДОБАВЛЕНИЯ
+      state[option.tableName].modeAdding.index = indexElement + 1; // ИНДЕКС ДОБАВЛЯЕМОГО ЭЛЕМЕНТА
     }
-    state[option.tableName].isModeAdding = true; // ПЕРЕВОДИМ СОСТОЯНИЕ ТАБЛИЦЫ В РЕЖИМ ДОБАВЛЕНИЯ
+    
   },
+  DATA_STORE_ADDING_ELEMENT_ITEM(state, option) { // ADDING ELEMENT ITEM IN LINE STORE
+    let indexElement = state[option.tableName].modeAdding.index;
+    state[option.tableName].listData[indexElement][option.fieldName] = option.value;
+  },
+  DATA_STORE_DELETING_ELEMENT(state, option) { // DELETE LINE TABLE
+    state[option.tableName].listData.splice(state[option.tableName].modeAdding.index, 1);
+    state[option.tableName].modeAdding.status = false;
+    state[option.tableName].modeAdding.index = null;
+  },
+
+  // ---------------------------------------------------------------------------------------------------
+
 
   // ACTION_EDITING_ELEMENT(state, option) { // editin column in table
   //   let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);

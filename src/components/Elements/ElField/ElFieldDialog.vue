@@ -142,8 +142,17 @@ export default {
       this.emitKeydown(event);
     },
     eventKeyEnter(event) {
-      if (this.inputProperties.required && !this.isRequiredOff)
-        if (!this.fieldValue) return;
+      if (this.inputProperties.required && !this.isRequiredOff) {
+        if (!this.fieldValue) {
+          this.isEmit = true;
+          setTimeout(() => {
+            event.target.focus();
+            this.isEmit = false;
+          }, 100);
+          return;
+        }
+      }
+
       if (this.isChangeValue) {
         let sendOption = {
           key: event.key,
@@ -161,8 +170,17 @@ export default {
       }
     },
     eventKeyTab(event) {
-      if (this.inputProperties.required && !this.isRequiredOff)
-        if (!this.fieldValue) return;
+      event.preventDefault();
+      if (this.inputProperties.required && !this.isRequiredOff) {
+        if (!this.fieldValue) {
+          this.isEmit = true;
+          setTimeout(() => {
+            event.target.focus();
+            this.isEmit = false;
+          }, 100);
+          return;
+        }
+      }
       let sendOption = {
         key: event.key,
         shift: event.shiftKey,

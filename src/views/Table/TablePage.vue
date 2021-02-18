@@ -71,6 +71,7 @@
                    @table-mount="tableMount"
                    @row-focused="rowFocused"
                    @row-selected="rowSelected"
+                   @row-keydown="rowKeydown"
                    @component-blur="componentBlur"></component>
       </div>
     </div>
@@ -132,6 +133,15 @@ export default {
       this.focusedElement = {};
       this.formProperties = tableProperties;
       // console.log(data);
+    },
+    rowKeydown(event, option) {
+      console.log(option);
+      let sendOption = {
+        tableName: option.tableName,
+        recordId: ('id' in option.itemRow) ? option.itemRow.id : -1,
+      }
+      console.log(sendOption);
+      this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
     },
     rowFocused(option) {
       // console.log(option);

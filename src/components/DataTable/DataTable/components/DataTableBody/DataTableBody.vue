@@ -116,6 +116,11 @@ export default {
     }
   },
   computed: {
+    isModeAdding() {
+      console.log(this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName));
+      console.log(this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName));
+      return this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName);
+    },
     isLoadingData() {
       return this.$store.getters[`DataTable/GET_STATUS_PROCESSING`];
     },
@@ -130,6 +135,19 @@ export default {
     },
   },
   watch: {
+    isModeAdding() {
+      console.log('mode adding');
+      if (!this.isModeAdding) return;
+      let indexAddingElement = this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName);
+      let firstElement = document.querySelectorAll(`#${this.id} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
+      let eventDblClick = new Event('dblclick', {bubbles: false});
+      setTimeout(() => {
+        firstElement.focus();
+        firstElement.dispatchEvent(eventDblClick);  
+      }, 100);
+      
+      // console.log(document.querySelectorAll(`#${this.id} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0]);
+    },
     isScroll() {
       this.isTooltipShow = false;
     },

@@ -27,7 +27,8 @@ export default {
   GET_DATA_COUNT_TOTAL:(state) => (tableName) => { return state[tableName].countTotal; },
   GET_DATA_COUNT_LOAD:(state) => (tableName) => { return state[tableName].listData.length; },
 
-  GET_MODE_ADDING:(state) => (tableName) => { return state[tableName].isModeAdding; },
+  GET_MODE_ADDING_STATUS:(state) => (tableName) => { return state[tableName].modeAdding.status; },
+  GET_MODE_ADDING_INDEX:(state) => (tableName) => { return state[tableName].modeAdding.index; },
 
   GET_FILTER_DEFAULT_IS_DELETED:(state) => (tableName) => { return state[tableName].filterDefault['is_deleted']; }, // ????
   GET_FILTER_PRIMITIVE:(state) => (tableName) => { return state[tableName].filterPrimitive; },

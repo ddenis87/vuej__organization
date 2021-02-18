@@ -9,9 +9,7 @@
                :properties="propertiesComponent"
                :propertiesValue="propertiesComponent.text"
                :selectedValue="true"
-               @editing-canceled="editingCanceled"
-               @editing-accepted="editingAccepted"
-               @editing-blur-focus="editingCanceled"
+               
                
                :is-hide-underline="true"
                :is-single-line="true"
@@ -58,6 +56,7 @@ export default {
       // console.log(propertiesComponent.text);
       return propertiesComponent;
     },
+    isModeAdding() { return this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.properties.tableName); },
   },
   methods: {
     editingCanceled() {
@@ -66,9 +65,17 @@ export default {
       editableElement.dispatchEvent(eventEditingCanceled);
       this.isComponentNull = true;
       if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
+      if (this.isModeAdding) {
+        this.editingCanceledStore();
+        return;
+      }
     },
     editingAccepted(option) {
-      console.log(this.properties);
+      console.log(option);
+      if (this.isModeAdding) {
+        this.editingAcceptedStore(option);
+        return;
+      }
       let sendOption = {
         tableName: this.properties.tableName,
         recordId: this.properties.itemRow.id,
@@ -76,7 +83,7 @@ export default {
         // fieldValue: option.value,
       };
       let newValue = null;
-      if (typeof(option.value) == 'object') {
+      if (typeof(option.value) == 'object' && option.value != null) {
         if ('id' in option.value) newValue = option.value.id;
         else newValue = option.value.value;
       } else {
@@ -95,11 +102,11 @@ export default {
           } else {
             newCurrentValue = currentValue;
           }
-          console.log(key, ' - ', newCurrentValue);
+          // console.log(key, ' - ', newCurrentValue);
           bFormData.set(key, newCurrentValue);
         }
       }
-
+      console.log(this.properties.columnProperties.value, ' - ', newValue);
       bFormData.set(this.properties.columnProperties.value, newValue);
       sendOption.formData = bFormData;
       // console.log(sendOption);
@@ -109,6 +116,28 @@ export default {
       editableElement.dispatchEvent(eventEditingAccepted);
       this.isComponentNull = true;
       if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
+    },
+
+    editingAcceptedStore(option) {
+      console.log(option);
+      console.log(this.properties);
+      let sendOption = {
+        tableName: this.properties.tableName,
+        fieldName: this.properties.columnProperties.value,
+        value: option.value,
+      }
+      if (option.value == null && this.properties.columnProperties.required == true) return;
+
+      this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT_ITEM', sendOption);
+      let editableElement = document.querySelector('.body-column_editing');
+      let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: 'Tab', keyShift: option.shift } });
+      editableElement.dispatchEvent(eventEditingAccepted);
+      this.isComponentNull = true;
+      if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
+    },
+
+    editingCanceledStore() {
+      this.$store.commit('DataTable/DATA_STORE_DELETING_ELEMENT', {tableName: this.properties.tableName});
     },
   }
 }
