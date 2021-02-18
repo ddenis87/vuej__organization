@@ -46,8 +46,8 @@ export default {
         tableName: 'organization',
         headers: [
           [ 
-            {value: 'id', width: [140, 140],},
-            {value: 'title', align: 'start', column: 3, width: [400,],},
+            // {value: 'id', width: [140, 140],},
+            {value: 'title', align: 'start', column: 4, width: [400,],},
           ], [
             {value: 'institution_code', align: 'end', width: 140},
             {value: 'inn', width: [120,]},

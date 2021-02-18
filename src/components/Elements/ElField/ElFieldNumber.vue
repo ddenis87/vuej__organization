@@ -50,8 +50,16 @@ export default {
   },
   methods: {
     eventKeyEnter(event) {
-      if (this.inputProperties.required && !this.isRequiredOff)
-        if (!this.fieldValue) return;
+      if (this.inputProperties.required && !this.isRequiredOff) {
+        if (!this.fieldValue) {
+          this.isEmit = true;
+          setTimeout(() => {
+            event.target.focus();
+            this.isEmit = false;
+          }, 100);
+          return;
+        }
+      }
       let sendOption = {
         key: event.key,
         value: this.fieldValue,
@@ -62,8 +70,17 @@ export default {
       this.$emit('next-element', {event: event});
     },
     eventKeyTab(event) {
-      if (this.inputProperties.required && !this.isRequiredOff)
-        if (!this.fieldValue) return;
+      event.preventDefault();
+      if (this.inputProperties.required && !this.isRequiredOff) {
+        if (!this.fieldValue) {
+          this.isEmit = true;
+          setTimeout(() => {
+            event.target.focus();
+            this.isEmit = false;
+          }, 100);
+          return;
+        }
+      }
       let sendOption = {
         key: event.key,
         shift: event.shiftKey,
