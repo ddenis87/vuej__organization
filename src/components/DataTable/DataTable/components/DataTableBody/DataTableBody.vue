@@ -117,8 +117,8 @@ export default {
   },
   computed: {
     isModeAdding() {
-      console.log(this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName));
-      console.log(this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName));
+      // console.log(this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName));
+      // console.log(this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName));
       return this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName);
     },
     isLoadingData() {

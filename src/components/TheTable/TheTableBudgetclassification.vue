@@ -30,9 +30,10 @@ export default {
       tablePropertiesUno: {
         tableName: 'budgetclassification',
         headers: [
-          // {value: 'id', width: [60, 60], },
+          
           {value: 'head_code', align: 'end', width: [200, 200], },
           {value: 'head_name', width: [400,],},
+          {value: 'id', width: [60, 60], },
         ],
       },
     }

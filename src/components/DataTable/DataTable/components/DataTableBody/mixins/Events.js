@@ -93,7 +93,20 @@ export const Events = {
     // EVENT TOGGLE EDITING COLUMN
     eventColumnDblclick(event, itemRow, columnProperties, columnValue) {
       // console.log(itemRow);
-      if (!this.checkForEditable(event, columnProperties)) return;  // checkForEditable - in mixin Editing
+      if (!this.checkForEditable(event, columnProperties)) {    // checkForEditable - in mixin Editing
+        if (this.isModeAdding) {
+          console.log(event.target.nextElementSibling);
+          let nextEditableElement = event.target.nextElementSibling;
+          if(!nextEditableElement) {
+            this.editingAcceptedNewElement();
+            return;
+          }
+          let nextEventDblclickToElement = new Event('dblclick', {bubbles: false});
+          nextEditableElement.focus();
+          nextEditableElement.dispatchEvent(nextEventDblclickToElement);
+        }
+        return;
+      }
       this.switchDecorationToEdit(event);  // switchDecorationToEdit - in mixin Editing
       if (event.target.closest('.body-column').querySelector('.box-editing-default')) {
         let target = event.target.closest('.body-column').querySelector('.box-editing-default');
