@@ -22,11 +22,13 @@ export default {
     state[option.tableName].previous = option.data.previous;
     console.log(state[option.tableName]);
     state[option.tableName].listFieldObject.forEach(fieldObject => {
-      let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
-      option.data.results.forEach(element => {
-        if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
-        element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
-      });
+      if (fieldObject != 'parent') { // КОСТЫЛЬ
+        let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
+        option.data.results.forEach(element => {
+          if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
+          element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
+        });
+      }
     });
     let listOption = state[option.tableName].listOption; //
     option.data.results.forEach(element => {
@@ -42,12 +44,13 @@ export default {
   SET_DATA_RECORD(state, option) {
     // console.log(option);
     state[option.tableName].listFieldObject.forEach(fieldObject => {
-      let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
-      // console.log(option.data.results);
-      option.data.results.forEach(element => {
-        if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
-        element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
-      });
+      if (fieldObject != 'parent') { // КОСТЫЛЬ
+        let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
+        option.data.results.forEach(element => {
+          if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
+          element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
+        });
+      }
     });
     let listOption = state[option.tableName].listOption; //
     option.data.results.forEach(element => {
