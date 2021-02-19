@@ -128,6 +128,9 @@ export default {
       this.isFooter = false;
     },
   },
+  mounted() {
+    if (localStorage.getItem('Token') == null) this.$router.push('/Login');
+  },
   methods: {
     tableMount(data, tableProperties) {
       this.focusedElement = {};
