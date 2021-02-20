@@ -2,7 +2,7 @@
   <v-dialog class="dialog"
             fullscreen
             :transition="transition" 
-            v-model="isDialogShow" 
+            v-model="isOpen" 
             @click:outside="$emit('close-dialog')">
     <v-card>
       <dialog-toolbar :is-dialog-name="isDialogName"
@@ -24,8 +24,17 @@ export default {
     isDialogName: {type: String, default: ''},
     // isTransition: { type: String, default: 'bottom' },
   },
+  data() {
+    return {
+      isOpen: false,
+    }
+  },
   computed: {
     transition() { return `dialog-bottom-transition` }
+  },
+  watch: {
+    isDialogShow() { this.isOpen = this.isDialogShow; },
+    isOpen() { if (!this.isOpen) this.$emit('close-dialog'); },
   },
 }
 </script>

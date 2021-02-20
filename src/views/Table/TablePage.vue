@@ -23,7 +23,7 @@
         <v-spacer></v-spacer>
         <v-card min-width="380" max-height="34" flat v-if="isTableMount">
           <el-field-search :is-label="true"
-                           :input-properties="{label: 'Произвольный поиск по таблице'}"
+                           :input-properties="{label: 'Найти в таблице'}"
                            @keydown-enter="freeSearch" 
                            @clear-value="freeSearchClear"></el-field-search>
         </v-card>
@@ -138,12 +138,13 @@ export default {
       // console.log(data);
     },
     rowKeydown(event, option) {
-      console.log(option);
+      // console.log(event);
+      if (event.key != 'Insert') return;
       let sendOption = {
         tableName: option.tableName,
         recordId: ('id' in option.itemRow) ? option.itemRow.id : -1,
       }
-      console.log(sendOption);
+      // console.log(sendOption);
       this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
     },
     rowFocused(option) {
