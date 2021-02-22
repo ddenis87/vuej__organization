@@ -29,6 +29,7 @@ class DataTableBase {
   modeAdding = {
     status: false,
     index: null,
+    recordId: null,
   }
 }
 

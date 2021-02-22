@@ -100,9 +100,11 @@ export default {
         .post(addressApi, option.formData)
         .then(response => {
           console.log(response);
-          resolve(response);
+          
+          state.commit('SET_MODE_ADDING_ID', { tableName: option.tableName, recordId: response.data.id });
           state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
           state.dispatch('REQUEST_DATA', {tableName: option.tableName, addingElement: response.data});
+          resolve(response);
         })
         .catch(err => {
           console.log(err);

@@ -1,5 +1,7 @@
 <template>
   <div class="data-table" :id="id">
+    <!-- <div class="data-table__block" v-if="isLoadingData"></div> -->
+    <!-- <v-overlay v-if="isLoadingData"></v-overlay> -->
     <div class="data-table__header">
       <data-table-header :id="`data-table-${id}`"
                          :table-name="properties.tableName"
@@ -101,6 +103,16 @@ export default {
       border-radius: $scrollThumbBorderRadius;
       background-color: $scrollThumbBackgroundColor;
     }
+  }
+
+  &__block {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .12);
+    z-index: 999;
   }
 
   &__header {

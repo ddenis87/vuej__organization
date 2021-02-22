@@ -20,7 +20,7 @@ export default {
     state[option.tableName].countTotal = option.data.count;
     state[option.tableName].next = option.data.next;
     state[option.tableName].previous = option.data.previous;
-    console.log(state[option.tableName]);
+    // console.log(state[option.tableName]);
     state[option.tableName].listFieldObject.forEach(fieldObject => {
       if (fieldObject != 'parent') { // КОСТЫЛЬ
         let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
@@ -110,6 +110,9 @@ export default {
     state[option.tableName].modeAdding.status = option.status;
     state[option.tableName].modeAdding.index = option.index;
   },
+  SET_MODE_ADDING_ID(state, option) {
+    state[option.tableName].modeAdding.recordId = option.recordId;
+  },
 
   // ---------------------------------------------------------------------------------------------------
   DATA_STORE_ADDING_ELEMENT(state, option) {  // ADDING EMPTY LINE IN TABLE
@@ -141,11 +144,11 @@ export default {
   // ---------------------------------------------------------------------------------------------------
 
 
-  // ACTION_EDITING_ELEMENT(state, option) { // editin column in table
-  //   let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
-  //   console.log(state[option.tableName].listData[index]);
-  //   state[option.tableName].listData[index][option.fieldName] = option.fieldValue;
-  // },
+  ACTION_EDITING_ELEMENT(state, option) { // editin column in table
+    let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
+    console.log(state[option.tableName].listData[index]);
+    state[option.tableName].listData[index][option.fieldName] = option.value;
+  },
 
   // ADDING_LIST_DATA(state, option) {
   //   let newItem = {};

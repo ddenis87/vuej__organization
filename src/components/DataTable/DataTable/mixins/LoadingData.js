@@ -22,14 +22,6 @@ export const LoadingData = {
       if (this.typeHeight == 'dense')
         setTimeout(() => this.eventScrollPagination(), 300);
     },
-    // isMultiline() {
-    //   this.$store.commit('DataTable/SET_STRING_SORTING', {
-    //     tableName: this.properties.tableName,
-    //     ordering: null,
-    //     key: null,
-    //   });
-    //   this.$store.dispatch(`DataTable/GET_LIST_DATA`, {tableName: this.tableName});
-    // },
   },
   async created() {
     await this.$store.dispatch('DataTable/REQUEST_OPTIONS', { tableName: this.properties.tableName })
@@ -43,15 +35,9 @@ export const LoadingData = {
   },
   updated() { this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;},
   methods: {
-    // async createComponent() {
-    //  await this.$store.dispatch('DataTable/REQUEST_OPTIONS', { tableName: this.properties.tableName })
-    //     .then(resolve => {
-    //       this.$store.dispatch('DataTable/REQUEST_DATA', { tableName: this.properties.tableName })
-    //     })
-    // },
     eventScrollPagination() {
       this.isScroll = !this.isScroll;
-      let bootAnchorEdge = document.querySelector(`#${this.id}-boot-anchor`).getBoundingClientRect().bottom - 500;
+      let bootAnchorEdge = document.querySelector(`#${this.id}-boot-anchor`).getBoundingClientRect().bottom - 300;
       if (bootAnchorEdge < this.parentElementEdge) {
         this.parentElement.removeEventListener('scroll', this.eventScrollPagination);
         if (this.$store.getters[`DataTable/GET_ADDRESS_API_PAGE_NEXT`](this.properties.tableName) != null)

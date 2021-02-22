@@ -72,6 +72,7 @@ export const ElField = {
       this.isEmit = true;
       this.emitKeyTab(sendOption);
     },
+    
     checkRequiredField(event) {
       if (this.inputProperties.required && !this.isRequiredOff) {
         if (event.key == 'Tab') event.preventDefault();

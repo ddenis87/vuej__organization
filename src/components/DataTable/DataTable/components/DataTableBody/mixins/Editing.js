@@ -56,11 +56,11 @@ export const Editing = {
           let nextEditableElement = null;
           if (event.detail.keyShift) nextEditableElement = event.target.previousElementSibling;
           else nextEditableElement = event.target.nextElementSibling;
-          console.log(nextEditableElement);
+          // console.log(nextEditableElement);
           this.switchDecorationToDisplay();
           event.target.classList.remove('body-column_focus');
           if (!nextEditableElement) {
-            this.editingAcceptedNewElement();
+            this.editingAcceptedNewElement(event);
             return;
           }
           setTimeout(() => {
@@ -73,7 +73,7 @@ export const Editing = {
       }
     },
 
-    editingAcceptedNewElement() {
+    async editingAcceptedNewElement(event) {
       let index = this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName);
       let sendOption = {
         tableName: this.tableName,
@@ -95,7 +95,16 @@ export const Editing = {
       };
       console.log(sendOption);
       sendOption.formData = bFormData;
-      this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
+      // this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
+      await this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption)
+        .then((response) => {
+          setTimeout(() => {
+            let indexAddingElement = this.$store.getters['DataTable/GET_DATA_INDEX'](this.tableName, { recordId: response.data.id });
+            let firstElement = document.querySelectorAll(`#${this.id} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
+            let eventDblClick = new Event('dblclick', {bubbles: false});
+            firstElement.focus();
+          }, 1500);
+        })
     },
   }
 }

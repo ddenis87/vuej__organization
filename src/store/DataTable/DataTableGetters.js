@@ -23,12 +23,17 @@ export default {
 
   GET_OPTIONS:(state) => (tableName) => { return state[tableName].listOption; },
 
-  GET_DATA:(state) => (tableName) => { console.log(state[tableName].listData); return state[tableName].listData; },
+  GET_DATA:(state) => (tableName) => { return state[tableName].listData; },
   GET_DATA_COUNT_TOTAL:(state) => (tableName) => { return state[tableName].countTotal; },
   GET_DATA_COUNT_LOAD:(state) => (tableName) => { return state[tableName].listData.length; },
-
+  GET_DATA_INDEX:(state) => (tableName, option) => {
+    let index = null;
+    index = state[tableName].listData.findIndex(item => item.id == option.recordId);
+    return index;
+  },
   GET_MODE_ADDING_STATUS:(state) => (tableName) => { return state[tableName].modeAdding.status; },
   GET_MODE_ADDING_INDEX:(state) => (tableName) => { return state[tableName].modeAdding.index; },
+  GET_MODE_ADDING_ID:(state) => (tableName) => { return state[tableName].modeAdding.recordId; },
 
   GET_FILTER_DEFAULT_IS_DELETED:(state) => (tableName) => { return state[tableName].filterDefault['is_deleted']; }, // ????
   GET_FILTER_PRIMITIVE:(state) => (tableName) => { return state[tableName].filterPrimitive; },

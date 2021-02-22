@@ -40,7 +40,7 @@ export const Events = {
     },
     eventMouseOut(event) {
       if (event.relatedTarget?.classList?.contains('tooltip')) return;
-      if (!this.isColumnFocus && !this.isColumnEditing && !this.isRowFocus)
+      // if (!this.isColumnFocus && !this.isColumnEditing && !this.isRowFocus)
         event.target.closest('.body-row')?.classList.remove('body-row_hover');
       this.tooltipHide(event);
       
@@ -116,6 +116,10 @@ export const Events = {
 
     // EVENT NAVIGATION FOR TABLE
     eventRowKeydown(event, itemRow) {
+      console.log('event row keydown');
+      // event.preventDefault();
+      // event.stopImmediatePropagation();
+      
       let sendOption = {
         tableName: this.tableName,
         itemRow: itemRow,
@@ -129,13 +133,14 @@ export const Events = {
       console.log('emit body');
     },
     eventColumnKeydown(event, itemRow, itemColumn, columnValue) { // ДОБАВИТЬ EMIT FOCUSED ПО ЯЧЕЙКАМ ЕСЛИ ПОНАДОБИТСЯ
+      console.log('event column keydown');
       let sendOption = {
         tableName: this.tableName,
         itemRow: itemRow,
       }
       if (event.code.includes('Arrow') || event.code == 'Tab') {
-        event.stopPropagation();
-        event.preventDefault();
+        // event.stopPropagation();
+        // event.preventDefault();
         // ДОБАВИТЬ EMIT FOCUSED ПО ЯЧЕЙКАМ ЕСЛИ ПОНАДОБИТСЯ
         if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return; }
         if ((event.code == 'ArrowLeft' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return; }

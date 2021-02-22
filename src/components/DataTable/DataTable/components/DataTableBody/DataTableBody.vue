@@ -117,8 +117,6 @@ export default {
   },
   computed: {
     isModeAdding() {
-      // console.log(this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName));
-      // console.log(this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName));
       return this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName);
     },
     isLoadingData() {
@@ -138,19 +136,33 @@ export default {
     isModeAdding() {
       console.log('mode adding');
       if (!this.isModeAdding) return;
-      let indexAddingElement = this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName);
-      let firstElement = document.querySelectorAll(`#${this.id} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
-      let eventDblClick = new Event('dblclick', {bubbles: false});
       setTimeout(() => {
+        let indexAddingElement = this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName);
+        let firstElement = document.querySelectorAll(`#${this.id} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
+        let eventDblClick = new Event('dblclick', {bubbles: false});
         firstElement.focus();
-        firstElement.dispatchEvent(eventDblClick);  
+        firstElement.dispatchEvent(eventDblClick);
       }, 100);
-      
-      // console.log(document.querySelectorAll(`#${this.id} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0]);
     },
     isScroll() {
       this.isTooltipShow = false;
     },
+  },
+  updated() {
+    if (this.$store.getters['DataTable/GET_MODE_ADDING_ID'](this.tableName)) {
+      let recordId = this.$store.getters['DataTable/GET_MODE_ADDING_ID'](this.tableName);
+      let index = this.$store.getters['DataTable/GET_DATA_INDEX'](this.tableName, {recordId: recordId});
+      if (document.querySelectorAll(`#${this.id} .body .body-row`)[index] &&
+          document.querySelectorAll(`#${this.id} .body .body-row`)[index].querySelectorAll('.body-column')) {
+        let firstElement = document.querySelectorAll(`#${this.id} .body .body-row`)[index].querySelectorAll('.body-column')[0];
+        if (firstElement) {
+          setTimeout(() => {
+            firstElement.focus();
+            this.$store.commit('DataTable/SET_MODE_ADDING_ID', { tableName: this.tableName, recordId: null });
+          }, 100);
+        }
+      }
+    }
   },
   methods: {
     scrollBody() {

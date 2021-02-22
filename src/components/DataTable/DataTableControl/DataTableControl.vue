@@ -157,7 +157,7 @@ export default {
       this.isOpenDialog = false;
       this.focusedElementForm= null;
     },
-    eventActionAccept(option) {
+    async eventActionAccept(option) {
       let sendOption = {
         tableName: this.formProperties.tableName,
       };
@@ -175,12 +175,20 @@ export default {
         if (sendOption.values[key])
           bFormData.set(`${key}`, `${sendOption.values[key]}`);
       };
-      console.log(sendOption);
+      // console.log(sendOption);
       sendOption.formData = bFormData;
       delete sendOption.values;
       // console.log(bFormData.get('bk'));
       if (sendOption.actionName == 'adding') {
-        this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
+        await this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption)
+        .then((res) => {
+          // setTimeout(() => {
+          //   let index = this.$store.getters['DataTable/GET_DATA_INDEX'](this.formProperties.tableName, {recordId: res.data.id})
+          //   console.log(res);
+          //   console.log(index);
+          // }, 800)
+          
+        })
       } else {
         this.$store.dispatch('DataTable/REQUEST_DATA_EDITING', sendOption);
       }

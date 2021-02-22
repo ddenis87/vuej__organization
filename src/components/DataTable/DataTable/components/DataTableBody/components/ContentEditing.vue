@@ -4,14 +4,6 @@
     <component :is="editingComponent"
                :input-properties="propertiesComponent"
                :input-value="propertiesComponent.text"
-               :is-value-selected="true"
-               :is-value-focus="true"
-                  
-               :properties="propertiesComponent"
-               :propertiesValue="propertiesComponent.text"
-               :selectedValue="true"
-               
-               
                :is-hide-underline="true"
                :is-single-line="true"
                :is-hide-message="true"
@@ -71,7 +63,13 @@ export default {
         return;
       }
     },
+
+    editingCanceledStore() {
+      this.$store.commit('DataTable/DATA_STORE_DELETING_ELEMENT', {tableName: this.properties.tableName});
+    },
+
     async editingAccepted(option) {
+      // option.event.preventDefault();
       // console.log(option);
       if (this.isModeAdding) {
         this.editingAcceptedStore(option);
@@ -80,16 +78,9 @@ export default {
       let sendOption = {
         tableName: this.properties.tableName,
         recordId: this.properties.itemRow.id,
-        // fieldName: this.properties.columnProperties.value,
-        // fieldValue: option.value,
       };
-      let newValue = null;
-      if (typeof(option.value) == 'object' && option.value != null) {
-        if ('id' in option.value) newValue = option.value.id;
-        else newValue = option.value.value;
-      } else {
-        newValue = option.value;
-      }
+      
+      let newValue = this.computedValue(option);
 
       let bFormData = new FormData();
 
@@ -103,42 +94,26 @@ export default {
           } else {
             newCurrentValue = currentValue;
           }
-          // console.log(key, ' - ', newCurrentValue);
           bFormData.set(key, newCurrentValue);
         }
       }
-      // console.log(this.properties.columnProperties.value, ' - ', newValue);
       bFormData.set(this.properties.columnProperties.value, newValue);
       
       sendOption.formData = bFormData;
-      // console.log(sendOption);
+
       let editableElement = document.querySelector('.body-column_editing');
-      await this.$store.dispatch('DataTable/REQUEST_DATA_UPDATE_RECORD_ELEMENT', sendOption)
-        .then(() => {
-          let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: option.key, keyShift: option.shift } });
-          editableElement.dispatchEvent(eventEditingAccepted);
-        })
-        .catch(() => {
-          let eventEditingCanceled = new CustomEvent('editing-canceled')
-          editableElement.dispatchEvent(eventEditingCanceled);
-        })
-        .finally(() => {
-          this.isComponentNull = true;
-          if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
-        });
+// --------------------------------
+      this.saveDataStore(option, 'element');
+// --------------------------------
+      this.$store.dispatch('DataTable/REQUEST_DATA_UPDATE_RECORD_ELEMENT', sendOption);
+      let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: option.key, keyShift: option.shift } });
+      editableElement.dispatchEvent(eventEditingAccepted);
+      this.isComponentNull = true;
+      if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
     },
 
     editingAcceptedStore(option) {
-      // console.log(option);
-      // console.log(this.properties);
-      let sendOption = {
-        tableName: this.properties.tableName,
-        fieldName: this.properties.columnProperties.value,
-        value: option.value,
-      }
-      if (option.value == null && this.properties.columnProperties.required == true) return;
-
-      this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT_ITEM', sendOption);
+      this.saveDataStore(option, 'item');
       let editableElement = document.querySelector('.body-column_editing');
       let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: 'Tab', keyShift: option.shift } });
       editableElement.dispatchEvent(eventEditingAccepted);
@@ -146,8 +121,31 @@ export default {
       if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
     },
 
-    editingCanceledStore() {
-      this.$store.commit('DataTable/DATA_STORE_DELETING_ELEMENT', {tableName: this.properties.tableName});
+    computedValue(option) {
+      let newValue = null;
+      if (typeof(option.value) == 'object' && option.value != null) {
+        if ('id' in option.value) newValue = option.value.id;
+        else newValue = option.value.value;
+      } else {
+        // console.log(option.value);
+        newValue = (option.value == undefined) ? '' : option.value;
+      }
+      return newValue;
+    },
+
+    saveDataStore(option, flag) {
+      let sendOption = {
+        tableName: this.properties.tableName,
+        fieldName: this.properties.columnProperties.value,
+        recordId: this.properties.itemRow.id,
+        value: option.value,
+      }
+      if (option.value == null && this.properties.columnProperties.required == true) return;
+      if (flag == 'element') {
+        this.$store.commit('DataTable/ACTION_EDITING_ELEMENT', sendOption);
+      } else {
+        this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT_ITEM', sendOption);
+      }
     },
   }
 }
