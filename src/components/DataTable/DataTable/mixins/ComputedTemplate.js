@@ -14,6 +14,7 @@ export const ComputedTemplate = {
         template['grid-template-columns'] = this.computedWidthMultiLine(headers);
         template['grid-template-rows'] = `repeat(${headers.length}, ${(this.typeHeight == 'fixed') ? '43px' : (this.typeHeight == 'dense') ? '22px' : 'auto'})`;
       }
+      // console.log(template);
       return template;
     },
     computedActionMax() { return (this.typeHeight != 'auto' && this.isExpansion == true) ? true : false; },
@@ -22,6 +23,7 @@ export const ComputedTemplate = {
     computedAreaUnoLine(array) {
       let area = '"';
       if (this.computedActionMax) area += 'action_max ';
+      if (this.isHierarchy) area += 'group ';
       array.forEach(element => area += `${element.value} `);
       area = area.trim();
       area += `"`;
@@ -60,6 +62,7 @@ export const ComputedTemplate = {
     computedWidthUnoLine(array) {
       let columnWidth = '';
       if (this.computedActionMax) columnWidth += 'minmax(22px, 22px) ';
+      if (this.isHierarchy) columnWidth += 'minmax(50px, 50px) ';
       array.forEach(element => {
         if (element.width) {
           if (Array.isArray(element.width)) {

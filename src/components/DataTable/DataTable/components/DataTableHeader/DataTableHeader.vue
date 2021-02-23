@@ -19,7 +19,7 @@
 
     <div class="header-row" 
          :class="`header-row_${typeHeight}`"
-         :style="template" @click="(event) => eventClickColumn(event)">
+         :style="computedTemplate" @click="(event) => eventClickColumn(event)">
       
       <div class="header-column header-column__action-max"
            :class="`header-column_${typeColumn}`"
@@ -36,9 +36,7 @@
            :data-key="item.value">
         <data-table-content-display :value="item.label"
                                     :properties="{type: 'string'}"
-                                    :type-height="typeHeight">
-          
-        </data-table-content-display>
+                                    :type-height="typeHeight"></data-table-content-display>
         <div class="header-column__sort">
           <v-icon>mdi-menu-down</v-icon>
         </div>
@@ -75,6 +73,15 @@ export default {
     items: { type: Array, default: () => [] },
     isExpansion: {type: Boolean, default: false},
     isMultiline: {type: Boolean, default: false},
+    isHierarchy: {type: Boolean, default: false},
+  },
+  computed: {
+    computedTemplate() {
+      let newTemplate = Object.assign({}, this.template);
+      if (this.isHierarchy && this.items.length != 0)
+        newTemplate['grid-template-areas'] = newTemplate['grid-template-areas'].replace('group', this.items[0].value);
+      return newTemplate;
+    },
   },
 }
 </script>

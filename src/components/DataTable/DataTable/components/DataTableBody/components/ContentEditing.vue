@@ -127,7 +127,6 @@ export default {
         if ('id' in option.value) newValue = option.value.id;
         else newValue = option.value.value;
       } else {
-        // console.log(option.value);
         newValue = (option.value == undefined) ? '' : option.value;
       }
       return newValue;

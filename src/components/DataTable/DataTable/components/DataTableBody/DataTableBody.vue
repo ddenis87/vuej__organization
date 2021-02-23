@@ -30,10 +30,10 @@
          :tabindex="indexRow"
          @focus="(event) => eventRowFocus(event, itemRow)"
          @blur="eventRowBlur"
-         
          @dblclick="(event) => eventRowDblclick(event, itemRow)"
          @keydown.stop="(event) => eventRowKeydown(event, itemRow)">
       
+      <!-- EXPANSION ROW -->
       <div class="body-column__action-max"
            :class="`body-column_${typeColumn}`"
            v-if="computedActionMax && !isMultiline">
@@ -41,6 +41,9 @@
           <v-icon small>mdi-chevron-down</v-icon>
         </v-btn>
       </div>
+
+      <!-- GROUP ELEMENT -->
+      <hierarchy-actions class="body-column body-column__group" v-if="isHierarchy"></hierarchy-actions>
 
       <div v-for="(itemColumn, indexColumn) in itemsHeader"
            class="body-column"
@@ -78,6 +81,7 @@
 import DataTableOverflow from '../DataTableOverflow.vue';
 import DataTableTooltip from '../DataTableTooltip.vue'; 
 import DataTableContentDisplay from '../DataTableContentDisplay.vue';
+import HierarchyActions from './components/HierarchyActions.vue';
 
 import { DataTable } from '../DataTable.js';
 import { Events } from './mixins/Events.js';
@@ -91,6 +95,7 @@ export default {
     DataTableOverflow,
     DataTableTooltip,
     DataTableContentDisplay,
+    HierarchyActions,
   },
   mixins: [
     DataTable, // gettingValueForType, computedActionMax
@@ -110,7 +115,7 @@ export default {
     isEditable: {type: Boolean, default: false},
     isExpansion: {type: Boolean, default: false},
     isMultiline: {type: Boolean, default: false},
-
+    isHierarchy: {type: Boolean, default: false},
     isScroll: { type: Boolean, default: false },
   },
   data() {
@@ -232,6 +237,16 @@ export default {
           }
         }
       }
+      &__group {
+        grid-area: group;
+        justify-content: center;
+        align-items: flex-start;
+        .action-btn {
+          &_action {
+            transform: rotate(-180deg);
+          }
+        }
+      }
       
       .box-editing, .box-display {
         width: 100%;
@@ -241,6 +256,9 @@ export default {
         position: relative;
         display: flex;
         align-items: $columnVerticalAlign;
+        &__group {
+          display: flex;
+        }
       }
       .display-none { display: none; }
     }

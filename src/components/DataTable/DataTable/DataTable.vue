@@ -10,7 +10,8 @@
                          :type-column="typeColumn"
                          :items="gettingDataHeader"
                          :is-expansion="isExpansion"
-                         :is-multiline="isMultiline"></data-table-header>
+                         :is-multiline="isMultiline"
+                         :is-hierarchy="isHierarchy"></data-table-header>
       <data-table-progress-line :is-show="isLoadingData"></data-table-progress-line>
     </div>
 
@@ -25,7 +26,7 @@
                        :is-editable="isEditable"
                        :is-expansion="isExpansion"
                        :is-multiline="isMultiline"
-                       
+                       :is-hierarchy="isHierarchy"
                        :is-scroll="isScroll"
                        @event-row-focused="eventRowFocused"
                        @event-row-selected="eventRowSelected"
@@ -75,10 +76,11 @@ export default {
     properties: Object,
     typeHeight: { type: String, default: 'fixed' },
     typeColumn: { type: String, default: 'fixed' },
-    isEditable: {type: Boolean, default: false},
-    isFooter: {type: Boolean, default: false},
-    isExpansion: {type: Boolean, default: false},
-    isMultiline: {type: Boolean, default: false},
+    isEditable: { type: Boolean, default: false },
+    isFooter: { type: Boolean, default: false },
+    isExpansion: { type: Boolean, default: false },
+    isMultiline: { type: Boolean, default: false },
+    isHierarchy: { type: Boolean, default: false },
   },
 }
 </script>

@@ -7,6 +7,7 @@
               :is-footer="isFooter"
               :is-expansion="isExpansion"
               :is-multiline="isMultiline"
+              :is-hierarchy="isHierarchy"
               @event-row-focused="eventRowFocused"
               @event-row-selected="eventRowSelected"
               @event-row-keydown="eventRowKeydown"
@@ -21,13 +22,16 @@ export default {
   mixins: [
     TheTable,
   ],
+  props: {
+    isHierarchy: { type: Boolean, default: true },
+  },
   data() {
     return {
       tablePropertiesUno: {
         tableName: 'organization',
         headers: [
           // {value: 'id', width: 60,},
-          {value: 'institution_code', align: 'end', width: 94, },
+          {value: 'institution_code', align: 'start', width: 70, },
           {value: 'registry_date', align: 'start', width: 120,},
           {value: 'last_visited', align: 'start', width: 146,},
           // {value: 'organization_type', align: 'start', width: 115, },
