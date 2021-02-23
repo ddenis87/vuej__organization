@@ -146,7 +146,7 @@ export default {
         let eventDblClick = new Event('dblclick', {bubbles: false});
         firstElement.focus();
         firstElement.dispatchEvent(eventDblClick);
-      }, 200);
+      }, 500);
     },
     isScroll() {
       this.isTooltipShow = false;
@@ -163,7 +163,7 @@ export default {
           setTimeout(() => {
             firstElement.focus();
             this.$store.commit('DataTable/SET_MODE_ADDING_ID', { tableName: this.tableName, recordId: null });
-          }, 300);
+          }, 1000);
         }
       }
     }

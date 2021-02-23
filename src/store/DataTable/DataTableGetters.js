@@ -15,7 +15,14 @@ export default {
     }
     // return addressApi.slice(0, -1);
   },
-  GET_ADDRESS_API_PAGE_NEXT:(state) => (tableName) => { return state[tableName].next; },
+  GET_ADDRESS_API_PAGE_NEXT:(state) => (tableName) => {
+    // if (!state[tableName].next)
+    let indexStart = state[tableName].next.indexOf('&page_by_id');
+    let indexEnd = state[tableName].next.indexOf('&', state[tableName].next.indexOf('&page_by_id') + 1);
+    // console.log(state[tableName].next.slice(0, indexStart) + state[tableName].next.slice(indexEnd));
+    return state[tableName].next.slice(0, indexStart) + state[tableName].next.slice(indexEnd);
+    // return state[tableName].next;
+  },
   GET_ADDRESS_API_PAGE_PREVIOUS:(state) => (tableName) => { return state[tableName].previous; },
 
   GET_DESCRIPTION:(state) => (tableName) => { return state[tableName].description; },
