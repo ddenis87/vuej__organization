@@ -139,13 +139,13 @@ export default {
     },
     rowKeydown(event, option) {
       // console.log(event);
-      if (event.key != 'Insert') return;
-      let sendOption = {
-        tableName: option.tableName,
-        recordId: ('id' in option.itemRow) ? option.itemRow.id : -1,
-      }
-      // console.log(sendOption);
-      this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
+      // if (event.key != 'Insert') return;
+      // let sendOption = {
+      //   tableName: option.tableName,
+      //   recordId: ('id' in option.itemRow) ? option.itemRow.id : -1,
+      // }
+      // // console.log(sendOption);
+      // this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
     },
     rowFocused(option) {
       // console.log(option);

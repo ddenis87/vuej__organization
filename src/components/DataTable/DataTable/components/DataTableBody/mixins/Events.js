@@ -4,22 +4,9 @@ export const Events = {
       isRowFocus: false,
       isColumnEditing: false,
       isColumnFocus: false,
-
-      isTooltipShow: false,
-      isTooltipTimer: null,
-      isTooltipProperties: { top: 0, left: 0, width: 0, height: 0, text: '' },
     }
   },
-  computed: {
-    computedTooltipShift() {
-      let calcTooltipShift = { left: -10, top: -50 };
-      if (this.typeHeight == 'fixed' && this.typeColumn == 'fixed') { calcTooltipShift.left = -1; calcTooltipShift.top = -2; return calcTooltipShift};
-      if (this.typeHeight == 'fixed' && this.typeColumn == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
-      if (this.typeHeight == 'dense' && this.typeColumn == 'fixed') { calcTooltipShift.left = 4; calcTooltipShift.top = -2; return calcTooltipShift};
-      if (this.typeHeight == 'dense' && this.typeColumn == 'dense') { calcTooltipShift.left = 0; calcTooltipShift.top = -2; return calcTooltipShift};
-      return calcTooltipShift;
-    },
-  },
+
   methods: {
     // EVENT EXPANSION ROW
     eventExpansionRow(event) {
@@ -31,21 +18,6 @@ export const Events = {
       });
     },
 
-    // EVENT HOVER BODY TABLE (HOVER ROW, TOOLTIP)
-    eventMouseOver(event) {
-      if (!this.isColumnFocus && !this.isColumnEditing && !this.isRowFocus)
-        event.target.closest('.body-row')?.classList.add('body-row_hover');
-      this.tooltipShow(event);
-      
-    },
-    eventMouseOut(event) {
-      if (event.relatedTarget?.classList?.contains('tooltip')) return;
-      // if (!this.isColumnFocus && !this.isColumnEditing && !this.isRowFocus)
-        event.target.closest('.body-row')?.classList.remove('body-row_hover');
-      this.tooltipHide(event);
-      
-    },
-    
     // EVENT FOCUS/SELECT/BLUR ROW
     eventRowFocus(event, itemRow) {
       this.isRowFocus = true;
@@ -56,28 +28,25 @@ export const Events = {
     eventRowBlur(event) {
       this.isRowFocus = false;
       event.target.classList.remove('body-row_focus');
-      if (event.relatedTarget == null) {
-        this.$emit('event-body-blur');
-      }
+      this.emitBlurBody(event);
     },
-    eventRowClick(event, itemRow) {
-      this.$emit('event-row-focused', event, itemRow);
-    },
+    // eventRowClick(event, itemRow) {
+    //   // this.$emit('event-row-focused', event, itemRow); /// ??????????
+    // },
     eventRowDblclick(event, itemRow) {
-      
       let newItemRow = Object.assign({}, itemRow);
       if ('text' in newItemRow) delete newItemRow.text;
-      // console.log(newItemRow);
       this.$emit('event-row-selected', event, newItemRow);
     },
 
     // EVENT FOCUS/BLUR COLUMN
-    eventColumnFocus(event) {
+    eventColumnFocus(event, itemRow) {
       this.isTooltipShow = false; // hide tooltip
       this.isColumnFocus = true;
       event.target.parentElement.classList.remove('body-row_hover');
       event.target.parentElement.classList.add('body-row_focus');
       event.target.classList.add('body-column_focus');
+      this.$emit('event-row-focused', event, itemRow);
     },
     eventColumnBlur(event) {  // work if not editable
       if (!this.isColumnEditing) {
@@ -85,17 +54,17 @@ export const Events = {
         event.target.parentElement.classList.remove('body-row_focus');
         event.target.classList.remove('body-column_focus');
       }
-      if (event.relatedTarget == null) {
-        this.$emit('event-body-blur');
-      }
+      this.emitBlurBody(event);
     },
+
+    emitBlurBody(event) { if (!event.relatedTarget) this.$emit('event-body-blur'); },
 
     // EVENT TOGGLE EDITING COLUMN
     eventColumnDblclick(event, itemRow, columnProperties, columnValue) {
       // console.log(itemRow);
       if (!this.checkForEditable(event, columnProperties)) {    // checkForEditable - in mixin Editing
         if (this.isModeAdding) {
-          console.log(event.target.nextElementSibling);
+          // console.log(event.target.nextElementSibling);
           let nextEditableElement = event.target.nextElementSibling;
           if(!nextEditableElement) {
             this.editingAcceptedNewElement();
@@ -114,70 +83,37 @@ export const Events = {
       }
     },
 
-    // EVENT NAVIGATION FOR TABLE
-    eventRowKeydown(event, itemRow) {
-      console.log('event row keydown');
-      // event.preventDefault();
-      // event.stopImmediatePropagation();
-      
-      let sendOption = {
-        tableName: this.tableName,
-        itemRow: itemRow,
-      }
-      this.$emit('event-row-keydown', event, sendOption); // EMIT FOCUSED ПО СТРОКАМ
-      if (event.code.includes('Arrow') || event.code == 'Tab') {
-        event.preventDefault();
-        if ((event.code == 'ArrowDown' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); }
-        if ((event.code == 'ArrowUp' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); }
-      }
-      console.log('emit body');
-    },
-    eventColumnKeydown(event, itemRow, itemColumn, columnValue) { // ДОБАВИТЬ EMIT FOCUSED ПО ЯЧЕЙКАМ ЕСЛИ ПОНАДОБИТСЯ
-      console.log('event column keydown');
-      let sendOption = {
-        tableName: this.tableName,
-        itemRow: itemRow,
-      }
-      if (event.code.includes('Arrow') || event.code == 'Tab') {
-        // event.stopPropagation();
-        // event.preventDefault();
-        // ДОБАВИТЬ EMIT FOCUSED ПО ЯЧЕЙКАМ ЕСЛИ ПОНАДОБИТСЯ
-        if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return; }
-        if ((event.code == 'ArrowLeft' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return; }
-        
-        if (event.code == 'ArrowDown' || event.code == 'ArrowUp') {
-          this.$emit('event-row-keydown', event, sendOption); // EMIT FOCUSED ПО СТРОКАМ
-          if (event.code == 'ArrowDown' && event.target.parentElement.nextElementSibling) { event.target.parentElement.nextElementSibling.children[event.target.getAttribute('tabindex')].focus(); }
-          if (event.code == 'ArrowUp' && event.target.parentElement.previousElementSibling) { event.target.parentElement.previousElementSibling.children[event.target.getAttribute('tabindex')].focus(); }
-          return;
-        }
-      }
-      if (event.code.includes('Key') || event.code.includes('Digit') || event.code == 'Enter') {
-        event.stopPropagation();
-        this.eventColumnDblclick(event, itemRow, itemColumn, columnValue);
-      }
+    // // EVENT NAVIGATION FOR TABLE
+    // eventRowKeydown(event, itemRow) { // НАВИГАЦИЯ ПРИ ЗАБЛОКИРОВАННОЙ ТАБЛИЦЕ НА РЕДАКТИРОВАНИЕ (НАВИГАЦИЯ ПО СТРОКАМ)
+    //   console.log('event row keydown');
+    //   if (event.code.includes('Arrow') || event.code == 'Tab') {
+    //     event.preventDefault();
+    //     if ((event.code == 'ArrowDown' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); }
+    //     if ((event.code == 'ArrowUp' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); }
+    //   }
+    // },
 
-    },
+    // eventColumnKeydown(event, itemRow, itemColumn, columnValue) {
+    //   console.log('event column keydown');
+    //   if (event.code.includes('Arrow') || event.code == 'Tab') {
+    //     event.preventDefault();
+    //     if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return; }
+    //     if ((event.code == 'ArrowLeft' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return; }
+    //     if (event.code == 'ArrowDown' || event.code == 'ArrowUp') {
+    //       if (event.code == 'ArrowDown' && event.target.parentElement.nextElementSibling.closest('.body-row')) {
+    //         event.target.parentElement.nextElementSibling.children[event.target.getAttribute('tabindex')].focus();
+    //       }
+    //       if (event.code == 'ArrowUp' && event.target.parentElement.previousElementSibling.closest('.body-row')) { 
+    //         event.target.parentElement.previousElementSibling.children[event.target.getAttribute('tabindex')].focus(); 
+    //       }
+    //       return;
+    //     }
+    //   }
+    //   if (event.code.includes('Key') || event.code.includes('Digit') || event.code == 'Enter') {
+    //     this.eventColumnDblclick(event, itemRow, itemColumn, columnValue); // ПЕРЕКЛЮЧАЕМСЯ В РЕЖИМ РЕДАКТИРОВАНИЯ
+    //   }
 
-    // FUNCTION TOOLTIP
-    tooltipShow(event) {
-      if (event.target.classList.contains('content-display')) {
-        let parent = event.target.closest('.body-column');
-        this.isTooltipTimer = setTimeout(() => {
-          this.isTooltipProperties = {
-            top: parent.getBoundingClientRect().top + this.computedTooltipShift.top,
-            left: parent.getBoundingClientRect().left + this.computedTooltipShift.left,
-            width: parent.getBoundingClientRect().width,
-            height: parent.getBoundingClientRect().height,
-            text: parent.getAttribute('data-overflow-text'),
-          };
-        }, 1100);
-      }
-    },
-    tooltipHide(event) {
-      if (event.relatedTarget?.classList?.contains('tooltip')) return;
-      this.isTooltipShow = false;
-      clearTimeout(this.isTooltipTimer);
-    },
+    // },
+
   }
 }

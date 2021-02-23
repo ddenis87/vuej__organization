@@ -30,9 +30,9 @@
          :tabindex="indexRow"
          @focus="(event) => eventRowFocus(event, itemRow)"
          @blur="eventRowBlur"
-         @click="(event) => eventRowClick(event, itemRow)"
+         
          @dblclick="(event) => eventRowDblclick(event, itemRow)"
-         @keydown="(event) => eventRowKeydown(event, itemRow)">
+         @keydown.stop="(event) => eventRowKeydown(event, itemRow)">
       
       <div class="body-column__action-max"
            :class="`body-column_${typeColumn}`"
@@ -49,10 +49,10 @@
            :style="itemColumn.position_in_template"
            :tabindex="(isEditable) ? indexColumn : ''"
            :data-overflow-text="gettingValueForType(itemColumn, itemRow[itemColumn.value])"
-           @focus="eventColumnFocus"
+           @focus="(event) => eventColumnFocus(event, itemRow)"
            @blur="eventColumnBlur"
            @dblclick="(event) => eventColumnDblclick(event, itemRow, itemColumn, itemRow[itemColumn.value])"
-           @keydown="(event) => eventColumnKeydown(event, itemRow, itemColumn, itemRow[itemColumn.value])"
+           @keydown.stop="(event) => eventColumnKeydown(event, itemRow, itemColumn, itemRow[itemColumn.value])"
            @editing-canceled="editingCanceled"
            @editing-accepted="editingAccepted">
 
@@ -81,6 +81,8 @@ import DataTableContentDisplay from '../DataTableContentDisplay.vue';
 
 import { DataTable } from '../DataTable.js';
 import { Events } from './mixins/Events.js';
+import { EventsMouse } from './mixins/EventsMouse.js';
+import { EventsKeyboard } from './mixins/EventsKeyboard.js';
 import { Editing } from './mixins/Editing.js';
 
 export default {
@@ -93,6 +95,8 @@ export default {
   mixins: [
     DataTable, // gettingValueForType, computedActionMax
     Events,
+    EventsMouse,
+    EventsKeyboard,
     Editing,
   ],
   props: {
@@ -142,7 +146,7 @@ export default {
         let eventDblClick = new Event('dblclick', {bubbles: false});
         firstElement.focus();
         firstElement.dispatchEvent(eventDblClick);
-      }, 100);
+      }, 200);
     },
     isScroll() {
       this.isTooltipShow = false;
@@ -159,7 +163,7 @@ export default {
           setTimeout(() => {
             firstElement.focus();
             this.$store.commit('DataTable/SET_MODE_ADDING_ID', { tableName: this.tableName, recordId: null });
-          }, 100);
+          }, 300);
         }
       }
     }

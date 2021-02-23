@@ -26,7 +26,7 @@ export default {
   props: {
     tableName: { type: String, default: null, },
     isOpen: { type: Boolean, default: false, },
-    listException: { type: Array, default() { return ['id', 'is_deleted'] } },
+    listException: { type: Array, default() { return ['id', 'is_deleted', 'is_group', 'parent'] } },
   },
   data() {
     return {

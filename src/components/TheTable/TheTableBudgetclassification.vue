@@ -23,7 +23,7 @@ export default {
   ],
   props: {
     // typeRowNumber: { type: Number, default: 1 },
-    // isEditable: { type: Boolean, default: false },
+    isEditable: { type: Boolean, default: false },
   },
   data() {
     return {

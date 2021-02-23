@@ -95,16 +95,16 @@ export const Editing = {
       };
       console.log(sendOption);
       sendOption.formData = bFormData;
-      // this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
-      await this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption)
-        .then((response) => {
-          setTimeout(() => {
-            let indexAddingElement = this.$store.getters['DataTable/GET_DATA_INDEX'](this.tableName, { recordId: response.data.id });
-            let firstElement = document.querySelectorAll(`#${this.id} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
-            let eventDblClick = new Event('dblclick', {bubbles: false});
-            firstElement.focus();
-          }, 1500);
-        })
+      this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
+      // await this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption)
+      //   .then((response) => {
+      //     setTimeout(() => {
+      //       let indexAddingElement = this.$store.getters['DataTable/GET_DATA_INDEX'](this.tableName, { recordId: response.data.id });
+      //       let firstElement = document.querySelectorAll(`#${this.id} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
+      //       // let eventDblClick = new Event('dblclick', {bubbles: false});
+      //       firstElement.focus();
+      //     }, 1500);
+      //   })
     },
   }
 }

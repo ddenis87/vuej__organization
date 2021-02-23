@@ -7,6 +7,7 @@ export const EventsComponent = {
       this.$emit('event-row-selected', option, this.properties.tableName);
     },
     eventRowKeydown(event, option) {
+      // console.log(option);
       this.$emit('event-row-keydown', event, option);
     },
     eventBodyBlur() {
