@@ -42,8 +42,10 @@
         </v-btn>
       </div>
 
-      <!-- GROUP ELEMENT -->
-      <hierarchy-actions class="body-column body-column__group" v-if="isHierarchy"></hierarchy-actions>
+      <!-- GROUP ELEMENT class="body-column__group"--> 
+      <hierarchy-actions class="body-column__group"
+                         :item-row="itemRow"
+                         v-if="isHierarchy"></hierarchy-actions>
 
       <div v-for="(itemColumn, indexColumn) in itemsHeader"
            class="body-column"

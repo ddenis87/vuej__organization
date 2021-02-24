@@ -120,7 +120,7 @@ export default {
     fieldFormValueClear() {
       this.fieldFormValue = {
         title: '',
-        registry_date: '',
+        registry_date: null,
         last_visited: '',
         institution_code: '',
         inn: '',

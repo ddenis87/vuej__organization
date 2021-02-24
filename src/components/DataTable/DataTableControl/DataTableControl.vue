@@ -1,18 +1,24 @@
 <template>
   <div class="data-table-control">
     <v-toolbar height="40" flat>
-      <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="eventClickAdding">Добавить</el-button-icon>
-      <el-button-icon icon="mdi-table-row-plus-after" :disabled="!isMountTable" @click="eventClickAddingTable">Добавить строку</el-button-icon>
-      <el-button-icon icon="mdi-pencil" :disabled="!isFocusedElement" @click="eventClickEditing">Изменить</el-button-icon>
+      <!-- ACTIONS FOR TABLE -->
+      <data-table-control-actions-table :table-name="tableName"
+                                        :element-focused="focusedElementForm"
+                                        :is-mount-table="isMountTable"
+                                        @blur-element="elementFocusedClear"></data-table-control-actions-table>
+
       <v-divider vertical></v-divider>
-      <el-button-icon :icon="(isMarkDeleted) ? 'mdi-text-box-remove-outline' : 'mdi-text-box-remove-outline'" 
-                      :disabled="!isFocusedElement" 
-                      @click="eventActionMarkDeleting">{{ (isMarkDeletedRecord) ? 'Снять пометку на удаление' : 'Установить пометку на удаление'}}</el-button-icon>
+      <data-table-control-actions-element :table-name="tableName"
+                                          :element-focused="focusedElementForm"
+                                          :is-mark-deleted-view="isMarkDeleted"
+                                          @event-mark-deleted="eventMarkDeleted"
+                                          @blur-element="elementFocusedClear"></data-table-control-actions-element>
+ 
+      <v-divider vertical></v-divider>
       <el-button-icon icon="mdi-delete-variant"
                       :icon-color="(isMarkDeleted) ? 'blue' : ''"
                       @click="eventActionShowMarkDeleting">{{ (isMarkDeleted) ? 'Выйти из корзины' : 'Показать помеченные на удаление' }}</el-button-icon>
-      <!-- <data-table-control-actions :is-mount-table="isMountTable"
-                                  :focused-element="focusedElementForm"></data-table-control-actions> -->
+
       <v-divider vertical></v-divider>
       <v-spacer></v-spacer>
 
@@ -48,15 +54,6 @@
                  @accept="isOpenFilterExtended = false"></component>
     </dialog-bar-right>
 
-    <dialog-full-page :is-dialog-name="`${isDialogName} ${(isMarkDeletedRecord) ? '(помечен на удаление)' : ''}`" 
-                      :is-dialog-show="isOpenDialog" 
-                      @close-dialog="eventCloseDialog">
-      <component :is="componentForm" 
-                 :focused-element="focusedElementForm"
-                 @event-action-accept="eventActionAccept"
-                 @event-action-cancel="eventActionCancel"></component>
-    </dialog-full-page>
-
     <v-snackbar light
                 elevation="4"
                 v-model="snackBar.show">
@@ -74,7 +71,8 @@ import DialogBarRight from '@/components/Dialogs/DialogBarRight.vue';
 
 import ElButtonIcon from '@/components/Elements/ElButtonIcon.vue';
 import DataTableControlView from './DataTableControlView.vue';
-// import DataTableControlActions from './DataTableControlActions.vue';
+import DataTableControlActionsTable from './DataTableControlActionsTable.vue';
+import DataTableControlActionsElement from './DataTableControlActionsElement.vue';
 
 export default {
   name: 'DataTableControl',
@@ -83,7 +81,8 @@ export default {
     DialogBarRight,
     ElButtonIcon,
     DataTableControlView,
-    // DataTableControlActions,
+    DataTableControlActionsTable,
+    DataTableControlActionsElement,
   },
   props: {
     focusedElement: null,
@@ -98,7 +97,6 @@ export default {
   data() {
     return {
       focusedElementForm: null,
-      isOpenDialog: false,
       isOpenFilterExtended: false,
       isMarkDeleted: false,
       typeHeight: ['fixed', 'dense', 'auto'],
@@ -112,17 +110,8 @@ export default {
     }
   },
   computed: {
-    isMarkDeletedRecord() { return (this.focusedElementForm) ? !!this.focusedElementForm.is_deleted : false; },
     isMountTable() { return (this.formProperties) ? true : false },
     tableName() { return (this.formProperties) ? this.formProperties.tableName : null },
-    componentForm() {
-      let componentForm = '';
-      if (!this.formProperties?.tableName) return null;
-      this.formProperties.tableName.split('-').forEach(item => {
-        componentForm += item[0].toUpperCase() + item.slice(1);
-      })
-      return () => import(`@/components/TheTableForm/TheTableForm${componentForm}`);
-    },
     componentFilterExtended() {
       if (!this.formProperties?.tableName) return null;
       return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
@@ -130,94 +119,19 @@ export default {
     isFilterExtendedActive() {
       return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_EXTENDED`](this.formProperties.tableName) == '') ? false : true : false;
     },
-    isFocusedElement() { return (this.focusedElementForm && Object.keys(this.focusedElementForm).length != 0) ? true : false },
-    isDialogName() { return (this.focusedElementForm == null) ? 'Добавление записи' : 'Редактирование записи'; }
   },
   watch: {
-    focusedElement() { if (typeof(this.focusedElement) == 'object') this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : {} },
+    focusedElement() { if (typeof(this.focusedElement) == 'object') this.focusedElementForm = (Object.keys(this.focusedElement).length != 0) ? this.focusedElement : null },
   },
   methods: {
-    eventClickAdding() {
+    eventMarkDeleted(option) {
       this.focusedElementForm = null;
-      this.isOpenDialog = true;
+      console.log(option);
+      this.snackBar = option;
+      setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 4000);
     },
-    eventClickAddingTable() {
-      console.log(this.focusedElement);
-      let sendOption = {
-        tableName: this.formProperties.tableName,
-        recordId: ('id' in this.focusedElement) ? this.focusedElement.id : -1,
-      }
-      console.log(sendOption);
-      this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
-    },
-    eventClickEditing() {
-      this.isOpenDialog = true;
-    },
-    eventCloseDialog() {
-      this.isOpenDialog = false;
-      this.focusedElementForm= null;
-    },
-    async eventActionAccept(option) {
-      let sendOption = {
-        tableName: this.formProperties.tableName,
-      };
-      Object.assign(sendOption, option);
-      // if (sendOption.actionName != 'adding')
-      //   sendOption.values.id = this.focusedElement.id : 'newId';
-      if (sendOption.actionName == 'editing') {
-        sendOption.recordId = option.values.id;
-        delete sendOption.values.id;
-      }
-      
-      // console.log(option);
-      let bFormData = new FormData();
-      for (let key of Object.keys(sendOption.values)) {
-        if (sendOption.values[key])
-          bFormData.set(`${key}`, `${sendOption.values[key]}`);
-      };
-      // console.log(sendOption);
-      sendOption.formData = bFormData;
-      delete sendOption.values;
-      // console.log(bFormData.get('bk'));
-      if (sendOption.actionName == 'adding') {
-        await this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption)
-        .then((res) => {
-          // setTimeout(() => {
-          //   let index = this.$store.getters['DataTable/GET_DATA_INDEX'](this.formProperties.tableName, {recordId: res.data.id})
-          //   console.log(res);
-          //   console.log(index);
-          // }, 800)
-          
-        })
-      } else {
-        this.$store.dispatch('DataTable/REQUEST_DATA_EDITING', sendOption);
-      }
-      // this.$store.commit(`DataTable/${sendOption.actionName.toUpperCase()}_LIST_DATA`, sendOption)
-
-      this.eventCloseDialog();
-    },
-    eventActionCancel() {
-      this.eventCloseDialog();
-    },
-    async eventActionMarkDeleting() {
-      let sendOption = {
-        tableName: this.formProperties.tableName,
-        recordId: this.focusedElement['id'],
-      }
+    elementFocusedClear() {
       this.focusedElementForm = null;
-      await this.$store.dispatch('DataTable/REQUEST_DATA_DELETE', sendOption)
-        .then(() => {
-          this.snackBar.text = (this.isMarkDeleted) ? 'Пометка на удаление снята' : 'Пометка на удаление установлена';
-          this.snackBar.show = true;
-          this.snackBar.status = true;
-          setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 4000);
-         })
-         .catch(() => {
-            this.snackBar.text = 'Ошибка, изменения не сохранены';
-            this.snackBar.show = true;
-            this.snackBar.status = false;
-            setTimeout(() => { this.snackBar.show = false; this.snackBar.text = '' }, 4000);
-         });
     },
     eventActionShowMarkDeleting() {
       this.isMarkDeleted = !this.isMarkDeleted;

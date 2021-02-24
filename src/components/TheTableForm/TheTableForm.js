@@ -46,7 +46,6 @@ export const TheTableForm = {
   },
   mounted() {
     this.fieldArray = Array.from(document.querySelectorAll('.table-form .el-field__item input[tabindex="1"]'));
-    // console.log(this.fieldArray);
   },
   methods: {
     // NAVIGATION
@@ -55,7 +54,6 @@ export const TheTableForm = {
       let eventClick = new Event('click');
       target.closest('.el-field').dispatchEvent(eventClick);
       let currentFieldIndex = this.fieldArray.indexOf(target);
-      // console.log(currentFieldIndex);
       if (currentFieldIndex + 1 == this.fieldArray.length) {
         target.closest('.table-form').querySelector('.tabspace-end button').focus();
         return;
@@ -68,7 +66,6 @@ export const TheTableForm = {
       switch(event.key) {
         case 'Enter': {this.eventClickActionAccept(); break;}
         case 'Tab': {
-          // console.log(event.target.closest('.table-form').querySelectorAll('.el-field__item input[tabindex="1"]'));
           setTimeout(() => {
             event.target.closest('.table-form').querySelectorAll('.el-field__item input[tabindex="1"]')[0].focus();
           }, 100);
@@ -82,9 +79,11 @@ export const TheTableForm = {
       return Object.assign(base, added);
     },
     eventClickActionCancel() {
-      // if (document.querySelector('.v-menu__content')) document.querySelector('.v-menu__content').remove();
       this.$emit('event-action-cancel');
       this.$refs.formAction.reset();
+      setTimeout(() => { // ЧТОБ СТЕРЕТЬ ДАТУ ИЗ ЗА МАСКИ
+        this.$refs.formAction.reset();
+      },100);
     },
     eventClickActionAccept() {
       if (!this.$refs.formAction.validate()) {
@@ -101,18 +100,18 @@ export const TheTableForm = {
       for (let key of Object.keys(option.values)) {
         if (option.values[key] != null) {
           if (typeof(option.values[key]) == 'object') {
-            // console.log(option.values[key]);
             if ('id' in option.values[key]) option.values[key] = option.values[key].id;
             else option.values[key] = option.values[key].value;
           }
         }
       }
-      // console.log(option.values);
       this.$emit('event-action-accept', option);
       this.$refs.formAction.reset();
+      setTimeout(() => { // ЧТОБ СТЕРЕТЬ ДАТУ ИЗ ЗА МАСКИ
+        this.$refs.formAction.reset();
+      },100);
     },
     fieldFormValueValidation() {
-      // console.log(this.fieldFormValue);
       for (let key of Object.keys(this.fieldFormValue)) {
         if (this.fieldForm[key].required == true && (this.fieldFormValue[key] == '' || this.fieldFormValue[key] == null)) return false;
       }
