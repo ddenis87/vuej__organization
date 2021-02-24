@@ -17,11 +17,14 @@ export const EventsKeyboard = {
         if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return; }
         if ((event.code == 'ArrowLeft' && event.target.previousElementSibling) || (event.code =='Tab' && event.shiftKey == true)) { event.target.previousElementSibling.focus(); return; }
         if (event.code == 'ArrowDown' || event.code == 'ArrowUp') {
+          let currentIndex = event.target.getAttribute('tabindex');
+          if (this.isExpansion) currentIndex++;
+          if (this.isHierarchy) currentIndex++;
           if (event.code == 'ArrowDown' && event.target.parentElement.nextElementSibling.closest('.body-row')) {
-            event.target.parentElement.nextElementSibling.children[event.target.getAttribute('tabindex')].focus();
+            event.target.parentElement.nextElementSibling.children[currentIndex].focus();
           }
           if (event.code == 'ArrowUp' && event.target.parentElement.previousElementSibling.closest('.body-row')) { 
-            event.target.parentElement.previousElementSibling.children[event.target.getAttribute('tabindex')].focus(); 
+            event.target.parentElement.previousElementSibling.children[currentIndex].focus(); 
           }
           return;
         }
