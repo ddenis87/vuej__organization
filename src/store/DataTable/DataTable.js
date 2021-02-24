@@ -13,7 +13,7 @@ class DataTableBase {
   filterDefault = {
     'page_size': null,
     'is_deleted': null,
-    // 'ordering': '-id',
+    'is_group': true,
   };
   filterPrimitive = '';
   filterSearch = '';
@@ -39,7 +39,7 @@ export default {
     statusProcessing: false,
 
     "budgetclassification": new DataTableBase({ relatedModelView: '{head_code} - {head_name}' }),
-    "organization": new DataTableBase({}),
+    "organization": new DataTableBase({ relatedModelView: '{title}' }),
   },
   getters,
   mutations,

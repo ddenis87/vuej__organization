@@ -22,13 +22,17 @@ export default {
     state[option.tableName].previous = option.data.previous;
     // console.log(state[option.tableName]);
     state[option.tableName].listFieldObject.forEach(fieldObject => {
-      if (fieldObject != 'parent') { // КОСТЫЛЬ
+      // if (fieldObject != 'parent') { // КОСТЫЛЬ
         let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
         option.data.results.forEach(element => {
-          if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
-          element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
+          if (element[fieldObject]) {
+            if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
+            element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
+          } else {
+            element[fieldObject] = null;
+          }
         });
-      }
+      // }
     });
     let listOption = state[option.tableName].listOption; //
     option.data.results.forEach(element => {
@@ -44,13 +48,17 @@ export default {
   SET_DATA_RECORD(state, option) {
     // console.log(option);
     state[option.tableName].listFieldObject.forEach(fieldObject => {
-      if (fieldObject != 'parent') { // КОСТЫЛЬ
+      // if (fieldObject != 'parent') { // КОСТЫЛЬ
         let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
         option.data.results.forEach(element => {
-          if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
-          element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
+          if (element[fieldObject]) {
+            if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
+            element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
+          } else {
+            element[fieldObject] = null;
+          }
         });
-      }
+      // }
     });
     let listOption = state[option.tableName].listOption; //
     option.data.results.forEach(element => {
@@ -150,17 +158,4 @@ export default {
     state[option.tableName].listData[index][option.fieldName] = option.value;
   },
 
-  // ADDING_LIST_DATA(state, option) {
-  //   let newItem = {};
-  //   Object.assign(newItem, option.values);
-  //   console.log(newItem);
-  //   state[option.tableName].listData.unshift(newItem);
-  // },
-  // EDITING_LIST_DATA(state, option) { // editing record in form
-  //   let newItem = {};
-  //   Object.assign(newItem, option.values);
-  //   console.log(newItem);
-  //   let index = state[option.tableName].listData.findIndex(item => item.id == option.values.id);
-  //   state[option.tableName].listData.splice(index, 1, newItem);
-  // },
 }

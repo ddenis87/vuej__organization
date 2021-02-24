@@ -30,7 +30,7 @@ export default {
       console.log(this.elementFocused);
       let sendOption = {
         tableName: this.tableName,
-        recordId: ('id' in this.elementFocused) ? this.elementFocused.id : -1,
+        recordId: (this.elementFocused) ? this.elementFocused.id : -1,
       }
       console.log(sendOption);
       this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
