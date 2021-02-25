@@ -1,6 +1,9 @@
 <template>
   <div class="item">
     <template v-if="!isTitle">
+      <div class="item-checkbox">
+        <el-field-checkbox v-model="isSelectedItem"></el-field-checkbox>
+      </div>
       <div class="item-compare">
         <st-field-compare :input-properties="inputProperties"
                           v-model="valueCompare"
@@ -27,13 +30,14 @@
 </template>
 
 <script>
-import StFieldCompare from '@/components/Elements/StField/StFieldCompare.vue'
-
+import ElFieldCheckbox from '@/components/Elements/ElField/ElFieldCheckbox.vue';
+import StFieldCompare from '@/components/Elements/StField/StFieldCompare.vue';
 
 export default {
   name: 'DataFilterExtendedItem',
   components: {
-    StFieldCompare
+    ElFieldCheckbox,
+    StFieldCompare,
   },
   props: {
     isTitle: { type: Boolean, default: false },
@@ -59,6 +63,10 @@ export default {
     }
   },
   computed: {
+    isSelectedItem() {
+      console.log(this.selectedItem);
+      return (this.selectedItem != null) ? true : false;
+    },
     componentField() {
       this.valueData = null;
       let valueDefault = {key: this.inputProperties.key, value: (this.inputProperties.type == 'boolean') ? 
@@ -222,13 +230,17 @@ export default {
 <style lang="scss" scoped>
 .item {
   display: grid;
-  grid-template-areas: "compare data";
-  grid-template-columns: 202px 1fr;
+  grid-template-areas: "checkbox compare data";
+  grid-template-columns: 34px 202px 1fr;
   grid-template-rows: 40px;
   align-items: flex-end;
   gap: 0px 15px;
   margin-bottom: 12px;
   &:last-child { margin-bottom: 0px; }
+  &-checkbox {
+    grid-area: checkbox;
+    margin-bottom: -16px;
+  }
   &-compare {
     grid-area: compare;
     margin-bottom: -16px;

@@ -43,8 +43,9 @@
       </div>
 
       <!-- GROUP ELEMENT class="body-column__group"--> 
-      <hierarchy-actions class="body-column__group"
+      <hierarchy-actions 
                          :item-row="itemRow"
+                         @toggle-hierarchy="() => toggleHiaerarchy(itemRow)"
                          v-if="isHierarchy"></hierarchy-actions>
 
       <div v-for="(itemColumn, indexColumn) in itemsHeader"
@@ -90,6 +91,7 @@ import { Events } from './mixins/Events.js';
 import { EventsMouse } from './mixins/EventsMouse.js';
 import { EventsKeyboard } from './mixins/EventsKeyboard.js';
 import { Editing } from './mixins/Editing.js';
+import { Hierarchy } from './mixins/Hierarchy.js';
 
 export default {
   name: 'DataTableBody',
@@ -105,6 +107,7 @@ export default {
     EventsMouse,
     EventsKeyboard,
     Editing,
+    Hierarchy,
   ],
   props: {
     id: { type: String, default: 'dataTable' },
@@ -176,6 +179,9 @@ export default {
     }
   },
   methods: {
+    // toggleHiaerarchy(option) {
+    //   console.log(option);
+    // },
     scrollBody() {
       console.log('scroll');
     },
@@ -239,16 +245,16 @@ export default {
           }
         }
       }
-      &__group {
-        grid-area: group;
-        justify-content: center;
-        align-items: flex-start;
-        .action-btn {
-          &_action {
-            transform: rotate(-180deg);
-          }
-        }
-      }
+      // &__group {
+      //   grid-area: group;
+      //   justify-content: center;
+      //   align-items: flex-start;
+      //   .action-btn {
+      //     &_action {
+      //       transform: rotate(-180deg);
+      //     }
+      //   }
+      // }
       
       .box-editing, .box-display {
         width: 100%;

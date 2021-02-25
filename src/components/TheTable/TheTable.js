@@ -10,6 +10,7 @@ export const TheTable = {
     isFooter: { type: Boolean, default: false },
     isExpansion: { type: Boolean, default: false },
     isMultiline: { type: Boolean, default: false },
+    isHierarchy: { type: Boolean, default: false },
     isEditable: { type: Boolean, default: true },
   },
   data() {

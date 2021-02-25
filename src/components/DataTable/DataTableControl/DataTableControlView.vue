@@ -1,5 +1,8 @@
 <template>
   <div class="data-table-control-view">
+    <!-- <el-button-icon icon="mdi-file-tree"
+                    :icon-color="(isHierarchy) ? 'blue' : ''"
+                    @click="$emit('toggle-hierarchy')">Иерархический вид</el-button-icon> -->
     <el-button-icon :icon="(this.typeHeight[typeHeightNumber] == 'fixed') ? 'mdi-view-sequential' : (this.typeHeight[typeHeightNumber] == 'dense') ? 'mdi-view-sequential-outline' : 'mdi-view-agenda'" 
                     :disabled="(!isMountTable)"
                     @click="$emit('toggle-type-row')">{{ (typeHeight[typeHeightNumber] == 'fixed') ? 'Строки сжато' : (typeHeight[typeHeightNumber] == 'dense') ? 'Строки свободно' : 'Строки фиксировано' }}</el-button-icon>
@@ -38,6 +41,7 @@ export default {
     isFooter: { type: Boolean, default: false },
     isExpansion: { type: Boolean, default: false },
     isMultiline: { type: Boolean, default: false },
+    isHierarchy: { type: Boolean, default: false },
     isMountTable: { type: Boolean, default: false },
   },
   data() {

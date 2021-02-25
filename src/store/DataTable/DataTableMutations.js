@@ -109,7 +109,17 @@ export default {
     filterSorting += `${(option.ordering) ? '' : '-'}${option.key}`;
     state[option.tableName].filterSorting = filterSorting;
   },
-  
+  SET_FILTER_HIERARCHY(state, option) {
+    if (option.id == null) {
+      state[option.tableName].filterHierarchy = '';
+      return;
+    }
+    let filterHierarchy = '';
+    filterHierarchy = `&parent=${option.id}`;
+    state[option.tableName].filterHierarchy = filterHierarchy;
+    console.log(state[option.tableName].filterHierarchy);
+  },
+
   TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) {
     state[option.tableName].listData = [];
     state[option.tableName].filterDefault['is_deleted'] = option.value;

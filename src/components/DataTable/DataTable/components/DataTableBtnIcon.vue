@@ -3,9 +3,8 @@
          icon
          x-small
          :disabled="isDisabled"
-         @click="$emit('click')">
-    <v-icon small
-            :color="iconColor">
+         @click="(event) => $emit('click', event)">
+    <v-icon :color="iconColor">
       <slot></slot>
     </v-icon>
   </v-btn>

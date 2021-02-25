@@ -40,6 +40,7 @@ export default {
     axios
       .get(addressApi)
       .then(response => {
+        console.log(response);
         let mutationOptions = {
           tableName: option.tableName,
           data: response.data,

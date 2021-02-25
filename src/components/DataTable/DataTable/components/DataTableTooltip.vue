@@ -37,8 +37,8 @@ export default {
 <style lang="scss" scoped>
 .tooltip {
   position: fixed;
-  left: 100px;
-  top: 100px;
+  left: -300px;
+  top: -300px;
   padding: 2px 6px;
   padding-bottom: 1px;
 

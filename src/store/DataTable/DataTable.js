@@ -13,12 +13,13 @@ class DataTableBase {
   filterDefault = {
     'page_size': null,
     'is_deleted': null,
-    'is_group': true,
+    // 'ordering': '-is_group',
   };
   filterPrimitive = '';
   filterSearch = '';
   filterSorting = '';
   filterExtended = '';
+  filterHierarchy = '';
 
   relatedModelView = '' // шаблон представление таблицы в других таблицах, компонентах, и т.д.
   listOption = {};

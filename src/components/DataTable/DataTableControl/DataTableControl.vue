@@ -28,7 +28,9 @@
                                :is-footer="isFooter"
                                :is-expansion="isExpansion"
                                :is-multiline="isMultiline"
+                               :is-hierarchy="isHierarchy"
                                :is-mount-table="isMountTable"
+                               @toggle-hierarchy="$emit('toggle-hierarchy')"
                                @toggle-type-row="$emit('toggle-type-row')"
                                @toggle-expansion="$emit('toggle-expansion')"
                                @toggle-type-column="$emit('toggle-type-column')"
@@ -45,7 +47,7 @@
     <dialog-bar-right is-dialog-name="Фильтр"
                       :tableName="tableName"
                       :is-dialog-show="isOpenFilterExtended"
-                      width="586"
+                      width="600"
                       @close-dialog="isOpenFilterExtended = false">
       <component :is="componentFilterExtended"
                  :table-name="tableName"
@@ -93,6 +95,7 @@ export default {
     isFooter: { type: Boolean, default: false },
     isExpansion: { type: Boolean, default: false },
     isMultiline: { type: Boolean, default: false },
+    isHierarchy: { type: Boolean, default: false },
   },
   data() {
     return {
