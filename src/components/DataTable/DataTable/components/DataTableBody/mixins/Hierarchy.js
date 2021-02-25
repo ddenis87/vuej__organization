@@ -2,18 +2,10 @@ export const Hierarchy = {
   data() {
     return {
       currentParent: null,
-      isIntoGroup: false,
-
     }
   },
   watch: {
-    // isIntoGroup() {
-    //   if (this.isIntoGroup) {
-    //     this.$store.commit('SET_FILTER_INTO_GROUP', true);
-    //   } else {
-    //     this.$store.commit('SET_FILTER_INTO_GROUP', false);
-    //   }
-    // },
+
   },
   methods: {
     toggleHiaerarchy(option) {

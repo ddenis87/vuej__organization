@@ -12,26 +12,58 @@ export default {
     for (let key of Object.keys(option.data)) {
       if (option.data[key].type == 'field') state[option.tableName].listFieldObject.push(key);
     }
+    console.log(state[option.tableName].listOption);
     state[option.tableName].description = option.description;
   },
+
+  LINKING(state, element, tableName) {
+    for (let elementKey of Object.keys(element)) {
+      let elementKeyOptions = state[tableName].listOption[elementKey];
+      switch(elementKeyOptions.type) {
+        case 'field': {
+          if (element[elementKey]) {
+            let relatedModelName = elementKeyOptions['related_model_name'];
+            if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
+              console.log(element[elementKey]);
+              state[relatedModelName].listData.push(element[elementKey]);
+            }
+            element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
+          } else {
+            element[elementKey] = null;
+          }
+        }
+      }
+    }
+  },
+
   async SET_DATA(state, option) {
 
     if (option.clear == true) state[option.tableName].listData = [];
     state[option.tableName].countTotal = option.data.count;
     state[option.tableName].next = option.data.next;
     state[option.tableName].previous = option.data.previous;
-    state[option.tableName].listFieldObject.forEach(fieldObject => {
-        let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
-        option.data.results.forEach(element => {
-          if (element[fieldObject]) {
-            if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
-            element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
-          } else {
-            element[fieldObject] = null;
+
+    option.data.results.forEach(element => {
+      for (let elementKey of Object.keys(element)) {
+        let elementKeyOptions = state[option.tableName].listOption[elementKey];
+        switch(elementKeyOptions.type) {
+          case 'field': {
+            if (element[elementKey]) {
+              let relatedModelName = elementKeyOptions['related_model_name'];
+              if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
+                console.log(element[elementKey]);
+                state[relatedModelName].listData.push(element[elementKey]);
+              }
+              element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
+            } else {
+              element[elementKey] = null;
+            }
           }
-        });
-      // }
-    });
+        }
+      }
+    })
+
+
     let listOption = state[option.tableName].listOption; //
     option.data.results.forEach(element => {
       for (let key of Object.keys(element)) { //
