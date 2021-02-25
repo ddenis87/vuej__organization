@@ -2,7 +2,7 @@
   <div class="item">
     <template v-if="!isTitle">
       <div class="item-checkbox">
-        <el-field-checkbox v-model="isSelectedItem"></el-field-checkbox>
+        <v-checkbox v-model="isSelectedItem"></v-checkbox>
       </div>
       <div class="item-compare">
         <st-field-compare :input-properties="inputProperties"
@@ -64,8 +64,8 @@ export default {
   },
   computed: {
     isSelectedItem() {
-      console.log(this.selectedItem);
-      return (this.selectedItem != null) ? true : false;
+      // console.log(this.selectedItem);
+      return (this.selectedItem?.value != null) ? true : false;
     },
     componentField() {
       this.valueData = null;

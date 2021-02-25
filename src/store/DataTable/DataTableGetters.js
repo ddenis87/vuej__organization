@@ -46,6 +46,6 @@ export default {
            state[tableName].filterExtended + 
            state[tableName].filterSearch +
            state[tableName].filterSorting +
-           state[tableName].filterHierarchy;
+           state[tableName].filterParent;
   }
 }

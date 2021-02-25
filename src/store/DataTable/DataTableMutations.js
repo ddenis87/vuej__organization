@@ -14,15 +14,13 @@ export default {
     }
     state[option.tableName].description = option.description;
   },
-  SET_DATA(state, option) {
+  async SET_DATA(state, option) {
 
     if (option.clear == true) state[option.tableName].listData = [];
     state[option.tableName].countTotal = option.data.count;
     state[option.tableName].next = option.data.next;
     state[option.tableName].previous = option.data.previous;
-    // console.log(state[option.tableName]);
     state[option.tableName].listFieldObject.forEach(fieldObject => {
-      // if (fieldObject != 'parent') { // КОСТЫЛЬ
         let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
         option.data.results.forEach(element => {
           if (element[fieldObject]) {
@@ -109,15 +107,12 @@ export default {
     filterSorting += `${(option.ordering) ? '' : '-'}${option.key}`;
     state[option.tableName].filterSorting = filterSorting;
   },
-  SET_FILTER_HIERARCHY(state, option) {
+  SET_FILTER_PARENT(state, option) {
     if (option.id == null) {
-      state[option.tableName].filterHierarchy = '';
+      state[option.tableName].filterParent = '&parent__isnull=true';
       return;
     }
-    let filterHierarchy = '';
-    filterHierarchy = `&parent=${option.id}`;
-    state[option.tableName].filterHierarchy = filterHierarchy;
-    console.log(state[option.tableName].filterHierarchy);
+    state[option.tableName].filterParent = `&parent=${option.id}`;
   },
 
   TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) {
