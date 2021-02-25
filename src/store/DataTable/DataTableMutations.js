@@ -1,4 +1,55 @@
 import Vue from 'vue';
+
+function linking(state, option) {
+  console.log(option)
+  option.data.forEach(element => {
+    for (let elementKey of Object.keys(element)) {
+      let elementKeyOptions = state[option.tableName].listOption[elementKey];
+      console.log(elementKeyOptions);
+      switch(elementKeyOptions.type) {
+        case 'field': {
+          console.log(element[elementKey]);
+          if (element[elementKey]) {
+            let relatedModelName = elementKeyOptions['related_model_name'];
+            if (typeof(element[elementKey]) == 'object') {
+              if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
+                // console.log(element[elementKey]);
+                // console.log(state);
+                if (relatedModelName == option.tableName) {
+                  linking(state, {
+                    data: {results: element[elementKey]},
+                    tableName: relatedModelName
+                  })
+                }
+                console.log('add linking relate 1 - ', element[elementKey]);
+                state[relatedModelName].listData.push(element[elementKey]);
+              }
+              element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
+            } else {
+              if (!state[relatedModelName].listData.find(item => item.id == element[elementKey])) {
+                console.log('add linking relate 2 - ', element[elementKey]);
+                state[relatedModelName].listData.push(element[elementKey]);
+              }
+              element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey]);
+            }
+          } else {
+            element[elementKey] = null;
+          }
+          break;
+        }
+        case 'choice': {
+          element[elementKey] = elementKeyOptions.choices.find(item => item.value == element[elementKey]);
+          break;
+        }
+      }
+    }
+    if (!state[option.tableName].listData.find(item => item.id == element.id)) {
+      console.log('add linking 3 - ', element);
+      state[option.tableName].listData.push(element);
+    }
+  })
+};
+
 export default {
   SET_STATUS_PROCESSING(state, status = false) { state.statusProcessing = status; },
 
@@ -16,33 +67,15 @@ export default {
     state[option.tableName].description = option.description;
   },
 
-  LINKING(state, element, tableName) {
-    for (let elementKey of Object.keys(element)) {
-      let elementKeyOptions = state[tableName].listOption[elementKey];
-      switch(elementKeyOptions.type) {
-        case 'field': {
-          if (element[elementKey]) {
-            let relatedModelName = elementKeyOptions['related_model_name'];
-            if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-              console.log(element[elementKey]);
-              state[relatedModelName].listData.push(element[elementKey]);
-            }
-            element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
-          } else {
-            element[elementKey] = null;
-          }
-        }
-      }
-    }
-  },
-
-  async SET_DATA(state, option) {
-
+  SET_DATA_OPTIONS(state, option) {
     if (option.clear == true) state[option.tableName].listData = [];
     state[option.tableName].countTotal = option.data.count;
     state[option.tableName].next = option.data.next;
     state[option.tableName].previous = option.data.previous;
+  },
 
+  SET_DATA(state, option) {
+    console.log(option.data.results);
     option.data.results.forEach(element => {
       for (let elementKey of Object.keys(element)) {
         let elementKeyOptions = state[option.tableName].listOption[elementKey];
@@ -51,30 +84,35 @@ export default {
             if (element[elementKey]) {
               let relatedModelName = elementKeyOptions['related_model_name'];
               if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-                console.log(element[elementKey]);
-                state[relatedModelName].listData.push(element[elementKey]);
+                if (relatedModelName == option.tableName) {
+                  linking(state, {
+                    data: [element[elementKey]],
+                    tableName: relatedModelName
+                  })
+                } else {
+                  console.log('add set_data relate - ', element[elementKey]);
+                  state[relatedModelName].listData.push(element[elementKey]);
+                }
               }
               element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
             } else {
               element[elementKey] = null;
             }
+            break;
+          }
+          case 'choice': {
+            element[elementKey] = elementKeyOptions.choices.find(item => item.value == element[elementKey]);
+            break;
           }
         }
       }
-    })
-
-
-    let listOption = state[option.tableName].listOption; //
-    option.data.results.forEach(element => {
-      for (let key of Object.keys(element)) { //
-        if (listOption[key].type == 'choice') { //
-          element[key] = listOption[key].choices.find(item => item.value == element[key]);
-        }
-      }
-      if (!state[option.tableName].listData.find(item => item.id == element.id)) 
+      if (!state[option.tableName].listData.find(item => item.id == element.id)) {
+        console.log('add set_data - ', element);
         state[option.tableName].listData.push(element);
-    });
+      }
+    })
   },
+
   SET_DATA_RECORD(state, option) {
     // console.log(option);
     state[option.tableName].listFieldObject.forEach(fieldObject => {

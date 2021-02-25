@@ -46,6 +46,7 @@ export default {
           data: response.data,
           clear: true,
         }
+        state.commit('SET_DATA_OPTIONS', mutationOptions);
         state.commit('SET_DATA', mutationOptions);
       })
       .catch(error => console.log(error))
@@ -65,6 +66,7 @@ export default {
           data: response.data,
           clear: false,
         }
+        state.commit('SET_DATA_OPTIONS', mutationOptions);
         state.commit('SET_DATA', mutationOptions);
       })
       .catch(error => console.log(error))

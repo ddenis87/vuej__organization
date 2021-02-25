@@ -28,8 +28,11 @@ export default {
   },
   computed: {
     isGroup() {
-      // console.log(this.itemRow);
-      return ('is_group' in this.itemRow) ? this.itemRow.is_group : false;
+      console.log(this.itemRow);
+      if (typeof(this.itemRow) == 'object') {
+        return ('is_group' in this.itemRow) ? this.itemRow.is_group : false;
+      } else return false;
+      // return ('is_group' in this.itemRow) ? this.itemRow.is_group : false;
     },
   },
   methods: {
