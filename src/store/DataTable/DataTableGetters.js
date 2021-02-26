@@ -29,12 +29,12 @@ export default {
   GET_OPTIONS:(state) => (tableName) => { return state[tableName].listOption; },
 
   GET_DATA:(state) => (tableName) => { 
-    console.log(state[tableName].listData.sort((a, b) => {
+    state[tableName].listData.sort((a, b) => {
       return Number(b['is_group']) - Number(a['is_group']);
-    }));
-    console.log(state[tableName].listData.sort((a, b) => {
+    });
+    state[tableName].listData.sort((a, b) => {
       return Number((a['parent'] != null) ? 1 : 0) - Number((b['parent'] != null) ? 1 : 0);
-    }));
+    });
 
     return state[tableName].listData; 
   },

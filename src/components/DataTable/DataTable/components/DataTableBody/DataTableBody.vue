@@ -43,9 +43,10 @@
       </div>
 
       <!-- GROUP ELEMENT class="body-column__group"--> 
-      <hierarchy-actions 
+      <hierarchy-actions class="body-column__group"
                          :item-row="itemRow"
-                         @toggle-hierarchy="() => toggleHiaerarchy(itemRow)"
+                         :data-id="itemRow.id"
+                         @toggle-hierarchy="(event) => toggleHiaerarchy(event, itemRow)"
                          v-if="isHierarchy"></hierarchy-actions>
 
       <div v-for="(itemColumn, indexColumn) in itemsHeader"
@@ -245,16 +246,19 @@ export default {
           }
         }
       }
-      // &__group {
-      //   grid-area: group;
-      //   justify-content: center;
-      //   align-items: flex-start;
-      //   .action-btn {
-      //     &_action {
-      //       transform: rotate(-180deg);
-      //     }
-      //   }
-      // }
+      &__group {
+        grid-area: group;
+        display: flex;
+        justify-content: flex-end;
+        // gap: 3px;
+        align-items: flex-start;
+        .action-btn {
+          margin-right: 3px;
+          &_action {
+            transform: rotate(90deg);
+          }
+        }
+      }
       
       .box-editing, .box-display {
         width: 100%;

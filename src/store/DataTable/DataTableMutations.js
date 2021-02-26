@@ -62,7 +62,7 @@ export default {
     for (let key of Object.keys(option.data)) {
       if (option.data[key].type == 'field') state[option.tableName].listFieldObject.push(key);
     }
-    console.log(state[option.tableName].listOption);
+    // console.log(state[option.tableName].listOption);
     state[option.tableName].description = option.description;
   },
 

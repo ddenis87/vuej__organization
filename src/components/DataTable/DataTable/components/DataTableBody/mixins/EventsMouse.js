@@ -48,6 +48,12 @@ export const EventsMouse = {
       }
     },
     tooltipHide(event) {
+      this.isTooltipProperties = {
+        top: -300,
+        left: -300,
+        width: 0,
+        height: 0,
+      };
       if (event.relatedTarget?.classList?.contains('tooltip')) return;
       this.isTooltipShow = false;
       clearTimeout(this.isTooltipTimer);

@@ -40,8 +40,8 @@ export const LoadingData = {
       let bootAnchorEdge = document.querySelector(`#${this.id}-boot-anchor`).getBoundingClientRect().bottom - 300;
       if (bootAnchorEdge < this.parentElementEdge) {
         this.parentElement.removeEventListener('scroll', this.eventScrollPagination);
-        if (this.$store.getters[`DataTable/GET_ADDRESS_API_PAGE_NEXT`](this.properties.tableName) != null)
-          this.$store.dispatch(`DataTable/REQUEST_DATA_NEXT`, {tableName: this.properties.tableName});
+        // if (this.$store.getters[`DataTable/GET_ADDRESS_API_PAGE_NEXT`](this.properties.tableName) != null)
+        //   this.$store.dispatch(`DataTable/REQUEST_DATA_NEXT`, {tableName: this.properties.tableName});
       }
     },
   },

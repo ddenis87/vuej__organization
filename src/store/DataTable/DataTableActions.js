@@ -36,7 +36,7 @@ export default {
           case 'field': {
             if (element[elementKey]) {
               let relatedModelName = elementOption['related_model_name'];
-              console.log(element[elementKey]);
+              // console.log(element[elementKey]);
               if (typeof(element[elementKey]) == 'object') {
                 if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
                   if (relatedModelName == option.tableName) {
@@ -90,7 +90,7 @@ export default {
         }
       }
       if (!state.state[option.tableName].listData.find(item => item.id == element.id)) {
-        console.log('add linking - ', element);
+        // console.log('add linking - ', element);
         // state[option.tableName].listData.push(element); /// MUTATION
         state.commit('SET_DATA', {tableName: option.tableName, value: element});
       }

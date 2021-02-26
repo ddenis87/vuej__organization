@@ -1,5 +1,5 @@
 <template>
-  <div class="body-column__group">
+  <div>
     <div class="group-item">
       <data-table-btn-icon class="action-btn" v-if="isGroup" @click="eventClickHierarchy">mdi-menu-right</data-table-btn-icon>
     </div>
@@ -9,9 +9,6 @@
     <div class="group-item">
       <v-icon small v-if="!isGroup">mdi-window-minimize</v-icon>
     </div>
-    
-    
-    
   </div>
 </template>
 
@@ -25,21 +22,26 @@ export default {
   },
   props: {
     itemRow: { type: Object, default() { return null } },
+    isOpen: { type: Boolean, default: false },
+  },
+  data() {
+    return {
+
+    }
   },
   computed: {
     isGroup() {
-      console.log(this.itemRow);
+      // console.log(this.itemRow);
       if (typeof(this.itemRow) == 'object') {
         return ('is_group' in this.itemRow) ? this.itemRow.is_group : false;
       } else return false;
-      // return ('is_group' in this.itemRow) ? this.itemRow.is_group : false;
     },
   },
   methods: {
     eventClickHierarchy(event) {
       // console.log(event);
-      event.target.closest('.action-btn').classList.toggle('action-btn_action');
-      this.$emit('toggle-hierarchy');
+      // event.target.closest('.action-btn').classList.toggle('action-btn_action');
+      this.$emit('toggle-hierarchy', event);
     }
   }
 }
@@ -53,7 +55,7 @@ export default {
   // gap: 3px;
   align-items: flex-start;
   .action-btn {
-    margin-right: 3px;
+    margin-right: 5px;
     &_action {
       transform: rotate(90deg);
     }

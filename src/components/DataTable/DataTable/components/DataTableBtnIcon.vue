@@ -1,7 +1,8 @@
 <template>
   <v-btn class="action-btn"
          icon
-         x-small
+         width="16"
+         height="16"
          :disabled="isDisabled"
          @click="(event) => $emit('click', event)">
     <v-icon :color="iconColor">
