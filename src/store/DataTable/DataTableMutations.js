@@ -1,7 +1,8 @@
 import Vue from 'vue';
 
 function linking(state, option) {
-  console.log(option)
+  console.log(option);
+  console.log(state);
   option.data.forEach(element => {
     for (let elementKey of Object.keys(element)) {
       let elementKeyOptions = state[option.tableName].listOption[elementKey];
@@ -13,8 +14,6 @@ function linking(state, option) {
             let relatedModelName = elementKeyOptions['related_model_name'];
             if (typeof(element[elementKey]) == 'object') {
               if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-                // console.log(element[elementKey]);
-                // console.log(state);
                 if (relatedModelName == option.tableName) {
                   linking(state, {
                     data: {results: element[elementKey]},
@@ -75,43 +74,47 @@ export default {
   },
 
   SET_DATA(state, option) {
-    console.log(option.data.results);
-    option.data.results.forEach(element => {
-      for (let elementKey of Object.keys(element)) {
-        let elementKeyOptions = state[option.tableName].listOption[elementKey];
-        switch(elementKeyOptions.type) {
-          case 'field': {
-            if (element[elementKey]) {
-              let relatedModelName = elementKeyOptions['related_model_name'];
-              if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-                if (relatedModelName == option.tableName) {
-                  linking(state, {
-                    data: [element[elementKey]],
-                    tableName: relatedModelName
-                  })
-                } else {
-                  console.log('add set_data relate - ', element[elementKey]);
-                  state[relatedModelName].listData.push(element[elementKey]);
-                }
-              }
-              element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
-            } else {
-              element[elementKey] = null;
-            }
-            break;
-          }
-          case 'choice': {
-            element[elementKey] = elementKeyOptions.choices.find(item => item.value == element[elementKey]);
-            break;
-          }
-        }
-      }
-      if (!state[option.tableName].listData.find(item => item.id == element.id)) {
-        console.log('add set_data - ', element);
-        state[option.tableName].listData.push(element);
-      }
-    })
+    state[option.tableName].listData.push(option.value);
   },
+
+  // SET_DATA(state, option, wat) {
+  //   console.log(option.data.results);
+  //   option.data.results.forEach(element => {
+  //     for (let elementKey of Object.keys(element)) {
+  //       let elementKeyOptions = state[option.tableName].listOption[elementKey];
+  //       switch(elementKeyOptions.type) {
+  //         case 'field': {
+  //           if (element[elementKey]) {
+  //             let relatedModelName = elementKeyOptions['related_model_name'];
+  //             if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
+  //               if (relatedModelName == option.tableName) {
+  //                 linking(state, {
+  //                   data: [element[elementKey]],
+  //                   tableName: relatedModelName
+  //                 })
+  //               } else {
+  //                 console.log('add set_data relate - ', element[elementKey]);
+  //                 state[relatedModelName].listData.push(element[elementKey]);
+  //               }
+  //             }
+  //             element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
+  //           } else {
+  //             element[elementKey] = null;
+  //           }
+  //           break;
+  //         }
+  //         case 'choice': {
+  //           element[elementKey] = elementKeyOptions.choices.find(item => item.value == element[elementKey]);
+  //           break;
+  //         }
+  //       }
+  //     }
+  //     if (!state[option.tableName].listData.find(item => item.id == element.id)) {
+  //       console.log('add set_data - ', element);
+  //       state[option.tableName].listData.push(element);
+  //     }
+  //   })
+  // },
 
   SET_DATA_RECORD(state, option) {
     // console.log(option);

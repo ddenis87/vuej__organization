@@ -1,5 +1,10 @@
 export default {
   GET_STATUS_PROCESSING(state) { return state.statusProcessing; },
+
+  GET_ADDRESS_API_BASE:(state, getters, rootState, rootGetters) => (tableName) => {
+    return `${rootGetters.GET_ADDRESS_API}api/v1/${tableName}/?`;
+  },
+
   GET_ADDRESS_API:(state, getters, rootState, rootGetters) => (option, tableName) => {
     let addressApi = `${rootGetters.GET_ADDRESS_API}api/v1/${tableName}/?`;
 
@@ -23,7 +28,16 @@ export default {
 
   GET_OPTIONS:(state) => (tableName) => { return state[tableName].listOption; },
 
-  GET_DATA:(state) => (tableName) => { return state[tableName].listData; },
+  GET_DATA:(state) => (tableName) => { 
+    console.log(state[tableName].listData.sort((a, b) => {
+      return Number(b['is_group']) - Number(a['is_group']);
+    }));
+    console.log(state[tableName].listData.sort((a, b) => {
+      return Number((a['parent'] != null) ? 1 : 0) - Number((b['parent'] != null) ? 1 : 0);
+    }));
+
+    return state[tableName].listData; 
+  },
   GET_DATA_COUNT_TOTAL:(state) => (tableName) => { return state[tableName].countTotal; },
   GET_DATA_COUNT_LOAD:(state) => (tableName) => { return state[tableName].listData.length; },
   GET_DATA_INDEX:(state) => (tableName, option) => {
