@@ -30,33 +30,26 @@ export default {
   REQUEST_DATA_RECORD(state, option) {
     option.data.forEach(element => {
       for (let elementKey of Object.keys(element)) {
-        // console.log(state);
         let elementOption = state.state[option.tableName].listOption[elementKey];
         switch(elementOption.type) {
           case 'field': {
-            if (element[elementKey]) {
+            if (element[elementKey]) {  // ЕСЛИ ЗНАЧЕНИЕ НЕ NULL
               let relatedModelName = elementOption['related_model_name'];
-              // console.log(element[elementKey]);
-              if (typeof(element[elementKey]) == 'object') {
+              if (typeof(element[elementKey]) == 'object') {  // ЕСЛИ В ПОЛЕ FIELD ОБЪЕКТ
                 if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-                  if (relatedModelName == option.tableName) {
+                  if (relatedModelName == option.tableName) { // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ТЕКУЩЕЙ ТАБЛИЦЕ
                     
                     state.dispatch('REQUEST_DATA_RECORD', {
                       data: [element[elementKey]],
                       tableName: relatedModelName
                     })
-                    // linking(state, {
-                    //   data: [element[elementKey]],
-                    //   tableName: relatedModelName
-                    // })
-                  } else {
+                  } else {  // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ДРУГОЙ ТАБЛИЦЕ
                     console.log('add linking relate 1 - ', element[elementKey]);
-                    // state[relatedModelName].listData.push(element[elementKey]); /// MUTATION
                     state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
                   }
                 }
                 element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
-              } else {
+              } else { // ЕСЛИ В ПОЛЕ FIELD ID ОБЪЕКТА
                 if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey])) {
                   console.log('add linking relate 2 - ', element[elementKey]);
                   let addressApi = state.getters.GET_ADDRESS_API_BASE(option.tableName) + `id=${element[elementKey]}`;
@@ -122,21 +115,31 @@ export default {
             let elementOption = state.state[option.tableName].listOption[elementKey];
             switch(elementOption.type) {
               case 'field': {
-                if (element[elementKey]) {
+                if (element[elementKey]) {  // ЕСЛИ ЗНАЧЕНИЕ НЕ NULL
                   // console.log(element[elementKey]);
                   let relatedModelName = elementOption['related_model_name'];
-                  if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-                    if (relatedModelName == option.tableName) {
-                      state.dispatch('REQUEST_DATA_RECORD', {
-                        data: [element[elementKey]],
-                        tableName: relatedModelName
-                      });
-                    } else {
-                      // console.log('add set_data relate - ', element[elementKey]);
+
+                  if (relatedModelName == option.tableName) {
+                    element[elementKey] = state.state[relatedModelName].listDataGroup.find(item => item.id == element[elementKey].id);
+                  } else {
+                    if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
                       state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
                     }
+                    element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
                   }
-                  element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
+
+                  // if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
+                  //   if (relatedModelName == option.tableName) { // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ТЕКУЩЕЙ ТАБЛИЦЕ
+                  //     state.dispatch('REQUEST_DATA_RECORD', {
+                  //       data: [element[elementKey]],
+                  //       tableName: relatedModelName
+                  //     });
+                  //   } else {  // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ДРУГОЙ ТАБЛИЦЕ
+                  //     // console.log('add set_data relate - ', element[elementKey]);
+                  //     state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
+                  //   }
+                  // }
+                  // element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
                 } else {
                   element[elementKey] = null;
                 }

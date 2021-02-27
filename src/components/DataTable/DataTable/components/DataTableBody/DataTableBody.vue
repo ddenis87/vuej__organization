@@ -252,12 +252,12 @@ export default {
         justify-content: flex-end;
         // gap: 3px;
         align-items: flex-start;
-        .action-btn {
-          margin-right: 3px;
-          &_action {
-            transform: rotate(90deg);
-          }
-        }
+        // .action-btn {
+        //   margin-right: 5px;
+        //   &_action {
+        //     transform: rotate(90deg);
+        //   }
+        // }
       }
       
       .box-editing, .box-display {

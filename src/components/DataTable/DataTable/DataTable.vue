@@ -15,6 +15,17 @@
       <data-table-progress-line :is-show="isLoadingData"></data-table-progress-line>
     </div>
 
+    <div class="data-table__body-group">
+      <data-table-body-group :table-name="properties.tableName"
+                             :template="computedTemplateTable"
+                             :startColumn="properties.headers[0]"
+                             :type-height="typeHeight"
+                             :type-column="typeColumn"
+                             :items="gettingDataBodyGroup"
+                             :items-header="gettingDataHeader"
+                             :is-hierarchy="isHierarchy"></data-table-body-group>
+    </div>
+
     <div class="data-table__body">
       <data-table-body :id="id"
                        :table-name="properties.tableName"
@@ -49,6 +60,7 @@
 <script>
 import DataTableProgressLine from './components/DataTableProgressLine.vue';
 import DataTableHeader from './components/DataTableHeader/DataTableHeader.vue';
+import DataTableBodyGroup from './components/DataTableBodyGroup/DataTableBodyGroup.vue';
 import DataTableBody from './components/DataTableBody/DataTableBody.vue';
 import DataTableFooter from './components/DataTableFooter/DataTableFooter.vue';
 
@@ -62,6 +74,7 @@ export default {
   components: {
     DataTableProgressLine,
     DataTableHeader,
+    DataTableBodyGroup,
     DataTableBody,
     DataTableFooter,
   },
@@ -123,6 +136,11 @@ export default {
     display: flex;
     min-height: 5px;
     z-index: 300;
+  }
+  &__body-group {
+    position: relative;
+    display: flex;
+    z-index: 150;
   }
   &__body {
     position: relative;

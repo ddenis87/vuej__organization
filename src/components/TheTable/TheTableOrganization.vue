@@ -32,7 +32,7 @@ export default {
         headers: [
           // {value: 'id', width: 60,},
           {value: 'title', align: 'start', width: [350,],},
-          {value: 'institution_code', align: 'start', width: 94, },
+          {value: 'institution_code', align: 'end', width: 94, },
           {value: 'registry_date', align: 'start', width: 120,},
           {value: 'parent', align: 'start', width: 120,},
           // {value: 'last_visited', align: 'start', width: 146,},

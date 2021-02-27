@@ -21,13 +21,16 @@ class DataTableBase {
   filterExtended = '';
   // filterHierarchy = '&parent__isnull=true';
   filterParent = '&parent__isnull=true';
+  // filterGroup = '&is_group=true&parent__isnull=true';
+  // filterElement = '&is_group=false&parent__isnull=true';
 
   relatedModelView = '' // шаблон представление таблицы в других таблицах, компонентах, и т.д.
   listOption = {};
-  listFieldObject = [];
+  listFieldObject = []; // УДАЛИТЬ
+  listDataGroup = [];
   listData = [];
 
-  isModeAdding = false; // режим добавления елемента в таблицу
+  isModeAdding = false; // режим добавления элемента в таблицу
   modeAdding = {
     status: false,
     index: null,

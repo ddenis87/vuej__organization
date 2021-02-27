@@ -1,10 +1,9 @@
 export default {
   GET_STATUS_PROCESSING(state) { return state.statusProcessing; },
 
-  GET_ADDRESS_API_BASE:(state, getters, rootState, rootGetters) => (tableName) => {
-    return `${rootGetters.GET_ADDRESS_API}api/v1/${tableName}/?`;
-  },
-
+  // GET_ADDRESS_API_BASE:(state, getters, rootState, rootGetters) => (tableName) => {
+  //   return `${rootGetters.GET_ADDRESS_API}api/v1/${tableName}/?`;
+  // },
   GET_ADDRESS_API:(state, getters, rootState, rootGetters) => (option, tableName) => {
     let addressApi = `${rootGetters.GET_ADDRESS_API}api/v1/${tableName}/?`;
 
@@ -17,8 +16,8 @@ export default {
         for (let item of Object.entries(state[tableName].filterDefault)) addressApi += `&${item[0]}=${item[1]}`;
         return addressApi;
       }
+      default: return addressApi;
     }
-    // return addressApi.slice(0, -1);
   },
   GET_ADDRESS_API_PAGE_NEXT:(state) => (tableName) => { return state[tableName].next; },
   GET_ADDRESS_API_PAGE_PREVIOUS:(state) => (tableName) => { return state[tableName].previous; },
@@ -28,13 +27,15 @@ export default {
 
   GET_OPTIONS:(state) => (tableName) => { return state[tableName].listOption; },
 
+  GET_DATA_GROUP:(state) => (tableName) => { return state[tableName].listDataGroup; },
+  GET_DATA_GROUP_LEVEL:(state) => (tableName) => { return state[tableName].listDataGroup.length; },
   GET_DATA:(state) => (tableName) => { 
-    state[tableName].listData.sort((a, b) => {
-      return Number(b['is_group']) - Number(a['is_group']);
-    });
-    state[tableName].listData.sort((a, b) => {
-      return Number((a['parent'] != null) ? 1 : 0) - Number((b['parent'] != null) ? 1 : 0);
-    });
+    // state[tableName].listData.sort((a, b) => {
+    //   return Number(b['is_group']) - Number(a['is_group']);
+    // });
+    // state[tableName].listData.sort((a, b) => {
+    //   return Number((a['parent'] != null) ? 1 : 0) - Number((b['parent'] != null) ? 1 : 0);
+    // });
 
     return state[tableName].listData; 
   },
@@ -54,7 +55,7 @@ export default {
   GET_FILTER_EXTENDED:(state) => (tableName) => { return state[tableName].filterExtended; },
   GET_FILTER_SEARCH:(state) => (tableName) => { return state[tableName].filterSearch; },
   GET_FILTER_SORTING:(state) => (tableName) => { return state[tableName].filterSorting; },
-  // GET_FILTER_SORTING:(state) => (tableName) => { return state[tableName].filterSorting; },
+  GET_FILTER_GROUP:(state) => (tableName) => { return state[tableName].filterGroup; },
   GET_FILTER_ALL:(state) => (tableName) => {
     return state[tableName].filterPrimitive + 
            state[tableName].filterExtended + 

@@ -77,6 +77,16 @@ export default {
     state[option.tableName].listData.push(option.value);
   },
 
+  DATA_GROUP_ADDING(state, option) {
+    state[option.tableName].listData = [];
+    state[option.tableName].listDataGroup.push(option.group);
+  },
+  DATA_GROUP_MODIFY(state, option) {
+    state[option.tableName].listData = [];
+    let groupIndex = state[option.tableName].listDataGroup.findIndex(item => item.id == option.id);
+    state[option.tableName].listDataGroup = state[option.tableName].listDataGroup.slice(0, groupIndex);
+  },
+
   // SET_DATA(state, option, wat) {
   //   console.log(option.data.results);
   //   option.data.results.forEach(element => {
@@ -181,11 +191,11 @@ export default {
     state[option.tableName].filterSorting = filterSorting;
   },
   SET_FILTER_PARENT(state, option) {
-    if (option.id == null) {
+    if (option.group.id == null) {
       state[option.tableName].filterParent = '&parent__isnull=true';
       return;
     }
-    state[option.tableName].filterParent = `&parent=${option.id}`;
+    state[option.tableName].filterParent = `&parent=${option.group.id}`;
   },
 
   TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) {

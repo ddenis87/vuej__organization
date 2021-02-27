@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="group-item">
-      <data-table-btn-icon class="action-btn" v-show="isGroup" @click="eventClickHierarchy">mdi-menu-right</data-table-btn-icon>
+      <data-table-btn-icon class="action-btn" v-if="isGroup" @click="eventClickHierarchy">mdi-menu-right</data-table-btn-icon>
     </div>
     <div class="group-item">
       <v-icon small v-if="isGroup">mdi-folder</v-icon>
@@ -31,7 +31,6 @@ export default {
   },
   computed: {
     isGroup() {
-      // console.log(this.itemRow);
       if (typeof(this.itemRow) == 'object') {
         return ('is_group' in this.itemRow) ? this.itemRow.is_group : false;
       } else return false;
@@ -46,17 +45,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .body-column__group {
-//   grid-area: group;
-//   display: flex;
-//   justify-content: flex-end;
-//   // gap: 3px;
-//   align-items: flex-start;
+.body-group-column__group {
+  grid-area: group;
+  display: flex;
+  justify-content: flex-end;
+  // gap: 3px;
+  align-items: flex-start;
   .action-btn {
     margin-right: 5px;
+    transform: rotate(90deg);
     &_action {
       transform: rotate(90deg);
     }
   }
-// }
+}
 </style>

@@ -61,17 +61,19 @@ export const ComputedTemplate = {
 
     computedWidthUnoLine(array) {
       let columnWidth = '';
-      if (this.computedActionMax) columnWidth += 'minmax(22px, 22px) ';
-      if (this.isHierarchy) columnWidth += 'minmax(50px, 50px) ';
-      array.forEach(element => {
+      if (this.computedActionMax) columnWidth += 'minmax(22px,22px) ';
+      let groupLevel = this.$store.getters['DataTable/GET_DATA_GROUP_LEVEL'](this.properties.tableName);
+      // if (this.isHierarchy) columnWidth += `minmax(${(groupLevel * 25) + 50}px,${(groupLevel * 25) + 50}px) `;
+      if (this.isHierarchy) columnWidth += `${(groupLevel * 20) + 40}px `;
+      array.forEach((element, index) => {
         if (element.width) {
           if (Array.isArray(element.width)) {
-            columnWidth += `minmax(${(element.width[0] != undefined) ? element.width[0] : '100'}px, ${(element.width[1] != undefined) ? element.width[1] + 'px' : '100vw'}) `;
+            columnWidth += `minmax(${(element.width[0] != undefined) ? element.width[0] : '100'}px,${(element.width[1] != undefined) ? element.width[1] + 'px' : '100vw'}) `;
           } else {
-            columnWidth += `${element.width}px `
+            columnWidth += `${element.width}px `;
           }
         } else {
-          columnWidth += `minmax(100px, 100vw) `;
+          columnWidth += `minmax(100px,100vw) `;
         }
       });
       return columnWidth;
@@ -88,12 +90,12 @@ export const ComputedTemplate = {
             if (!element.column) {
               if (element.width) {
                 if (Array.isArray(element.width)) {
-                  columnWidthArray[i].push(`minmax(${(element.width[0] != undefined) ? element.width[0] : '100'}px, ${(element.width[1] != undefined) ? element.width[1] + 'px' : '100vw'})`);
+                  columnWidthArray[i].push(`minmax(${(element.width[0] != undefined) ? element.width[0] : '100'}px,${(element.width[1] != undefined) ? element.width[1] + 'px' : '100vw'})`);
                 } else {
                   columnWidthArray[i].push(`${element.width}px `);
                 }
               } else {
-                columnWidthArray[i].push(`minmax(100px, 100vw)`);
+                columnWidthArray[i].push(`minmax(100px,100vw)`);
               }
             } else {
               columnWidthArray[i].push(`auto`);

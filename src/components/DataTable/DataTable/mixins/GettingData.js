@@ -19,6 +19,11 @@ export const GettingData = {
       // console.log(headerReturn);
       return headerReturn;
     },
+    gettingDataBodyGroup() {
+      if ('tableName' in this.properties) {
+        return this.$store.getters[`DataTable/GET_DATA_GROUP`](this.properties.tableName);
+      }
+    },
     gettingDataBody() {
       if ('tableName' in this.properties) {
         // console.log(this.$store.getters[`DataTable/GET_DATA`](this.properties.tableName));
