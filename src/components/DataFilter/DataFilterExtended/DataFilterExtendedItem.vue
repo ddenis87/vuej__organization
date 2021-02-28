@@ -2,7 +2,7 @@
   <div class="item">
     <template v-if="!isTitle">
       <div class="item-checkbox">
-        <v-checkbox v-model="isSelectedItem"></v-checkbox>
+        <v-checkbox v-model="isFilterOn" @change="toggleFilter"></v-checkbox>
       </div>
       <div class="item-compare">
         <st-field-compare :input-properties="inputProperties"
@@ -60,13 +60,14 @@ export default {
       },
       valueData: null,
       selectedItem: null,
+      isFilterOn: false,
     }
   },
   computed: {
-    isSelectedItem() {
-      // console.log(this.selectedItem);
-      return (this.selectedItem?.value != null) ? true : false;
-    },
+    // isSelectedItem() {
+    //   // console.log(this.selectedItem);
+    //   return (this.selectedItem?.value != null) ? true : false;
+    // },
     componentField() {
       this.valueData = null;
       let valueDefault = {key: this.inputProperties.key, value: (this.inputProperties.type == 'boolean') ? 
@@ -95,7 +96,7 @@ export default {
   watch: {
     valueCompare() {
       if (this.valueCompare == 'inList') {
-        console.log(this.valueCompare);
+        // console.log(this.valueCompare);
         this.isShow = true;
         return;
       }
@@ -103,6 +104,11 @@ export default {
     },
   },
   methods: {
+    toggleFilter(value) {
+      console.log(value);
+      if (value) this.eventInputData();
+      else this.$emit('input-filter', {key: this.inputProperties.key, value: null});
+    },
     eventNextElement(option) {
       // console.log(option);
       let thisComponent = option.event.target.closest('.item');
@@ -165,6 +171,8 @@ export default {
     resetComponent() {
       // this.valueCompare = null;
       // this.isDisabledData = true;
+      // console.log('clear');
+      this.isFilterOn = false;
       this.$emit('input-filter', { key: this.inputProperties.key, value: null }); // EMIT -----------------<<<<<<<<<<
     },
     eventInputCompare() {},
@@ -221,6 +229,8 @@ export default {
       }
       // console.log(emitValue);
       this.selectedItem = emitValue;
+      // console.log(emitValue.value);
+      (emitValue.value) ? this.isFilterOn = true : this.isFilterOn = false;
       this.$emit('input-filter', emitValue); // EMIT -----------------<<<<<<<<<<
     },
   },
