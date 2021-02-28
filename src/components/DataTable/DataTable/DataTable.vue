@@ -8,7 +8,7 @@
                          :template="computedTemplateTable"
                          :type-height="typeHeight"
                          :type-column="typeColumn"
-                         :items="gettingDataHeader"
+                         :items="getDataHeader"
                          :is-expansion="isExpansion"
                          :is-multiline="isMultiline"
                          :is-hierarchy="isHierarchy"></data-table-header>
@@ -21,8 +21,8 @@
                              :startColumn="properties.headers[0]"
                              :type-height="typeHeight"
                              :type-column="typeColumn"
-                             :items="gettingDataBodyGroup"
-                             :items-header="gettingDataHeader"
+                             :items="storeGetDataGroup"
+                             :items-header="getDataHeader"
                              :is-hierarchy="isHierarchy"></data-table-body-group>
     </div>
 
@@ -32,8 +32,8 @@
                        :template="computedTemplateTable"
                        :type-height="typeHeight"
                        :type-column="typeColumn"
-                       :items="gettingDataBody"
-                       :items-header="gettingDataHeader"
+                       :items="storeGetData"
+                       :items-header="getDataHeader"
                        :is-editable="isEditable"
                        :is-expansion="isExpansion"
                        :is-multiline="isMultiline"
@@ -64,6 +64,8 @@ import DataTableBodyGroup from './components/DataTableBodyGroup/DataTableBodyGro
 import DataTableBody from './components/DataTableBody/DataTableBody.vue';
 import DataTableFooter from './components/DataTableFooter/DataTableFooter.vue';
 
+import { DataTableStore } from './DataTableStore.js';
+
 import { LoadingData } from './mixins/LoadingData.js';
 import { GettingData } from './mixins/GettingData.js';
 import { ComputedTemplate } from './mixins/ComputedTemplate.js'; // computedTemplateTable
@@ -79,6 +81,7 @@ export default {
     DataTableFooter,
   },
   mixins: [
+    DataTableStore,
     LoadingData,
     GettingData,
     ComputedTemplate,

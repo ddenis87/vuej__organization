@@ -98,6 +98,15 @@ export default {
     if ('addingElement' in option) {
       addressApi += `&page_by_id=${option.addingElement.id}`;
     }
+    console.log(option.next);
+    if (option.next) {
+      addressApi = state.getters.GET_ADDRESS_API_PAGE_NEXT(option.tableName);
+      console.log(addressApi);
+      if (!addressApi) {
+        state.commit('SET_STATUS_PROCESSING');
+        return;
+      }
+    }
     axios
       .get(addressApi)
       .then(response => {
@@ -105,7 +114,7 @@ export default {
         let mutationOptions = {
           tableName: option.tableName,
           data: response.data,
-          clear: true,
+          clear: (option.next) ? false : true,
         }
         state.commit('SET_DATA_OPTIONS', mutationOptions);
         let responseArray = response.data.results;
@@ -188,25 +197,25 @@ export default {
   //     .finally(() => state.commit('SET_STATUS_PROCESSING'));
   // },
 
-  REQUEST_DATA_NEXT(state, option) {
-    state.commit('SET_STATUS_PROCESSING', true);
-    let addressApi = state.getters.GET_ADDRESS_API_PAGE_NEXT(option.tableName);
-    console.log(addressApi);
-    if (addressApi == null) { state.commit('SET_STATUS_PROCESSING'); return; };
-    axios
-      .get(addressApi)
-      .then(response => {
-        let mutationOptions = {
-          tableName: option.tableName,
-          data: response.data,
-          clear: false,
-        }
-        state.commit('SET_DATA_OPTIONS', mutationOptions);
-        state.commit('SET_DATA', mutationOptions);
-      })
-      .catch(error => console.log(error))
-      .finally(() => state.commit('SET_STATUS_PROCESSING'));
-  },
+  // REQUEST_DATA_NEXT(state, option) {
+  //   state.commit('SET_STATUS_PROCESSING', true);
+  //   let addressApi = state.getters.GET_ADDRESS_API_PAGE_NEXT(option.tableName);
+  //   console.log(addressApi);
+  //   if (addressApi == null) { state.commit('SET_STATUS_PROCESSING'); return; };
+  //   axios
+  //     .get(addressApi)
+  //     .then(response => {
+  //       let mutationOptions = {
+  //         tableName: option.tableName,
+  //         data: response.data,
+  //         clear: false,
+  //       }
+  //       state.commit('SET_DATA_OPTIONS', mutationOptions);
+  //       state.commit('SET_DATA', mutationOptions);
+  //     })
+  //     .catch(error => console.log(error))
+  //     .finally(() => state.commit('SET_STATUS_PROCESSING'));
+  // },
 
   REQUEST_DATA_DELETE(state, option) {
     state.commit('SET_STATUS_PROCESSING', true);

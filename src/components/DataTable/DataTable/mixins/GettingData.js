@@ -1,9 +1,9 @@
 export const GettingData = {
   computed: {
-    gettingDataHeader() {
+    getDataHeader() {
       let headerBase = [];
       let headerReturn = [];
-      let headerStore = this.$store.getters[`DataTable/GET_OPTIONS`](this.properties.tableName);
+      let headerStore = this.storeGetOptions();
 
       if (Array.isArray(this.properties.headers[0])) {
         for (let i = 0; i < this.properties.headers.length; i++) { headerBase.push(...this.properties.headers[i]) }
@@ -16,19 +16,7 @@ export const GettingData = {
           headerReturn.push(Object.assign(element, headerStore[element.value], {'position_in_template': `grid-area: ${element.value}`}));
         }
       });
-      // console.log(headerReturn);
       return headerReturn;
-    },
-    gettingDataBodyGroup() {
-      if ('tableName' in this.properties) {
-        return this.$store.getters[`DataTable/GET_DATA_GROUP`](this.properties.tableName);
-      }
-    },
-    gettingDataBody() {
-      if ('tableName' in this.properties) {
-        // console.log(this.$store.getters[`DataTable/GET_DATA`](this.properties.tableName));
-        return this.$store.getters[`DataTable/GET_DATA`](this.properties.tableName);
-      }
     },
   }
 }
