@@ -82,7 +82,7 @@ export default {
       newGridTemplateColumns[0] = `${40 + (20 * index)}px`;
 
       newTemplate['grid-template-columns'] = newGridTemplateColumns.join(' ');
-      console.log(newTemplate);
+      // console.log(newTemplate);
       return newTemplate;
     },
   },

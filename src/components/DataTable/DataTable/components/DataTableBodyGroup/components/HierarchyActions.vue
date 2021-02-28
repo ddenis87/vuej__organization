@@ -45,12 +45,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.body-group-column__group {
-  grid-area: group;
-  display: flex;
-  justify-content: flex-end;
-  // gap: 3px;
-  align-items: flex-start;
+// .body-group-column__group {
+//   grid-area: group;
+//   display: flex;
+//   justify-content: flex-end;
+//   // gap: 3px;
+//   align-items: flex-start;
   .action-btn {
     margin-right: 5px;
     transform: rotate(90deg);
@@ -58,5 +58,5 @@ export default {
       transform: rotate(90deg);
     }
   }
-}
+// }
 </style>
