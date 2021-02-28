@@ -1,9 +1,5 @@
 export default {
   GET_STATUS_PROCESSING(state) { return state.statusProcessing; },
-
-  // GET_ADDRESS_API_BASE:(state, getters, rootState, rootGetters) => (tableName) => {
-  //   return `${rootGetters.GET_ADDRESS_API}api/v1/${tableName}/?`;
-  // },
   GET_ADDRESS_API:(state, getters, rootState, rootGetters) => (option, tableName) => {
     let addressApi = `${rootGetters.GET_ADDRESS_API}api/v1/${tableName}/?`;
 
@@ -19,11 +15,11 @@ export default {
       default: return addressApi;
     }
   },
-  GET_ADDRESS_API_PAGE_NEXT:(state) => (tableName) => { return state[tableName].next; },
+  GET_ADDRESS_API_PAGE_NEXT:(state) => (tableName) => { return state[tableName].apiNext; },
   GET_ADDRESS_API_PAGE_PREVIOUS:(state) => (tableName) => { return state[tableName].previous; },
-
   GET_DESCRIPTION:(state) => (tableName) => { return state[tableName].description; },
   GET_RELATED_MODEL_VIEW:(state) => (tableName) => { return state[tableName].relatedModelView; },
+  GET_HIERARCHY_MODE:(state) => (tableName) => { return state[tableName].isHierarchyMode; },
 
   GET_OPTIONS:(state) => (tableName) => { return state[tableName].listOption; },
 
@@ -60,7 +56,7 @@ export default {
     return state[tableName].filterPrimitive + 
            state[tableName].filterExtended + 
            state[tableName].filterSearch +
-           state[tableName].filterSorting +
-           state[tableName].filterParent;
+           state[tableName].filterSorting;
+          //  state[tableName].filterParent;
   }
 }

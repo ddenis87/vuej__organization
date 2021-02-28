@@ -10,23 +10,25 @@ class DataTableBase {
   }
   description = null;
   countTotal = 0;
+  apiNext = null;
+  apiPrevious = null;
+  isHierarchyMode = false;  // HIERARCHICAL TABLE SET WHEN LOADING OPTIONS
   filterDefault = {
     'page_size': null,
     'is_deleted': null,
-    'ordering': '-is_group',
+    // 'ordering': '-is_group',
   };
   filterPrimitive = '';
   filterSearch = '';
   filterSorting = '';
   filterExtended = '';
   // filterHierarchy = '&parent__isnull=true';
-  filterParent = '&parent__isnull=true';
+  // filterParent = '&parent__isnull=true';
   // filterGroup = '&is_group=true&parent__isnull=true';
   // filterElement = '&is_group=false&parent__isnull=true';
 
   relatedModelView = '' // шаблон представление таблицы в других таблицах, компонентах, и т.д.
   listOption = {};
-  listFieldObject = []; // УДАЛИТЬ
   listDataGroup = [];
   listData = [];
 

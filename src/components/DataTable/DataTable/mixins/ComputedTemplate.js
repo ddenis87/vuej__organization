@@ -23,7 +23,7 @@ export const ComputedTemplate = {
     computedAreaUnoLine(array) {
       let area = '"';
       if (this.computedActionMax) area += 'action_max ';
-      if (this.isHierarchy) area += 'group ';
+      if (this.storeGetHierarchyMode()) area += 'group ';
       array.forEach(element => area += `${element.value} `);
       area = area.trim();
       area += `"`;
@@ -62,9 +62,9 @@ export const ComputedTemplate = {
     computedWidthUnoLine(array) {
       let columnWidth = '';
       if (this.computedActionMax) columnWidth += 'minmax(22px,22px) ';
-      let groupLevel = this.$store.getters['DataTable/GET_DATA_GROUP_LEVEL'](this.properties.tableName);
+      let groupLevel = this.storeGetDataGroupLevel();
       // if (this.isHierarchy) columnWidth += `minmax(${(groupLevel * 25) + 50}px,${(groupLevel * 25) + 50}px) `;
-      if (this.isHierarchy) columnWidth += `${(groupLevel * 20) + 40}px `;
+      if (this.storeGetHierarchyMode()) columnWidth += `${(groupLevel * 20) + 40}px `;
       array.forEach((element, index) => {
         if (element.width) {
           if (Array.isArray(element.width)) {

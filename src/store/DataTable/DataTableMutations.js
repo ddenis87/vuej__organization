@@ -1,53 +1,4 @@
-import Vue from 'vue';
-
-function linking(state, option) {
-  console.log(option);
-  console.log(state);
-  option.data.forEach(element => {
-    for (let elementKey of Object.keys(element)) {
-      let elementKeyOptions = state[option.tableName].listOption[elementKey];
-      console.log(elementKeyOptions);
-      switch(elementKeyOptions.type) {
-        case 'field': {
-          console.log(element[elementKey]);
-          if (element[elementKey]) {
-            let relatedModelName = elementKeyOptions['related_model_name'];
-            if (typeof(element[elementKey]) == 'object') {
-              if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-                if (relatedModelName == option.tableName) {
-                  linking(state, {
-                    data: {results: element[elementKey]},
-                    tableName: relatedModelName
-                  })
-                }
-                console.log('add linking relate 1 - ', element[elementKey]);
-                state[relatedModelName].listData.push(element[elementKey]);
-              }
-              element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
-            } else {
-              if (!state[relatedModelName].listData.find(item => item.id == element[elementKey])) {
-                console.log('add linking relate 2 - ', element[elementKey]);
-                state[relatedModelName].listData.push(element[elementKey]);
-              }
-              element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey]);
-            }
-          } else {
-            element[elementKey] = null;
-          }
-          break;
-        }
-        case 'choice': {
-          element[elementKey] = elementKeyOptions.choices.find(item => item.value == element[elementKey]);
-          break;
-        }
-      }
-    }
-    if (!state[option.tableName].listData.find(item => item.id == element.id)) {
-      console.log('add linking 3 - ', element);
-      state[option.tableName].listData.push(element);
-    }
-  })
-};
+// import Vue from 'vue';
 
 export default {
   SET_STATUS_PROCESSING(state, status = false) { state.statusProcessing = status; },
@@ -59,18 +10,15 @@ export default {
 
   SET_OPTIONS(state, option) {
     state[option.tableName].listOption = option.data;
-    for (let key of Object.keys(option.data)) {
-      if (option.data[key].type == 'field') state[option.tableName].listFieldObject.push(key);
-    }
-    // console.log(state[option.tableName].listOption);
     state[option.tableName].description = option.description;
+    if ('parent' in option.data) state[option.tableName].isHierarchyMode = true;
   },
 
   SET_DATA_OPTIONS(state, option) {
     if (option.clear == true) state[option.tableName].listData = [];
     state[option.tableName].countTotal = option.data.count;
-    state[option.tableName].next = option.data.next;
-    state[option.tableName].previous = option.data.previous;
+    state[option.tableName].apiNext = option.data.next;
+    state[option.tableName].apiPrevious = option.data.previous;
   },
 
   SET_DATA(state, option) {

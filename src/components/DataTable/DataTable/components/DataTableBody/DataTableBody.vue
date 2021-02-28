@@ -43,11 +43,11 @@
       </div>
 
       <!-- GROUP ELEMENT class="body-column__group"--> 
-      <hierarchy-actions class="body-column__group"
+      <!-- <hierarchy-actions class="body-column__group"
                          :item-row="itemRow"
                          :data-id="itemRow.id"
                          @toggle-hierarchy="(event) => toggleHiaerarchy(event, itemRow)"
-                         v-if="isHierarchy"></hierarchy-actions>
+                         v-if="storeGetHierarchyMode"></hierarchy-actions> -->
 
       <div v-for="(itemColumn, indexColumn) in itemsHeader"
            class="body-column"
@@ -87,6 +87,8 @@ import DataTableTooltip from '../DataTableTooltip.vue';
 import DataTableContentDisplay from '../DataTableContentDisplay.vue';
 import HierarchyActions from './components/HierarchyActions.vue';
 
+// import { DataTableStore } from '../../DataTableStore.js';
+
 import { DataTable } from '../DataTable.js';
 import { Events } from './mixins/Events.js';
 import { EventsMouse } from './mixins/EventsMouse.js';
@@ -103,6 +105,7 @@ export default {
     HierarchyActions,
   },
   mixins: [
+    // DataTableStore,
     DataTable, // gettingValueForType, computedActionMax
     Events,
     EventsMouse,
@@ -121,7 +124,6 @@ export default {
     isEditable: {type: Boolean, default: false},
     isExpansion: {type: Boolean, default: false},
     isMultiline: {type: Boolean, default: false},
-    isHierarchy: {type: Boolean, default: false},
     isScroll: { type: Boolean, default: false },
   },
   data() {

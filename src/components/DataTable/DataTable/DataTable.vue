@@ -10,8 +10,7 @@
                          :type-column="typeColumn"
                          :items="getDataHeader"
                          :is-expansion="isExpansion"
-                         :is-multiline="isMultiline"
-                         :is-hierarchy="isHierarchy"></data-table-header>
+                         :is-multiline="isMultiline"></data-table-header>
       <data-table-progress-line :is-show="isLoadingData"></data-table-progress-line>
     </div>
 
@@ -22,8 +21,7 @@
                              :type-height="typeHeight"
                              :type-column="typeColumn"
                              :items="storeGetDataGroup"
-                             :items-header="getDataHeader"
-                             :is-hierarchy="isHierarchy"></data-table-body-group>
+                             :items-header="getDataHeader"></data-table-body-group>
     </div>
 
     <div class="data-table__body">
@@ -37,7 +35,6 @@
                        :is-editable="isEditable"
                        :is-expansion="isExpansion"
                        :is-multiline="isMultiline"
-                       :is-hierarchy="isHierarchy"
                        :is-scroll="isScroll"
                        @event-row-focused="eventRowFocused"
                        @event-row-selected="eventRowSelected"
@@ -96,7 +93,7 @@ export default {
     isFooter: { type: Boolean, default: false },
     isExpansion: { type: Boolean, default: false },
     isMultiline: { type: Boolean, default: false },
-    isHierarchy: { type: Boolean, default: false },
+    // isHierarchy: { type: Boolean, default: false },
   },
 }
 </script>

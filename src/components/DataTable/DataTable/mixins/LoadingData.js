@@ -35,7 +35,7 @@ export const LoadingData = {
       if (bootAnchorEdge < this.parentElementEdge) {
         this.parentElement.removeEventListener('scroll', this.eventScrollPagination);
         console.log('next');
-        if (this.storeGetDataNextApi()) 
+        if (this.storeGetDataApiNext()) 
           this.storeDispatchRequestData({next: true});
       }
     },
