@@ -1,14 +1,11 @@
 export const Hierarchy = {
   methods: {
-    toggleHiaerarchy(event, option) {
-      // console.log(option);
+    toggleGroup(event, option) {
       let sendOption = {
         tableName: this.tableName,
-        group: option,
+        value: option,
       };
-      this.$store.commit('DataTable/DATA_GROUP_ADDING', sendOption);
-      this.$store.commit('DataTable/SET_FILTER_PARENT', sendOption);
-      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.tableName});
+      this.storeToggleGroup(sendOption);
     }
   }
 }

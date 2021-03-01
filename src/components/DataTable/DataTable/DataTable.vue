@@ -10,14 +10,15 @@
                          :type-column="typeColumn"
                          :items="getDataHeader"
                          :is-expansion="isExpansion"
-                         :is-multiline="isMultiline"></data-table-header>
+                         :is-multiline="isMultiline"
+                         :is-hierarchy-mode="storeGetHierarchyMode"></data-table-header>
       <data-table-progress-line :is-show="isLoadingData"></data-table-progress-line>
     </div>
 
     <div class="data-table__body-group">
       <data-table-body-group :table-name="properties.tableName"
                              :template="computedTemplateTable"
-                             :startColumn="properties.headers[0]"
+                             :start-column="properties.headers[0]"
                              :type-height="typeHeight"
                              :type-column="typeColumn"
                              :items="storeGetDataGroup"
@@ -35,6 +36,7 @@
                        :is-editable="isEditable"
                        :is-expansion="isExpansion"
                        :is-multiline="isMultiline"
+                       :is-hierarchy-mode="storeGetHierarchyMode"
                        :is-scroll="isScroll"
                        @event-row-focused="eventRowFocused"
                        @event-row-selected="eventRowSelected"

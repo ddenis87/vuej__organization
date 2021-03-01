@@ -10,8 +10,8 @@
       <hierarchy-actions class="body-group-column__group"
                          :item-row="itemRow"
                          :data-id="itemRow.id"
-                         @toggle-hierarchy="(event) => toggleHiaerarchy(event, itemRow)"
-                         v-if="isHierarchy"></hierarchy-actions>
+                         @toggle-group="(event) => toggleGroup(event, itemRow)"
+                         v-if="isHierarchyMode"></hierarchy-actions>
 
       <div v-for="(itemColumn, indexColumn) in itemsHeader"
            class="body-group-column"
@@ -35,8 +35,10 @@
 import DataTableContentDisplay from '../DataTableContentDisplay.vue';
 import HierarchyActions from './components/HierarchyActions.vue';
 
+import { DataTableBodyGroupStore } from './DataTableBodyGroupStore.js';
+
 import { DataTable } from '../DataTable.js';
-import { Hierarchy } from './mixins/Hierarchy.js';
+// import { Hierarchy } from './mixins/Hierarchy.js';
 export default {
   name: 'DataTableBodyGroup',
   components: {
@@ -44,8 +46,9 @@ export default {
     HierarchyActions,
   },
   mixins: [
+    DataTableBodyGroupStore,
     DataTable, // gettingValueForType, computedActionMax
-    Hierarchy,
+    // Hierarchy,
   ],
   props: {
     tableName: { type: String, default: '' },
@@ -56,11 +59,10 @@ export default {
     items: { type: Array, default: () => [] },
     itemsHeader: { type: Array, default: () => [] },
     isEditable: {type: Boolean, default: false},
-    isHierarchy: {type: Boolean, default: false},  // ????
+    isHierarchyMode: {type: Function, default:() => false},
   },
   data() {
     return {
-      templateGroup: this.template,
     }
   },
   methods: {
@@ -68,22 +70,33 @@ export default {
       let element = this.startColumn;
       let columnWidth = '';
       if (Array.isArray(element.width)) {
-        columnWidth += `minmax(${(element.width[0] != undefined) ? element.width[0] + ((1) * 20) : `${100 + ((index + 1) * 20)}`}px,${(element.width[1] != undefined) ? element.width[1] + 'px' : '100vw'}) `;
+        columnWidth += `minmax(${(element.width[0] != undefined) ? 
+          element.width[0] + ((1) * 20) : 
+          `${100 + ((index + 1) * 20)}`}px,${(element.width[1] != undefined) ? 
+            element.width[1] + 'px' : 
+            '100vw'}) `;
       } else {
         columnWidth += `${element.width + ((index + 1) * 20)}px `
       }
       let newTemplate = {
-        'grid-template-areas': this.templateGroup['grid-template-areas'],
+        'grid-template-areas': this.template['grid-template-areas'],
         'grid-template-columns': '',
       };
       // let widthStartColumn = this.templateGroup['grid-template-columns'].split(' ')[1];
-      let newGridTemplateColumns = this.templateGroup['grid-template-columns'].split(' ');
+      let newGridTemplateColumns = this.template['grid-template-columns'].split(' ');
       newGridTemplateColumns[1] = columnWidth;
       newGridTemplateColumns[0] = `${40 + (20 * index)}px`;
 
       newTemplate['grid-template-columns'] = newGridTemplateColumns.join(' ');
       // console.log(newTemplate);
       return newTemplate;
+    },
+    toggleGroup(event, option) {
+      let sendOption = {
+        tableName: this.tableName,
+        value: option,
+      };
+      this.storeToggleGroup(sendOption);
     },
   },
 }
@@ -103,7 +116,7 @@ export default {
     border-bottom: $rowBorder;
     outline: none;
     transition-delay: .05s;
-    // color: green;
+    color: green;
     &_fixed { grid-template-rows: repeat(auto-fit, $rowHeightFixed); min-height: 1 + $rowHeightFixed; }
     &_dense { grid-template-rows: repeat(auto-fit, $rowHeightDense); min-height: 2 + $rowHeightDense; }
     &_auto  { grid-template-rows: $rowHeightAuto; /* repeat(auto-fill, $rowHeightAuto); */ }

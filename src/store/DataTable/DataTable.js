@@ -22,10 +22,12 @@ class DataTableBase {
   filterSearch = '';
   filterSorting = '';
   filterExtended = '';
-  // filterHierarchy = '&parent__isnull=true';
-  // filterParent = '&parent__isnull=true';
-  // filterGroup = '&is_group=true&parent__isnull=true';
-  // filterElement = '&is_group=false&parent__isnull=true';
+  
+  apiFilterParent = '&parent__isnull=true';
+
+  getterFilterData = {
+    parent: null,
+  };
 
   relatedModelView = '' // шаблон представление таблицы в других таблицах, компонентах, и т.д.
   listOption = {};

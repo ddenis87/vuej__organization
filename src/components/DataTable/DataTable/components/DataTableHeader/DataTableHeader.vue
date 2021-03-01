@@ -73,12 +73,13 @@ export default {
     items: { type: Array, default: () => [] },
     isExpansion: {type: Boolean, default: false},
     isMultiline: {type: Boolean, default: false},
-    isHierarchy: {type: Boolean, default: false},
+    // isHierarchyMode: {type: Boolean, default: false},
   },
   computed: {
+    isHierarchyMode() { return this.$store.getters[`DataTable/GET_HIERARCHY_MODE`](this.tableName); },
     computedTemplate() {
       let newTemplate = Object.assign({}, this.template);
-      if (this.isHierarchy && this.items.length != 0)
+      if (this.items.length != 0)
         newTemplate['grid-template-areas'] = newTemplate['grid-template-areas'].replace('group', this.items[0].value);
       return newTemplate;
     },

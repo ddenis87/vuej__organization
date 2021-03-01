@@ -15,7 +15,8 @@ export default {
   },
 
   SET_DATA_OPTIONS(state, option) {
-    if (option.clear == true) state[option.tableName].listData = [];
+    // console.log(option);
+    // if (option.clear == true) state[option.tableName].listData = [];
     state[option.tableName].countTotal = option.data.count;
     state[option.tableName].apiNext = option.data.next;
     state[option.tableName].apiPrevious = option.data.previous;
@@ -25,14 +26,25 @@ export default {
     state[option.tableName].listData.push(option.value);
   },
 
-  DATA_GROUP_ADDING(state, option) {
-    state[option.tableName].listData = [];
-    state[option.tableName].listDataGroup.push(option.group);
+  CHANGE_DATA_GROUP_LEGEND(state, option) {
+    let index = state[option.tableName].listDataGroup.findIndex(item => item.id == option.value.id);
+    if (index == -1)
+      state[option.tableName].listDataGroup.push(option.value);
+    else
+      state[option.tableName].listDataGroup = state[option.tableName].listDataGroup.slice(0, index);
   },
-  DATA_GROUP_MODIFY(state, option) {
-    state[option.tableName].listData = [];
-    let groupIndex = state[option.tableName].listDataGroup.findIndex(item => item.id == option.id);
-    state[option.tableName].listDataGroup = state[option.tableName].listDataGroup.slice(0, groupIndex);
+  CHANGE_API_FILTER_PARENT(state, option) {
+    if (state[option.tableName].listDataGroup.length)
+      state[option.tableName].apiFilterParent = `&parent=${option.value.id}`;
+    else
+      state[option.tableName].apiFilterParent = `&parent__isnull=true`;
+  },
+  CHANGE_GETTER_FILTER_DATA(state, option) {
+    if (state[option.tableName].listDataGroup.length)
+
+      state[option.tableName].getterFilterData.parent = state[option.tableName].listDataGroup[state[option.tableName].listDataGroup.length - 1].id;
+    else
+      state[option.tableName].getterFilterData.parent = null;
   },
 
   // SET_DATA(state, option, wat) {
@@ -138,13 +150,13 @@ export default {
     filterSorting += `${(option.ordering) ? '' : '-'}${option.key}`;
     state[option.tableName].filterSorting = filterSorting;
   },
-  SET_FILTER_PARENT(state, option) {
-    if (option.group.id == null) {
-      state[option.tableName].filterParent = '&parent__isnull=true';
-      return;
-    }
-    state[option.tableName].filterParent = `&parent=${option.group.id}`;
-  },
+  // SET_FILTER_PARENT(state, option) {
+  //   if (option.group.id == null) {
+  //     state[option.tableName].filterParent = '&parent__isnull=true';
+  //     return;
+  //   }
+  //   state[option.tableName].filterParent = `&parent=${option.group.id}`;
+  // },
 
   TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) {
     state[option.tableName].listData = [];

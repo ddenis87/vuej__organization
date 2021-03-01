@@ -67,7 +67,10 @@ export default {
       let relatedModelView = this.$store.getters['DataTable/GET_RELATED_MODEL_VIEW'](this.inputProperties['related_model_name']);
       let fieldList = [];
       let fieldListStore = this.$store.getters[`DataTable/GET_DATA`](this.inputProperties['related_model_name']);
-      if (fieldListStore.length == 0) { this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, { tableName: this.inputProperties['related_model_name'] }); return []; }
+      if (fieldListStore.length == 0) {
+        console.log('el-field-dialog request options')
+        this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, { tableName: this.inputProperties['related_model_name'] }); return [];
+      }
       if (relatedModelView != '{id}') {
         let templateValue = relatedModelView.match(/[{\w}]/gi).join(',').replace(/,/g, '').slice(1, -1).split('}{');
         fieldListStore.forEach(element => {

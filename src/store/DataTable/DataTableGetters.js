@@ -25,15 +25,15 @@ export default {
 
   GET_DATA_GROUP:(state) => (tableName) => { return state[tableName].listDataGroup; },
   GET_DATA_GROUP_LEVEL:(state) => (tableName) => { return state[tableName].listDataGroup.length; },
-  GET_DATA:(state) => (tableName) => { 
-    // state[tableName].listData.sort((a, b) => {
-    //   return Number(b['is_group']) - Number(a['is_group']);
-    // });
-    // state[tableName].listData.sort((a, b) => {
-    //   return Number((a['parent'] != null) ? 1 : 0) - Number((b['parent'] != null) ? 1 : 0);
-    // });
+  GET_DATA:(state) => (tableName, option = null) => {
+    console.log(state[tableName].listData);
+    if (state[tableName].getterFilterData.parent) {
+      return state[tableName].listData.filter(item => {
+          if (item.parent && item.parent.id == state[tableName].getterFilterData.parent) return true;
+      });
+    }
 
-    return state[tableName].listData; 
+    return state[tableName].listData;
   },
   GET_DATA_COUNT_TOTAL:(state) => (tableName) => { return state[tableName].countTotal; },
   GET_DATA_COUNT_LOAD:(state) => (tableName) => { return state[tableName].listData.length; },
@@ -53,10 +53,16 @@ export default {
   GET_FILTER_SORTING:(state) => (tableName) => { return state[tableName].filterSorting; },
   GET_FILTER_GROUP:(state) => (tableName) => { return state[tableName].filterGroup; },
   GET_FILTER_ALL:(state) => (tableName) => {
-    return state[tableName].filterPrimitive + 
-           state[tableName].filterExtended + 
-           state[tableName].filterSearch +
-           state[tableName].filterSorting;
+    let buildFilter = state[tableName].filterPrimitive + 
+                      state[tableName].filterExtended + 
+                      state[tableName].filterSearch +
+                      state[tableName].filterSorting;
+    if (state[tableName].isHierarchyMode) {
+      state[tableName].filterDefault.ordering = '-is_group';
+      buildFilter += state[tableName].apiFilterParent;
+    }
+    // if (state[tableName].filterParent) buildFilter += state[tableName].filterParent;
+    return buildFilter;
           //  state[tableName].filterParent;
   }
 }

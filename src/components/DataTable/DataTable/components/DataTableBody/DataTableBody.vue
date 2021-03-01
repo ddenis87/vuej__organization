@@ -43,11 +43,11 @@
       </div>
 
       <!-- GROUP ELEMENT class="body-column__group"--> 
-      <!-- <hierarchy-actions class="body-column__group"
+      <hierarchy-actions class="body-column__group"
                          :item-row="itemRow"
                          :data-id="itemRow.id"
-                         @toggle-hierarchy="(event) => toggleHiaerarchy(event, itemRow)"
-                         v-if="storeGetHierarchyMode"></hierarchy-actions> -->
+                         @toggle-group="(event) => toggleGroup(event, itemRow)"
+                         v-if="isHierarchyMode"></hierarchy-actions>
 
       <div v-for="(itemColumn, indexColumn) in itemsHeader"
            class="body-column"
@@ -87,14 +87,14 @@ import DataTableTooltip from '../DataTableTooltip.vue';
 import DataTableContentDisplay from '../DataTableContentDisplay.vue';
 import HierarchyActions from './components/HierarchyActions.vue';
 
-// import { DataTableStore } from '../../DataTableStore.js';
+import { DataTableBodyStore } from './DataTableBodyStore.js';
 
 import { DataTable } from '../DataTable.js';
 import { Events } from './mixins/Events.js';
 import { EventsMouse } from './mixins/EventsMouse.js';
 import { EventsKeyboard } from './mixins/EventsKeyboard.js';
 import { Editing } from './mixins/Editing.js';
-import { Hierarchy } from './mixins/Hierarchy.js';
+// import { Hierarchy } from './mixins/Hierarchy.js';
 
 export default {
   name: 'DataTableBody',
@@ -105,13 +105,13 @@ export default {
     HierarchyActions,
   },
   mixins: [
-    // DataTableStore,
+    DataTableBodyStore,
     DataTable, // gettingValueForType, computedActionMax
     Events,
     EventsMouse,
     EventsKeyboard,
     Editing,
-    Hierarchy,
+    // Hierarchy,
   ],
   props: {
     id: { type: String, default: 'dataTable' },
@@ -124,6 +124,7 @@ export default {
     isEditable: {type: Boolean, default: false},
     isExpansion: {type: Boolean, default: false},
     isMultiline: {type: Boolean, default: false},
+    // isHierarchyMode: {type: Function, default() { return () => false }},
     isScroll: { type: Boolean, default: false },
   },
   data() {
@@ -133,6 +134,7 @@ export default {
     }
   },
   computed: {
+    isHierarchyMode() { return this.$store.getters[`DataTable/GET_HIERARCHY_MODE`](this.tableName); },
     isModeAdding() {
       return this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName);
     },
@@ -182,9 +184,13 @@ export default {
     }
   },
   methods: {
-    // toggleHiaerarchy(option) {
-    //   console.log(option);
-    // },
+    toggleGroup(event, option) {
+      let sendOption = {
+        tableName: this.tableName,
+        value: option,
+      };
+      this.storeToggleGroup(sendOption);
+    },
     scrollBody() {
       console.log('scroll');
     },

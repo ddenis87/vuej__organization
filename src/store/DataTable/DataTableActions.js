@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+function addressApiAddingElement(option) {
+  if ('addingElement' in option)
+    return `&page_by_id=${option.addingElement.id}`;
+  return '';
+};
+
+
 export default {
   REQUEST_OPTIONS(state, option) {
     if (state.getters.GET_DESCRIPTION(option.tableName)) return;
@@ -27,78 +34,78 @@ export default {
       });
   },
 
-  REQUEST_DATA_RECORD(state, option) {
-    option.data.forEach(element => {
-      for (let elementKey of Object.keys(element)) {
-        let elementOption = state.state[option.tableName].listOption[elementKey];
-        switch(elementOption.type) {
-          case 'field': {
-            if (element[elementKey]) {  // ЕСЛИ ЗНАЧЕНИЕ НЕ NULL
-              let relatedModelName = elementOption['related_model_name'];
-              if (typeof(element[elementKey]) == 'object') {  // ЕСЛИ В ПОЛЕ FIELD ОБЪЕКТ
-                if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-                  if (relatedModelName == option.tableName) { // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ТЕКУЩЕЙ ТАБЛИЦЕ
+  // REQUEST_DATA_RECORD(state, option) {
+  //   option.data.forEach(element => {
+  //     for (let elementKey of Object.keys(element)) {
+  //       let elementOption = state.state[option.tableName].listOption[elementKey];
+  //       switch(elementOption.type) {
+  //         case 'field': {
+  //           if (element[elementKey]) {  // ЕСЛИ ЗНАЧЕНИЕ НЕ NULL
+  //             let relatedModelName = elementOption['related_model_name'];
+  //             if (typeof(element[elementKey]) == 'object') {  // ЕСЛИ В ПОЛЕ FIELD ОБЪЕКТ
+  //               if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
+  //                 if (relatedModelName == option.tableName) { // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ТЕКУЩЕЙ ТАБЛИЦЕ
                     
-                    state.dispatch('REQUEST_DATA_RECORD', {
-                      data: [element[elementKey]],
-                      tableName: relatedModelName
-                    })
-                  } else {  // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ДРУГОЙ ТАБЛИЦЕ
-                    console.log('add linking relate 1 - ', element[elementKey]);
-                    state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
-                  }
-                }
-                element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
-              } else { // ЕСЛИ В ПОЛЕ FIELD ID ОБЪЕКТА
-                if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey])) {
-                  console.log('add linking relate 2 - ', element[elementKey]);
-                  let addressApi = state.getters.GET_ADDRESS_API_BASE(option.tableName) + `id=${element[elementKey]}`;
-                  console.log(addressApi);
-                  axios
-                    .get(addressApi)
-                    .then((response) => {
-                      console.log(response.data.results);
-                      state.dispatch('REQUEST_DATA_RECORD', {
-                        data: response.data.results,
-                        tableName: relatedModelName
-                      })
-                      element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey]);
-                    })
-                  // state[relatedModelName].listData.push(element[elementKey]); /// MUTATION
-                  // state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
-                } else {
-                  element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey]);
-                }
-                // element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey]);
-              }
-            } else {
-              element[elementKey] = null;
-            }
-            break;
-          }
-          case 'choice': {
-            element[elementKey] = elementOption.choices.find(item => item.value == element[elementKey]);
-            break;
-          }
-        }
-      }
-      if (!state.state[option.tableName].listData.find(item => item.id == element.id)) {
-        // console.log('add linking - ', element);
-        // state[option.tableName].listData.push(element); /// MUTATION
-        state.commit('SET_DATA', {tableName: option.tableName, value: element});
-      }
-    });
-  },
+  //                   state.dispatch('REQUEST_DATA_RECORD', {
+  //                     data: [element[elementKey]],
+  //                     tableName: relatedModelName
+  //                   })
+  //                 } else {  // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ДРУГОЙ ТАБЛИЦЕ
+  //                   console.log('add linking relate 1 - ', element[elementKey]);
+  //                   state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
+  //                 }
+  //               }
+  //               element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
+  //             } else { // ЕСЛИ В ПОЛЕ FIELD ID ОБЪЕКТА
+  //               if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey])) {
+  //                 console.log('add linking relate 2 - ', element[elementKey]);
+  //                 let addressApi = state.getters.GET_ADDRESS_API_BASE(option.tableName) + `id=${element[elementKey]}`;
+  //                 console.log(addressApi);
+  //                 axios
+  //                   .get(addressApi)
+  //                   .then((response) => {
+  //                     console.log(response.data.results);
+  //                     state.dispatch('REQUEST_DATA_RECORD', {
+  //                       data: response.data.results,
+  //                       tableName: relatedModelName
+  //                     })
+  //                     element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey]);
+  //                   })
+  //                 // state[relatedModelName].listData.push(element[elementKey]); /// MUTATION
+  //                 // state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
+  //               } else {
+  //                 element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey]);
+  //               }
+  //               // element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey]);
+  //             }
+  //           } else {
+  //             element[elementKey] = null;
+  //           }
+  //           break;
+  //         }
+  //         case 'choice': {
+  //           element[elementKey] = elementOption.choices.find(item => item.value == element[elementKey]);
+  //           break;
+  //         }
+  //       }
+  //     }
+  //     if (!state.state[option.tableName].listData.find(item => item.id == element.id)) {
+  //       // console.log('add linking - ', element);
+  //       // state[option.tableName].listData.push(element); /// MUTATION
+  //       state.commit('SET_DATA', {tableName: option.tableName, value: element});
+  //     }
+  //   });
+  // },
+
+
 
   REQUEST_DATA(state, option) {
     state.commit('SET_STATUS_PROCESSING', true);
     let filterString = state.getters.GET_FILTER_ALL(option.tableName);
     let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName) + filterString;
-    console.log(addressApi);
-    if ('addingElement' in option) {
-      addressApi += `&page_by_id=${option.addingElement.id}`;
-    }
-    console.log(option.next);
+
+    addressApi += addressApiAddingElement(option); // Если добавляем элемент
+    
     if (option.next) {
       addressApi = state.getters.GET_ADDRESS_API_PAGE_NEXT(option.tableName);
       console.log(addressApi);
@@ -107,10 +114,10 @@ export default {
         return;
       }
     }
+    console.log(addressApi);
     axios
       .get(addressApi)
       .then(response => {
-        // console.log(response.data.results);
         let mutationOptions = {
           tableName: option.tableName,
           data: response.data,
@@ -119,20 +126,28 @@ export default {
         state.commit('SET_DATA_OPTIONS', mutationOptions);
         let responseArray = response.data.results;
         responseArray.forEach(element => {
-          for (let elementKey of Object.keys(element)) {
-            // console.log(state);
+          let flagMutation = false;
+          if (state.state[option.tableName].listData.find(item => item.id == element.id)) return; // Если элемент уже в таблице, пропускаем
+          for (let elementKey of Object.keys(element)) { // Проходим по полям элемента
             let elementOption = state.state[option.tableName].listOption[elementKey];
             switch(elementOption.type) {
               case 'field': {
                 if (element[elementKey]) {  // ЕСЛИ ЗНАЧЕНИЕ НЕ NULL
-                  // console.log(element[elementKey]);
+                //   // console.log(element[elementKey]);
                   let relatedModelName = elementOption['related_model_name'];
 
                   if (relatedModelName == option.tableName) {
-                    element[elementKey] = state.state[relatedModelName].listDataGroup.find(item => item.id == element[elementKey].id);
-                  } else {
                     if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
                       state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
+                    }
+                    element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
+                    // flagMutation = true;
+                    // state.dispatch('REQUEST_DATA_RECORD')
+                //     element[elementKey] = state.state[relatedModelName].listDataGroup.find(item => item.id == element[elementKey].id);
+                  } else { // Если ссылка на другую таблицу
+                    if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
+                      state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
+                      // запустить проход по полям элемента
                     }
                     element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
                   }
@@ -149,21 +164,26 @@ export default {
                   //   }
                   // }
                   // element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
-                } else {
-                  element[elementKey] = null;
                 }
+                  // } else {
+                //   element[elementKey] = null;
+                // }
                 break;
               }
               case 'choice': {
                 element[elementKey] = elementOption.choices.find(item => item.value == element[elementKey]);
                 break;
               }
+              default: {
+                
+              }
             }
           }
-          if (!state.state[option.tableName].listData.find(item => item.id == element.id)) {
+          // if (!state.state[option.tableName].listData.find(item => item.id == element.id)) {
             // console.log('add set_data - ', element);
-            state.commit('SET_DATA', {tableName: option.tableName, value: element});
-          }
+            // if (!flagMutation)
+              state.commit('SET_DATA', {tableName: option.tableName, value: element});
+          // }
         });
       })
       .catch(error => console.log(error))

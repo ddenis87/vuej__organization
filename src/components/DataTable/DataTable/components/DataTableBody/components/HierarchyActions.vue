@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="group-item">
-      <data-table-btn-icon class="action-btn" v-show="isGroup" @click="eventClickHierarchy">mdi-menu-right</data-table-btn-icon>
+      <data-table-btn-icon class="action-btn" v-show="isGroup" @click="eventToggleGroup">mdi-menu-right</data-table-btn-icon>
     </div>
     <div class="group-item">
       <v-icon small v-if="isGroup">mdi-folder</v-icon>
@@ -38,8 +38,8 @@ export default {
     },
   },
   methods: {
-    eventClickHierarchy(event) {
-      this.$emit('toggle-hierarchy', event);
+    eventToggleGroup(event) {
+      this.$emit('toggle-group');
     }
   }
 }
