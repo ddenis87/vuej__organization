@@ -47,45 +47,6 @@ export default {
       state[option.tableName].getterFilterData.parent = null;
   },
 
-  // SET_DATA(state, option, wat) {
-  //   console.log(option.data.results);
-  //   option.data.results.forEach(element => {
-  //     for (let elementKey of Object.keys(element)) {
-  //       let elementKeyOptions = state[option.tableName].listOption[elementKey];
-  //       switch(elementKeyOptions.type) {
-  //         case 'field': {
-  //           if (element[elementKey]) {
-  //             let relatedModelName = elementKeyOptions['related_model_name'];
-  //             if (!state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-  //               if (relatedModelName == option.tableName) {
-  //                 linking(state, {
-  //                   data: [element[elementKey]],
-  //                   tableName: relatedModelName
-  //                 })
-  //               } else {
-  //                 console.log('add set_data relate - ', element[elementKey]);
-  //                 state[relatedModelName].listData.push(element[elementKey]);
-  //               }
-  //             }
-  //             element[elementKey] = state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
-  //           } else {
-  //             element[elementKey] = null;
-  //           }
-  //           break;
-  //         }
-  //         case 'choice': {
-  //           element[elementKey] = elementKeyOptions.choices.find(item => item.value == element[elementKey]);
-  //           break;
-  //         }
-  //       }
-  //     }
-  //     if (!state[option.tableName].listData.find(item => item.id == element.id)) {
-  //       console.log('add set_data - ', element);
-  //       state[option.tableName].listData.push(element);
-  //     }
-  //   })
-  // },
-
   SET_DATA_RECORD(state, option) {
     // console.log(option);
     state[option.tableName].listFieldObject.forEach(fieldObject => {
@@ -114,6 +75,7 @@ export default {
       Vue.set(state[option.tableName].listData, indexItem, element);
     });
   },
+  
   SET_DATA_CLEAR(state, option) {
     state[option.tableName].listData = [];
   },
@@ -139,7 +101,7 @@ export default {
       state[option.tableName].filterSearch = '';
       return;
     }
-    state[option.tableName].filterSearch = `&search=${option.value.toUpperCase()}`;
+    state[option.tableName].filterSearch = `&search=${option.value}`;
   },
   SET_FILTER_SORTING(state, option) {
     if (option.key == null) {

@@ -77,7 +77,7 @@ export default {
       }
       let sendOption = {
         tableName: this.properties.tableName,
-        recordId: this.properties.itemRow.id,
+        elementId: this.properties.itemRow.id,
       };
       
       let newValue = this.computedValue(option);
@@ -105,7 +105,7 @@ export default {
 // --------------------------------
       this.saveDataStore(option, 'element');
 // --------------------------------
-      this.$store.dispatch('DataTable/REQUEST_DATA_UPDATE_RECORD_ELEMENT', sendOption);
+      this.$store.dispatch('DataTable/REQUEST_DATA_ELEMENT', sendOption);
       let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: option.key, keyShift: option.shift } });
       editableElement.dispatchEvent(eventEditingAccepted);
       this.isComponentNull = true;

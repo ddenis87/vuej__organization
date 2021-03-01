@@ -6,6 +6,9 @@ function addressApiAddingElement(option) {
   return '';
 };
 
+function testCommit(state) {
+  console.log(state);
+};
 
 export default {
   REQUEST_OPTIONS(state, option) {
@@ -100,7 +103,6 @@ export default {
 
 
   REQUEST_DATA(state, option) {
-    state.commit('SET_STATUS_PROCESSING', true);
     let filterString = state.getters.GET_FILTER_ALL(option.tableName);
     let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName) + filterString;
 
@@ -110,14 +112,15 @@ export default {
       addressApi = state.getters.GET_ADDRESS_API_PAGE_NEXT(option.tableName);
       console.log(addressApi);
       if (!addressApi) {
-        state.commit('SET_STATUS_PROCESSING');
         return;
       }
     }
     console.log(addressApi);
+    state.commit('SET_STATUS_PROCESSING', true);
     axios
       .get(addressApi)
       .then(response => {
+        testCommit(state);
         let mutationOptions = {
           tableName: option.tableName,
           data: response.data,
@@ -126,7 +129,6 @@ export default {
         state.commit('SET_DATA_OPTIONS', mutationOptions);
         let responseArray = response.data.results;
         responseArray.forEach(element => {
-          let flagMutation = false;
           if (state.state[option.tableName].listData.find(item => item.id == element.id)) return; // Если элемент уже в таблице, пропускаем
           for (let elementKey of Object.keys(element)) { // Проходим по полям элемента
             let elementOption = state.state[option.tableName].listOption[elementKey];
@@ -139,11 +141,9 @@ export default {
                   if (relatedModelName == option.tableName) {
                     if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
                       state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
+                      // запустить проход по полям элемента
                     }
                     element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
-                    // flagMutation = true;
-                    // state.dispatch('REQUEST_DATA_RECORD')
-                //     element[elementKey] = state.state[relatedModelName].listDataGroup.find(item => item.id == element[elementKey].id);
                   } else { // Если ссылка на другую таблицу
                     if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
                       state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
@@ -151,45 +151,73 @@ export default {
                     }
                     element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
                   }
-
-                  // if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-                  //   if (relatedModelName == option.tableName) { // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ТЕКУЩЕЙ ТАБЛИЦЕ
-                  //     state.dispatch('REQUEST_DATA_RECORD', {
-                  //       data: [element[elementKey]],
-                  //       tableName: relatedModelName
-                  //     });
-                  //   } else {  // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ДРУГОЙ ТАБЛИЦЕ
-                  //     // console.log('add set_data relate - ', element[elementKey]);
-                  //     state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
-                  //   }
-                  // }
-                  // element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
                 }
-                  // } else {
-                //   element[elementKey] = null;
-                // }
                 break;
               }
               case 'choice': {
                 element[elementKey] = elementOption.choices.find(item => item.value == element[elementKey]);
                 break;
               }
-              default: {
-                
-              }
             }
           }
-          // if (!state.state[option.tableName].listData.find(item => item.id == element.id)) {
-            // console.log('add set_data - ', element);
-            // if (!flagMutation)
-              state.commit('SET_DATA', {tableName: option.tableName, value: element});
-          // }
+          state.commit('SET_DATA', {tableName: option.tableName, value: element});
         });
       })
       .catch(error => console.log(error))
       .finally(() => state.commit('SET_STATUS_PROCESSING'));
   },
 
+  REQUEST_DATA_ELEMENT(state, option) {
+    let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName);
+    addressApi += `&id=${option.elementId}`;
+
+    state.commit('SET_STATUS_PROCESSING', true);
+    return new Promise((resolve, reject) => {
+      axios
+        .get(addressApi)
+        .then(response => {
+          let responseArray = response.data.results;
+          responseArray.forEach(element => {
+            for (let elementKey of Object.keys(element)) { // Проходим по полям элемента
+              let elementOption = state.state[option.tableName].listOption[elementKey];
+              switch(elementOption.type) {
+                case 'field': {
+                  if (element[elementKey]) {  // ЕСЛИ ЗНАЧЕНИЕ НЕ NULL
+                    let relatedModelName = elementOption['related_model_name'];
+                    if (relatedModelName == option.tableName) {
+                      if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
+                        state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
+                        // запустить проход по полям элемента
+                      }
+                      element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
+                    } else { // Если ссылка на другую таблицу
+                      if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
+                        state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
+                        // запустить проход по полям элемента
+                      }
+                      element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
+                    }
+                  }
+                  break;
+                }
+                case 'choice': {
+                  element[elementKey] = elementOption.choices.find(item => item.value == element[elementKey]);
+                  break;
+                }
+              }
+            }
+            state.commit('SET_DATA', {tableName: option.tableName, value: element});
+          });
+          
+          resolve(true);
+        })
+        .catch(error => {
+          console.log(error);
+          reject(false);
+        })
+        .finally(() => state.commit('SET_STATUS_PROCESSING'));
+    });
+  },
 
   // REQUEST_DATA(state, option) {
   //   state.commit('SET_STATUS_PROCESSING', true);
@@ -237,114 +265,133 @@ export default {
   //     .finally(() => state.commit('SET_STATUS_PROCESSING'));
   // },
 
-  REQUEST_DATA_DELETE(state, option) {
-    state.commit('SET_STATUS_PROCESSING', true);
-    let addressApi = state.getters.GET_ADDRESS_API('delete', option.tableName);
-    addressApi += `${option.recordId}`;
-    console.log(addressApi);
-    return new Promise((resolve, reject) => {
-       axios
-        .delete(addressApi)
-        .then(response => {
-          resolve(response);
-          state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
-          state.dispatch('REQUEST_DATA', {tableName: option.tableName});
-        })
-        .catch(err => {
-          console.log(err);
-          reject(err);
-        })
-        .finally(() => state.commit('SET_STATUS_PROCESSING'));
-    })
-  },
-  REQUEST_DATA_ADDING(state, option) {
-    state.commit('SET_STATUS_PROCESSING', true);
-    state.commit('SET_CLEAR_NEXT_PREV_LINK', {tableName: option.tableName});
-    let addressApi = state.getters.GET_ADDRESS_API('post', option.tableName);
-    console.log(addressApi);
-    return new Promise((resolve, reject) => {
-       axios
-        .post(addressApi, option.formData)
-        .then(response => {
-          console.log(response);
+  // REQUEST_DATA_DELETE(state, option) {
+  //   state.commit('SET_STATUS_PROCESSING', true);
+  //   let addressApi = state.getters.GET_ADDRESS_API('delete', option.tableName);
+  //   addressApi += `${option.recordId}`;
+  //   console.log(addressApi);
+  //   return new Promise((resolve, reject) => {
+  //      axios
+  //       .delete(addressApi)
+  //       .then(response => {
+  //         resolve(response);
+  //         state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
+  //         state.dispatch('REQUEST_DATA', {tableName: option.tableName});
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //         reject(err);
+  //       })
+  //       .finally(() => state.commit('SET_STATUS_PROCESSING'));
+  //   })
+  // },
+  // REQUEST_DATA_ADDING(state, option) {
+  //   state.commit('SET_STATUS_PROCESSING', true);
+  //   state.commit('SET_CLEAR_NEXT_PREV_LINK', {tableName: option.tableName});
+  //   let addressApi = state.getters.GET_ADDRESS_API('post', option.tableName);
+  //   console.log(addressApi);
+  //   return new Promise((resolve, reject) => {
+  //      axios
+  //       .post(addressApi, option.formData)
+  //       .then(response => {
+  //         console.log(response);
           
-          state.commit('SET_MODE_ADDING_ID', { tableName: option.tableName, recordId: response.data.id });
-          state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
-          state.dispatch('REQUEST_DATA', {tableName: option.tableName, addingElement: response.data});
-          resolve(response);
-        })
-        .catch(err => {
-          console.log(err);
-          reject(err);
-        })
-        .finally(() => state.commit('SET_STATUS_PROCESSING'));
-    })
-  },
-  REQUEST_DATA_EDITING(state, option) {
+  //         state.commit('SET_MODE_ADDING_ID', { tableName: option.tableName, recordId: response.data.id });
+  //         state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
+  //         state.dispatch('REQUEST_DATA', {tableName: option.tableName, addingElement: response.data});
+  //         resolve(response);
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //         reject(err);
+  //       })
+  //       .finally(() => state.commit('SET_STATUS_PROCESSING'));
+  //   })
+  // },
+  // REQUEST_DATA_EDITING(state, option) {
+  //   state.commit('SET_STATUS_PROCESSING', true);
+  //   let addressApi = state.getters.GET_ADDRESS_API('update', option.tableName);
+  //   addressApi += `${option.recordId}/`;
+  //   console.log(addressApi);
+  //   return new Promise((resolve, reject) => {
+  //      axios
+  //       .put(addressApi, option.formData)
+  //       .then(response => {
+  //         resolve(response);
+  //         // state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
+  //         // state.dispatch('REQUEST_DATA', {tableName: option.tableName});
+  //         state.dispatch('REQUEST_DATA_UPDATE_RECORD', {tableName: option.tableName, recordId: option.recordId});
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //         reject(err);
+  //       })
+  //       .finally(() => state.commit('SET_STATUS_PROCESSING'));
+  //   })
+  // },
+
+  // REQUEST_DATA_UPDATE_RECORD(state, option) {
+  //   state.commit('SET_STATUS_PROCESSING', true);
+  //   let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName);
+    
+  //   addressApi += `&id=${option.recordId}`;
+  //   console.log(addressApi);
+  //   return new Promise((resolve, reject) => {
+  //     axios
+  //       .get(addressApi)
+  //       .then(response => {
+  //         let mutationOptions = {
+  //           tableName: option.tableName,
+  //           data: response.data,
+  //           clear: false,
+  //         }
+  //         console.log(mutationOptions);
+  //         state.commit('SET_DATA_RECORD', mutationOptions);
+  //         resolve(true);
+  //       })
+  //       .catch(error => {
+  //         console.log(error);
+  //         reject(false);
+  //       })
+  //       .finally(() => state.commit('SET_STATUS_PROCESSING'));
+  //   });
+  // },
+
+  UPDATE_ELEMENT_FIELD(state, option) {
     state.commit('SET_STATUS_PROCESSING', true);
     let addressApi = state.getters.GET_ADDRESS_API('update', option.tableName);
-    addressApi += `${option.recordId}/`;
-    console.log(addressApi);
-    return new Promise((resolve, reject) => {
-       axios
-        .put(addressApi, option.formData)
-        .then(response => {
-          resolve(response);
-          // state.commit('SET_DATA_CLEAR', { tableName: option.tableName });
-          // state.dispatch('REQUEST_DATA', {tableName: option.tableName});
-          state.dispatch('REQUEST_DATA_UPDATE_RECORD', {tableName: option.tableName, recordId: option.recordId});
-        })
-        .catch(err => {
-          console.log(err);
-          reject(err);
-        })
-        .finally(() => state.commit('SET_STATUS_PROCESSING'));
-    })
-  },
-
-  REQUEST_DATA_UPDATE_RECORD(state, option) {
-    state.commit('SET_STATUS_PROCESSING', true);
-    let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName);
-    
-    addressApi += `&id=${option.recordId}`;
-    console.log(addressApi);
+    addressApi += `${option.elementId}/`;
     return new Promise((resolve, reject) => {
       axios
-        .get(addressApi)
-        .then(response => {
-          let mutationOptions = {
-            tableName: option.tableName,
-            data: response.data,
-            clear: false,
-          }
-          console.log(mutationOptions);
-          state.commit('SET_DATA_RECORD', mutationOptions);
-          resolve(true);
-        })
-        .catch(error => {
-          console.log(error);
-          reject(false);
-        })
-        .finally(() => state.commit('SET_STATUS_PROCESSING'));
-    });
-  },
-  REQUEST_DATA_UPDATE_RECORD_ELEMENT(state, option) {
-    state.commit('SET_STATUS_PROCESSING', true);
-    let addressApi = state.getters.GET_ADDRESS_API('update', option.tableName);
-    addressApi += `${option.recordId}/`;
-    console.log(addressApi);
-    return new Promise((resolve, reject) => {
-       axios
-        .put(addressApi, option.formData)
-        .then(response => {
-          state.dispatch('REQUEST_DATA_UPDATE_RECORD', {tableName: option.tableName, recordId: option.recordId})
-            .then(() => resolve(response));
-        })
-        .catch(err => {
-          console.log(err);
-          reject(err);
-        })
-        .finally(() => state.commit('SET_STATUS_PROCESSING'));
+      .put(addressApi, option.formData)
+      .then(response => {
+        state.dispatch('REQUEST_DATA_ELEMENT', {tableName: option.tableName, elementId: option.elementId})
+          .then(() => resolve(response));
+      })
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      })
+      .finally(() => state.commit('SET_STATUS_PROCESSING'));
     })
   },
+  // REQUEST_DATA_UPDATE_RECORD_ELEMENT(state, option) {
+  //   state.commit('SET_STATUS_PROCESSING', true);
+  //   let addressApi = state.getters.GET_ADDRESS_API('update', option.tableName);
+  //   addressApi += `${option.elementId}/`;
+  //   console.log(addressApi);
+  //   return new Promise((resolve, reject) => {
+  //      axios
+  //       .put(addressApi, option.formData)
+  //       .then(response => {
+  //         state.dispatch('REQUEST_DATA_UPDATE_RECORD', {tableName: option.tableName, recordId: option.recordId})
+  //           .then(() => resolve(response));
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //         reject(err);
+  //       })
+  //       .finally(() => state.commit('SET_STATUS_PROCESSING'));
+  //   })
+  // },
 }
