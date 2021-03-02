@@ -1,5 +1,6 @@
 import ElFieldNumber from '@/components/Elements/ElField/ElFieldNumber.vue';
 import ElFieldString from '@/components/Elements/ElField/ElFieldString.vue';
+import ElFieldStringArea from '@/components/Elements/ElField/ElFieldStringArea.vue';
 import ElFieldDate from '@/components/Elements/ElField/ElFieldDate.vue';
 import ElFieldDateTime from '@/components/Elements/ElField/ElFieldDateTime.vue';
 import ElFieldChoice from '@/components/Elements/ElField/ElFieldChoice.vue';
@@ -10,6 +11,7 @@ export const TheTableForm = {
   components: {
     ElFieldNumber,
     ElFieldString,
+    ElFieldStringArea,
     ElFieldDate,
     ElFieldDateTime,
     ElFieldChoice,
