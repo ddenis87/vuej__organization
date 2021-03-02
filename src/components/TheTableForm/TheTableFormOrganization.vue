@@ -33,9 +33,9 @@
         </v-row>
         <v-row dense>
           <v-col cols="12">
-            <el-field-string :input-properties="fieldForm.title"
+            <el-field-string-area :input-properties="fieldForm.title"
                              v-model="fieldFormValue.title"
-                             @next-element="eventNextElement"></el-field-string>
+                             @next-element="eventNextElement"></el-field-string-area>
           </v-col>
         </v-row>
         <v-row dense>
@@ -73,6 +73,13 @@
           <v-col cols="12">
             <el-field-dialog :inputProperties="assingObject(fieldForm.bk, {related_model_view: '{head_code} - {head_name}'})"
                              v-model="fieldFormValue.bk"
+                             @next-element="eventNextElement"></el-field-dialog>
+          </v-col>
+        </v-row>
+        <v-row dense>
+          <v-col cols="12">
+            <el-field-dialog :inputProperties="assingObject(fieldForm.parent, {related_model_view: '{title} - {id}'})"
+                             v-model="fieldFormValue.parent"
                              @next-element="eventNextElement"></el-field-dialog>
           </v-col>
         </v-row>
