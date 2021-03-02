@@ -21,8 +21,9 @@
                              :start-column="properties.headers[0]"
                              :type-height="typeHeight"
                              :type-column="typeColumn"
-                             :items="storeGetDataGroup"
-                             :items-header="getDataHeader"></data-table-body-group>
+                             :items="itemsDataGroup"
+                             :items-header="getDataHeader"
+                             ></data-table-body-group>
     </div>
 
     <div class="data-table__body">
@@ -41,7 +42,8 @@
                        @event-row-focused="eventRowFocused"
                        @event-row-selected="eventRowSelected"
                        @event-row-keydown="eventRowKeydown"
-                       @event-body-blur="eventBodyBlur"></data-table-body>
+                       @event-body-blur="eventBodyBlur"
+                       @toggle-group="toggleGroup"></data-table-body>
     </div>
 
     <!-- ANCHOR FOR LAZY LOAD DATA -->
@@ -69,6 +71,7 @@ import { LoadingData } from './mixins/LoadingData.js';
 import { GettingData } from './mixins/GettingData.js';
 import { ComputedTemplate } from './mixins/ComputedTemplate.js'; // computedTemplateTable
 import { EventsComponent } from './mixins/EventsComponent.js';
+import { HierarchyGroup } from './mixins/HierarchyGroup.js';
 
 export default {
   name: 'DataTable',
@@ -85,6 +88,7 @@ export default {
     GettingData,
     ComputedTemplate,
     EventsComponent,
+    HierarchyGroup,
   ],
   props: {
     id: { type: String, default: 'dataTable' },

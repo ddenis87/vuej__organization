@@ -189,7 +189,12 @@ export default {
         tableName: this.tableName,
         value: option,
       };
-      this.storeToggleGroup(sendOption);
+      
+      // ------
+      // this.storeToggleGroup(sendOption);
+      this.$emit('toggle-group', sendOption);
+      // ------
+
     },
     scrollBody() {
       console.log('scroll');
