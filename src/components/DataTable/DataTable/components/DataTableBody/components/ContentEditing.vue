@@ -105,7 +105,7 @@ export default {
 // --------------------------------
       this.saveDataStore(option, 'element');
 // --------------------------------
-      this.$store.dispatch('DataTable/REQUEST_DATA_ELEMENT', sendOption);
+      this.$store.dispatch('DataTable/UPDATE_ELEMENT', sendOption);
       let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: option.key, keyShift: option.shift } });
       editableElement.dispatchEvent(eventEditingAccepted);
       this.isComponentNull = true;

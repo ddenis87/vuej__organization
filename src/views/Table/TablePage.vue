@@ -179,7 +179,7 @@ export default {
         tableName: this.activeMenu.tableName,
         value: option.value,
       });
-      this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.activeMenu.tableName });
+      // this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.activeMenu.tableName });
       this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName});
     },
     freeSearchClear() {
@@ -187,7 +187,7 @@ export default {
         tableName: this.activeMenu.tableName,
         value: null,
       });
-      this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.activeMenu.tableName });
+      // this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.activeMenu.tableName });
       this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName});
     },
   },

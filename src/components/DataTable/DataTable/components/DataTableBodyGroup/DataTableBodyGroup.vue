@@ -136,17 +136,17 @@ export default {
       &_focus { border: $columnBorderFocus; }
       &_editing { background-color: white; }
 
-      // &__action-max {
-      //   grid-area: action_max;
-      //   justify-content: center;
-      //   align-items: flex-start;
-      //   .action-btn {
-      //     margin-left: 0px;
-      //     &_action {
-      //       transform: rotate(-180deg);
-      //     }
-      //   }
-      // }
+      &__action-max {
+        grid-area: action_max;
+        justify-content: center;
+        align-items: flex-start;
+        .action-btn {
+          margin-left: 0px;
+          &_action {
+            transform: rotate(-180deg);
+          }
+        }
+      }
       &__group {
         grid-area: group;
         display: flex;

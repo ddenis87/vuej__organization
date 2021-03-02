@@ -26,15 +26,20 @@ export default {
   GET_DATA_GROUP:(state) => (tableName) => { return state[tableName].listDataGroup; },
   GET_DATA_GROUP_LEVEL:(state) => (tableName) => { return state[tableName].listDataGroup.length; },
   GET_DATA:(state) => (tableName, option = null) => {
-    console.log(state[tableName].listData);
+    // console.log(state[tableName].listData);
     if (state[tableName].getterFilterData.parent) {
       return state[tableName].listData.filter(item => {
           if (item.parent && item.parent.id == state[tableName].getterFilterData.parent) return true;
       });
     }
-
+    if (state[tableName].isHierarchyMode) {
+      return state[tableName].listData.filter(item => {
+        if (item.parent == null) return true;
+      });
+    }
     return state[tableName].listData;
   },
+
   GET_DATA_COUNT_TOTAL:(state) => (tableName) => { return state[tableName].countTotal; },
   GET_DATA_COUNT_LOAD:(state) => (tableName) => { return state[tableName].listData.length; },
   GET_DATA_INDEX:(state) => (tableName, option) => {
@@ -50,7 +55,9 @@ export default {
   GET_FILTER_PRIMITIVE:(state) => (tableName) => { return state[tableName].filterPrimitive; },
   GET_FILTER_EXTENDED:(state) => (tableName) => { return state[tableName].filterExtended; },
   GET_FILTER_SEARCH:(state) => (tableName) => { return state[tableName].filterSearch; },
-  GET_FILTER_SORTING:(state) => (tableName) => { return state[tableName].filterSorting; },
+  GET_FILTER_SORTING:(state) => (tableName) => {
+    return state[tableName].filterSorting;
+  },
   GET_FILTER_GROUP:(state) => (tableName) => { return state[tableName].filterGroup; },
   GET_FILTER_ALL:(state) => (tableName) => {
     let buildFilter = state[tableName].filterPrimitive + 

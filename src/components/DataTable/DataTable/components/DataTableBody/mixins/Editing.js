@@ -95,7 +95,7 @@ export const Editing = {
       };
       console.log(sendOption);
       sendOption.formData = bFormData;
-      this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption);
+      this.$store.dispatch('DataTable/ADDING_ELEMENT', sendOption);
       // await this.$store.dispatch('DataTable/REQUEST_DATA_ADDING', sendOption)
       //   .then((response) => {
       //     setTimeout(() => {

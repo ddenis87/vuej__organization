@@ -1,9 +1,30 @@
-// import Vue from 'vue';
+import Vue from 'vue';
 
 export default {
   SET_STATUS_PROCESSING(state, status = false) { state.statusProcessing = status; },
+  SET_DEFAULT_STATE(state, option) {
+    state[option.tableName].description = null;
+    state[option.tableName].countTotal = 0;
+    state[option.tableName].apiNext = null;
+    state[option.tableName].apiPrevious = null;
+    state[option.tableName].isHierarchyMode = false;
+    state[option.tableName].filterDefault = { 'page_size': null, 'is_deleted': null, };
+    state[option.tableName].filterPrimitive = '';
+    state[option.tableName].filterSearch = '';
+    state[option.tableName].filterSorting = '';
+    state[option.tableName].filterExtended = '';
+    state[option.tableName].apiFilterParent = '&parent__isnull=true';
+    state[option.tableName].getterFilterData = { parent: null, };
+    state[option.tableName].relatedModelView = '';
+    state[option.tableName].listOption = {};
+    state[option.tableName].listDataGroup = [];
+    state[option.tableName].listData = [];
+    state[option.tableName].isModeAdding = false;
+    // state[option.tableName].
+    // state[option.tableName].
+  },
 
-  SET_CLEAR_NEXT_PREV_LINK(state, option) {
+  CLEAR_API_LINK(state, option) {
     state[option.tableName].next = null;
     state[option.tableName].previous = null;
   },
@@ -15,15 +36,25 @@ export default {
   },
 
   SET_DATA_OPTIONS(state, option) {
-    // console.log(option);
-    // if (option.clear == true) state[option.tableName].listData = [];
     state[option.tableName].countTotal = option.data.count;
     state[option.tableName].apiNext = option.data.next;
     state[option.tableName].apiPrevious = option.data.previous;
   },
 
   SET_DATA(state, option) {
+    let index = state[option.tableName].listData.findIndex(item => item.id == option.value.id);
+    if (index >= 0) {
+      Vue.set(state[option.tableName].listData, index, option.value);
+      return;
+    }
     state[option.tableName].listData.push(option.value);
+  },
+  CLEAR_DATA(state, option) {
+    state[option.tableName].listData = [];
+  },
+  DELETE_DATA_ELEMENT(state, option) {
+    let index = state[option.tableName].listData.findIndex(item => item.id == option.elementId);
+    state[option.tableName].listData.splice(index, 1);
   },
 
   CHANGE_DATA_GROUP_LEGEND(state, option) {
@@ -47,38 +78,38 @@ export default {
       state[option.tableName].getterFilterData.parent = null;
   },
 
-  SET_DATA_RECORD(state, option) {
-    // console.log(option);
-    state[option.tableName].listFieldObject.forEach(fieldObject => {
-      // if (fieldObject != 'parent') { // КОСТЫЛЬ
-        let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
-        option.data.results.forEach(element => {
-          if (element[fieldObject]) {
-            if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
-            element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
-          } else {
-            element[fieldObject] = null;
-          }
-        });
-      // }
-    });
-    let listOption = state[option.tableName].listOption; //
-    option.data.results.forEach(element => {
-      for (let key of Object.keys(element)) { //
-        if (listOption[key].type == 'choice') { //
-          element[key] = listOption[key].choices.find(item => item.value == element[key]);
-        }
-      }
-      let indexItem = state[option.tableName].listData.findIndex(item => item.id == element.id);
-      // console.log(indexItem);
-      // console.log(element);
-      Vue.set(state[option.tableName].listData, indexItem, element);
-    });
-  },
+  // SET_DATA_RECORD(state, option) {
+  //   // console.log(option);
+  //   state[option.tableName].listFieldObject.forEach(fieldObject => {
+  //     // if (fieldObject != 'parent') { // КОСТЫЛЬ
+  //       let relatedModelName = state[option.tableName].listOption[fieldObject]['related_model_name'];
+  //       option.data.results.forEach(element => {
+  //         if (element[fieldObject]) {
+  //           if (!state[relatedModelName].listData.find(item => item.id == element[fieldObject].id)) state[relatedModelName].listData.push(element[fieldObject]);
+  //           element[fieldObject] = state[relatedModelName].listData.find(item => item.id == element[fieldObject].id);
+  //         } else {
+  //           element[fieldObject] = null;
+  //         }
+  //       });
+  //     // }
+  //   });
+  //   let listOption = state[option.tableName].listOption; //
+  //   option.data.results.forEach(element => {
+  //     for (let key of Object.keys(element)) { //
+  //       if (listOption[key].type == 'choice') { //
+  //         element[key] = listOption[key].choices.find(item => item.value == element[key]);
+  //       }
+  //     }
+  //     let indexItem = state[option.tableName].listData.findIndex(item => item.id == element.id);
+  //     // console.log(indexItem);
+  //     // console.log(element);
+  //     Vue.set(state[option.tableName].listData, indexItem, element);
+  //   });
+  // },
   
-  SET_DATA_CLEAR(state, option) {
-    state[option.tableName].listData = [];
-  },
+  // SET_DATA_CLEAR(state, option) {
+  //   state[option.tableName].listData = [];
+  // },
 
   SET_FILTER_PRIMITIVE(state, option) {
     state[option.tableName].filterExtended = '';
@@ -112,13 +143,6 @@ export default {
     filterSorting += `${(option.ordering) ? '' : '-'}${option.key}`;
     state[option.tableName].filterSorting = filterSorting;
   },
-  // SET_FILTER_PARENT(state, option) {
-  //   if (option.group.id == null) {
-  //     state[option.tableName].filterParent = '&parent__isnull=true';
-  //     return;
-  //   }
-  //   state[option.tableName].filterParent = `&parent=${option.group.id}`;
-  // },
 
   TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) {
     state[option.tableName].listData = [];
@@ -158,7 +182,7 @@ export default {
     state[option.tableName].modeAdding.status = false;
     state[option.tableName].modeAdding.index = null;
   },
-
+  
   // ---------------------------------------------------------------------------------------------------
 
 

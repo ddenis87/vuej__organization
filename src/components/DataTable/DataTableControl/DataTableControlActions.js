@@ -13,6 +13,7 @@ export const DataTableControlActions = {
   data() {
     return {
       isOpenDialog: false,
+      typeElement: 'element',
     }
   },
   computed: {
@@ -23,6 +24,13 @@ export const DataTableControlActions = {
         componentFormTable += item[0].toUpperCase() + item.slice(1);
       })
       return () => import(`@/components/TheTableForm/TheTableForm${componentFormTable}`);
+    },
+    componentForm() {
+      if (!this.tableName) return null;
+      if (this.typeElement == 'element')
+        return () => import(`@/components/TheTableForm/TheTableForm${this.tableName[0].toUpperCase() + this.tableName.slice(1)}`);
+      else 
+        return () => import(`@/components/TheTableForm/TheTableForm${this.tableName[0].toUpperCase() + this.tableName.slice(1)}Group`);
     },
     isMarkDeletedRecord() { return (this.elementFocused) ? this.elementFocused.is_deleted : false; },
   },
@@ -42,7 +50,7 @@ export const DataTableControlActions = {
       };
       Object.assign(sendOption, option);
       if (sendOption.actionName == 'editing') {
-        sendOption.recordId = option.values.id;
+        sendOption.elementId = option.values.id;
         delete sendOption.values.id;
       }
       let bFormData = new FormData();
@@ -52,7 +60,12 @@ export const DataTableControlActions = {
       };
       sendOption.formData = bFormData;
       delete sendOption.values;
-      this.$store.dispatch(`DataTable/REQUEST_DATA_${sendOption.actionName.toUpperCase()}`, sendOption);
+      if (sendOption.actionName == 'editing') 
+        this.$store.dispatch(`DataTable/UPDATE_ELEMENT`, sendOption);
+      if (sendOption.actionName == 'adding') 
+        this.$store.dispatch(`DataTable/ADDING_ELEMENT`, sendOption);
+
+      // this.$store.dispatch(`DataTable/REQUEST_DATA_${sendOption.actionName.toUpperCase()}`, sendOption);
       this.eventCloseDialog();
     },
     eventActionCancel() {

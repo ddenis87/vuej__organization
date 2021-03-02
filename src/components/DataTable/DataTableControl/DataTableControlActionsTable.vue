@@ -1,13 +1,13 @@
 <template>
   <div class="data-table-control-actions-table">
-    <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="eventOpenForm">Добавить</el-button-icon>
+    <el-button-icon icon="mdi-plus" :disabled="!isMountTable" @click="addingElement">Добавить</el-button-icon>
     <el-button-icon icon="mdi-table-row-plus-after" :disabled="!isMountTable" @click="eventClickAddingTable">Добавить строку</el-button-icon>
-    <el-button-icon icon="mdi-folder-plus-outline" :disabled="!isMountTable">Добавить группу</el-button-icon>
+    <el-button-icon icon="mdi-folder-plus-outline" :disabled="!isMountTable" @click="addingGroup">Добавить группу</el-button-icon>
     
-    <dialog-full-page :is-dialog-name="`Добавление записи`" 
+    <dialog-full-page :is-dialog-name="`Добавление ${(typeElement == 'element') ? 'записи' : 'группы'}`" 
                       :is-dialog-show="isOpenDialog" 
                       @close-dialog="eventCloseDialog">
-      <component :is="componentFormTable" 
+      <component :is="componentForm" 
                  @event-action-accept="eventActionAccept"
                  @event-action-cancel="eventActionCancel"></component>
     </dialog-full-page>
@@ -34,6 +34,14 @@ export default {
       }
       console.log(sendOption);
       this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
+    },
+    addingElement() {
+      this.typeElement = 'element';
+      this.eventOpenForm();
+    },
+    addingGroup() {
+      this.typeElement = 'group';
+      this.eventOpenForm();
     },
   },
 }

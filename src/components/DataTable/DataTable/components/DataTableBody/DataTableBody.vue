@@ -20,7 +20,7 @@
     <!-- NO ELEMENT FOR DISPLAY -->
     <div class="body-empty"
          :class="`body-empty_${typeColumn}`"
-         v-if="isEmptyData">Отсутствуют элементы для отображения по заданным условиям</div>
+         v-if="isEmptyData">Нет элементов для отображения</div>
 
     <div v-for="(itemRow, indexRow) in items"
          class="body-row"

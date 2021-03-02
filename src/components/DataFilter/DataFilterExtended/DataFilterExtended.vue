@@ -104,7 +104,7 @@ export default {
         tableName: this.tableName,
         value: filterString,
       })
-      this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.tableName });
+      this.$store.commit('DataTable/CLEAR_DATA', { tableName: this.tableName });
       this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.tableName});
       this.$emit('accept');
       // console.log(filterString);

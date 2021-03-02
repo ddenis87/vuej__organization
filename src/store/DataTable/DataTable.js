@@ -29,7 +29,7 @@ class DataTableBase {
     parent: null,
   };
 
-  relatedModelView = '' // шаблон представление таблицы в других таблицах, компонентах, и т.д.
+  relatedModelView = ''; // шаблон представление таблицы в других таблицах, компонентах, и т.д.
   listOption = {};
   listDataGroup = [];
   listData = [];
