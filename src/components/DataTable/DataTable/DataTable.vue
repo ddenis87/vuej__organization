@@ -1,10 +1,10 @@
 <template>
-  <div class="data-table" :id="id">
+  <div class="data-table" :class="GUID" :id="GUID">
     <!-- <div class="data-table__block" v-if="isLoadingData"></div> -->
     <!-- <v-overlay v-if="isLoadingData"></v-overlay> -->
     <div class="data-table__header">
       <data-table-header :id="`data-table-${id}`"
-                         :guid="this.GUID"
+                         :guid="GUID"
                          :table-name="tableName"
                          :template="computedTemplateTable"
                          :type-height="typeHeight"
@@ -18,7 +18,7 @@
 
     <div class="data-table__body-group">
       <data-table-body-group :table-name="tableName"
-                             :guid="this.GUID"
+                             :guid="GUID"
                              :template="computedTemplateTable"
                              :start-column="(isExpansion) ? properties.headers[1] : properties.headers[0]"
                              :type-height="typeHeight"
@@ -29,7 +29,7 @@
 
     <div class="data-table__body">
       <data-table-body :id="id"
-                       :guid="this.GUID"
+                       :guid="GUID"
                        :table-name="tableName"
                        :template="computedTemplateTable"
                        :type-height="typeHeight"

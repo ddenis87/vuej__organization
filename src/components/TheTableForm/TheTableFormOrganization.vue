@@ -79,6 +79,8 @@
         <v-row dense>
           <v-col cols="12">
             <el-field-dialog :inputProperties="assingObject(fieldForm.parent, {related_model_view: '{title} - {id}'})"
+                             :guid="guid"
+                             :is-item-group="true"
                              v-model="fieldFormValue.parent"
                              @next-element="eventNextElement"></el-field-dialog>
           </v-col>
@@ -120,6 +122,7 @@ export default {
         industry_typing: null,
         budget_level: null,
         bk: null,
+        parent: null,
       },
     }
   },
@@ -139,6 +142,7 @@ export default {
         industry_typing: null,
         budget_level: null,
         bk: null,
+        parent: null,
       };
     },
   },

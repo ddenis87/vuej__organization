@@ -84,10 +84,10 @@ export const TheTableForm = {
     },
     eventClickActionCancel() {
       this.$emit('event-action-cancel');
-      this.$refs.formAction.reset();
-      setTimeout(() => { // ЧТОБ СТЕРЕТЬ ДАТУ ИЗ ЗА МАСКИ
-        this.$refs.formAction.reset();
-      },100);
+      // this.$refs.formAction.reset();
+      // setTimeout(() => { // ЧТОБ СТЕРЕТЬ ДАТУ ИЗ ЗА МАСКИ
+      //   this.$refs.formAction.reset();
+      // },100);
     },
     eventClickActionAccept() {
       if (!this.$refs.formAction.validate()) {

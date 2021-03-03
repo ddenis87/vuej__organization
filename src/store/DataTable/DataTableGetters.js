@@ -1,5 +1,5 @@
 export default {
-  GET_STATUS_PROCESSING(state) { return state.statusProcessing; },
+  GET_STATUS_PROCESSING:(state) => (option) => { return state[option.tableName][option.guid].statusProcessing; },
   GET_ADDRESS_API:(state, getters, rootState, rootGetters) => (option, tableName) => {
     let addressApi = `${rootGetters.GET_ADDRESS_API}api/v1/${tableName}/?`;
     switch (option) {
@@ -26,8 +26,8 @@ export default {
     return filterApi;
   },
 
-  GET_ADDRESS_API_PAGE_NEXT:(state) => (tableName) => { return state[tableName].apiNext; },
-  GET_ADDRESS_API_PAGE_PREVIOUS:(state) => (tableName) => { return state[tableName].previous; },
+  GET_ADDRESS_API_PAGE_NEXT:(state) => (option) => { return state[option.tableName][option.guid].apiNext; },
+  GET_ADDRESS_API_PAGE_PREVIOUS:(state) => (option) => { return state[option.tableName][option.guid].previous; },
   GET_DESCRIPTION:(state) => (tableName) => { return state[tableName].description; },
   GET_RELATED_MODEL_VIEW:(state) => (tableName) => { return state[tableName].relatedModelView; },
   GET_HIERARCHY_MODE:(state) => (tableName) => { return state[tableName].isHierarchyMode; },
@@ -38,12 +38,28 @@ export default {
   GET_DATA_GROUP_LEVEL:(state) => (option) => { return state[option.tableName][option.guid].listDataGroup.length; },
   
   GET_DATA:(state) => (option) => {
+    console.log(state[option.tableName].listData.length);
     console.log(option.guid);
+    
+    if (!option.guid) {
+      return state[option.tableName].listData;
+    }
     console.log(state[option.tableName][option.guid].filter);
     if (state[option.tableName][option.guid].filter['parent']) {
-      return state[option.tableName].listData.filter(item => {
-          if (item.parent && item.parent.id == state[option.tableName][option.guid].filter['parent']) return true;
-      });
+      if (state[option.tableName][option.guid].filter['is_group']) {
+        return state[option.tableName].listData.filter(item => {
+          if (item.parent && item.parent.id == state[option.tableName][option.guid].filter['parent'] &&
+            item.is_group) return true;
+        });
+      } else {
+        return state[option.tableName].listData.filter(item => {
+            if (item.parent && item.parent.id == state[option.tableName][option.guid].filter['parent']) return true;
+        });
+      }
+
+    }
+    if (state[option.tableName][option.guid].filter['is_group']) {
+      return state[option.tableName].listData.filter(item => item.is_group && item.parent == null);
     }
     // console.log(state[tableName].listData);
     // if (state[tableName].getterFilterData.parent) {
@@ -51,11 +67,11 @@ export default {
     //       if (item.parent && item.parent.id == state[tableName].getterFilterData.parent) return true;
     //   });
     // }
-    // if (state[tableName].isHierarchyMode) {
-    //   return state[tableName].listData.filter(item => {
-    //     if (item.parent == null) return true;
-    //   });
-    // }
+    if (state[option.tableName].isHierarchyMode) {
+      return state[option.tableName].listData.filter(item => {
+        if (item.parent == null) return true;
+      });
+    }
     return state[option.tableName].listData;
   },
 

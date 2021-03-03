@@ -37,7 +37,10 @@
     <dialog-full-page :is-dialog-name="dialogName" 
                       :is-dialog-show="isDialogShow" 
                       @close-dialog="eventCloseDialog">
-      <component :is="componentForm" :isEditable="false" @row-selected="eventSelectedRowDialog"></component>
+      <component :is="componentForm"
+                 :isEditable="false"
+                 @row-selected="eventSelectedRowDialog"
+                 @created-component="createdComponent"></component>
     </dialog-full-page>
   </div>
 </template>
@@ -53,6 +56,10 @@ export default {
   mixins: [
     ElField,
   ],
+  props: {
+    guid: { type: String, default: null },
+    isItemGroup: { type: Boolean, default: false },
+  },
   data() {
     return {
       isDialogShow: false,
@@ -66,11 +73,14 @@ export default {
     fieldList() {
       let relatedModelView = this.$store.getters['DataTable/GET_RELATED_MODEL_VIEW'](this.inputProperties['related_model_name']);
       let fieldList = [];
-      let fieldListStore = this.$store.getters[`DataTable/GET_DATA`](this.inputProperties['related_model_name']);
-      if (fieldListStore.length == 0) {
-        console.log('el-field-dialog request options')
-        this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, { tableName: this.inputProperties['related_model_name'] }); return [];
-      }
+      let fieldListStore = this.$store.getters[`DataTable/GET_DATA`]({
+        tableName: this.inputProperties['related_model_name'],
+        });
+      
+      // if (fieldListStore.length == 0) {
+      //   console.log('el-field-dialog request options')
+      //   this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, { tableName: this.inputProperties['related_model_name'] }); return [];
+      // }
       if (relatedModelView != '{id}') {
         let templateValue = relatedModelView.match(/[{\w}]/gi).join(',').replace(/,/g, '').slice(1, -1).split('}{');
         fieldListStore.forEach(element => {
@@ -81,12 +91,13 @@ export default {
           });
           fieldList.push(Object.assign(element, {text: newValue}));
         });
-        return fieldList;
+        return (this.isItemGroup) ? fieldList.filter(item => item.is_group) : fieldList;
       }
-      return fieldListStore;
+      return (this.isItemGroup) ? fieldListStore.filter(item => item.is_group) : fieldListStore;
     },
     dialogName() { return this.$store.getters[`DataTable/GET_DESCRIPTION`](this.inputProperties['related_model_name']); },
     componentForm() {
+      if (!this.isDialogShow) return null;
       if (!this.inputProperties['related_model_name']) return null;
       let componentForm = '';
       componentForm = this.inputProperties['related_model_name'][0].toUpperCase() + this.inputProperties['related_model_name'].slice(1);
@@ -94,6 +105,13 @@ export default {
     }
   },
   methods: {
+    createdComponent(option) {
+      console.log(option);
+      this.$store.dispatch('DataTable/SET_FILTER_GROUP', {
+        tableName: this.inputProperties['related_model_name'],
+        guid: option.guid,
+      })
+    },
     eventOpenDialog(event) {
       console.log(event);
       this.fieldElementDOM = event.target.closest('.el-field').querySelector('.v-select__slot input');

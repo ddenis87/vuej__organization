@@ -23,7 +23,7 @@ function addressApiAddingElement(option) {
 
 export default {
   CREATE_DATA_TABLE_SPACE(state, option) { state.commit('CREATE_DATA_TABLE_SPACE', option); },
-  DELETE_DATA_TABLE_SPACE(state, option) { state.commit('CREATE_DATA_TABLE_SPACE', option); },
+  DELETE_DATA_TABLE_SPACE(state, option) { state.commit('DELETE_DATA_TABLE_SPACE', option); },
   
   SELECTED_GROUP(state, option) {
     state.commit('CHANGE_DATA_GROUP_LEGEND', option);
@@ -32,6 +32,11 @@ export default {
     console.log(state.state[option.tableName][option.guid]);
   },
 
+  SET_FILTER_GROUP(state, option) {
+    console.log(option);
+    state.commit('SET_FILTER_GROUP', option);
+    state.dispatch('REQUEST_DATA', option);
+  },
   SET_FILTER_SORTING(state, option) {
     state.commit('CLEAR_DATA', option);
     state.commit('SET_FILTER_SORTING', option);
@@ -45,7 +50,11 @@ export default {
     }
     let addressApi = state.getters.GET_ADDRESS_API('options', option.tableName);
 
-    state.commit('SET_STATUS_PROCESSING', true);
+    state.commit('SET_STATUS_PROCESSING', {
+      tableName: option.tableName,
+      guid: option.guid,
+      status: true,
+    });
     let tokenAccess = state.rootGetters['Login/GET_USER_TOKEN_ACCESS'];
     axios.defaults.headers.common = {'Authorization': tokenAccess};
     return new Promise((resolve, reject) => {
@@ -65,7 +74,11 @@ export default {
           console.log(error);
           reject();
         })
-        .finally(() => state.commit('SET_STATUS_PROCESSING'));
+        .finally(() => state.commit('SET_STATUS_PROCESSING',{
+          tableName: option.tableName,
+          guid: option.guid,
+          status: false,
+        }));
       });
   },
 
@@ -80,19 +93,27 @@ export default {
     addressApi += addressApiAddingElement(option); // Если добавляем элемент
     
     if (option.next) {
-      addressApi = state.getters.GET_ADDRESS_API_PAGE_NEXT(option.tableName);
+      addressApi = state.getters.GET_ADDRESS_API_PAGE_NEXT({
+        tableName: option.tableName,
+        guid: option.guid,
+      });
       if (!addressApi) {
         return;
       }
     }
     console.log(addressApi);
-    state.commit('SET_STATUS_PROCESSING', true);
+    state.commit('SET_STATUS_PROCESSING', {
+      tableName: option.tableName,
+      guid: option.guid,
+      status: true,
+    });
     axios
       .get(addressApi)
       .then(response => {
         // testCommit(state);
         let mutationOptions = {
           tableName: option.tableName,
+          guid: option.guid,
           data: response.data,
           clear: (option.next) ? false : true,
         }
@@ -138,7 +159,11 @@ export default {
         });
       })
       .catch(error => console.log(error))
-      .finally(() => state.commit('SET_STATUS_PROCESSING'));
+      .finally(() => state.commit('SET_STATUS_PROCESSING', {
+        tableName: option.tableName,
+        guid: option.guid,
+        status: false,
+      }));
   },
 
   REQUEST_DATA_ELEMENT(state, option) {

@@ -7,7 +7,10 @@
     <v-card>
       <dialog-toolbar :is-dialog-name="isDialogName"
                       @close-dialog="$emit('close-dialog')"></dialog-toolbar>
-      <slot></slot>
+      <div class="dialog-table">
+        <slot></slot>
+      </div>
+      
     </v-card>
   </v-dialog>
 </template>
@@ -43,6 +46,10 @@ export default {
 .dialog {
   &__title {
     color: white;
+  }
+  &-table {
+    height: calc(100vh - 66px);
+    border: thin solid green;
   }
 }
 </style>

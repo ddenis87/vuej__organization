@@ -5,6 +5,9 @@ class DataTableSpace {
     this.filter['page_size'] = pageSize;
     this.filter['is_deleted'] = isDeleted;
   };
+  statusProcessing = false;
+  apiNext = null;
+  apiPrevious = null;
   filter = {
     'page_size': '',
     'is_deleted': '',
@@ -12,12 +15,13 @@ class DataTableSpace {
     'search': '',
     'parent__isnull': null,
     'parent': null,
+    'is_group': null,
   };
   listDataGroup = [];
 };
 
 export default {
-  SET_STATUS_PROCESSING(state, status = false) { state.statusProcessing = status; },
+  SET_STATUS_PROCESSING(state, option) { state[option.tableName][option.guid].statusProcessing = option.status; },
   CREATE_DATA_TABLE_SPACE(state, option) {
     Vue.set(state[option.tableName], option.guid, new DataTableSpace({}))
   },
@@ -49,8 +53,8 @@ export default {
 
   SET_DATA_OPTIONS(state, option) {
     state[option.tableName].countTotal = option.data.count;
-    state[option.tableName].apiNext = option.data.next;
-    state[option.tableName].apiPrevious = option.data.previous;
+    state[option.tableName][option.guid].apiNext = option.data.next;
+    state[option.tableName][option.guid].apiPrevious = option.data.previous;
   },
 
   SET_DATA(state, option) {
@@ -136,6 +140,7 @@ export default {
 
 
   // ------------------------------------------------------------------
+
   SET_FILTER_SORTING(state, option) {
     console.log(option);
     if (option.key == null) {
@@ -145,6 +150,10 @@ export default {
     state[option.tableName][option.guid].filter['ordering'] = `${(option.ordering) ? '' : '-'}${option.key}`;
   },
 
+  SET_FILTER_GROUP(state, option) {
+    state[option.tableName][option.guid].filter['parent__isnull'] = null;
+    state[option.tableName][option.guid].filter['is_group'] = true;
+  },
 
 
 

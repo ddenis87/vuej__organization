@@ -24,24 +24,22 @@ export const DataTableStore = {
   },
   async created() {
     // console.log(Guid.newGuid().StringGuid);
-    this.eventCreatedComponent({
-      guid: this.GUID,
-    })
+    
     let sendOption = {
       tableName: this.tableName,
       guid: this.GUID,
     };
     this.$store.dispatch('DataTable/CREATE_DATA_TABLE_SPACE', sendOption);
-
-    // if (this.storeGetOptionsCount() == 0)
-    //   {
-    await this.$store.dispatch('DataTable/REQUEST_OPTIONS', sendOption)
-      .then(() => {
-        this.storeDispatchRequestData({next: false})
-        return;
-      });
-      
-      // }
+    this.eventCreatedComponent({
+      guid: this.GUID,
+    })
+    if (this.storeGetOptionsCount() == 0) {
+      await this.$store.dispatch('DataTable/REQUEST_OPTIONS', sendOption)
+        .then(() => {
+          this.storeDispatchRequestData({next: false})
+          return;
+        });
+    }
     console.log(this.storeGetDataCount());
     if (this.storeGetDataCount() < 30) {
       console.log('load data');
@@ -55,7 +53,10 @@ export const DataTableStore = {
     })
   },
   methods: {
-    storeGetStatusProcessing() { return this.$store.getters[`DataTable/GET_STATUS_PROCESSING`]; },
+    storeGetStatusProcessing() { return this.$store.getters[`DataTable/GET_STATUS_PROCESSING`]({
+      tableName: this.tableName,
+      guid: this.GUID,
+    }); },
     storeGetHierarchyMode() { return this.$store.getters[`DataTable/GET_HIERARCHY_MODE`](this.tableName); },
     
     storeGetBaseDataCount() { return this.$store.getters[`DataTable/GET_DATA_COUNT_TOTAL`](this.tableName); },
@@ -70,7 +71,12 @@ export const DataTableStore = {
         guid: this.GUID,
       }).length; 
     },
-    storeGetDataApiNext() { return this.$store.getters[`DataTable/GET_ADDRESS_API_PAGE_NEXT`](this.tableName); },
+    storeGetDataApiNext() {
+      return this.$store.getters[`DataTable/GET_ADDRESS_API_PAGE_NEXT`]({
+        tableName: this.tableName,
+        guid: this.GUID,
+      });
+    },
     
     storeGetDataGroupLevel() {
       return this.$store.getters['DataTable/GET_DATA_GROUP_LEVEL']({

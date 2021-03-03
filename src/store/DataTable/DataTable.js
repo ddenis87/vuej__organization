@@ -10,8 +10,8 @@ class DataTableBase {
   }
   description = null;
   countTotal = 0;
-  apiNext = null;
-  apiPrevious = null;
+  // apiNext = null;
+  // apiPrevious = null;
   isHierarchyMode = false;  // HIERARCHICAL TABLE SET WHEN LOADING OPTIONS
   // filterDefault = {
   //   'page_size': null,
@@ -31,7 +31,7 @@ class DataTableBase {
 
   relatedModelView = ''; // шаблон представление таблицы в других таблицах, компонентах, и т.д.
   listOption = {};
-  listDataGroup = [];
+  // listDataGroup = [];
   listData = [];
 
   isModeAdding = false; // режим добавления элемента в таблицу
@@ -45,7 +45,7 @@ class DataTableBase {
 export default {
   namespaced: true,
   state: {
-    statusProcessing: false,
+    // statusProcessing: false,
 
     "budgetclassification": new DataTableBase({ relatedModelView: '{head_code} - {head_name}' }),
     "organization": new DataTableBase({ relatedModelView: '{title}' }),

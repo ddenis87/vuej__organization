@@ -18,15 +18,16 @@ export const DataTableControlActions = {
     }
   },
   computed: {
-    componentFormTable() {
-      let componentFormTable = '';
-      if (!this.tableName) return null;
-      this.tableName.split('-').forEach(item => {
-        componentFormTable += item[0].toUpperCase() + item.slice(1);
-      })
-      return () => import(`@/components/TheTableForm/TheTableForm${componentFormTable}`);
-    },
+    // componentFormTable() {
+    //   let componentFormTable = '';
+    //   if (!this.tableName) return null;
+    //   this.tableName.split('-').forEach(item => {
+    //     componentFormTable += item[0].toUpperCase() + item.slice(1);
+    //   })
+    //   return () => import(`@/components/TheTableForm/TheTableForm${componentFormTable}`);
+    // },
     componentForm() {
+      if (!this.isOpenDialog) return null;
       if (!this.tableName) return null;
       if (this.typeElement == 'element')
         return () => import(`@/components/TheTableForm/TheTableForm${this.tableName[0].toUpperCase() + this.tableName.slice(1)}`);

@@ -1,9 +1,11 @@
 export const LoadingData = {
   computed: {
     isLoadingData() {
+      // console.log(this.storeGetStatusProcessing())
       let isLoadingData = this.storeGetStatusProcessing();
       if (!isLoadingData && this.parentElement) {
         this.parentElement.addEventListener('scroll', this.eventScrollPagination);
+        // console.log(this.storeGetDataCount())
         if (this.storeGetDataCount() != 0)
           setTimeout(() => this.eventScrollPagination(), 300);
       }
@@ -24,14 +26,16 @@ export const LoadingData = {
     },
   },
   mounted() {
-    this.parentElement = document.getElementById(this.id);
+    this.parentElement = document.getElementById(this.GUID);
     this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;
   },
   updated() { this.parentElementEdge = this.parentElement.getBoundingClientRect().bottom;},
   methods: {
-    eventScrollPagination() {
+    eventScrollPagination(option) {
+      // console.log(document.querySelector(`.${this.GUID}`));
       this.isScroll = !this.isScroll;
-      let bootAnchorEdge = document.querySelector(`#${this.id}-boot-anchor`).getBoundingClientRect().bottom - 300;
+      
+      let bootAnchorEdge = this.parentElement.querySelector(`.data-table__boot-anchor`).getBoundingClientRect().bottom - 300;
       if (bootAnchorEdge < this.parentElementEdge) {
         this.parentElement.removeEventListener('scroll', this.eventScrollPagination);
         console.log('next');
