@@ -61,12 +61,6 @@ export default {
     if (state[option.tableName][option.guid].filter['is_group']) {
       return state[option.tableName].listData.filter(item => item.is_group && item.parent == null);
     }
-    // console.log(state[tableName].listData);
-    // if (state[tableName].getterFilterData.parent) {
-    //   return state[tableName].listData.filter(item => {
-    //       if (item.parent && item.parent.id == state[tableName].getterFilterData.parent) return true;
-    //   });
-    // }
     if (state[option.tableName].isHierarchyMode) {
       return state[option.tableName].listData.filter(item => {
         if (item.parent == null) return true;
@@ -90,9 +84,9 @@ export default {
   GET_FILTER_PRIMITIVE:(state) => (tableName) => { return state[tableName].filterPrimitive; },
   GET_FILTER_EXTENDED:(state) => (tableName) => { return state[tableName].filterExtended; },
   GET_FILTER_SEARCH:(state) => (tableName) => { return state[tableName].filterSearch; },
-  GET_FILTER_SORTING:(state) => (tableName) => {
-    return state[tableName].filterSorting;
-  },
+  // GET_FILTER_SORTING:(state) => (tableName) => {
+  //   return state[tableName].filterSorting;
+  // },
   GET_FILTER_GROUP:(state) => (tableName) => { return state[tableName].filterGroup; },
   GET_FILTER_ALL:(state) => (tableName) => {
     // let buildFilter = state[tableName].filterPrimitive + 

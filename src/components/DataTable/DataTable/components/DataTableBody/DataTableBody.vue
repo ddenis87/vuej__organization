@@ -11,6 +11,10 @@
       {{ isTooltipProperties.text }}
     </data-table-tooltip>
 
+    <!-- NO ELEMENT FOR DISPLAY -->
+    <empty-content :tableName="tableName"
+                   :guid="guid"></empty-content>
+
     <!-- OVERFLOW TEXT -->
     <data-table-overflow :d-id="`${id}-body`"
                          :data-properties="isTooltipProperties"
@@ -18,9 +22,9 @@
                          @is-hide="isTooltipShow = false"></data-table-overflow>
     
     <!-- NO ELEMENT FOR DISPLAY -->
-    <div class="body-empty"
+    <!-- <div class="body-empty"
          :class="`body-empty_${typeColumn}`"
-         v-if="isEmptyData">Нет элементов для отображения</div>
+         v-if="isEmptyData">Нет элементов для отображения</div> -->
 
     <div v-for="(itemRow, indexRow) in items"
          class="body-row"
@@ -86,6 +90,7 @@ import DataTableOverflow from '../DataTableOverflow.vue';
 import DataTableTooltip from '../DataTableTooltip.vue'; 
 import DataTableContentDisplay from '../DataTableContentDisplay.vue';
 import HierarchyActions from './components/HierarchyActions.vue';
+import EmptyContent from './components/EmptyContent.vue';
 
 import { DataTableBodyStore } from './DataTableBodyStore.js';
 
@@ -103,6 +108,7 @@ export default {
     DataTableTooltip,
     DataTableContentDisplay,
     HierarchyActions,
+    EmptyContent,
   },
   mixins: [
     DataTableBodyStore,

@@ -7,7 +7,7 @@
     <v-card>
       <dialog-toolbar :is-dialog-name="isDialogName"
                       @close-dialog="$emit('close-dialog')"></dialog-toolbar>
-      <div class="dialog-table">
+      <div class="dialog__body">
         <slot></slot>
       </div>
       
@@ -23,8 +23,8 @@ export default {
     DialogToolbar,
   },
   props: {
-    isDialogShow: {type: Boolean, default: false},
-    isDialogName: {type: String, default: ''},
+    isDialogShow: { type: Boolean, default: false },
+    isDialogName: { type: String, default: '' },
     // isTransition: { type: String, default: 'bottom' },
   },
   data() {
@@ -47,7 +47,7 @@ export default {
   &__title {
     color: white;
   }
-  &-table {
+  &__body {
     height: calc(100vh - 66px);
     border: thin solid green;
   }

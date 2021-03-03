@@ -1,6 +1,7 @@
 <template>
-  <v-toolbar dark flat tile 
-             color="blue darken-3">
+  <v-toolbar dark flat tile
+             color="blue darken-3"
+             :height="height">
     <template v-if="orientation == 'left'">
       <v-toolbar-title >{{ isDialogName }}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -26,6 +27,7 @@ export default {
     isDialogName: { type: String, default: '' },
     orientation: { type: String, default: 'left' },
     isClose: { type: Boolean, default: true },
+    height: { type: Number, default: 64 },
   }
 }
 </script>
