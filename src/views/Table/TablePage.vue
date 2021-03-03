@@ -47,7 +47,8 @@
     </div>
     <div class="page-table__body">
       <div class="table-control">
-        <data-table-control :form-properties="formProperties"
+        <data-table-control :guid="guid"
+                            :form-properties="formProperties"
                             :focused-element="focusedElement"
                             :type-height-number="typeHeightNumber"
                             :type-column="typeColumn"
@@ -72,7 +73,8 @@
                    @row-focused="rowFocused"
                    @row-selected="rowSelected"
                    @row-keydown="rowKeydown"
-                   @component-blur="componentBlur"></component>
+                   @component-blur="componentBlur"
+                   @created-component="createdComponent"></component>
       </div>
     </div>
   </div>
@@ -95,6 +97,7 @@ export default {
   },
   data() {
     return {
+      guid: null,
       isMenu: false,
       activeMenu: {value: 'Организации', path: 'TableOrganization', tableName: 'organization'},
       listMenu: [
@@ -132,6 +135,9 @@ export default {
     if (localStorage.getItem('Token') == null) this.$router.push('/Login');
   },
   methods: {
+    createdComponent(option) {
+      this.guid = option.guid;
+    },
     tableMount(data, tableProperties) {
       this.focusedElement = {};
       this.formProperties = tableProperties;

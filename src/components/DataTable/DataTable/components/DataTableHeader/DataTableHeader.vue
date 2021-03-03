@@ -66,6 +66,7 @@ export default {
   ],
   props: {
     id: { type: String, default: 'dataTable' },
+    guid: { type: String, default: '' },
     tableName: { type: String, default: '' },
     template: Object,
     typeHeight: { type: String, default: 'fixed' },

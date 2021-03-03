@@ -1,19 +1,50 @@
 import axios from 'axios';
 
+// class DataTableSpace {
+//   constructor({pageSize = 30, isDeleted = false}) {
+//     this.filter['page_size'] = pageSize;
+//     this.filter['is_deleted'] = isDeleted;
+//   };
+//   filter = {
+//     'page_size': '',
+//     'is_deleted': '',
+//     'ordering': '',
+//     'search': '',
+//     'parent__isnull': true,
+//     'parent': null,
+//   };
+// };
+
 function addressApiAddingElement(option) {
   if ('addingElement' in option)
     return `&page_by_id=${option.addingElement.id}`;
   return '';
 };
 
-function testCommit(state) {
-  console.log(state);
-};
-
 export default {
+  CREATE_DATA_TABLE_SPACE(state, option) { state.commit('CREATE_DATA_TABLE_SPACE', option); },
+  DELETE_DATA_TABLE_SPACE(state, option) { state.commit('CREATE_DATA_TABLE_SPACE', option); },
+  
+  SELECTED_GROUP(state, option) {
+    state.commit('CHANGE_DATA_GROUP_LEGEND', option);
+    state.commit('CHANGE_FILTER_PARENT', option);
+    state.dispatch('REQUEST_DATA', option);
+    console.log(state.state[option.tableName][option.guid]);
+  },
+
+  SET_FILTER_SORTING(state, option) {
+    state.commit('CLEAR_DATA', option);
+    state.commit('SET_FILTER_SORTING', option);
+    state.dispatch('REQUEST_DATA', option);
+  },
+
   REQUEST_OPTIONS(state, option) {
-    if (state.getters.GET_DESCRIPTION(option.tableName)) return;
+    if (state.getters.GET_DESCRIPTION(option.tableName)) {
+      state.commit('UPDATE_OPTIONS', option);
+      return;
+    }
     let addressApi = state.getters.GET_ADDRESS_API('options', option.tableName);
+
     state.commit('SET_STATUS_PROCESSING', true);
     let tokenAccess = state.rootGetters['Login/GET_USER_TOKEN_ACCESS'];
     axios.defaults.headers.common = {'Authorization': tokenAccess};
@@ -23,6 +54,7 @@ export default {
         .then(response => {
           let mutationOptions = {
             tableName: option.tableName,
+            guid: option.guid,
             description: response.data.description,
             data: JSON.parse(response.request.response).actions.POST
           };
@@ -37,80 +69,18 @@ export default {
       });
   },
 
-  // REQUEST_DATA_RECORD(state, option) {
-  //   option.data.forEach(element => {
-  //     for (let elementKey of Object.keys(element)) {
-  //       let elementOption = state.state[option.tableName].listOption[elementKey];
-  //       switch(elementOption.type) {
-  //         case 'field': {
-  //           if (element[elementKey]) {  // ЕСЛИ ЗНАЧЕНИЕ НЕ NULL
-  //             let relatedModelName = elementOption['related_model_name'];
-  //             if (typeof(element[elementKey]) == 'object') {  // ЕСЛИ В ПОЛЕ FIELD ОБЪЕКТ
-  //               if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-  //                 if (relatedModelName == option.tableName) { // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ТЕКУЩЕЙ ТАБЛИЦЕ
-                    
-  //                   state.dispatch('REQUEST_DATA_RECORD', {
-  //                     data: [element[elementKey]],
-  //                     tableName: relatedModelName
-  //                   })
-  //                 } else {  // ЕСЛИ ОБЪЕКТ ПРИНАДЛЕЖИТ ДРУГОЙ ТАБЛИЦЕ
-  //                   console.log('add linking relate 1 - ', element[elementKey]);
-  //                   state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
-  //                 }
-  //               }
-  //               element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
-  //             } else { // ЕСЛИ В ПОЛЕ FIELD ID ОБЪЕКТА
-  //               if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey])) {
-  //                 console.log('add linking relate 2 - ', element[elementKey]);
-  //                 let addressApi = state.getters.GET_ADDRESS_API_BASE(option.tableName) + `id=${element[elementKey]}`;
-  //                 console.log(addressApi);
-  //                 axios
-  //                   .get(addressApi)
-  //                   .then((response) => {
-  //                     console.log(response.data.results);
-  //                     state.dispatch('REQUEST_DATA_RECORD', {
-  //                       data: response.data.results,
-  //                       tableName: relatedModelName
-  //                     })
-  //                     element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey]);
-  //                   })
-  //                 // state[relatedModelName].listData.push(element[elementKey]); /// MUTATION
-  //                 // state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
-  //               } else {
-  //                 element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey]);
-  //               }
-  //               // element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey]);
-  //             }
-  //           } else {
-  //             element[elementKey] = null;
-  //           }
-  //           break;
-  //         }
-  //         case 'choice': {
-  //           element[elementKey] = elementOption.choices.find(item => item.value == element[elementKey]);
-  //           break;
-  //         }
-  //       }
-  //     }
-  //     if (!state.state[option.tableName].listData.find(item => item.id == element.id)) {
-  //       // console.log('add linking - ', element);
-  //       // state[option.tableName].listData.push(element); /// MUTATION
-  //       state.commit('SET_DATA', {tableName: option.tableName, value: element});
-  //     }
-  //   });
-  // },
-
-
-
   REQUEST_DATA(state, option) {
-    let filterString = state.getters.GET_FILTER_ALL(option.tableName);
-    let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName) + filterString;
+
+    let filterApi = state.getters.GET_FILTER_API({
+      tableName: option.tableName,
+      guid: option.guid,
+    });
+    let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName) + filterApi;
 
     addressApi += addressApiAddingElement(option); // Если добавляем элемент
     
     if (option.next) {
       addressApi = state.getters.GET_ADDRESS_API_PAGE_NEXT(option.tableName);
-      console.log(addressApi);
       if (!addressApi) {
         return;
       }
@@ -120,7 +90,7 @@ export default {
     axios
       .get(addressApi)
       .then(response => {
-        testCommit(state);
+        // testCommit(state);
         let mutationOptions = {
           tableName: option.tableName,
           data: response.data,
@@ -129,7 +99,11 @@ export default {
         state.commit('SET_DATA_OPTIONS', mutationOptions);
         let responseArray = response.data.results;
         responseArray.forEach(element => {
-          if (state.state[option.tableName].listData.find(item => item.id == element.id)) return; // Если элемент уже в таблице, пропускаем
+          
+          // if (listDataIndex >= 0) {
+          //   state.state[option.tableName].listData[listDataIndex]
+          // }
+          // if (state.state[option.tableName].listData.find(item => item.id == element.id)) return; // Если элемент уже в таблице, пропускаем
           for (let elementKey of Object.keys(element)) { // Проходим по полям элемента
             let elementOption = state.state[option.tableName].listOption[elementKey];
             switch(elementOption.type) {

@@ -7,7 +7,8 @@
     <dialog-full-page :is-dialog-name="`Добавление ${(typeElement == 'element') ? 'записи' : 'группы'}`" 
                       :is-dialog-show="isOpenDialog" 
                       @close-dialog="eventCloseDialog">
-      <component :is="componentForm" 
+      <component :is="componentForm"
+                 :guid="guid"
                  @event-action-accept="eventActionAccept"
                  @event-action-cancel="eventActionCancel"></component>
     </dialog-full-page>

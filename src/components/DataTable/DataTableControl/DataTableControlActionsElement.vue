@@ -11,6 +11,7 @@
                       :is-dialog-show="isOpenDialog" 
                       @close-dialog="eventCloseDialog">
       <component :is="componentForm"
+                 :guid="guid"
                  :focused-element="elementFocused"
                  @event-action-accept="eventActionAccept"
                  @event-action-cancel="eventActionCancel"></component>

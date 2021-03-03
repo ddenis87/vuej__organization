@@ -3,9 +3,9 @@ import mutations from './DataTableMutations.js';
 import actions from './DataTableActions.js';
 
 class DataTableBase {
-  constructor({pageSize = 30, isDeleted = false, relatedModelView = '{id}'}) {
-    this.filterDefault['page_size'] = pageSize;
-    this.filterDefault['is_deleted'] = isDeleted;
+  constructor({relatedModelView = '{id}'}) {
+    // this.filterDefault['page_size'] = pageSize;
+    // this.filterDefault['is_deleted'] = isDeleted;
     this.relatedModelView = relatedModelView;
   }
   description = null;
@@ -13,21 +13,21 @@ class DataTableBase {
   apiNext = null;
   apiPrevious = null;
   isHierarchyMode = false;  // HIERARCHICAL TABLE SET WHEN LOADING OPTIONS
-  filterDefault = {
-    'page_size': null,
-    'is_deleted': null,
-    // 'ordering': '-is_group',
-  };
-  filterPrimitive = '';
-  filterSearch = '';
-  filterSorting = '';
-  filterExtended = '';
+  // filterDefault = {
+  //   'page_size': null,
+  //   'is_deleted': null,
+  //   // 'ordering': '-is_group',
+  // };
+  // filterPrimitive = '';
+  // filterSearch = '';
+  // filterSorting = '';
+  // filterExtended = '';
   
-  apiFilterParent = '&parent__isnull=true';
+  // apiFilterParent = '&parent__isnull=true';
 
-  getterFilterData = {
-    parent: null,
-  };
+  // getterFilterData = {
+  //   parent: null,
+  // };
 
   relatedModelView = ''; // шаблон представление таблицы в других таблицах, компонентах, и т.д.
   listOption = {};

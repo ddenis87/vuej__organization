@@ -8,6 +8,7 @@ export const DataTableControlActions = {
   },
   props: {
     tableName: { type: String, default: null },
+    guid: null,
     elementFocused: { type: Object, default() { return null } },
   },
   data() {

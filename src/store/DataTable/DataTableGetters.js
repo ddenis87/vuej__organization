@@ -2,19 +2,30 @@ export default {
   GET_STATUS_PROCESSING(state) { return state.statusProcessing; },
   GET_ADDRESS_API:(state, getters, rootState, rootGetters) => (option, tableName) => {
     let addressApi = `${rootGetters.GET_ADDRESS_API}api/v1/${tableName}/?`;
-
     switch (option) {
       case 'options': return addressApi;
       case 'post':
       case 'update':
       case 'delete': return addressApi.slice(0, -1);
       case 'get': {
-        for (let item of Object.entries(state[tableName].filterDefault)) addressApi += `&${item[0]}=${item[1]}`;
         return addressApi;
       }
       default: return addressApi;
     }
   },
+  GET_FILTER_API:(state) => (option) => {
+    let filter = state[option.tableName][option.guid].filter;
+    let filterApi = '';
+    Object.keys(filter).forEach(key => {
+      if(filter[key]) {
+        // console.log(filter[key]);
+        filterApi += `&${key}=${filter[key]}`;
+      }
+    })
+    console.log(filterApi);
+    return filterApi;
+  },
+
   GET_ADDRESS_API_PAGE_NEXT:(state) => (tableName) => { return state[tableName].apiNext; },
   GET_ADDRESS_API_PAGE_PREVIOUS:(state) => (tableName) => { return state[tableName].previous; },
   GET_DESCRIPTION:(state) => (tableName) => { return state[tableName].description; },
@@ -23,21 +34,29 @@ export default {
 
   GET_OPTIONS:(state) => (tableName) => { return state[tableName].listOption; },
 
-  GET_DATA_GROUP:(state) => (tableName) => { return state[tableName].listDataGroup; },
-  GET_DATA_GROUP_LEVEL:(state) => (tableName) => { return state[tableName].listDataGroup.length; },
-  GET_DATA:(state) => (tableName, option = null) => {
+  GET_DATA_GROUP:(state) => (option) => { return state[option.tableName][option.guid].listDataGroup; },
+  GET_DATA_GROUP_LEVEL:(state) => (option) => { return state[option.tableName][option.guid].listDataGroup.length; },
+  
+  GET_DATA:(state) => (option) => {
+    console.log(option.guid);
+    console.log(state[option.tableName][option.guid].filter);
+    if (state[option.tableName][option.guid].filter['parent']) {
+      return state[option.tableName].listData.filter(item => {
+          if (item.parent && item.parent.id == state[option.tableName][option.guid].filter['parent']) return true;
+      });
+    }
     // console.log(state[tableName].listData);
-    if (state[tableName].getterFilterData.parent) {
-      return state[tableName].listData.filter(item => {
-          if (item.parent && item.parent.id == state[tableName].getterFilterData.parent) return true;
-      });
-    }
-    if (state[tableName].isHierarchyMode) {
-      return state[tableName].listData.filter(item => {
-        if (item.parent == null) return true;
-      });
-    }
-    return state[tableName].listData;
+    // if (state[tableName].getterFilterData.parent) {
+    //   return state[tableName].listData.filter(item => {
+    //       if (item.parent && item.parent.id == state[tableName].getterFilterData.parent) return true;
+    //   });
+    // }
+    // if (state[tableName].isHierarchyMode) {
+    //   return state[tableName].listData.filter(item => {
+    //     if (item.parent == null) return true;
+    //   });
+    // }
+    return state[option.tableName].listData;
   },
 
   GET_DATA_COUNT_TOTAL:(state) => (tableName) => { return state[tableName].countTotal; },
@@ -60,16 +79,16 @@ export default {
   },
   GET_FILTER_GROUP:(state) => (tableName) => { return state[tableName].filterGroup; },
   GET_FILTER_ALL:(state) => (tableName) => {
-    let buildFilter = state[tableName].filterPrimitive + 
-                      state[tableName].filterExtended + 
-                      state[tableName].filterSearch +
-                      state[tableName].filterSorting;
-    if (state[tableName].isHierarchyMode) {
-      state[tableName].filterDefault.ordering = '-is_group';
-      buildFilter += state[tableName].apiFilterParent;
-    }
+    // let buildFilter = state[tableName].filterPrimitive + 
+    //                   state[tableName].filterExtended + 
+    //                   state[tableName].filterSearch +
+    //                   state[tableName].filterSorting;
+    // if (state[tableName].isHierarchyMode) {
+    //   state[tableName].filterDefault.ordering = '-is_group';
+    //   buildFilter += state[tableName].apiFilterParent;
+    // }
     // if (state[tableName].filterParent) buildFilter += state[tableName].filterParent;
-    return buildFilter;
+    return ''; //buildFilter;
           //  state[tableName].filterParent;
   }
 }

@@ -28,6 +28,9 @@ export const TheTable = {
     this.$emit('table-mount', this.$data, this.tableProperties);
   },
   methods: {
+    createdComponent(option) {
+      this.$emit('created-component', option);
+    },
     eventRowFocused(option) {
       this.$emit('row-focused', option);
     },

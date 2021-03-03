@@ -4,7 +4,8 @@
     <!-- <v-overlay v-if="isLoadingData"></v-overlay> -->
     <div class="data-table__header">
       <data-table-header :id="`data-table-${id}`"
-                         :table-name="properties.tableName"
+                         :guid="this.GUID"
+                         :table-name="tableName"
                          :template="computedTemplateTable"
                          :type-height="typeHeight"
                          :type-column="typeColumn"
@@ -16,19 +17,20 @@
     </div>
 
     <div class="data-table__body-group">
-      <data-table-body-group :table-name="properties.tableName"
+      <data-table-body-group :table-name="tableName"
+                             :guid="this.GUID"
                              :template="computedTemplateTable"
-                             :start-column="properties.headers[0]"
+                             :start-column="(isExpansion) ? properties.headers[1] : properties.headers[0]"
                              :type-height="typeHeight"
                              :type-column="typeColumn"
-                             :items="itemsDataGroup"
-                             :items-header="getDataHeader"
-                             ></data-table-body-group>
+                             :items="storeGetDataGroup"
+                             :items-header="getDataHeader"></data-table-body-group>
     </div>
 
     <div class="data-table__body">
       <data-table-body :id="id"
-                       :table-name="properties.tableName"
+                       :guid="this.GUID"
+                       :table-name="tableName"
                        :template="computedTemplateTable"
                        :type-height="typeHeight"
                        :type-column="typeColumn"
@@ -42,8 +44,7 @@
                        @event-row-focused="eventRowFocused"
                        @event-row-selected="eventRowSelected"
                        @event-row-keydown="eventRowKeydown"
-                       @event-body-blur="eventBodyBlur"
-                       @toggle-group="toggleGroup"></data-table-body>
+                       @event-body-blur="eventBodyBlur"></data-table-body>
     </div>
 
     <!-- ANCHOR FOR LAZY LOAD DATA -->

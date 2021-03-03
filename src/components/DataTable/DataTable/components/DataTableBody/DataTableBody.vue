@@ -114,6 +114,7 @@ export default {
     // Hierarchy,
   ],
   props: {
+    guid: { type: String, default: '' },
     id: { type: String, default: 'dataTable' },
     tableName: { type: String, default: '' },
     template: Object,
@@ -187,12 +188,13 @@ export default {
     toggleGroup(event, option) {
       let sendOption = {
         tableName: this.tableName,
+        guid: this.guid,
         value: option,
       };
       
       // ------
-      // this.storeToggleGroup(sendOption);
-      this.$emit('toggle-group', sendOption);
+      this.storeToggleGroup(sendOption);
+      // this.$emit('toggle-group', sendOption);
       // ------
 
     },

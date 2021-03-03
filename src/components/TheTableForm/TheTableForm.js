@@ -20,6 +20,7 @@ export const TheTableForm = {
   },
   props: {
     actionName: 'adding',
+    guid: null,
     focusedElement: Object,
   },
   data() {
@@ -28,7 +29,8 @@ export const TheTableForm = {
     }
   },
   computed: {
-    fieldForm() { 
+    fieldForm() {
+      if (!this.guid) return null;
       let fieldForm = this.$store.getters[`DataTable/GET_OPTIONS`](this.tableName);
       if (this.focusedElement != null) {
         for (let key of Object.keys(fieldForm)) {
@@ -44,7 +46,7 @@ export const TheTableForm = {
     },
   },
   created() {
-    this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, {tableName: this.tableName});
+    this.$store.dispatch(`DataTable/REQUEST_OPTIONS`, {tableName: this.tableName, guid: this.guid,});
   },
   mounted() {
     this.fieldArray = Array.from(document.querySelectorAll('.table-form .el-field__item input[tabindex="1"]'));

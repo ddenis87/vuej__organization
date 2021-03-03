@@ -1,27 +1,28 @@
 import Vue from 'vue';
 
+class DataTableSpace {
+  constructor({pageSize = 30, isDeleted = false}) {
+    this.filter['page_size'] = pageSize;
+    this.filter['is_deleted'] = isDeleted;
+  };
+  filter = {
+    'page_size': '',
+    'is_deleted': '',
+    'ordering': null,
+    'search': '',
+    'parent__isnull': null,
+    'parent': null,
+  };
+  listDataGroup = [];
+};
+
 export default {
   SET_STATUS_PROCESSING(state, status = false) { state.statusProcessing = status; },
-  SET_DEFAULT_STATE(state, option) {
-    state[option.tableName].description = null;
-    state[option.tableName].countTotal = 0;
-    state[option.tableName].apiNext = null;
-    state[option.tableName].apiPrevious = null;
-    state[option.tableName].isHierarchyMode = false;
-    state[option.tableName].filterDefault = { 'page_size': null, 'is_deleted': null, };
-    state[option.tableName].filterPrimitive = '';
-    state[option.tableName].filterSearch = '';
-    state[option.tableName].filterSorting = '';
-    state[option.tableName].filterExtended = '';
-    state[option.tableName].apiFilterParent = '&parent__isnull=true';
-    state[option.tableName].getterFilterData = { parent: null, };
-    state[option.tableName].relatedModelView = '';
-    state[option.tableName].listOption = {};
-    state[option.tableName].listDataGroup = [];
-    state[option.tableName].listData = [];
-    state[option.tableName].isModeAdding = false;
-    // state[option.tableName].
-    // state[option.tableName].
+  CREATE_DATA_TABLE_SPACE(state, option) {
+    Vue.set(state[option.tableName], option.guid, new DataTableSpace({}))
+  },
+  DELETE_DATA_TABLE_SPACE(state, option) {
+    delete state[option.tableName][option.guid];
   },
 
   CLEAR_API_LINK(state, option) {
@@ -32,7 +33,18 @@ export default {
   SET_OPTIONS(state, option) {
     state[option.tableName].listOption = option.data;
     state[option.tableName].description = option.description;
-    if ('parent' in option.data) state[option.tableName].isHierarchyMode = true;
+    if ('parent' in option.data) {
+      state[option.tableName].isHierarchyMode = true;
+      state[option.tableName][option.guid].filter['parent__isnull'] = true;
+    }
+    if ('is_group' in option.data) state[option.tableName][option.guid].filter['ordering'] = `-is_group`;
+  },
+  UPDATE_OPTIONS(state, option) {
+    if ('parent' in state[option.tableName].listOption) {
+      state[option.tableName].isHierarchyMode = true;
+      state[option.tableName][option.guid].filter['parent__isnull'] = true;
+    }
+    if ('is_group' in state[option.tableName].listOption) state[option.tableName][option.guid].filter['ordering'] = `-is_group`;
   },
 
   SET_DATA_OPTIONS(state, option) {
@@ -58,25 +70,35 @@ export default {
   },
 
   CHANGE_DATA_GROUP_LEGEND(state, option) {
-    let index = state[option.tableName].listDataGroup.findIndex(item => item.id == option.value.id);
+    console.log(option);
+    let index = state[option.tableName][option.guid].listDataGroup.findIndex(item => item.id == option.value.id);
     if (index == -1)
-      state[option.tableName].listDataGroup.push(option.value);
+      state[option.tableName][option.guid].listDataGroup.push(option.value);
     else
-      state[option.tableName].listDataGroup = state[option.tableName].listDataGroup.slice(0, index);
+      state[option.tableName][option.guid].listDataGroup = state[option.tableName][option.guid].listDataGroup.slice(0, index);
   },
-  CHANGE_API_FILTER_PARENT(state, option) {
-    if (state[option.tableName].listDataGroup.length)
-      state[option.tableName].apiFilterParent = `&parent=${option.value.id}`;
-    else
-      state[option.tableName].apiFilterParent = `&parent__isnull=true`;
+  CHANGE_FILTER_PARENT(state, option) {
+    if (state[option.tableName][option.guid].listDataGroup.length) {
+      state[option.tableName][option.guid].filter['parent__isnull'] = null;
+      state[option.tableName][option.guid].filter['parent'] = state[option.tableName][option.guid].listDataGroup[state[option.tableName][option.guid].listDataGroup.length - 1].id;
+    } else {
+      state[option.tableName][option.guid].filter['parent__isnull'] = true;
+      state[option.tableName][option.guid].filter['parent'] = null;
+    }
   },
-  CHANGE_GETTER_FILTER_DATA(state, option) {
-    if (state[option.tableName].listDataGroup.length)
+  // CHANGE_API_FILTER_PARENT(state, option) {
+  //   if (state[option.tableName].listDataGroup.length)
+  //     state[option.tableName].apiFilterParent = `&parent=${option.value.id}`;
+  //   else
+  //     state[option.tableName].apiFilterParent = `&parent__isnull=true`;
+  // },
+  // CHANGE_GETTER_FILTER_DATA(state, option) {
+  //   if (state[option.tableName].listDataGroup.length)
 
-      state[option.tableName].getterFilterData.parent = state[option.tableName].listDataGroup[state[option.tableName].listDataGroup.length - 1].id;
-    else
-      state[option.tableName].getterFilterData.parent = null;
-  },
+  //     state[option.tableName].getterFilterData.parent = state[option.tableName].listDataGroup[state[option.tableName].listDataGroup.length - 1].id;
+  //   else
+  //     state[option.tableName].getterFilterData.parent = null;
+  // },
 
   // SET_DATA_RECORD(state, option) {
   //   // console.log(option);
@@ -111,6 +133,26 @@ export default {
   //   state[option.tableName].listData = [];
   // },
 
+
+
+  // ------------------------------------------------------------------
+  SET_FILTER_SORTING(state, option) {
+    console.log(option);
+    if (option.key == null) {
+      state[option.tableName][option.guid].filter['ordering'] = ('is_group' in state[option.tableName].listOption) ? '-is_group' : null;
+      return;
+    }
+    state[option.tableName][option.guid].filter['ordering'] = `${(option.ordering) ? '' : '-'}${option.key}`;
+  },
+
+
+
+
+
+
+
+
+  // ------------------------------------------------------------------
   SET_FILTER_PRIMITIVE(state, option) {
     state[option.tableName].filterExtended = '';
     if (option.filters == null) { state[option.tableName].filterPrimitive = ''; return; }
@@ -134,15 +176,7 @@ export default {
     }
     state[option.tableName].filterSearch = `&search=${option.value}`;
   },
-  SET_FILTER_SORTING(state, option) {
-    if (option.key == null) {
-      state[option.tableName].filterSorting = '';
-      return;
-    }
-    let filterSorting = '&ordering=';
-    filterSorting += `${(option.ordering) ? '' : '-'}${option.key}`;
-    state[option.tableName].filterSorting = filterSorting;
-  },
+  
 
   TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) {
     state[option.tableName].listData = [];

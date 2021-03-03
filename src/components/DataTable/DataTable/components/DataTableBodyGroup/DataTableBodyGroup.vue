@@ -51,6 +51,7 @@ export default {
     // Hierarchy,
   ],
   props: {
+    guid: { type: String, default: '' },
     tableName: { type: String, default: '' },
     template: Object,
     startColumn: Object,
@@ -94,6 +95,7 @@ export default {
     toggleGroup(event, option) {
       let sendOption = {
         tableName: this.tableName,
+        guid: this.guid,
         value: option,
       };
       this.storeToggleGroup(sendOption);

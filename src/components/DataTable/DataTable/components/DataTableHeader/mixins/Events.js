@@ -62,13 +62,12 @@ export const Events = {
         this.isSortingOrderAsc = true;
         targetColumn.querySelector('.header-column__sort').classList.add('header-column__sort_active_asc');
       };
-      this.$store.commit('DataTable/CLEAR_DATA', { tableName: this.tableName });
-      this.$store.commit('DataTable/SET_FILTER_SORTING', {
+      this.$store.dispatch('DataTable/SET_FILTER_SORTING', {
         tableName: this.tableName,
+        guid: this.guid,
         ordering: this.isSortingOrderAsc,
         key: targetColumn.getAttribute('data-key'),
       });
-      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.tableName});
     },
   },
 }

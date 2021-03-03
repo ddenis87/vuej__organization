@@ -3,12 +3,14 @@
     <v-toolbar height="40" flat>
       <!-- ACTIONS FOR TABLE -->
       <data-table-control-actions-table :table-name="tableName"
+                                        :guid="guid"
                                         :element-focused="focusedElementForm"
                                         :is-mount-table="isMountTable"
                                         @blur-element="elementFocusedClear"></data-table-control-actions-table>
 
       <v-divider vertical></v-divider>
       <data-table-control-actions-element :table-name="tableName"
+                                          :guid="guid"
                                           :element-focused="focusedElementForm"
                                           :is-mark-deleted-view="isMarkDeleted"
                                           @event-mark-deleted="eventMarkDeleted"
@@ -87,6 +89,7 @@ export default {
     DataTableControlActionsElement,
   },
   props: {
+    guid: null,
     focusedElement: null,
     formProperties: Object,
 
@@ -117,10 +120,10 @@ export default {
     tableName() { return (this.formProperties) ? this.formProperties.tableName : null },
     componentFilterExtended() {
       if (!this.formProperties?.tableName) return null;
-      return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
+      // return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
     },
     isFilterExtendedActive() {
-      return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_EXTENDED`](this.formProperties.tableName) == '') ? false : true : false;
+      // return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_EXTENDED`](this.formProperties.tableName) == '') ? false : true : false;
     },
   },
   watch: {

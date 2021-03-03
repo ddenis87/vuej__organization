@@ -1,13 +1,13 @@
 export const HierarchyGroup = {
   data() {
     return {
-      itemsDataGroup: [],
+      // itemsDataGroup: [],
     }
   },
   methods: {
-    toggleGroup(option) {
-      this.itemsDataGroup.push(option.value);
-      console.log(option);
-    }
+    // toggleGroup(option) {
+    //   this.itemsDataGroup.push(option.value);
+    //   console.log(option);
+    // }
   }
 }

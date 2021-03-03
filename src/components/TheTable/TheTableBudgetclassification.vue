@@ -10,7 +10,8 @@
               @event-row-focused="eventRowFocused"
               @event-row-selected="eventRowSelected"
               @event-row-keydown="eventRowKeydown"
-              @event-component-blur="eventComponentBlur"></data-table>
+              @event-component-blur="eventComponentBlur"
+              @created-component="createdComponent"></data-table>
 </template>
 
 <script>

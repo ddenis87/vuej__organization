@@ -1,5 +1,8 @@
 export const EventsComponent = {
   methods: {
+    eventCreatedComponent(option) {
+      this.$emit('created-component', option);
+    },
     eventRowFocused(event, option) {
       this.$emit('event-row-focused', option);
     },
