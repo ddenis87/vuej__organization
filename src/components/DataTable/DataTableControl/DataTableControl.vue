@@ -53,6 +53,7 @@
                       @close-dialog="isOpenFilterExtended = false">
       <component :is="componentFilterExtended"
                  :table-name="tableName"
+                 :guid="guid"
                  :is-open="isOpenFilterExtended"
                  @close-dialog="isOpenFilterExtended = false"
                  @accept="isOpenFilterExtended = false"></component>
@@ -120,7 +121,7 @@ export default {
     tableName() { return (this.formProperties) ? this.formProperties.tableName : null },
     componentFilterExtended() {
       if (!this.formProperties?.tableName) return null;
-      // return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
+      return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
     },
     isFilterExtendedActive() {
       // return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_EXTENDED`](this.formProperties.tableName) == '') ? false : true : false;

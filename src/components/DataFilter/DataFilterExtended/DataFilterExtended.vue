@@ -25,8 +25,9 @@ export default {
   },
   props: {
     tableName: { type: String, default: null, },
+    guid: { type: String, default: null },
     isOpen: { type: Boolean, default: false, },
-    listException: { type: Array, default() { return ['id', 'is_deleted', 'is_group', 'parent'] } },
+    listException: { type: Array, default() { return ['id', 'is_deleted', 'is_group'] } },
   },
   data() {
     return {
@@ -94,18 +95,23 @@ export default {
     },
     acceptFilter() {
       
-      let filterString = '';
-      for(let value of Object.values(this.valueFilterObject)) {
-        filterString += value;
-      }
+      // let filterString = '';
+      // for(let value of Object.values(this.valueFilterObject)) {
+      //   filterString += value;
+      // }
       
-      if (filterString == '') this.$store.commit('DataTable/SET_FILTER_EXTENDED_CLEAR', { tableName: this.tableName })
-      else this.$store.commit('DataTable/SET_FILTER_EXTENDED', {
+      this.$store.dispatch('DataTable/SET_FILTER_EXTENDED', {
         tableName: this.tableName,
-        value: filterString,
-      })
-      this.$store.commit('DataTable/CLEAR_DATA', { tableName: this.tableName });
-      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.tableName});
+        guid: this.guid,
+        value: this.valueFilterObject})
+      // if (filterString == '') this.$store.commit('DataTable/SET_FILTER_EXTENDED_CLEAR', { tableName: this.tableName })
+      // else this.$store.commit('DataTable/SET_FILTER_EXTENDED', {
+      //   tableName: this.tableName,
+      //   value: filterString,
+      // })
+      // this.$store.commit('DataTable/CLEAR_DATA', { tableName: this.tableName });
+      // this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.tableName});
+
       this.$emit('accept');
       // console.log(filterString);
     },

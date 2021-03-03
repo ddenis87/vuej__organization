@@ -42,6 +42,9 @@ export default {
     state.commit('SET_FILTER_SORTING', option);
     state.dispatch('REQUEST_DATA', option);
   },
+  SET_FILTER_EXTENDED(state, option) {
+    console.log(option);
+  },
 
   REQUEST_OPTIONS(state, option) {
     if (state.getters.GET_DESCRIPTION(option.tableName)) {
