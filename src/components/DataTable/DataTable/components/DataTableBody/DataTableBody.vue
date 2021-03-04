@@ -164,7 +164,7 @@ export default {
       if (!this.isModeAdding) return;
       setTimeout(() => {
         let indexAddingElement = this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName);
-        let firstElement = document.querySelectorAll(`#${this.id} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
+        let firstElement = document.querySelectorAll(`#${this.guid} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
         let eventDblClick = new Event('dblclick', {bubbles: false});
         firstElement.focus();
         firstElement.dispatchEvent(eventDblClick);
@@ -178,9 +178,9 @@ export default {
     if (this.$store.getters['DataTable/GET_MODE_ADDING_ID'](this.tableName)) {
       let recordId = this.$store.getters['DataTable/GET_MODE_ADDING_ID'](this.tableName);
       let index = this.$store.getters['DataTable/GET_DATA_INDEX'](this.tableName, {recordId: recordId});
-      if (document.querySelectorAll(`#${this.id} .body .body-row`)[index] &&
-          document.querySelectorAll(`#${this.id} .body .body-row`)[index].querySelectorAll('.body-column')) {
-        let firstElement = document.querySelectorAll(`#${this.id} .body .body-row`)[index].querySelectorAll('.body-column')[0];
+      if (document.querySelectorAll(`#${this.guid} .body .body-row`)[index] &&
+          document.querySelectorAll(`#${this.guid} .body .body-row`)[index].querySelectorAll('.body-column')) {
+        let firstElement = document.querySelectorAll(`#${this.guid} .body .body-row`)[index].querySelectorAll('.body-column')[0];
         if (firstElement) {
           setTimeout(() => {
             firstElement.focus();

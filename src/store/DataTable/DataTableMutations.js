@@ -170,7 +170,7 @@ export default {
 
   SET_FILTER_DELETED(state, option) {
     if (option.value == false) {
-      state[option.tableName][option.guid].filter['is_deleted'] = null;
+      state[option.tableName][option.guid].filter['is_deleted'] = false;
       return;
     }
     state[option.tableName][option.guid].filter['is_deleted'] = option.value;

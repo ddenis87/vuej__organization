@@ -44,6 +44,7 @@ export default {
     async eventActionMarkDeleting() {
       let sendOption = {
         tableName: this.tableName,
+        guid: this.guid,
         elementId: this.elementFocused['id'],
       }
       let snackBar = {

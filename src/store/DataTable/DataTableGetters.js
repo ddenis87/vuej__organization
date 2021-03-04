@@ -46,7 +46,7 @@ export default {
       return state[option.tableName].listData;
     }
     console.log(state[option.tableName][option.guid].filter);
-    if (state[option.tableName][option.guid].filter['is_deleted']) {
+    if (state[option.tableName][option.guid].filter['is_deleted'] == true) {
       return state[option.tableName].listData.filter(item => {
         if (item.is_deleted == true) return true;
       });
@@ -89,7 +89,9 @@ export default {
 
   GET_FILTER_DEFAULT_IS_DELETED:(state) => (tableName) => { return state[tableName].filterDefault['is_deleted']; }, // ????
   GET_FILTER_PRIMITIVE:(state) => (tableName) => { return state[tableName].filterPrimitive; },
-  GET_FILTER_EXTENDED:(state) => (tableName) => { return state[tableName].filterExtended; },
+  
+  GET_FILTER_EXTENDED:(state) => (option) => { return state[option.tableName][option.guid].filterExtended; },
+  
   GET_FILTER_SEARCH:(state) => (tableName) => { return state[tableName].filterSearch; },
   // GET_FILTER_SORTING:(state) => (tableName) => {
   //   return state[tableName].filterSorting;

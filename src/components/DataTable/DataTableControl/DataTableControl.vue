@@ -124,7 +124,15 @@ export default {
       return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
     },
     isFilterExtendedActive() {
-      // return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_EXTENDED`](this.formProperties.tableName) == '') ? false : true : false;
+      if (this.formProperties) {
+        let filterExtended = this.$store.getters[`DataTable/GET_FILTER_EXTENDED`]({tableName: this.formProperties.tableName, guid: this.guid});
+        console.log(filterExtended);
+        if (filterExtended == null || filterExtended == '') return false;
+        else return true;
+      } else {
+        return false;
+      }
+      // return (this.formProperties) ? (this.$store.getters[`DataTable/GET_FILTER_EXTENDED`]({tableName: this.formProperties.tableName, guid: this.guid}) == null) ? false : true : false;
     },
   },
   watch: {

@@ -2,7 +2,7 @@
   <dialog-modal is-dialog-name="Сообщение"
                 :is-dialog-show="isOpenDialogModal"
                 @close-dialog="closeDialogModal">
-    {{ countData }}
+    По заданным условиям записи отсутствуют
   </dialog-modal>
 </template>
 
@@ -30,12 +30,19 @@ export default {
         guid: this.guid,
       }).length;
     },
+    isSetFilterExtend() {
+      return this.$store.getters[`DataTable/GET_FILTER_EXTENDED`]({
+        tableName: this.tableName,
+        guid: this.guid,
+      });
+    },
   },
   watch: {
     countData() {
       clearTimeout(this.isTimerBeforeShowMessage);
       this.isTimerBeforeShowMessage = setTimeout(() => {
-        if (this.countData == 0) this.isOpenDialogModal = true;
+        console.log()
+        if (this.countData == 0 && this.isSetFilterExtend != null) this.isOpenDialogModal = true;
         else this.isOpenDialogModal = false;
       }, 1400);
     },

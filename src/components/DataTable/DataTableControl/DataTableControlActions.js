@@ -58,7 +58,7 @@ export const DataTableControlActions = {
       }
       let bFormData = new FormData();
       for (let key of Object.keys(sendOption.values)) {
-        if (sendOption.values[key])
+        // if (sendOption.values[key])
           bFormData.set(`${key}`, `${sendOption.values[key]}`);
       };
       sendOption.formData = bFormData;
