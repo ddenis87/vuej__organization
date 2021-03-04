@@ -183,18 +183,20 @@ export default {
       console.log(option);
       this.$store.commit('DataTable/SET_FILTER_SEARCH', {
         tableName: this.activeMenu.tableName,
+        guid: this.guid,
         value: option.value,
       });
       // this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.activeMenu.tableName });
-      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName});
+      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName, guid: this.guid});
     },
     freeSearchClear() {
       this.$store.commit('DataTable/SET_FILTER_SEARCH', {
         tableName: this.activeMenu.tableName,
+        guid: this.guid,
         value: null,
       });
       // this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.activeMenu.tableName });
-      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName});
+      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName, guid: this.guid});
     },
   },
 }

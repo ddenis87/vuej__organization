@@ -118,7 +118,7 @@ export default {
     border-bottom: $rowBorder;
     outline: none;
     transition-delay: .05s;
-    color: green;
+    // color: green;
     &_fixed { grid-template-rows: repeat(auto-fit, $rowHeightFixed); min-height: 1 + $rowHeightFixed; }
     &_dense { grid-template-rows: repeat(auto-fit, $rowHeightDense); min-height: 2 + $rowHeightDense; }
     &_auto  { grid-template-rows: $rowHeightAuto; /* repeat(auto-fill, $rowHeightAuto); */ }

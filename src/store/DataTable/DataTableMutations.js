@@ -181,7 +181,14 @@ export default {
     state[option.tableName].modeAdding.recordId = option.recordId;
     state[option.tableName][option.guid].filter['parent__isnull'] = null;
   },
-
+  SET_FILTER_SEARCH(state, option) {
+    if (option.value == null) {
+      state[option.tableName][option.guid].filter['search'] = null;
+      return;
+    }
+    state[option.tableName][option.guid].filter['search'] = option.value;
+    state[option.tableName][option.guid].filter['parent__isnull'] = null;
+  },
 
 
   // ------------------------------------------------------------------
@@ -201,13 +208,13 @@ export default {
   //   state[option.tableName].filterExtended = option.value;
   // },
   SET_FILTER_EXTENDED_CLEAR(state, option) { state[option.tableName].filterExtended = ''; },
-  SET_FILTER_SEARCH(state, option) {
-    if (option.value == null) {
-      state[option.tableName].filterSearch = '';
-      return;
-    }
-    state[option.tableName].filterSearch = `&search=${option.value}`;
-  },
+  // SET_FILTER_SEARCH(state, option) {
+  //   if (option.value == null) {
+  //     state[option.tableName].filterSearch = '';
+  //     return;
+  //   }
+  //   state[option.tableName].filterSearch = `&search=${option.value}`;
+  // },
   
 
   TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) {
