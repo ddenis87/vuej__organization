@@ -43,7 +43,14 @@ export default {
     state.dispatch('REQUEST_DATA', option);
   },
   SET_FILTER_EXTENDED(state, option) {
+    state.commit('CLEAR_DATA', option);
     state.commit('SET_FILTER_EXTENDED', option);
+    state.dispatch('REQUEST_DATA', option);
+  },
+  SET_FILTER_DELETED(state, option) {
+    state.commit('CLEAR_DATA', option);
+    state.commit('SET_FILTER_DELETED', option);
+    state.dispatch('REQUEST_DATA', option);
   },
 
   REQUEST_OPTIONS(state, option) {
@@ -173,7 +180,11 @@ export default {
     let addressApi = state.getters.GET_ADDRESS_API('get', option.tableName);
     addressApi += `&id=${option.elementId}`;
 
-    state.commit('SET_STATUS_PROCESSING', true);
+    state.commit('SET_STATUS_PROCESSING', {
+      tableName: option.tableName,
+      guid: option.guid,
+      status: true,
+    });
     return new Promise((resolve, reject) => {
       axios
         .get(addressApi)
@@ -217,7 +228,11 @@ export default {
           console.log(error);
           reject(false);
         })
-        .finally(() => state.commit('SET_STATUS_PROCESSING'));
+        .finally(() => state.commit('SET_STATUS_PROCESSING', {
+          tableName: option.tableName,
+          guid: option.guid,
+          status: false,
+        }));
     });
   },
 
@@ -359,8 +374,12 @@ export default {
   //   });
   // },
   ADDING_ELEMENT(state, option) {
-    state.commit('SET_STATUS_PROCESSING', true);
-    state.commit('CLEAR_API_LINK', {tableName: option.tableName});
+    state.commit('SET_STATUS_PROCESSING', {
+      tableName: option.tableName,
+      guid: option.guid,
+      status: true,
+    });
+    state.commit('CLEAR_API_LINK', {tableName: option.tableName, guid: option.guid});
     let addressApi = state.getters.GET_ADDRESS_API('post', option.tableName);
     // console.log(addressApi);
     return new Promise((resolve, reject) => {
@@ -369,38 +388,55 @@ export default {
         .then(response => {
           state.commit('SET_MODE_ADDING_ID', { tableName: option.tableName, recordId: response.data.id });
           state.commit('CLEAR_DATA', { tableName: option.tableName });
-          state.dispatch('REQUEST_DATA', {tableName: option.tableName, addingElement: response.data});
+          state.dispatch('REQUEST_DATA', {tableName: option.tableName, addingElement: response.data, guid: option.guid});
           resolve(response);
         })
         .catch(err => {
           console.log(err);
           reject(err);
         })
-        .finally(() => state.commit('SET_STATUS_PROCESSING'));
+        .finally(() => state.commit('SET_STATUS_PROCESSING', {
+          tableName: option.tableName,
+          guid: option.guid,
+          status: false,
+        }));
     })
   },
 
   UPDATE_ELEMENT(state, option) {
-    state.commit('SET_STATUS_PROCESSING', true);
+    state.commit('SET_STATUS_PROCESSING', {
+      tableName: option.tableName,
+      guid: option.guid,
+      status: true,
+    });
     let addressApi = state.getters.GET_ADDRESS_API('update', option.tableName);
     addressApi += `${option.elementId}/`;
+    console.log(addressApi);
     return new Promise((resolve, reject) => {
       axios
       .put(addressApi, option.formData)
       .then(response => {
-        state.dispatch('REQUEST_DATA_ELEMENT', {tableName: option.tableName, elementId: option.elementId})
+        state.dispatch('REQUEST_DATA_ELEMENT', {tableName: option.tableName, elementId: option.elementId, guid: option.guid})
           .then(() => resolve(response));
       })
       .catch(err => {
         console.log(err);
         reject(err);
       })
-      .finally(() => state.commit('SET_STATUS_PROCESSING'));
+      .finally(() => state.commit('SET_STATUS_PROCESSING', {
+        tableName: option.tableName,
+        guid: option.guid,
+        status: false,
+      }));
     })
   },
 
   DELETE_ELEMENT(state, option) {
-    state.commit('SET_STATUS_PROCESSING', true);
+    state.commit('SET_STATUS_PROCESSING', {
+      tableName: option.tableName,
+      guid: option.guid,
+      status: true,
+    });
     let addressApi = state.getters.GET_ADDRESS_API('delete', option.tableName);
     addressApi += `${option.elementId}`;
     console.log(addressApi);
@@ -422,7 +458,11 @@ export default {
           console.log(err);
           reject(err);
         })
-        .finally(() => state.commit('SET_STATUS_PROCESSING'));
+        .finally(() => state.commit('SET_STATUS_PROCESSING', {
+          tableName: option.tableName,
+          guid: option.guid,
+          status: false,
+        }));
     })
   }
 }

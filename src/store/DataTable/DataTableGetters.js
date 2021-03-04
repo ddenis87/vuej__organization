@@ -17,11 +17,12 @@ export default {
     let filter = state[option.tableName][option.guid].filter;
     let filterApi = '';
     Object.keys(filter).forEach(key => {
-      if(filter[key]) {
+      if(filter[key] != null) {
         // console.log(filter[key]);
         filterApi += `&${key}=${filter[key]}`;
       }
     })
+    if (state[option.tableName][option.guid].filterExtended) filterApi += state[option.tableName][option.guid].filterExtended;
     console.log(filterApi);
     return filterApi;
   },
@@ -45,6 +46,12 @@ export default {
       return state[option.tableName].listData;
     }
     console.log(state[option.tableName][option.guid].filter);
+    if (state[option.tableName][option.guid].filter['is_deleted']) {
+      return state[option.tableName].listData.filter(item => {
+        if (item.is_deleted == true) return true;
+      });
+    }
+    
     if (state[option.tableName][option.guid].filter['parent']) {
       if (state[option.tableName][option.guid].filter['is_group']) {
         return state[option.tableName].listData.filter(item => {

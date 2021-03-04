@@ -49,6 +49,7 @@ export const DataTableControlActions = {
     eventActionAccept(option) {
       let sendOption = {
         tableName: this.tableName,
+        guid: this.guid,
       };
       Object.assign(sendOption, option);
       if (sendOption.actionName == 'editing') {

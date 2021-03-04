@@ -101,6 +101,7 @@ export const TheTableForm = {
       
       option.actionName = (this.focusedElement) ? 'editing' : 'adding';
       Object.assign(option.values, this.fieldFormValue);
+      console.log(option.values);
       for (let key of Object.keys(option.values)) {
         if (option.values[key] != null) {
           if (typeof(option.values[key]) == 'object') {
@@ -109,11 +110,12 @@ export const TheTableForm = {
           }
         }
       }
+      // console.log(option.values);
       this.$emit('event-action-accept', option);
       this.$refs.formAction.reset();
-      setTimeout(() => { // ЧТОБ СТЕРЕТЬ ДАТУ ИЗ ЗА МАСКИ
-        this.$refs.formAction.reset();
-      },100);
+      // setTimeout(() => { // ЧТОБ СТЕРЕТЬ ДАТУ ИЗ ЗА МАСКИ
+      //   this.$refs.formAction.reset();
+      // },100);
     },
     fieldFormValueValidation() {
       for (let key of Object.keys(this.fieldFormValue)) {

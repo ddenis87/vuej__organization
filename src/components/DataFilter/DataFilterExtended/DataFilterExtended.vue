@@ -27,7 +27,7 @@ export default {
     tableName: { type: String, default: null, },
     guid: { type: String, default: null },
     isOpen: { type: Boolean, default: false, },
-    listException: { type: Array, default() { return ['id', 'is_deleted', 'is_group'] } },
+    listException: { type: Array, default() { return ['id', 'is_deleted', 'is_group', 'parent'] } },
   },
   data() {
     return {

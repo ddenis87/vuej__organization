@@ -142,12 +142,18 @@ export default {
     },
     eventActionShowMarkDeleting() {
       this.isMarkDeleted = !this.isMarkDeleted;
-      this.$store.commit('DataTable/TOGGLE_FILTER_DEFAULT_IS_DELETED', {
+      this.$store.dispatch('DataTable/SET_FILTER_DELETED', {
         tableName: this.formProperties.tableName,
+        guid: this.guid,
         value: this.isMarkDeleted,
       });
-      this.focusedElementForm = null;
-      this.$store.dispatch('DataTable/REQUEST_DATA', {tableName: this.formProperties.tableName});
+      // this.$store.commit('DataTable/TOGGLE_FILTER_DEFAULT_IS_DELETED', {
+      //   tableName: this.formProperties.tableName,
+      //   guid: this.guid,
+      //   value: this.isMarkDeleted,
+      // });
+      // this.focusedElementForm = null;
+      // this.$store.dispatch('DataTable/REQUEST_DATA', {tableName: this.formProperties.tableName});
     },
   },
 }

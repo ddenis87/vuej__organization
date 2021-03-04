@@ -10,13 +10,14 @@ class DataTableSpace {
   apiPrevious = null;
   filter = {
     'page_size': '',
-    'is_deleted': '',
+    'is_deleted': false,
     'ordering': null,
-    'search': '',
+    'search': null,
     'parent__isnull': null,
     'parent': null,
     'is_group': null,
   };
+  filterExtended = null;
   listDataGroup = [];
 };
 
@@ -156,10 +157,25 @@ export default {
   },
 
   SET_FILTER_EXTENDED(state, option) {
-    console.log(option.value);
+    if (option.value == '') {
+      state[option.tableName][option.guid].filterExtended = null;
+      return;
+    }
+    let filterExtended = '';
+    Object.keys(option.value).forEach(key => {
+      filterExtended += option.value[key];
+    });
+    state[option.tableName][option.guid].filterExtended = filterExtended;
   },
 
-
+  SET_FILTER_DELETED(state, option) {
+    if (option.value == false) {
+      state[option.tableName][option.guid].filter['is_deleted'] = null;
+      return;
+    }
+    state[option.tableName][option.guid].filter['is_deleted'] = option.value;
+    state[option.tableName][option.guid].filter['parent__isnull'] = null;
+  },
 
 
 
@@ -175,10 +191,10 @@ export default {
     state[option.tableName].filterPrimitive = filterPrimitive;
   },
   SET_FILTER_PRIMITIVE_CLEAR(state, option) { state[option.tableName].filterPrimitive = ''; },
-  SET_FILTER_EXTENDED(state, option) {
-    state[option.tableName].filterPrimitive = '';
-    state[option.tableName].filterExtended = option.value;
-  },
+  // SET_FILTER_EXTENDED(state, option) {
+  //   state[option.tableName].filterPrimitive = '';
+  //   state[option.tableName].filterExtended = option.value;
+  // },
   SET_FILTER_EXTENDED_CLEAR(state, option) { state[option.tableName].filterExtended = ''; },
   SET_FILTER_SEARCH(state, option) {
     if (option.value == null) {

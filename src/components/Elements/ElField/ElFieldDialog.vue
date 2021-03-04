@@ -73,6 +73,7 @@ export default {
     fieldList() {
       let relatedModelView = this.$store.getters['DataTable/GET_RELATED_MODEL_VIEW'](this.inputProperties['related_model_name']);
       let fieldList = [];
+      console.log(this.inputProperties['related_model_name'])
       let fieldListStore = this.$store.getters[`DataTable/GET_DATA`]({
         tableName: this.inputProperties['related_model_name'],
         });
@@ -107,10 +108,11 @@ export default {
   methods: {
     createdComponent(option) {
       console.log(option);
-      this.$store.dispatch('DataTable/SET_FILTER_GROUP', {
-        tableName: this.inputProperties['related_model_name'],
-        guid: option.guid,
-      })
+      if (this.isItemGroup)
+        this.$store.dispatch('DataTable/SET_FILTER_GROUP', {
+          tableName: this.inputProperties['related_model_name'],
+          guid: option.guid,
+        });
     },
     eventOpenDialog(event) {
       console.log(event);
