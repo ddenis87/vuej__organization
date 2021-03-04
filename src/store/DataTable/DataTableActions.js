@@ -43,7 +43,7 @@ export default {
     state.dispatch('REQUEST_DATA', option);
   },
   SET_FILTER_EXTENDED(state, option) {
-    console.log(option);
+    state.commit('SET_FILTER_EXTENDED', option);
   },
 
   REQUEST_OPTIONS(state, option) {

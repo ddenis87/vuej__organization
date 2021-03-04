@@ -155,7 +155,9 @@ export default {
     state[option.tableName][option.guid].filter['is_group'] = true;
   },
 
-
+  SET_FILTER_EXTENDED(state, option) {
+    console.log(option.value);
+  },
 
 
 
