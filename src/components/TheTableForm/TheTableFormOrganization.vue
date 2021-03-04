@@ -34,8 +34,8 @@
         <v-row dense>
           <v-col cols="12">
             <el-field-string-area :input-properties="fieldForm.title"
-                             v-model="fieldFormValue.title"
-                             @next-element="eventNextElement"></el-field-string-area>
+                                  v-model="fieldFormValue.title"
+                                  @next-element="eventNextElement"></el-field-string-area>
           </v-col>
         </v-row>
         <v-row dense>

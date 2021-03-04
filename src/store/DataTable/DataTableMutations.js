@@ -177,6 +177,11 @@ export default {
     state[option.tableName][option.guid].filter['parent__isnull'] = null;
   },
 
+  SET_MODE_ADDING_ID(state, option) {
+    state[option.tableName].modeAdding.recordId = option.recordId;
+    state[option.tableName][option.guid].filter['parent__isnull'] = null;
+  },
+
 
 
   // ------------------------------------------------------------------
@@ -213,10 +218,7 @@ export default {
     state[option.tableName].modeAdding.status = option.status;
     state[option.tableName].modeAdding.index = option.index;
   },
-  SET_MODE_ADDING_ID(state, option) {
-    state[option.tableName].modeAdding.recordId = option.recordId;
-  },
-
+  
   // ---------------------------------------------------------------------------------------------------
   DATA_STORE_ADDING_ELEMENT(state, option) {  // ADDING EMPTY LINE IN TABLE
     let fieldTable = {};

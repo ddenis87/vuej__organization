@@ -23,15 +23,24 @@
         </v-row>
         <v-row dense>
           <v-col cols="12">
-            <el-field-string :input-properties="fieldForm.title"
-                             v-model="fieldFormValue.title"
-                             @next-element="eventNextElement"></el-field-string>
+            <el-field-string-area :input-properties="fieldForm.title"
+                                  v-model="fieldFormValue.title"
+                                  @next-element="eventNextElement"></el-field-string-area>
           </v-col>
         </v-row>
         <v-row dense>
           <v-col cols="12">
             <el-field-dialog :inputProperties="assingObject(fieldForm.bk, {related_model_view: '{head_code} - {head_name}'})"
                              v-model="fieldFormValue.bk"
+                             @next-element="eventNextElement"></el-field-dialog>
+          </v-col>
+        </v-row>
+        <v-row dense>
+          <v-col cols="12">
+            <el-field-dialog :inputProperties="assingObject(fieldForm.parent, {related_model_view: '{title} - {id}'})"
+                             :guid="guid"
+                             :is-item-group="true"
+                             v-model="fieldFormValue.parent"
                              @next-element="eventNextElement"></el-field-dialog>
           </v-col>
         </v-row>
@@ -64,6 +73,7 @@ export default {
         institution_code: '',
         budget_level: null,
         bk: null,
+        parent: null,
       },
     }
   },
@@ -76,6 +86,7 @@ export default {
         institution_code: '',
         budget_level: null,
         bk: null,
+        parent: null,
       };
     },
   },

@@ -184,7 +184,7 @@ export default {
         if (firstElement) {
           setTimeout(() => {
             firstElement.focus();
-            this.$store.commit('DataTable/SET_MODE_ADDING_ID', { tableName: this.tableName, recordId: null });
+            this.$store.commit('DataTable/SET_MODE_ADDING_ID', { tableName: this.tableName, recordId: null, guid: this.guid });
           }, 1000);
         }
       }

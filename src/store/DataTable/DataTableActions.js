@@ -386,7 +386,7 @@ export default {
        axios
         .post(addressApi, option.formData)
         .then(response => {
-          state.commit('SET_MODE_ADDING_ID', { tableName: option.tableName, recordId: response.data.id });
+          state.commit('SET_MODE_ADDING_ID', { tableName: option.tableName, recordId: response.data.id, guid: option.guid });
           state.commit('CLEAR_DATA', { tableName: option.tableName });
           state.dispatch('REQUEST_DATA', {tableName: option.tableName, addingElement: response.data, guid: option.guid});
           resolve(response);
