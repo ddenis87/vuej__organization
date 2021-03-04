@@ -145,21 +145,21 @@ export default {
     isModeAdding() {
       return this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName);
     },
-    isLoadingData() {
-      return this.$store.getters[`DataTable/GET_STATUS_PROCESSING`];
-    },
-    isEmptyData() {
-      clearTimeout(this.isTimerLoad);
-      if (!this.$store.getters[`DataTable/GET_STATUS_PROCESSING`] && this.items.length == 0) {
-        this.isTimerLoad = setTimeout(() => {this.isDataLoad = true}, 1000);
-      } else {
-        this.isDataLoad = false;
-      }
-      return this.isDataLoad;
-    },
+    // isLoadingData() {
+    //   return this.$store.getters[`DataTable/GET_STATUS_PROCESSING`];
+    // },
+    // isEmptyData() {
+    //   clearTimeout(this.isTimerLoad);
+    //   if (!this.$store.getters[`DataTable/GET_STATUS_PROCESSING`] && this.items.length == 0) {
+    //     this.isTimerLoad = setTimeout(() => {this.isDataLoad = true}, 1000);
+    //   } else {
+    //     this.isDataLoad = false;
+    //   }
+    //   return this.isDataLoad;
+    // },
   },
   watch: {
-    isModeAdding() {
+    isModeAdding() { // SELECTED FOR ADDING ELEMENT INLINE
       console.log('mode adding');
       if (!this.isModeAdding) return;
       setTimeout(() => {

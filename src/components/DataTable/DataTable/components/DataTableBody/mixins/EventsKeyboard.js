@@ -35,9 +35,11 @@ export const EventsKeyboard = {
       if (event.code == 'Insert') {
         let sendOption = {
           tableName: this.tableName,
-          recordId: ('id' in itemRow) ? itemRow.id : -1,
+          guid: this.guid,
+          id: ('id' in itemRow) ? itemRow.id : -1,
         }
-        this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
+        // this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
+        this.$store.dispatch('DataTable/ADDING_INLINE_ELEMENT', sendOption);
       }
     },
   }

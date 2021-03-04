@@ -1,20 +1,5 @@
 import axios from 'axios';
 
-// class DataTableSpace {
-//   constructor({pageSize = 30, isDeleted = false}) {
-//     this.filter['page_size'] = pageSize;
-//     this.filter['is_deleted'] = isDeleted;
-//   };
-//   filter = {
-//     'page_size': '',
-//     'is_deleted': '',
-//     'ordering': '',
-//     'search': '',
-//     'parent__isnull': true,
-//     'parent': null,
-//   };
-// };
-
 function addressApiAddingElement(option) {
   if ('addingElement' in option)
     return `&page_by_id=${option.addingElement.id}`;
@@ -24,14 +9,23 @@ function addressApiAddingElement(option) {
 export default {
   CREATE_DATA_TABLE_SPACE(state, option) { state.commit('CREATE_DATA_TABLE_SPACE', option); },
   DELETE_DATA_TABLE_SPACE(state, option) { state.commit('DELETE_DATA_TABLE_SPACE', option); },
-  
+
+  // ----NAVIGATION GROUP-------------------------------------------------------
   SELECTED_GROUP(state, option) {
     state.commit('CHANGE_DATA_GROUP_LEGEND', option);
-    state.commit('CHANGE_FILTER_PARENT', option);
+    state.commit('SET_FILTER_PARENT', option);
     state.dispatch('REQUEST_DATA', option);
     console.log(state.state[option.tableName][option.guid]);
   },
+  // ---------------------------------------------------------------------------
 
+  // ----ADDING ELEMENT---------------------------------------------------------
+  ADDING_INLINE_ELEMENT(state, option) {
+    state.commit('ADDING_INLINE_ELEMENT', option);
+  },
+  ADDING_INLINE_ELEMENT_FIELD(state, option) {},
+
+  // ----FILTERS----------------------------------------------------------------
   SET_FILTER_GROUP(state, option) {
     console.log(option);
     state.commit('SET_FILTER_GROUP', option);
@@ -52,7 +46,9 @@ export default {
     state.commit('SET_FILTER_DELETED', option);
     state.dispatch('REQUEST_DATA', option);
   },
+  // ---------------------------------------------------------------------------
 
+  // ----API--------------------------------------------------------------------
   REQUEST_OPTIONS(state, option) {
     if (state.getters.GET_DESCRIPTION(option.tableName)) {
       state.commit('UPDATE_OPTIONS', option);

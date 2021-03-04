@@ -82,15 +82,15 @@ export default {
     else
       state[option.tableName][option.guid].listDataGroup = state[option.tableName][option.guid].listDataGroup.slice(0, index);
   },
-  CHANGE_FILTER_PARENT(state, option) {
-    if (state[option.tableName][option.guid].listDataGroup.length) {
-      state[option.tableName][option.guid].filter['parent__isnull'] = null;
-      state[option.tableName][option.guid].filter['parent'] = state[option.tableName][option.guid].listDataGroup[state[option.tableName][option.guid].listDataGroup.length - 1].id;
-    } else {
-      state[option.tableName][option.guid].filter['parent__isnull'] = true;
-      state[option.tableName][option.guid].filter['parent'] = null;
-    }
-  },
+  // SET_FILTER_PARENT(state, option) {
+  //   if (state[option.tableName][option.guid].listDataGroup.length) {
+  //     state[option.tableName][option.guid].filter['parent__isnull'] = null;
+  //     state[option.tableName][option.guid].filter['parent'] = state[option.tableName][option.guid].listDataGroup[state[option.tableName][option.guid].listDataGroup.length - 1].id;
+  //   } else {
+  //     state[option.tableName][option.guid].filter['parent__isnull'] = true;
+  //     state[option.tableName][option.guid].filter['parent'] = null;
+  //   }
+  // },
   // CHANGE_API_FILTER_PARENT(state, option) {
   //   if (state[option.tableName].listDataGroup.length)
   //     state[option.tableName].apiFilterParent = `&parent=${option.value.id}`;
@@ -142,20 +142,22 @@ export default {
 
   // ------------------------------------------------------------------
 
+  // ----FILTERS----------------------------------------------------------------
   SET_FILTER_SORTING(state, option) {
-    console.log(option);
     if (option.key == null) {
       state[option.tableName][option.guid].filter['ordering'] = ('is_group' in state[option.tableName].listOption) ? '-is_group' : null;
       return;
     }
     state[option.tableName][option.guid].filter['ordering'] = `${(option.ordering) ? '' : '-'}${option.key}`;
   },
-
-  SET_FILTER_GROUP(state, option) {
+  SET_FILTER_SEARCH(state, option) {
+    if (option.value == null) {
+      state[option.tableName][option.guid].filter['search'] = null;
+      return;
+    }
+    state[option.tableName][option.guid].filter['search'] = option.value;
     state[option.tableName][option.guid].filter['parent__isnull'] = null;
-    state[option.tableName][option.guid].filter['is_group'] = true;
   },
-
   SET_FILTER_EXTENDED(state, option) {
     if (option.value == '') {
       state[option.tableName][option.guid].filterExtended = null;
@@ -167,7 +169,19 @@ export default {
     });
     state[option.tableName][option.guid].filterExtended = filterExtended;
   },
-
+  SET_FILTER_GROUP(state, option) {
+    state[option.tableName][option.guid].filter['parent__isnull'] = null;
+    state[option.tableName][option.guid].filter['is_group'] = true;
+  },
+  SET_FILTER_PARENT(state, option) {
+    if (state[option.tableName][option.guid].listDataGroup.length) {
+      state[option.tableName][option.guid].filter['parent__isnull'] = null;
+      state[option.tableName][option.guid].filter['parent'] = state[option.tableName][option.guid].listDataGroup[state[option.tableName][option.guid].listDataGroup.length - 1].id;
+    } else {
+      state[option.tableName][option.guid].filter['parent__isnull'] = true;
+      state[option.tableName][option.guid].filter['parent'] = null;
+    }
+  },
   SET_FILTER_DELETED(state, option) {
     if (option.value == false) {
       state[option.tableName][option.guid].filter['is_deleted'] = false;
@@ -176,90 +190,62 @@ export default {
     state[option.tableName][option.guid].filter['is_deleted'] = option.value;
     state[option.tableName][option.guid].filter['parent__isnull'] = null;
   },
+  // ---------------------------------------------------------------------------
 
-  SET_MODE_ADDING_ID(state, option) {
-    state[option.tableName].modeAdding.recordId = option.recordId;
-    state[option.tableName][option.guid].filter['parent__isnull'] = null;
+  // ----ADDING ELEMENT---------------------------------------------------------
+  ADDING_INLINE_ELEMENT(state, option) {
+    console.log(option);
   },
-  SET_FILTER_SEARCH(state, option) {
-    if (option.value == null) {
-      state[option.tableName][option.guid].filter['search'] = null;
-      return;
-    }
-    state[option.tableName][option.guid].filter['search'] = option.value;
-    state[option.tableName][option.guid].filter['parent__isnull'] = null;
-  },
-
-
-  // ------------------------------------------------------------------
-  SET_FILTER_PRIMITIVE(state, option) {
-    state[option.tableName].filterExtended = '';
-    if (option.filters == null) { state[option.tableName].filterPrimitive = ''; return; }
-    let filterPrimitive = '';
-    for(let item of Object.entries(option.filters)) {
-      if ('id' in item[1]) filterPrimitive += `&${item[0]}=${item[1].id}`;
-      else filterPrimitive += `&${item[0]}=${item[1].value}`;
-    }
-    state[option.tableName].filterPrimitive = filterPrimitive;
-  },
-  SET_FILTER_PRIMITIVE_CLEAR(state, option) { state[option.tableName].filterPrimitive = ''; },
-  // SET_FILTER_EXTENDED(state, option) {
-  //   state[option.tableName].filterPrimitive = '';
-  //   state[option.tableName].filterExtended = option.value;
+  // SET_MODE_ADDING_ID(state, option) {
+  //   state[option.tableName].modeAdding.recordId = option.recordId;
+  //   state[option.tableName][option.guid].filter['parent__isnull'] = null;
   // },
-  SET_FILTER_EXTENDED_CLEAR(state, option) { state[option.tableName].filterExtended = ''; },
-  // SET_FILTER_SEARCH(state, option) {
-  //   if (option.value == null) {
-  //     state[option.tableName].filterSearch = '';
-  //     return;
+  
+
+
+  // TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) {
+  //   state[option.tableName].listData = [];
+  //   state[option.tableName].filterDefault['is_deleted'] = option.value;
+  // },
+  // TOGGLE_MODE_ADDING(state, option) {
+  //   state[option.tableName].modeAdding.status = option.status;
+  //   state[option.tableName].modeAdding.index = option.index;
+  // },
+  
+  // ---------------------------------------------------------------------------------------------------
+  // DATA_STORE_ADDING_ELEMENT(state, option) {  // ADDING EMPTY LINE IN TABLE
+  //   let fieldTable = {};
+  //   let indexElement = 0;
+  //   for (let key of Object.keys(state[option.tableName].listOption)) fieldTable[key] = null;
+  //   if (option.recordId == -1) {
+  //     state[option.tableName].listData.unshift(fieldTable);
+  //     state[option.tableName].modeAdding.status = true;
+  //     state[option.tableName].modeAdding.index = indexElement;
+  //   } else {
+  //     indexElement = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
+  //     state[option.tableName].listData.splice(indexElement + 1, 0, fieldTable);
+  //     state[option.tableName].modeAdding.status = true; // ПЕРЕВОДИМ СОСТОЯНИЕ ТАБЛИЦЫ В РЕЖИМ ДОБАВЛЕНИЯ
+  //     state[option.tableName].modeAdding.index = indexElement + 1; // ИНДЕКС ДОБАВЛЯЕМОГО ЭЛЕМЕНТА
   //   }
-  //   state[option.tableName].filterSearch = `&search=${option.value}`;
+    
+  // },
+  // DATA_STORE_ADDING_ELEMENT_ITEM(state, option) { // ADDING ELEMENT ITEM IN LINE STORE
+  //   let indexElement = state[option.tableName].modeAdding.index;
+  //   state[option.tableName].listData[indexElement][option.fieldName] = option.value;
+  // },
+  // DATA_STORE_DELETING_ELEMENT(state, option) { // DELETE LINE TABLE
+  //   state[option.tableName].listData.splice(state[option.tableName].modeAdding.index, 1);
+  //   state[option.tableName].modeAdding.status = false;
+  //   state[option.tableName].modeAdding.index = null;
   // },
   
-
-  TOGGLE_FILTER_DEFAULT_IS_DELETED(state, option) {
-    state[option.tableName].listData = [];
-    state[option.tableName].filterDefault['is_deleted'] = option.value;
-  },
-  TOGGLE_MODE_ADDING(state, option) {
-    state[option.tableName].modeAdding.status = option.status;
-    state[option.tableName].modeAdding.index = option.index;
-  },
-  
-  // ---------------------------------------------------------------------------------------------------
-  DATA_STORE_ADDING_ELEMENT(state, option) {  // ADDING EMPTY LINE IN TABLE
-    let fieldTable = {};
-    let indexElement = 0;
-    for (let key of Object.keys(state[option.tableName].listOption)) fieldTable[key] = null;
-    if (option.recordId == -1) {
-      state[option.tableName].listData.unshift(fieldTable);
-      state[option.tableName].modeAdding.status = true;
-      state[option.tableName].modeAdding.index = indexElement;
-    } else {
-      indexElement = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
-      state[option.tableName].listData.splice(indexElement + 1, 0, fieldTable);
-      state[option.tableName].modeAdding.status = true; // ПЕРЕВОДИМ СОСТОЯНИЕ ТАБЛИЦЫ В РЕЖИМ ДОБАВЛЕНИЯ
-      state[option.tableName].modeAdding.index = indexElement + 1; // ИНДЕКС ДОБАВЛЯЕМОГО ЭЛЕМЕНТА
-    }
-    
-  },
-  DATA_STORE_ADDING_ELEMENT_ITEM(state, option) { // ADDING ELEMENT ITEM IN LINE STORE
-    let indexElement = state[option.tableName].modeAdding.index;
-    state[option.tableName].listData[indexElement][option.fieldName] = option.value;
-  },
-  DATA_STORE_DELETING_ELEMENT(state, option) { // DELETE LINE TABLE
-    state[option.tableName].listData.splice(state[option.tableName].modeAdding.index, 1);
-    state[option.tableName].modeAdding.status = false;
-    state[option.tableName].modeAdding.index = null;
-  },
-  
-  // ---------------------------------------------------------------------------------------------------
+  // // ---------------------------------------------------------------------------------------------------
 
 
-  ACTION_EDITING_ELEMENT(state, option) { // editin column in table
-    let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
-    console.log(state[option.tableName].listData[index]);
-    state[option.tableName].listData[index][option.fieldName] = option.value;
-  },
+  // ACTION_EDITING_ELEMENT(state, option) { // editin column in table
+  //   let index = state[option.tableName].listData.findIndex(item => item.id == option.recordId);
+  //   console.log(state[option.tableName].listData[index]);
+  //   state[option.tableName].listData[index][option.fieldName] = option.value;
+  // },
 
 }
