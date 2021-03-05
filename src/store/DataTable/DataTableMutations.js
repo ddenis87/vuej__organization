@@ -211,7 +211,8 @@ export default {
     state[option.tableName][option.guid].addingMode.index = ((indexCurrentElement > -1) ? indexCurrentElement : 0) + 1;
   },
   ADDING_INLINE_ELEMENT_FIELD(state, option) {
-    let index = state[option.tableName][option.guid].addingMode.index;
+    let index = state[option.tableName].listData.findIndex(item => item.id == option.id);
+    // let index = state[option.tableName][option.guid].addingMode.index;
     state[option.tableName].listData[index][option.fieldName] = option.value;
   },
   DELETING_INLINE_ELEMENT(state, option) {

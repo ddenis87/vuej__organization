@@ -26,6 +26,7 @@ export default {
   
   ADDING_INLINE_ELEMENT_FIELD(state, option) {
     state.commit('ADDING_INLINE_ELEMENT_FIELD', option);
+    //ТУТ запись на api
   },
 
   DELETING_INLINE_ELEMENT(state, option) {

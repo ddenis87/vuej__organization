@@ -78,8 +78,6 @@ export default {
 
   // ---------------------------------------------------------------------------
   GET_ADDING_MODE:(state) => (option) => { return state[option.tableName][option.guid].addingMode; },
-  // GET_MODE_ADDING_ID:(state) => (option) => { return state[tableName].modeAdding.recordId; },
-  // GET_MODE_ADDING_INDEX:(state) => (tableName) => { return state[tableName].modeAdding.index; },
   
   // ---------------------------------------------------------------------------
   // ---------------------------------------------------------------------------

@@ -80,7 +80,7 @@ export default {
 
     async editingAccepted(option) {
       // option.event.preventDefault();
-      // console.log(option);
+      console.log(option);
       if (this.isAddingMode) {
         this.editingAcceptedStore(option);
         return;
@@ -147,9 +147,11 @@ export default {
         tableName: this.properties.tableName,
         guid: this.properties.guid,
         fieldName: this.properties.columnProperties.value,
-        recordId: this.properties.itemRow.id,
+        id: this.properties.itemRow.id,
         value: option.value,
       }
+      console.log(sendOption);
+      console.log(flag);
       if (option.value == null && this.properties.columnProperties.required == true) return;
       if (flag == 'element') {
         this.$store.commit('DataTable/ACTION_EDITING_ELEMENT', sendOption);
