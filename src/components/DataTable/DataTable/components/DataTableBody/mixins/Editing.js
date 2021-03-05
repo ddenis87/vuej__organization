@@ -8,6 +8,7 @@ export const Editing = {
     mountEditingComponent(target, itemRow, columnProperties, columnValue) {
       let editingComponentProperties = {
         tableName: this.tableName,
+        guid: this.guid,
         itemRow,
         columnProperties,
         columnValue,
@@ -74,9 +75,13 @@ export const Editing = {
     },
 
     async editingAcceptedNewElement(event) {
-      let index = this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName);
+      let index = this.$store.getters['DataTable/GET_ADDING_MODE']({
+        tableName: this.tableName,
+        guid: this.guid,
+      }).index;
       let sendOption = {
         tableName: this.tableName,
+        guid: this.guid,
       };
       let bFormData = new FormData();
       for (let key of Object.keys(this.items[index])) {

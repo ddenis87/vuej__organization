@@ -31,10 +31,11 @@ export default {
       console.log(this.elementFocused);
       let sendOption = {
         tableName: this.tableName,
-        recordId: (this.elementFocused) ? this.elementFocused.id : -1,
+        guid: this.guid,
+        id: (this.elementFocused) ? this.elementFocused.id : -1,
       }
-      console.log(sendOption);
-      this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
+      // this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT', sendOption);
+      this.$store.commit('DataTable/ADDING_INLINE_ELEMENT', sendOption);
     },
     addingElement() {
       this.typeElement = 'element';

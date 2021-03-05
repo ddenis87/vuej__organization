@@ -19,6 +19,10 @@ class DataTableSpace {
   };
   filterExtended = null;
   listDataGroup = [];
+  addingMode = {
+    index: null,
+    id: null,
+  };
 };
 
 export default {
@@ -194,8 +198,31 @@ export default {
 
   // ----ADDING ELEMENT---------------------------------------------------------
   ADDING_INLINE_ELEMENT(state, option) {
-    console.log(option);
+    let newElement = {};
+    Object.keys(state[option.tableName].listOption).forEach(item => {
+      newElement[item] = null;
+    });
+    let indexLastGroup = state[option.tableName][option.guid].listDataGroup.length - 1;
+    if (indexLastGroup > -1) {
+      newElement.parent = state[option.tableName][option.guid].listDataGroup[indexLastGroup];
+    }
+    let indexCurrentElement = state[option.tableName].listData.findIndex(item => item.id == option.id);
+    state[option.tableName].listData.splice(((indexCurrentElement > -1) ? indexCurrentElement : 0) + 1, 0, newElement);
+    state[option.tableName][option.guid].addingMode.index = ((indexCurrentElement > -1) ? indexCurrentElement : 0) + 1;
   },
+  ADDING_INLINE_ELEMENT_FIELD(state, option) {
+    let index = state[option.tableName][option.guid].addingMode.index;
+    state[option.tableName].listData[index][option.fieldName] = option.value;
+  },
+  DELETING_INLINE_ELEMENT(state, option) {
+    state[option.tableName].listData.splice(state[option.tableName][option.guid].addingMode.index, 1);
+    state[option.tableName][option.guid].addingMode.id = null;
+    state[option.tableName][option.guid].addingMode.index = null;
+  },
+
+
+  // ---------------------------------------------------------------------------
+
   // SET_MODE_ADDING_ID(state, option) {
   //   state[option.tableName].modeAdding.recordId = option.recordId;
   //   state[option.tableName][option.guid].filter['parent__isnull'] = null;

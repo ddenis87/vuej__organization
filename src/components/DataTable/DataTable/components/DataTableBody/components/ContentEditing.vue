@@ -49,7 +49,12 @@ export default {
       // console.log(propertiesComponent.text);
       return propertiesComponent;
     },
-    isModeAdding() { return this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.properties.tableName); },
+    isAddingMode() {
+      return (this.$store.getters['DataTable/GET_ADDING_MODE']({
+        tableName: this.properties.tableName,
+        guid: this.properties.guid,
+      }).id) ? false : true;
+    },
   },
   methods: {
     editingCanceled() {
@@ -58,20 +63,25 @@ export default {
       editableElement.dispatchEvent(eventEditingCanceled);
       this.isComponentNull = true;
       if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
-      if (this.isModeAdding) {
+      if (this.isAddingMode) {
         this.editingCanceledStore();
         return;
       }
     },
 
     editingCanceledStore() {
-      this.$store.commit('DataTable/DATA_STORE_DELETING_ELEMENT', {tableName: this.properties.tableName});
+      let sendOption = {
+        tableName: this.properties.tableName,
+        guid: this.properties.guid,
+      };
+      this.$store.dispatch('DataTable/DELETING_INLINE_ELEMENT', sendOption);
+      // this.$store.commit('DataTable/DATA_STORE_DELETING_ELEMENT', {tableName: this.properties.tableName});
     },
 
     async editingAccepted(option) {
       // option.event.preventDefault();
       // console.log(option);
-      if (this.isModeAdding) {
+      if (this.isAddingMode) {
         this.editingAcceptedStore(option);
         return;
       }
@@ -135,6 +145,7 @@ export default {
     saveDataStore(option, flag) {
       let sendOption = {
         tableName: this.properties.tableName,
+        guid: this.properties.guid,
         fieldName: this.properties.columnProperties.value,
         recordId: this.properties.itemRow.id,
         value: option.value,
@@ -143,7 +154,7 @@ export default {
       if (flag == 'element') {
         this.$store.commit('DataTable/ACTION_EDITING_ELEMENT', sendOption);
       } else {
-        this.$store.commit('DataTable/DATA_STORE_ADDING_ELEMENT_ITEM', sendOption);
+        this.$store.dispatch('DataTable/ADDING_INLINE_ELEMENT_FIELD', sendOption);
       }
     },
   }

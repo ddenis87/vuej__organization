@@ -34,12 +34,12 @@ class DataTableBase {
   // listDataGroup = [];
   listData = [];
 
-  isModeAdding = false; // режим добавления элемента в таблицу
-  modeAdding = {
-    status: false,
-    index: null,
-    recordId: null,
-  }
+  // isModeAdding = false; // режим добавления элемента в таблицу
+  // modeAdding = {
+  //   status: false,
+  //   index: null,
+  //   recordId: null,
+  // }
 }
 
 export default {

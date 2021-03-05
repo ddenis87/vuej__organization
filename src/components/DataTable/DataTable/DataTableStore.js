@@ -4,7 +4,7 @@ export const DataTableStore = {
   data() {
     return {
       tableName: this.properties.tableName,
-      GUID: Guid.newGuid().StringGuid,
+      GUID: 'd' + Guid.newGuid().StringGuid,
     }
   },
   computed: {

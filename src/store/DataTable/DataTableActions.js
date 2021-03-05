@@ -23,7 +23,15 @@ export default {
   ADDING_INLINE_ELEMENT(state, option) {
     state.commit('ADDING_INLINE_ELEMENT', option);
   },
-  ADDING_INLINE_ELEMENT_FIELD(state, option) {},
+  
+  ADDING_INLINE_ELEMENT_FIELD(state, option) {
+    state.commit('ADDING_INLINE_ELEMENT_FIELD', option);
+  },
+
+  DELETING_INLINE_ELEMENT(state, option) {
+    state.commit('DELETING_INLINE_ELEMENT', option);
+  },
+  // ---------------------------------------------------------------------------
 
   // ----FILTERS----------------------------------------------------------------
   SET_FILTER_GROUP(state, option) {

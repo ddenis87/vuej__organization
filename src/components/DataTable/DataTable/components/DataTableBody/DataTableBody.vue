@@ -142,8 +142,9 @@ export default {
   },
   computed: {
     isHierarchyMode() { return this.$store.getters[`DataTable/GET_HIERARCHY_MODE`](this.tableName); },
-    isModeAdding() {
-      return this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName);
+    isAddingMode() {
+      // return this.$store.getters['DataTable/GET_MODE_ADDING_STATUS'](this.tableName);
+      return (this.$store.getters['DataTable/GET_ADDING_MODE']({tableName: this.tableName, guid: this.guid}).index == null) ? false : true;
     },
     // isLoadingData() {
     //   return this.$store.getters[`DataTable/GET_STATUS_PROCESSING`];
@@ -159,12 +160,15 @@ export default {
     // },
   },
   watch: {
-    isModeAdding() { // SELECTED FOR ADDING ELEMENT INLINE
+    isAddingMode() { // SELECTED FOR ADDING ELEMENT INLINE
       console.log('mode adding');
-      if (!this.isModeAdding) return;
+      if (!this.isAddingMode) return;
       setTimeout(() => {
-        let indexAddingElement = this.$store.getters['DataTable/GET_MODE_ADDING_INDEX'](this.tableName);
-        let firstElement = document.querySelectorAll(`#${this.guid} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
+        let indexAddingElement = this.$store.getters['DataTable/GET_ADDING_MODE']({
+          tableName: this.tableName, 
+          guid: this.guid,
+        }).index;
+        let firstElement = document.querySelectorAll(`.${this.guid} .body .body-row`)[indexAddingElement].querySelectorAll('.body-column')[0];
         let eventDblClick = new Event('dblclick', {bubbles: false});
         firstElement.focus();
         firstElement.dispatchEvent(eventDblClick);
@@ -175,17 +179,21 @@ export default {
     },
   },
   updated() {
-    if (this.$store.getters['DataTable/GET_MODE_ADDING_ID'](this.tableName)) {
-      let recordId = this.$store.getters['DataTable/GET_MODE_ADDING_ID'](this.tableName);
-      let index = this.$store.getters['DataTable/GET_DATA_INDEX'](this.tableName, {recordId: recordId});
-      if (document.querySelectorAll(`#${this.guid} .body .body-row`)[index] &&
-          document.querySelectorAll(`#${this.guid} .body .body-row`)[index].querySelectorAll('.body-column')) {
-        let firstElement = document.querySelectorAll(`#${this.guid} .body .body-row`)[index].querySelectorAll('.body-column')[0];
+    let addingMode = this.$store.getters['DataTable/GET_ADDING_MODE']({
+      tableName: this.tableName, 
+      guid: this.guid,
+    })
+    if (addingMode.id) {
+      // let recordId = this.$store.getters['DataTable/GET_MODE_ADDING_ID'](this.tableName);
+      // let index = this.$store.getters['DataTable/GET_DATA_INDEX'](this.tableName, {id: addingMode.id});
+      if (document.querySelectorAll(`.${this.guid} .body .body-row`)[addingMode.index] &&
+          document.querySelectorAll(`.${this.guid} .body .body-row`)[addingMode.index].querySelectorAll('.body-column')) {
+        let firstElement = document.querySelectorAll(`.${this.guid} .body .body-row`)[addingMode.index].querySelectorAll('.body-column')[0];
         if (firstElement) {
           setTimeout(() => {
             firstElement.focus();
             this.$store.commit('DataTable/SET_MODE_ADDING_ID', { tableName: this.tableName, recordId: null, guid: this.guid });
-          }, 1000);
+          }, 500);
         }
       }
     }
