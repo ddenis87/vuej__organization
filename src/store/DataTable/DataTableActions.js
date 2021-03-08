@@ -14,6 +14,7 @@ export default {
   SELECTED_GROUP(state, option) {
     state.commit('CHANGE_DATA_GROUP_LEGEND', option);
     state.commit('SET_FILTER_PARENT', option);
+    state.commit('CLEAR_DATA', option);
     state.dispatch('REQUEST_DATA', option);
     console.log(state.state[option.tableName][option.guid]);
   },
@@ -21,7 +22,10 @@ export default {
 
   // ----ADDING ELEMENT---------------------------------------------------------
   ADDING_INLINE_ELEMENT(state, option) {
-    state.commit('ADDING_INLINE_ELEMENT', option);
+    return new Promise((resolve, reject) => {
+      state.commit('ADDING_INLINE_ELEMENT', option);
+      resolve();
+    })
   },
   
   ADDING_INLINE_ELEMENT_FIELD(state, option) {
@@ -53,6 +57,11 @@ export default {
   SET_FILTER_DELETED(state, option) {
     state.commit('CLEAR_DATA', option);
     state.commit('SET_FILTER_DELETED', option);
+    state.dispatch('REQUEST_DATA', option);
+  },
+  SET_FILTER_SEARCH(state, option) {
+    state.commit('CLEAR_DATA', option);
+    state.commit('SET_FILTER_SEARCH', option);
     state.dispatch('REQUEST_DATA', option);
   },
   // ---------------------------------------------------------------------------
@@ -391,7 +400,7 @@ export default {
        axios
         .post(addressApi, option.formData)
         .then(response => {
-          state.commit('SET_MODE_ADDING_ID', { tableName: option.tableName, recordId: response.data.id, guid: option.guid });
+          state.commit('SET_ADDING_ELEMENT_ID', { tableName: option.tableName, guid: option.guid, id: response.data.id });
           state.commit('CLEAR_DATA', { tableName: option.tableName });
           state.dispatch('REQUEST_DATA', {tableName: option.tableName, addingElement: response.data, guid: option.guid});
           resolve(response);

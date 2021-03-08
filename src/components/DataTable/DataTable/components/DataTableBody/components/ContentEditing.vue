@@ -49,12 +49,16 @@ export default {
       // console.log(propertiesComponent.text);
       return propertiesComponent;
     },
-    isAddingMode() {
-      return (this.$store.getters['DataTable/GET_ADDING_MODE']({
-        tableName: this.properties.tableName,
-        guid: this.properties.guid,
-      }).id) ? false : true;
-    },
+    // isAddingMode() {
+    //   console.log(this.$store.getters['DataTable/GET_ADDING_MODE']({
+    //     tableName: this.properties.tableName,
+    //     guid: this.properties.guid,
+    //   }).id);
+    //   return (this.$store.getters['DataTable/GET_ADDING_MODE']({
+    //     tableName: this.properties.tableName,
+    //     guid: this.properties.guid,
+    //   }).id) ? false : true;
+    // },
   },
   methods: {
     editingCanceled() {
@@ -63,10 +67,8 @@ export default {
       editableElement.dispatchEvent(eventEditingCanceled);
       this.isComponentNull = true;
       if (document.querySelector('.content-editing')) document.querySelector('.content-editing').remove();
-      if (this.isAddingMode) {
+      if (this.$store.getters['DataTable/GET_ADDING_MODE']({tableName: this.properties.tableName, guid: this.properties.guid}).index)
         this.editingCanceledStore();
-        return;
-      }
     },
 
     editingCanceledStore() {
@@ -81,12 +83,13 @@ export default {
     async editingAccepted(option) {
       // option.event.preventDefault();
       console.log(option);
-      if (this.isAddingMode) {
+      if (this.$store.getters['DataTable/GET_ADDING_MODE']({tableName: this.properties.tableName, guid: this.properties.guid}).index) {
         this.editingAcceptedStore(option);
         return;
       }
       let sendOption = {
         tableName: this.properties.tableName,
+        guid: this.properties.guid,
         elementId: this.properties.itemRow.id,
       };
       
@@ -154,7 +157,7 @@ export default {
       console.log(flag);
       if (option.value == null && this.properties.columnProperties.required == true) return;
       if (flag == 'element') {
-        this.$store.commit('DataTable/ACTION_EDITING_ELEMENT', sendOption);
+        this.$store.dispatch('DataTable/ADDING_INLINE_ELEMENT', sendOption);
       } else {
         this.$store.dispatch('DataTable/ADDING_INLINE_ELEMENT_FIELD', sendOption);
       }

@@ -51,6 +51,10 @@
                       :is-dialog-show="isOpenFilterExtended"
                       width="600"
                       @close-dialog="isOpenFilterExtended = false">
+      <!-- <component :is="componentFilterExtended"
+                 :table-name="tableName">
+
+      </component> -->
       <component :is="componentFilterExtended"
                  :table-name="tableName"
                  :guid="guid"
@@ -122,6 +126,7 @@ export default {
     componentFilterExtended() {
       if (!this.formProperties?.tableName) return null;
       return () => import('@/components/DataFilter/DataFilterExtended/DataFilterExtended.vue')
+      // return () => import('@/components/Filters/DataFilter/DataFilter.vue')
     },
     isFilterExtendedActive() {
       if (this.formProperties) {

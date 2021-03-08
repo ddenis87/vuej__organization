@@ -180,23 +180,20 @@ export default {
       this.isMultiline = !this.isMultiline;
     },
     freeSearch(option) {
-      console.log(option);
-      this.$store.commit('DataTable/SET_FILTER_SEARCH', {
+      let sendOption = {
         tableName: this.activeMenu.tableName,
         guid: this.guid,
         value: option.value,
-      });
-      // this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.activeMenu.tableName });
-      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName, guid: this.guid});
-    },
+      };
+      this.$store.dispatch('DataTable/SET_FILTER_SEARCH', sendOption);
+     },
     freeSearchClear() {
-      this.$store.commit('DataTable/SET_FILTER_SEARCH', {
+      let sendOption = {
         tableName: this.activeMenu.tableName,
         guid: this.guid,
         value: null,
-      });
-      // this.$store.commit('DataTable/SET_DATA_CLEAR', { tableName: this.activeMenu.tableName });
-      this.$store.dispatch(`DataTable/REQUEST_DATA`, {tableName: this.activeMenu.tableName, guid: this.guid});
+      };
+      this.$store.dispatch('DataTable/SET_FILTER_SEARCH', sendOption);
     },
   },
 }

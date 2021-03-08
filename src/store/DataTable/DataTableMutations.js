@@ -28,7 +28,8 @@ class DataTableSpace {
 export default {
   SET_STATUS_PROCESSING(state, option) { state[option.tableName][option.guid].statusProcessing = option.status; },
   CREATE_DATA_TABLE_SPACE(state, option) {
-    Vue.set(state[option.tableName], option.guid, new DataTableSpace({}))
+    Vue.set(state[option.tableName], option.guid, new DataTableSpace({}));
+    // state[option.tableName][option.guid].filter.getFilter();
   },
   DELETE_DATA_TABLE_SPACE(state, option) {
     delete state[option.tableName][option.guid];
@@ -53,7 +54,7 @@ export default {
       state[option.tableName].isHierarchyMode = true;
       state[option.tableName][option.guid].filter['parent__isnull'] = true;
     }
-    if ('is_group' in state[option.tableName].listOption) state[option.tableName][option.guid].filter['ordering'] = `-is_group`;
+    if ('is_group' in option.data) state[option.tableName][option.guid].filter['ordering'] = `-is_group`;
   },
 
   SET_DATA_OPTIONS(state, option) {
@@ -194,6 +195,15 @@ export default {
     state[option.tableName][option.guid].filter['is_deleted'] = option.value;
     state[option.tableName][option.guid].filter['parent__isnull'] = null;
   },
+  SET_FILTER_SEARCH(state, option) {
+    if (option.value) {
+      state[option.tableName][option.guid].filter['search'] = option.value;
+      // state[option.tableName][option.guid].filter['parent__isnull'] = null;
+      return;
+    }
+    state[option.tableName][option.guid].filter['search'] = null;
+    state[option.tableName][option.guid].filter['parent__isnull'] = true;
+  },
   // ---------------------------------------------------------------------------
 
   // ----ADDING ELEMENT---------------------------------------------------------
@@ -207,6 +217,8 @@ export default {
       newElement.parent = state[option.tableName][option.guid].listDataGroup[indexLastGroup];
     }
     let indexCurrentElement = state[option.tableName].listData.findIndex(item => item.id == option.id);
+    console.log(state[option.tableName].listData);
+    console.log(indexCurrentElement);
     state[option.tableName].listData.splice(((indexCurrentElement > -1) ? indexCurrentElement : 0) + 1, 0, newElement);
     state[option.tableName][option.guid].addingMode.index = ((indexCurrentElement > -1) ? indexCurrentElement : 0) + 1;
   },
@@ -216,6 +228,7 @@ export default {
     state[option.tableName].listData[index][option.fieldName] = option.value;
   },
   DELETING_INLINE_ELEMENT(state, option) {
+    console.log(option);
     state[option.tableName].listData.splice(state[option.tableName][option.guid].addingMode.index, 1);
     state[option.tableName][option.guid].addingMode.id = null;
     state[option.tableName][option.guid].addingMode.index = null;
@@ -223,7 +236,9 @@ export default {
 
 
   // ---------------------------------------------------------------------------
-
+  SET_ADDING_ELEMENT_ID(state, option) {
+    state[option.tableName][option.guid].addingMode.id = option.id;
+  },
   // SET_MODE_ADDING_ID(state, option) {
   //   state[option.tableName].modeAdding.recordId = option.recordId;
   //   state[option.tableName][option.guid].filter['parent__isnull'] = null;

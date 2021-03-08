@@ -23,7 +23,7 @@ export default {
       }
     })
     if (state[option.tableName][option.guid].filterExtended) filterApi += state[option.tableName][option.guid].filterExtended;
-    console.log(filterApi);
+    // console.log(filterApi);
     return filterApi;
   },
 
@@ -39,19 +39,14 @@ export default {
   GET_DATA_GROUP_LEVEL:(state) => (option) => { return state[option.tableName][option.guid].listDataGroup.length; },
   
   GET_DATA:(state) => (option) => {
-    console.log(state[option.tableName].listData.length);
-    console.log(option.guid);
-    
     if (!option.guid) {
       return state[option.tableName].listData;
     }
-    console.log(state[option.tableName][option.guid].filter);
     if (state[option.tableName][option.guid].filter['is_deleted'] == true) {
       return state[option.tableName].listData.filter(item => {
         if (item.is_deleted == true) return true;
       });
     }
-    
     if (state[option.tableName][option.guid].filter['parent']) {
       if (state[option.tableName][option.guid].filter['is_group']) {
         return state[option.tableName].listData.filter(item => {
@@ -63,7 +58,6 @@ export default {
             if (item.parent && item.parent.id == state[option.tableName][option.guid].filter['parent']) return true;
         });
       }
-
     }
     if (state[option.tableName][option.guid].filter['is_group']) {
       return state[option.tableName].listData.filter(item => item.is_group && item.parent == null);
