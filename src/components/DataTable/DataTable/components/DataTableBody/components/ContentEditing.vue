@@ -90,7 +90,7 @@ export default {
       let sendOption = {
         tableName: this.properties.tableName,
         guid: this.properties.guid,
-        elementId: this.properties.itemRow.id,
+        id: this.properties.itemRow.id,
       };
       
       let newValue = this.computedValue(option);
@@ -116,7 +116,7 @@ export default {
 
       let editableElement = document.querySelector('.body-column_editing');
 // --------------------------------
-      this.saveDataStore(option, 'element');
+      // this.saveDataStore(option, 'element');
 // --------------------------------
       this.$store.dispatch('DataTable/UPDATE_ELEMENT', sendOption);
       let eventEditingAccepted = new CustomEvent('editing-accepted', { detail: { key: option.key, keyShift: option.shift } });

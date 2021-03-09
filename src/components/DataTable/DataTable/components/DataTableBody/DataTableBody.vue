@@ -12,8 +12,8 @@
     </data-table-tooltip>
 
     <!-- NO ELEMENT FOR DISPLAY -->
-    <empty-content :tableName="tableName"
-                   :guid="guid"></empty-content>
+    <!-- <empty-content :tableName="tableName"
+                   :guid="guid"></empty-content> -->
 
     <!-- OVERFLOW TEXT -->
     <data-table-overflow :d-id="`${id}-body`"

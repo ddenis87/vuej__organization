@@ -53,7 +53,7 @@ export const DataTableControlActions = {
       };
       Object.assign(sendOption, option);
       if (sendOption.actionName == 'editing') {
-        sendOption.elementId = option.values.id;
+        sendOption.id = option.values.id;
         delete sendOption.values.id;
       }
       let bFormData = new FormData();
@@ -63,6 +63,7 @@ export const DataTableControlActions = {
       };
       sendOption.formData = bFormData;
       delete sendOption.values;
+      console.log(sendOption);
       if (sendOption.actionName == 'editing') 
         this.$store.dispatch(`DataTable/UPDATE_ELEMENT`, sendOption);
       if (sendOption.actionName == 'adding') 
