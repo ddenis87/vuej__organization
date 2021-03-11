@@ -11,7 +11,7 @@ export const EventsKeyboard = {
     },
 
     async eventColumnKeydown(event, itemRow, itemColumn, columnValue) {
-      console.log('event column keydown');
+      // console.log('event column keydown');
       if (event.code.includes('Arrow') || event.code == 'Tab') {
         event.preventDefault();
         if ((event.code == 'ArrowRight' && event.target.nextElementSibling) || (event.code =='Tab' && event.shiftKey == false)) { event.target.nextElementSibling.focus(); return; }
@@ -19,7 +19,7 @@ export const EventsKeyboard = {
         if (event.code == 'ArrowDown' || event.code == 'ArrowUp') {
           let currentIndex = event.target.getAttribute('tabindex');
           if (this.isExpansion) currentIndex++;
-          if (this.isHierarchy) currentIndex++;
+          if (this.isHierarchyMode) currentIndex++;
           if (event.code == 'ArrowDown' && event.target.parentElement.nextElementSibling.closest('.body-row')) {
             event.target.parentElement.nextElementSibling.children[currentIndex].focus();
           }

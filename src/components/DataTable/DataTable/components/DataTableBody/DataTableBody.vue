@@ -168,7 +168,7 @@ export default {
       tableName: this.tableName, 
       guid: this.guid,
     }).id;
-    // console.log(addingModeId);
+    console.log('body update');
     if (addingModeId) {
       let addingIndex = this.$store.getters['DataTable/GET_ADDING_MODE']({
         tableName: this.tableName, 

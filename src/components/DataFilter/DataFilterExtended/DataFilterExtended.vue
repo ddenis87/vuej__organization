@@ -99,7 +99,7 @@ export default {
       // for(let value of Object.values(this.valueFilterObject)) {
       //   filterString += value;
       // }
-      
+      console.log(this.valueFilterObject);
       this.$store.dispatch('DataTable/SET_FILTER_EXTENDED', {
         tableName: this.tableName,
         guid: this.guid,
