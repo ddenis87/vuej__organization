@@ -19,6 +19,7 @@ class DataTableSpace {
   };
   filterExtended = null;
   listDataGroup = [];
+  listDataIndex = [];
   addingMode = {
     index: null,
     id: null,
@@ -67,12 +68,27 @@ export default {
     let index = state[option.tableName].listData.findIndex(item => item.id == option.value.id);
     if (index >= 0) {
       Vue.set(state[option.tableName].listData, index, option.value);
-      return;
+      // if (option.guid)
+      //   state[option.tableName][option.guid].listDataIndex.push(state[option.tableName].listData.length - 1);
+      // return;
     }
     state[option.tableName].listData.push(option.value);
+    if (option.guid)
+      state[option.tableName][option.guid].listDataIndex.push(state[option.tableName].listData.length - 1);
   },
+  // SET_DATA_NO_INDEX(state, option) {
+  //   let index = state[option.tableName].listData.findIndex(item => item.id == option.value.id);
+  //   if (index >= 0) {
+  //     Vue.set(state[option.tableName].listData, index, option.value);
+  //     return;
+  //   }
+  //   state[option.tableName].listData.push(option.value);
+  // },
   CLEAR_DATA(state, option) {
     state[option.tableName].listData = [];
+  },
+  CLEAR_DATA_INDEX(state, option) {
+    state[option.tableName][option.guid].listDataIndex.length = 0;
   },
   DELETE_DATA_ELEMENT(state, option) {
     let index = state[option.tableName].listData.findIndex(item => item.id == option.elementId);

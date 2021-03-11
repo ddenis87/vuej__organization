@@ -39,6 +39,18 @@ export default {
   GET_DATA_GROUP_LEVEL:(state) => (option) => { return state[option.tableName][option.guid].listDataGroup.length; },
   
   GET_DATA:(state) => (option) => {
+    // if (option.guid) {
+      // state[option.tableName][option.guid].listDataIndex.length = 0;
+      console.log(state[option.tableName][option.guid].listDataIndex);
+      console.log(state[option.tableName].listData);
+    // }
+    
+    let returnArray = [];
+    for (let i = 0; i < state[option.tableName][option.guid].listDataIndex.length; i++) {
+      returnArray.push(state[option.tableName].listData[state[option.tableName][option.guid].listDataIndex[i]]);
+    }
+    return returnArray;
+
     if (!option.guid) {
       return state[option.tableName].listData;
     }

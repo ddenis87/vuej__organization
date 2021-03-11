@@ -15,6 +15,7 @@ export default {
     state.commit('CHANGE_DATA_GROUP_LEGEND', option);
     state.commit('SET_FILTER_PARENT', option);
     state.commit('CLEAR_DATA', option);
+    state.commit('CLEAR_DATA_INDEX', option);
     state.dispatch('REQUEST_DATA', option);
     console.log(state.state[option.tableName][option.guid]);
   },
@@ -45,26 +46,29 @@ export default {
   // ----FILTERS----------------------------------------------------------------
   SET_FILTER_GROUP(state, option) {
     console.log(option);
+    state.commit('CLEAR_DATA_INDEX', option);
     state.commit('SET_FILTER_GROUP', option);
     state.dispatch('REQUEST_DATA', option);
   },
   SET_FILTER_SORTING(state, option) {
-    state.commit('CLEAR_DATA', option);
+    // state.commit('CLEAR_DATA', option);
     state.commit('SET_FILTER_SORTING', option);
     state.dispatch('REQUEST_DATA', option);
   },
   SET_FILTER_EXTENDED(state, option) {
-    state.commit('CLEAR_DATA', option);
+    // state.commit('CLEAR_DATA', option);
+    state.commit('CLEAR_DATA_INDEX', option);
     state.commit('SET_FILTER_EXTENDED', option);
     state.dispatch('REQUEST_DATA', option);
   },
   SET_FILTER_DELETED(state, option) {
-    state.commit('CLEAR_DATA', option);
+    // state.commit('CLEAR_DATA', option);
+    state.commit('CLEAR_DATA_INDEX', option);
     state.commit('SET_FILTER_DELETED', option);
     state.dispatch('REQUEST_DATA', option);
   },
   SET_FILTER_SEARCH(state, option) {
-    state.commit('CLEAR_DATA', option);
+    // state.commit('CLEAR_DATA', option);
     state.commit('SET_FILTER_SEARCH', option);
     state.dispatch('REQUEST_DATA', option);
   },
@@ -153,6 +157,12 @@ export default {
           //   state.state[option.tableName].listData[listDataIndex]
           // }
           // if (state.state[option.tableName].listData.find(item => item.id == element.id)) return; // Если элемент уже в таблице, пропускаем
+          let listDataIndex = state.state[option.tableName].listData.findIndex(item => item.id == element.id);
+          // if (listDataIndex >= 0) { // Если элемент уже в таблице, добавляем в таблицу индексов и пропускаем ход
+            // state.state[option.tableName][option.guid].listDataIndex.push(listDataIndex);
+            // return;
+          // }
+
           for (let elementKey of Object.keys(element)) { // Проходим по полям элемента
             let elementOption = state.state[option.tableName].listOption[elementKey];
             switch(elementOption.type) {
@@ -163,7 +173,7 @@ export default {
 
                   if (relatedModelName == option.tableName) {
                     if (!state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id)) {
-                      state.commit('SET_DATA', {tableName: relatedModelName, value: element[elementKey]});
+                      state.commit('SET_DATA', {tableName: relatedModelName, guid: option.guid, value: element[elementKey]});
                       // запустить проход по полям элемента
                     }
                     element[elementKey] = state.state[relatedModelName].listData.find(item => item.id == element[elementKey].id);
@@ -183,7 +193,7 @@ export default {
               }
             }
           }
-          state.commit('SET_DATA', {tableName: option.tableName, value: element});
+          state.commit('SET_DATA', {tableName: option.tableName, guid: option.guid, value: element});
         });
       })
       .catch(error => console.log(error))
